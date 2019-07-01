@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "12454723695",
+    "firebase_url": "https://my-student-taezpiano.firebaseio.com",
+    "project_id": "my-student-taezpiano",
+    "storage_bucket": "my-student-taezpiano.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:12454723695:android:2c7ba41ffa5cf1d0",
+        "android_client_info": {
+          "package_name": "com.racoondog.mystudent"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "12454723695-455f8tl290fqkt7j1qf0aajkpnalc4ks.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8_qaK35eW_1APWYEbvLDV1aKNCHo0Cl0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "12454723695-455f8tl290fqkt7j1qf0aajkpnalc4ks.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
