@@ -1,8 +1,10 @@
 package com.racoondog.mystudent
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.alamkanak.weekview.MonthLoader
+import com.alamkanak.weekview.WeekView
 import com.alamkanak.weekview.WeekViewEvent
 import com.crashlytics.android.Crashlytics
 import io.fabric.sdk.android.Fabric
@@ -32,8 +34,25 @@ class MainActivity : AppCompatActivity() {
 
         weekView.monthChangeListener = MonthLoader.MonthChangeListener { newYear, newMonth ->
             listOf(
-                WeekViewEvent(1, "aaaa", Calendar.getInstance(), Calendar.getInstance())
+                WeekViewEvent(
+                    1,
+                    "김인수",
+                    Calendar.getInstance().apply {
+                        set(Calendar.HOUR, 6)
+                        set(Calendar.MINUTE, 0)
+                        set(Calendar.AM_PM, Calendar.AM)
+                    },
+                    Calendar.getInstance().apply {
+                        set(Calendar.HOUR, 8)
+                        set(Calendar.MINUTE, 0)
+                        set(Calendar.AM_PM, Calendar.AM)
+                    }
+                )
             )
+        }
+
+        weekView.setOnEventClickListener { event, eventRect ->
+            startActivity(Intent(this, LessonDetailActivity::class.java))
         }
     }
 }
