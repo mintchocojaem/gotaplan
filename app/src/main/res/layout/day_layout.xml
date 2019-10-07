@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="130px"
+        android:layout_height="110px"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ImageView
+            android:id="@+id/day"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/mintmdpi">
+
+    </ImageView>
+
+    <TextView
+            android:id="@id/text"
+            app:layout_constraintRight_toRightOf="@id/day"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            app:layout_constraintBottom_toBottomOf="@+id/day"
+            app:layout_constraintTop_toTopOf="@id/day"
+            app:layout_constraintLeft_toLeftOf="@id/day"
+            android:gravity="center"
+            android:text="월"
+            >
+
+    </TextView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

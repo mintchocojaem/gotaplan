@@ -18,9 +18,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        /*
         Fabric.with(this, Crashlytics())
         Fabric.with(this, Answers())
-        setContentView(R.layout.activity_main)
+
 
         // TODO: Use your own attributes to track content views in your app
         Answers.getInstance().logContentView(
@@ -54,5 +56,7 @@ class MainActivity : AppCompatActivity() {
         weekView.setOnEventClickListener { event, eventRect ->
             startActivity(Intent(this, LessonDetailActivity::class.java))
         }
+        */
+
     }
 }

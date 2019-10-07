@@ -52,4 +52,10 @@
         <attr name="allDayEventHeight" format="dimension"/>
         <attr name="scrollDuration" format="integer"/>
     </declare-styleable>
+
+    <declare-styleable name="day_button">
+        <attr name="bg" format="reference|integer"/>
+        <attr name="text" format="reference|string"/>
+    </declare-styleable>
+
 </resources>
