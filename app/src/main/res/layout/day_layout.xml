@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="130px"
         android:layout_height="110px"
         xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -24,5 +25,6 @@
             >
 
     </TextView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
