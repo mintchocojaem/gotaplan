@@ -56,6 +56,7 @@
     <declare-styleable name="day_button">
         <attr name="bg" format="reference|integer"/>
         <attr name="text" format="reference|string"/>
+        <attr name="BG" format="reference|integer"/>
     </declare-styleable>
 
 </resources>

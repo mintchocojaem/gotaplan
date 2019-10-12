@@ -4,7 +4,8 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity">
+        tools:context=".MainActivity"
+        android:id="@+id/main">
 
     <!--TextView
             android:id="@+id/titleView"
@@ -109,6 +110,7 @@
                 app:layout_constraintLeft_toLeftOf="@id/day_list"
                 app:layout_constraintRight_toRightOf="@id/day_list"
                 app:layout_constraintHorizontal_bias="0"
+
                 />
 
         <com.racoondog.mystudent.DayCustom
@@ -121,7 +123,7 @@
                 app:text="화"
 
                 app:layout_constraintLeft_toLeftOf="@id/day_list"
-                app:layout_constraintRight_toRighßtOf="@id/day_list"
+                app:layout_constraintRight_toRightOf="@id/day_list"
                 app:layout_constraintHorizontal_bias="0"/>
 
         <com.racoondog.mystudent.DayCustom
@@ -132,7 +134,6 @@
                 app:layout_constraintTop_toBottomOf="@id/day2"
                 app:layout_constraintBottom_toTopOf="@id/day4"
                 app:text="수"
-
                 app:layout_constraintLeft_toLeftOf="@id/day_list"
                 app:layout_constraintRight_toRightOf="@id/day_list"
                 app:layout_constraintHorizontal_bias="0"/>
