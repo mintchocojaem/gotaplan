@@ -25,6 +25,7 @@
             </TextView>
 
             <TextView
+
                     android:text="월"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -125,15 +126,15 @@
             </TextView>
 
             <TextView
-
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="3"
                     android:gravity="center"
                     android:textColor="#ffffff"
                     android:textStyle="bold"
                     android:background="@drawable/cell_shape"
-                    android:id="@+id/monday0">
+                    android:id="@+id/monday0"
+                    >
 
             </TextView>
 

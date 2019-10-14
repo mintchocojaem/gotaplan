@@ -9,9 +9,7 @@ import android.widget.*
 import android.widget.TableLayout
 import android.widget.TextView
 import kotlinx.android.synthetic.main.schedule_layout.*
-
-
-
+import me.grantland.widget.AutofitTextView
 
 
 class Schedule : AppCompatActivity() {
@@ -20,20 +18,20 @@ class Schedule : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        val day = listOf("월","화","수","목","금","토","일")
-        val time = listOf("8","9","10","11","12")
+        val day = listOf("월","화","수","목","금")
+        val time = listOf("8","9","10","11","12","1","2","3","4")
         val subject = listOf("화1","화2")
+        val content = listOf("태경이삼촌과 레슨")
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.schedule_layout)
 
         val layout = TableLayout(this)
-        layout.orientation = TableLayout.VERTICAL
 
         val dayrow = TableRow(this)
 
-         layout.layoutParams = LinearLayout.LayoutParams(
-             LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT).apply {
+         layout.layoutParams = TableLayout.LayoutParams(
+             TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT).apply {
 
         }
 
@@ -45,7 +43,6 @@ class Schedule : AppCompatActivity() {
         val initday = TextView(this)
         initday.layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT).apply {
             initday.text =""
-
             weight = 1f
         }
 
@@ -82,7 +79,6 @@ class Schedule : AppCompatActivity() {
 
                 val inittime = TextView(this)
                 inittime.gravity = Gravity.CENTER
-
                 inittime.layoutParams = TableRow.LayoutParams(
                     TableRow.LayoutParams.WRAP_CONTENT,
                     TableRow.LayoutParams.WRAP_CONTENT
@@ -90,23 +86,28 @@ class Schedule : AppCompatActivity() {
                     inittime.text = time[i]
                     weight = 1f
                     gravity = Gravity.CENTER
+                    width = 0
+
                 }
                 timerow.addView(inittime)
 
                 for (j in 0 until day.size) {
 
-                    val timetxt = TextView(this)
+                    val timetxt =  AutofitTextView(this)
                     val tag  : String = day[j] + i
                     timetxt.tag = tag
                     timetxt.setBackgroundResource(R.drawable.cell_shape)
+                    timetxt.maxLines = 2
+                    timetxt.textSize = 40f
+                    timetxt.setMinTextSize(10)
 
                     for (k in 0 until subject.size) {
                         if (timetxt.tag == subject[k]) {
-                            timetxt.setBackgroundColor(Color.DKGRAY)
+                            timetxt.setBackgroundColor(Color.LTGRAY)
                         }
                     }
                     if(timetxt.tag == subject[0]){
-
+                        timetxt.text = content[0]
                     }
 
 
@@ -114,8 +115,8 @@ class Schedule : AppCompatActivity() {
                         TableRow.LayoutParams.WRAP_CONTENT,
                         TableRow.LayoutParams.MATCH_PARENT
                     ).apply {
+                        width = 0
                         weight = 3f
-
 
                     }
 

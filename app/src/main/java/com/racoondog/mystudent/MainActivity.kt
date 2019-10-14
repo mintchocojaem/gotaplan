@@ -80,8 +80,6 @@ class MainActivity : AppCompatActivity() {
         day7.setOnClickListener {
             ui_bg.setBackgroundResource(R.drawable.red_bgxxhdpi)
         }
-
-
     }
 
 
