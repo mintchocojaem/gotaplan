@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity"
+        android:id="@+id/main">
+
+    <!--TextView
+            android:id="@+id/titleView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hello World!"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/-->
+
+    <!--com.alamkanak.weekview.WeekView
+            android:id="@+id/weekView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:eventTextColor="@android:color/white"
+            app:textSize="12sp"
+            app:hourHeight="60dp"
+            app:headerColumnPadding="4dp"
+            app:headerColumnTextColor="#8f000000"
+            app:headerRowPadding="4dp"
+            app:columnGap="4dp"
+            app:noOfVisibleDays="7"
+            app:headerRowBackgroundColor="#ffefefef"
+            app:dayBackgroundColor="#05000000"
+            app:todayBackgroundColor="#1848adff"
+            app:headerColumnBackground="#ffffffff"
+            app:layout_constraintTop_toBottomOf="@id/titleView"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" /-->
+
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/day_line"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/ui_bg"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/menu"
+            android:background="@drawable/day_linexxhdpi">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ui_bg"
+            android:layout_width="335dp"
+            android:layout_height="580dp"
+            android:background="@drawable/mint_bgxxhdpi"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/day_line"
+            app:layout_constraintTop_toBottomOf="@id/menu">
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/time_line"
+            android:layout_width="300dp"
+            android:layout_height="524dp"
+            android:background="@drawable/time_bgxxhdpi"
+            app:layout_constraintBottom_toBottomOf="@id/ui_bg"
+            app:layout_constraintTop_toTopOf="@id/ui_bg"
+            app:layout_constraintLeft_toLeftOf="@id/ui_bg"
+            app:layout_constraintRight_toRightOf="@id/ui_bg">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/menu"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/ui_bg"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/day_list"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/time_line"
+            app:layout_constraintTop_toTopOf="@id/time_line"
+            app:layout_constraintLeft_toRightOf="@id/ui_bg"
+            app:layout_constraintRight_toRightOf="@id/day_line">
+
+        <com.racoondog.mystudent.DayCustom
+                android:id="@+id/day1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:bg="@drawable/mintxxhdpi"
+                app:layout_constraintBottom_toTopOf="@id/day2"
+                app:layout_constraintTop_toTopOf="@id/day_list"
+                app:text="월"
+                app:layout_constraintVertical_chainStyle="spread_inside"
+
+                app:layout_constraintLeft_toLeftOf="@id/day_list"
+                app:layout_constraintRight_toRightOf="@id/day_list"
+                app:layout_constraintHorizontal_bias="0"
+
+                />
+
+        <com.racoondog.mystudent.DayCustom
+                android:id="@+id/day2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:bg="@drawable/pinkxxhdpi"
+                app:layout_constraintBottom_toTopOf="@id/day3"
+                app:layout_constraintTop_toBottomOf="@id/day1"
+                app:text="화"
+
+                app:layout_constraintLeft_toLeftOf="@id/day_list"
+                app:layout_constraintRight_toRightOf="@id/day_list"
+                app:layout_constraintHorizontal_bias="0"/>
+
+        <com.racoondog.mystudent.DayCustom
+                android:id="@+id/day3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:bg="@drawable/purplexxhdpi"
+                app:layout_constraintTop_toBottomOf="@id/day2"
+                app:layout_constraintBottom_toTopOf="@id/day4"
+                app:text="수"
+                app:layout_constraintLeft_toLeftOf="@id/day_list"
+                app:layout_constraintRight_toRightOf="@id/day_list"
+                app:layout_constraintHorizontal_bias="0"/>
+
+        <com.racoondog.mystudent.DayCustom
+                android:id="@+id/day4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:bg="@drawable/orangexxhdpi"
+                app:layout_constraintTop_toBottomOf="@id/day3"
+                app:layout_constraintBottom_toTopOf="@id/day5"
+                app:text="목"
+
+                app:layout_constraintLeft_toLeftOf="@id/day_list"
+                app:layout_constraintRight_toRightOf="@id/day_list"
+                app:layout_constraintHorizontal_bias="0"/>
+
+        <com.racoondog.mystudent.DayCustom
+                android:id="@+id/day5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:bg="@drawable/yellowxxhdpi"
+                app:layout_constraintTop_toBottomOf="@id/day4"
+                app:layout_constraintBottom_toTopOf="@id/day6"
+                app:text="금"
+
+                app:layout_constraintLeft_toLeftOf="@id/day_list"
+                app:layout_constraintRight_toRightOf="@id/day_list"
+                app:layout_constraintHorizontal_bias="0"/>
+
+        <com.racoondog.mystudent.DayCustom
+                android:id="@+id/day6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:bg="@drawable/bluexxhdpi"
+                app:layout_constraintTop_toBottomOf="@id/day5"
+                app:layout_constraintBottom_toTopOf="@id/day7"
+                app:text="토"
+
+                app:layout_constraintLeft_toLeftOf="@id/day_list"
+                app:layout_constraintRight_toRightOf="@id/day_list"
+                app:layout_constraintHorizontal_bias="0"/>
+
+        <com.racoondog.mystudent.DayCustom
+                android:id="@+id/day7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:bg="@drawable/redxxhdpi"
+                app:layout_constraintTop_toBottomOf="@id/day6"
+                app:layout_constraintBottom_toBottomOf="@id/day_list"
+                app:text="일"
+
+                app:layout_constraintLeft_toLeftOf="@id/day_list"
+                app:layout_constraintRight_toRightOf="@id/day_list"
+                app:layout_constraintHorizontal_bias="0"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

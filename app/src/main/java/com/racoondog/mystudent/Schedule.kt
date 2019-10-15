@@ -130,6 +130,7 @@ class Schedule : AppCompatActivity() {
         }
 
         schedulelayout.addView(layout)
+
     }
 
 
