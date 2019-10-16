@@ -28,7 +28,7 @@ class MainActivity: AppCompatActivity() {
 
         val titlename = arrayListOf<Title>()
         for ( i in 0 ..10){
-            titlename.add(Title("시간표 $i"))
+            titlename.add(Title(" 시간표$i "))
 
         }
 
@@ -39,6 +39,35 @@ class MainActivity: AppCompatActivity() {
             adapter = TitleAdapter(titlename){
                 Toast.makeText(this@MainActivity,"$it",Toast.LENGTH_SHORT).show()
             }
+        }
+
+        open_list.setOnClickListener{
+            title_bar.visibility = View.VISIBLE
+            open_list.visibility = View.INVISIBLE
+            open_title.visibility = View.INVISIBLE
+            close_list.visibility = View.VISIBLE
+            close_title.visibility = View.VISIBLE
+        }
+        open_title.setOnClickListener{
+            title_bar.visibility = View.VISIBLE
+            open_title.visibility = View.INVISIBLE
+            open_list.visibility = View.INVISIBLE
+            close_list.visibility = View.VISIBLE
+            close_title.visibility = View.VISIBLE
+        }
+        close_list.setOnClickListener{
+            title_bar.visibility = View.INVISIBLE
+            open_list.visibility = View.VISIBLE
+            close_title.visibility = View.INVISIBLE
+            close_list.visibility = View.INVISIBLE
+            open_title.visibility = View.VISIBLE
+        }
+        close_title.setOnClickListener{
+            title_bar.visibility = View.INVISIBLE
+            open_list.visibility = View.VISIBLE
+            close_title.visibility = View.INVISIBLE
+            close_list.visibility = View.INVISIBLE
+            open_title.visibility = View.VISIBLE
         }
 
     }
