@@ -18,13 +18,13 @@ class Schedule : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.schedule_layout)
+
         val day = listOf("월","화","수","목","금")
         val time = listOf("8","9","10","11","12","1","2","3","4")
         val subject = listOf("화1","화2")
         val content = listOf("태경이삼촌과 레슨")
-
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.schedule_layout)
 
         val layout = TableLayout(this)
 

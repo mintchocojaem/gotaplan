@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="Actionbar_bg">#ffffff</color>
+    <color name="whitegray_bg">#ededed</color>
 </resources>
