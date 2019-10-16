@@ -1,18 +1,17 @@
 package com.racoondog.mystudent
 
-import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Gravity
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
+import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.racoondog.mystudent.databinding.ItemNameBinding
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.schedule_layout.*
 import me.grantland.widget.AutofitTextView
 
 
@@ -27,6 +26,24 @@ class MainActivity: AppCompatActivity() {
         supportActionBar?.setDisplayUseLogoEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
+        val titlename = arrayListOf<Title>()
+        for ( i in 0 ..10){
+            titlename.add(Title("시간표 $i"))
+
+        }
+
+        title_view.apply {
+            layoutManager = LinearLayoutManager(this@MainActivity).apply {
+                orientation = LinearLayoutManager.HORIZONTAL
+            }
+            adapter = TitleAdapter(titlename){
+                Toast.makeText(this@MainActivity,"$it",Toast.LENGTH_SHORT).show()
+            }
+        }
+
+    }
+
+    fun  CreateSchedule() {
         val day = listOf("월","화","수","목","금")
         val time = listOf("8","9","10","11","12","1","2","3","4","5","6","7","8")
         val subject = listOf("화1","화2")
@@ -161,4 +178,25 @@ class MainActivity: AppCompatActivity() {
             }
         }
     }
+}
+class TitleAdapter(val items :List<Title>, private val clickListener: (title:Title) ->Unit) : RecyclerView.Adapter<TitleAdapter.TitleViewHolder>(){
+
+    class TitleViewHolder(val binding : ItemNameBinding): RecyclerView.ViewHolder(binding.root)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TitleViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_name,parent,false)
+        val viewHolder = TitleViewHolder(ItemNameBinding.bind(view))
+        view.setOnClickListener{
+            clickListener.invoke(items[viewHolder.adapterPosition])
+        }
+        return viewHolder
+    }
+
+    override fun getItemCount() = items.size
+
+    override fun onBindViewHolder(holder: TitleViewHolder, position: Int) {
+        holder.binding.title = items[position]
+    }
+
 }
