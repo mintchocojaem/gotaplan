@@ -1,5 +1,7 @@
 package com.racoondog.mystudent
 
+import android.app.Activity
+import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -17,8 +19,11 @@ import me.grantland.widget.AutofitTextView
 
 class MainActivity: AppCompatActivity() {
 
-
+    val titlename = arrayListOf<Title>()
     override fun onCreate(savedInstanceState: Bundle?) {
+
+
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -26,11 +31,7 @@ class MainActivity: AppCompatActivity() {
         supportActionBar?.setDisplayUseLogoEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        val titlename = arrayListOf<Title>()
-        for ( i in 0 ..10){
-            titlename.add(Title(" 시간표$i "))
 
-        }
 
         title_view.apply {
             layoutManager = LinearLayoutManager(this@MainActivity).apply {
@@ -70,9 +71,26 @@ class MainActivity: AppCompatActivity() {
             open_title.visibility = View.VISIBLE
         }
 
+        title_add.setOnClickListener{
+            val ScheduleIntent = Intent(this, CreateSchedule::class.java)
+            startActivityForResult(ScheduleIntent, 100)
+        }
+
     }
 
-    fun  CreateSchedule() {
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                100 -> {
+                    titlename.add(Title(data!!.getStringExtra("title").toString()+"  "))
+                }
+            }
+        }
+    }
+
+    fun  LoadSchedule() {
         val day = listOf("월","화","수","목","금")
         val time = listOf("8","9","10","11","12","1","2","3","4","5","6","7","8")
         val subject = listOf("화1","화2")

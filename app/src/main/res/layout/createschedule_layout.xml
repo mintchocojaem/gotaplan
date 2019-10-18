@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+            android:id="@+id/CreateSchedule_toolbar"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:background="@color/Actionbar_bg"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/toolbar_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+
+            <me.grantland.widget.AutofitTextView
+                    android:id="@+id/CreatSchedule_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="시간표 만들기"
+                    android:layout_gravity="center"
+                    android:textSize="20sp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent">
+
+            </me.grantland.widget.AutofitTextView>
+
+            <Button
+                    android:id="@+id/CreateSchedule_Button"
+                    android:text="Button"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    app:layout_constraintLeft_toRightOf="@id/CreatSchedule_title"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/CreatSchedule_title"
+                    app:layout_constraintBottom_toBottomOf="@id/CreatSchedule_title"/>
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <EditText
+            android:id="@+id/TitleName_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/CreateSchedule_toolbar"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:hint="제목을 입력하세요.">
+
+    </EditText>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
