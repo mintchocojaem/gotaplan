@@ -97,8 +97,9 @@ class MainActivity: AppCompatActivity() {
                 100 -> {
                     title_text.text = data!!.getStringExtra("title")
                     val dayflag = data.getIntExtra("day_flag",0)
-                    val start_hour = data.getStringExtra("hour_start")
-                    LoadSchedule(dayflag,null,null)
+                    val start_time = data.getIntExtra("start_time",0)
+                    val end_time = data.getIntExtra("end_time",0)
+                    LoadSchedule(dayflag,start_time,end_time)
                 }
                 101 ->{
                     memo.add(Title(data!!.getStringExtra("memo").toString()+",  "))
@@ -107,9 +108,17 @@ class MainActivity: AppCompatActivity() {
         }
     }
 
-    fun  LoadSchedule(day_flag : Int, start_hour : String?, end_hour : String?) {
+    fun  LoadSchedule(day_flag : Int, start_time : Int, end_time : Int) {
 
         var day = listOf<String>()
+
+        var period = mutableListOf<String>()
+
+        var period_time = mutableListOf<String>()
+
+        var subject = listOf("화1","화2")
+
+        var content = listOf("태경이삼촌과 레슨")
 
         if (day_flag == 1){
             day = listOf("월","화","수","목","금")
@@ -121,9 +130,14 @@ class MainActivity: AppCompatActivity() {
             day = listOf("월","화","수","목","금","토","일")
         }
 
-        var period = listOf("1","2","3","4","5","6","7","8","9","10","11","12","13")
-        var subject = listOf("화1","화2")
-        var content = listOf("태경이삼촌과 레슨")
+
+        for (i in 1..end_time - start_time) {
+                period.add("$i")
+        }
+
+        for (i in start_time..end_time){
+
+        }
 
         val layout = TableLayout(this)
 

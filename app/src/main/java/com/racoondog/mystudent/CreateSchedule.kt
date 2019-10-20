@@ -67,7 +67,7 @@ class CreateSchedule : AppCompatActivity(){
 
         start_time.setOnValueChangedListener{numberpicker,i1,i2 ->
 
-           for ( i in 6 until 19){
+           for ( i in 6 ..18){
                when {i2 == i && i2 < 12 -> textView_start.text = "오전 "+"$i"+":00"
                    i2 == i && i2 > 12 -> textView_start.text = "오후 "+"${i-12}"+":00"
                    i2 == 12 -> textView_start.text = "오후 12:00"
@@ -94,7 +94,7 @@ class CreateSchedule : AppCompatActivity(){
 
         end_time.setOnValueChangedListener{numberpicker,i1,i2 ->
 
-            for ( i in 7 until 25){
+            for ( i in 7 ..24){
                 when {i2 == i && i2 < 12 -> textView_end.text = "오전 "+"$i"+":00"
                     i2 == i && i2 > 12 -> textView_end.text = "오후 "+"${i-12}"+":00"
                     i2 == 12 -> textView_end.text = "오후 12:00"
@@ -121,6 +121,8 @@ class CreateSchedule : AppCompatActivity(){
                     if (start_time.value < end_time.value) {
                         intent.putExtra("title", TitleName_text.text.toString())
                         intent.putExtra("day_flag", day_flag)
+                        intent.putExtra("start_time",start_time.value)
+                        intent.putExtra("end_time",end_time.value)
                         setResult(Activity.RESULT_OK, intent)
                         finish()
                     }
