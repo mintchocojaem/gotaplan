@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import me.grantland.widget.AutofitTextView
 import android.content.DialogInterface
 import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import kotlinx.android.synthetic.main.createschedule_layout.*
 
 
@@ -114,7 +115,7 @@ class MainActivity: AppCompatActivity() {
 
         var period = mutableListOf<String>()
 
-        var period_time = mutableListOf<String>()
+        var time = mutableListOf<String>()
 
         var subject = listOf("화1","화2")
 
@@ -132,12 +133,35 @@ class MainActivity: AppCompatActivity() {
 
 
         for (i in 1..end_time - start_time) {
-                period.add("$i")
+
+            period.add("$i")
         }
+
+        var day_flag = 0
 
         for (i in start_time..end_time){
-
+            if (i == start_time && i < 10) {
+                time.add(" 오전\n $i" + ":00 ")
+            }
+            if (i == start_time && i < 12 && i >= 10) {
+                time.add("  오전\n$i" + ":00 ")
+            }
+            else if (i == start_time && i > 12) {
+                time.add(" 오후\n ${i-12}" + ":00 ")
+                day_flag =1
+            }
+            else if(i ==13){
+                time.add(" 오후\n ${i-12}" + ":00 ")
+                day_flag = 1
+            }
+            else if (day_flag == 1){
+                time.add(" ${i-12}" + ":00 ")
+            }
+            else {
+                time.add(" $i" + ":00 ")
+            }
         }
+
 
         val layout = TableLayout(this)
 
@@ -156,7 +180,15 @@ class MainActivity: AppCompatActivity() {
         val initday = TextView(this)
         initday.setBackgroundColor(Color.RED)
         initday.layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT).apply {
-            initday.text =" "
+            if(day_flag == 1){
+                initday.text = "   "
+            }
+            if(day_flag == 2) {
+                initday.text = "    "
+            }
+            if(day_flag == 3) {
+                initday.text = "     "
+            }
             weight = 1f
         }
 
@@ -192,20 +224,42 @@ class MainActivity: AppCompatActivity() {
             }
             timerow.setBackgroundResource(R.color.whitegray_bg)
 
-            val inittime = TextView(this)
-            inittime.gravity = Gravity.CENTER
-            inittime.layoutParams = TableRow.LayoutParams(
-                TableRow.LayoutParams.WRAP_CONTENT,
-                TableRow.LayoutParams.WRAP_CONTENT
-            ).apply {
-                inittime.text = period[i]
-                inittime.textSize = 15f
-                weight = 1f
-                gravity = Gravity.CENTER
-                width = 0
-
+            val const_init = ConstraintLayout(this)
+            const_init.layoutParams = TableRow.LayoutParams(
+                TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT).apply{
+                weight - 1f
             }
-            timerow.addView(inittime)
+
+            val initperiod = TextView(this)
+            initperiod.gravity = Gravity.CENTER
+            initperiod.layoutParams = ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+                initperiod.text = period[i]
+                initperiod.textSize = 15f
+                topToTop = ConstraintLayout.LayoutParams.PARENT_ID
+                bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
+                rightToRight = ConstraintLayout.LayoutParams.PARENT_ID
+                leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID
+                verticalBias = 0.2f
+            }
+
+            val inittime = TextView(this)
+            inittime.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT).apply {
+                inittime.text = time[i]
+                inittime.textSize = 10f
+                topToTop = ConstraintLayout.LayoutParams.PARENT_ID
+                bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
+                rightToRight = ConstraintLayout.LayoutParams.PARENT_ID
+                leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID
+                verticalBias = 0.8f
+            }
+
+            const_init.addView(inittime)
+            const_init.addView(initperiod)
+            timerow.addView(const_init)
 
             for (j in 0 until day.size) {
 
