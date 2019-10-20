@@ -199,6 +199,7 @@ class MainActivity: AppCompatActivity() {
                 TableRow.LayoutParams.WRAP_CONTENT
             ).apply {
                 inittime.text = period[i]
+                inittime.textSize = 15f
                 weight = 1f
                 gravity = Gravity.CENTER
                 width = 0
