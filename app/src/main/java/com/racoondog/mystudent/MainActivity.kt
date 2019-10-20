@@ -125,17 +125,45 @@ class MainActivity: AppCompatActivity() {
             day = listOf("월","화","수","목","금")
         }
         else if (day_flag == 2){
-            day = listOf("월","화","수","목","금","토")
+            day = listOf("  월","화","수","목","금","토")
         }
         else if(day_flag == 3){
-            day = listOf("월","화","수","목","금","토","일")
+            day = listOf("   월","화","수","목","금","토","일")
+        } // day_line 레이아웃 문제로 띄어쓰기함 늘리거나 줄일수록 위에 날짜 사이즈 변함
+
+        var day_flag = 0
+
+        for (i in start_time..end_time){
+            if (i == start_time && i < 10) {
+                period.add("$i\n 오전 ")
+            }
+            else if (i == start_time && i < 12 && i >= 10) {
+                period.add("$i\n 오전 ")
+            }
+            else if (i == start_time && i > 12) {
+                period.add("${i-12}\n 오후 ")
+                day_flag =1
+            }
+            else if(i ==13){
+                period.add("${i-12}\n 오후 ")
+                day_flag = 1
+            }
+            else if (day_flag == 1){
+                period.add("${i-12}")
+            }
+            else {
+                period.add("$i")
+            }
         }
 
-
+        /*
         for (i in 1..end_time - start_time) {
 
             period.add("$i")
-        }
+        }*/
+        //교시 ex ) 1,2,3
+
+        /*
 
         var day_flag = 0
 
@@ -143,7 +171,7 @@ class MainActivity: AppCompatActivity() {
             if (i == start_time && i < 10) {
                 time.add(" 오전\n $i" + ":00 ")
             }
-            if (i == start_time && i < 12 && i >= 10) {
+            else if (i == start_time && i < 12 && i >= 10) {
                 time.add("  오전\n$i" + ":00 ")
             }
             else if (i == start_time && i > 12) {
@@ -160,8 +188,8 @@ class MainActivity: AppCompatActivity() {
             else {
                 time.add(" $i" + ":00 ")
             }
-        }
-
+        }*/
+        //period 밑에 작은 오전/오후 시간 표시 ex)오후 1:00 -> time 으로 정의 밑에 레이아웃도 세팅해야함
 
         val layout = TableLayout(this)
 
@@ -180,14 +208,15 @@ class MainActivity: AppCompatActivity() {
         val initday = TextView(this)
         initday.setBackgroundColor(Color.RED)
         initday.layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT).apply {
+
             if(day_flag == 1){
-                initday.text = "   "
+                initday.text = "  "
             }
             if(day_flag == 2) {
-                initday.text = "    "
+                initday.text = "     "
             }
             if(day_flag == 3) {
-                initday.text = "     "
+                initday.text = "      "
             }
             weight = 1f
         }
@@ -237,14 +266,15 @@ class MainActivity: AppCompatActivity() {
                 ConstraintLayout.LayoutParams.WRAP_CONTENT
             ).apply {
                 initperiod.text = period[i]
-                initperiod.textSize = 15f
+                initperiod.textSize = 13f
                 topToTop = ConstraintLayout.LayoutParams.PARENT_ID
                 bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
                 rightToRight = ConstraintLayout.LayoutParams.PARENT_ID
                 leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID
-                verticalBias = 0.2f
+                //verticalBias = 0.2f
+                //time 사용시 period 레이아웃 영역 활성화
             }
-
+            /*
             val inittime = TextView(this)
             inittime.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT,
                 ConstraintLayout.LayoutParams.WRAP_CONTENT).apply {
@@ -258,6 +288,8 @@ class MainActivity: AppCompatActivity() {
             }
 
             const_init.addView(inittime)
+             */ //time 레이아웃 세팅 영역 ()
+
             const_init.addView(initperiod)
             timerow.addView(const_init)
 
