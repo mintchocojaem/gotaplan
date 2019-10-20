@@ -118,10 +118,15 @@ class CreateSchedule : AppCompatActivity(){
             if(titlename != "")
             {
                 if(day_flag != 0) {
-                    intent.putExtra("title", TitleName_text.text.toString())
-                    intent.putExtra("day_flag",day_flag)
-                    setResult(Activity.RESULT_OK, intent)
-                    finish()
+                    if (start_time.value < end_time.value) {
+                        intent.putExtra("title", TitleName_text.text.toString())
+                        intent.putExtra("day_flag", day_flag)
+                        setResult(Activity.RESULT_OK, intent)
+                        finish()
+                    }
+                    else{
+                        Toast.makeText(this,"시작 시각이 종료 시각보다 클 수 없습니다.", Toast.LENGTH_SHORT).show()
+                    }
                 }
                 else{
                     Toast.makeText(this,"마지막 요일을 선택해주세요.", Toast.LENGTH_SHORT).show()
