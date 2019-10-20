@@ -14,6 +14,7 @@
         <activity android:name=".CreateSchedule"></activity>
         <activity android:name=".Schedule"></activity>
         <activity android:name=".LessonDetailActivity"></activity>
+        <activity android:name=".CreateMemo"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

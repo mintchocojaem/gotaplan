@@ -9,7 +9,6 @@ import kotlinx.android.synthetic.main.createschedule_layout.*
 import android.app.TimePickerDialog
 import android.graphics.Color
 import android.widget.Toast
-import org.jetbrains.annotations.NotNull
 
 
 class CreateSchedule : AppCompatActivity(){
@@ -32,6 +31,7 @@ class CreateSchedule : AppCompatActivity(){
                 if(day_flag != 0) {
                     val intent = Intent()
                     intent.putExtra("title", TitleName_text.text.toString())
+                    intent.putExtra("day_flag",day_flag)
                     setResult(Activity.RESULT_OK, intent)
                     finish()
                 }

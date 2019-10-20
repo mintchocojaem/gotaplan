@@ -1,6 +1,7 @@
 package com.racoondog.mystudent
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
@@ -15,11 +16,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.racoondog.mystudent.databinding.ItemNameBinding
 import kotlinx.android.synthetic.main.activity_main.*
 import me.grantland.widget.AutofitTextView
+import android.content.DialogInterface
+
+
 
 
 class MainActivity: AppCompatActivity() {
 
-    val titlename = arrayListOf<Title>()
+    val memo = arrayListOf<Title>()
     override fun onCreate(savedInstanceState: Bundle?) {
 
 
@@ -31,47 +35,58 @@ class MainActivity: AppCompatActivity() {
         supportActionBar?.setDisplayUseLogoEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-
+        // 알림창 객체 생성
 
         title_view.apply {
             layoutManager = LinearLayoutManager(this@MainActivity).apply {
                 orientation = LinearLayoutManager.HORIZONTAL
             }
-            adapter = TitleAdapter(titlename){
-                Toast.makeText(this@MainActivity,"$it",Toast.LENGTH_SHORT).show()
+            adapter = TitleAdapter(memo){
+
+                val builder = AlertDialog.Builder(this@MainActivity)
+                builder.setTitle("메모 삭제")        // 제목 설정
+                    .setMessage("메모를 삭제하시겠습니까?")        // 메세지 설정
+                    .setCancelable(true)        // 뒤로 버튼 클릭시 취소 가능 설정
+                    .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, whichButton ->
+
+                        memo.remove(Title("${it.name}"))
+                        adapter?.notifyDataSetChanged()
+                        Toast.makeText(this@MainActivity,"메모가 삭제되었습니다.",Toast.LENGTH_SHORT).show()
+                    })
+
+                    .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, whichButton ->
+
+                        //Toast.makeText(this@MainActivity,"취소되었습니다.",Toast.LENGTH_SHORT).show()
+                        // 취소 버튼 클릭시 설정, 왼쪽 버튼입니다.
+                        //원하는 클릭 이벤트를 넣으시면 됩니다.
+                    })
+                val dialog = builder.create()
+                dialog.show()
+
             }
         }
 
         open_list.setOnClickListener{
             title_bar.visibility = View.VISIBLE
             open_list.visibility = View.INVISIBLE
-            open_title.visibility = View.INVISIBLE
             close_list.visibility = View.VISIBLE
-            close_title.visibility = View.VISIBLE
         }
-        open_title.setOnClickListener{
-            title_bar.visibility = View.VISIBLE
-            open_title.visibility = View.INVISIBLE
-            open_list.visibility = View.INVISIBLE
-            close_list.visibility = View.VISIBLE
-            close_title.visibility = View.VISIBLE
+        title_text.setOnClickListener{
+
         }
         close_list.setOnClickListener{
             title_bar.visibility = View.INVISIBLE
             open_list.visibility = View.VISIBLE
-            close_title.visibility = View.INVISIBLE
             close_list.visibility = View.INVISIBLE
-            open_title.visibility = View.VISIBLE
-        }
-        close_title.setOnClickListener{
-            title_bar.visibility = View.INVISIBLE
-            open_list.visibility = View.VISIBLE
-            close_title.visibility = View.INVISIBLE
-            close_list.visibility = View.INVISIBLE
-            open_title.visibility = View.VISIBLE
         }
 
-        title_add.setOnClickListener{
+
+        memo_add.setOnClickListener{
+            val MemoIntent = Intent(this, CreateMemo::class.java)
+            startActivityForResult(MemoIntent,101)
+        }
+
+        schedule_add.setOnClickListener{
             val ScheduleIntent = Intent(this, CreateSchedule::class.java)
             startActivityForResult(ScheduleIntent, 100)
         }
@@ -84,17 +99,33 @@ class MainActivity: AppCompatActivity() {
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 100 -> {
-                    titlename.add(Title(data!!.getStringExtra("title").toString()+"  "))
+                    title_text.text = data!!.getStringExtra("title").toString()
+                    LoadSchedule(2)
+                }
+                101 ->{
+                    memo.add(Title(data!!.getStringExtra("memo").toString()+",  "))
                 }
             }
         }
     }
 
-    fun  LoadSchedule() {
-        val day = listOf("월","화","수","목","금")
-        val time = listOf("8","9","10","11","12","1","2","3","4","5","6","7","8")
-        val subject = listOf("화1","화2")
-        val content = listOf("태경이삼촌과 레슨")
+    fun  LoadSchedule(day_flag : Int) {
+
+        var day = listOf<String>()
+
+        if (day_flag == 1){
+            day = listOf("월","화","수","목","금")
+        }
+        else if (day_flag == 2){
+            day = listOf("월","화","수","목","금","토")
+        }
+        else if(day_flag == 3){
+            day = listOf("월","화","수","목","금","토","일")
+        }
+
+        var time = listOf("8","9","10","11","12","1","2","3","4","5","6","7","8")
+        var subject = listOf("화1","화2")
+        var content = listOf("태경이삼촌과 레슨")
 
         val layout = TableLayout(this)
 
@@ -136,7 +167,7 @@ class MainActivity: AppCompatActivity() {
             dayrow.addView(daytxt)
         }
 
-        layout.addView(dayrow)
+        Day_Line.addView(dayrow)
 
         for (i in 0 until time.size) {
 

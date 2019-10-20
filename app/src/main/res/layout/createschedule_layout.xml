@@ -62,7 +62,8 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/CreateSchedule_toolbar"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:hint="제목을 입력하세요.">
+            android:hint="제목을 입력하세요."
+            android:singleLine="true">
 
     </EditText>
 
