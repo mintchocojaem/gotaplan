@@ -44,8 +44,8 @@ class CreateSchedule : AppCompatActivity(){
         end_AMPM.maxValue = 1
         end_AMPM.value = 1
         end_AMPM.displayedValues = arrayOf("오전","오후")
-        start_AMPM.wrapSelectorWheel = false
-        start_AMPM.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
+        end_AMPM.wrapSelectorWheel = false
+        end_AMPM.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
 
         end_time.minValue = 7
         end_time.maxValue = 24
