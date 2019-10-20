@@ -7,18 +7,14 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.*
-import android.widget.TableLayout
-import android.widget.TableRow
-import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.racoondog.mystudent.databinding.ItemNameBinding
 import kotlinx.android.synthetic.main.activity_main.*
 import me.grantland.widget.AutofitTextView
 import android.content.DialogInterface
-
-
+import android.widget.*
+import kotlinx.android.synthetic.main.createschedule_layout.*
 
 
 class MainActivity: AppCompatActivity() {
@@ -44,6 +40,7 @@ class MainActivity: AppCompatActivity() {
             adapter = TitleAdapter(memo){
 
                 val builder = AlertDialog.Builder(this@MainActivity)
+                val dialog = builder.create()
                 builder.setTitle("메모 삭제")        // 제목 설정
                     .setMessage("메모를 삭제하시겠습니까?")        // 메세지 설정
                     .setCancelable(true)        // 뒤로 버튼 클릭시 취소 가능 설정
@@ -60,7 +57,6 @@ class MainActivity: AppCompatActivity() {
                         // 취소 버튼 클릭시 설정, 왼쪽 버튼입니다.
                         //원하는 클릭 이벤트를 넣으시면 됩니다.
                     })
-                val dialog = builder.create()
                 dialog.show()
 
             }
@@ -99,8 +95,10 @@ class MainActivity: AppCompatActivity() {
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 100 -> {
-                    title_text.text = data!!.getStringExtra("title").toString()
-                    LoadSchedule(2)
+                    title_text.text = data!!.getStringExtra("title")
+                    val dayflag = data.getIntExtra("day_flag",0)
+                    val start_hour = data.getStringExtra("hour_start")
+                    LoadSchedule(dayflag,null,null)
                 }
                 101 ->{
                     memo.add(Title(data!!.getStringExtra("memo").toString()+",  "))
@@ -109,7 +107,7 @@ class MainActivity: AppCompatActivity() {
         }
     }
 
-    fun  LoadSchedule(day_flag : Int) {
+    fun  LoadSchedule(day_flag : Int, start_hour : String?, end_hour : String?) {
 
         var day = listOf<String>()
 
@@ -123,7 +121,7 @@ class MainActivity: AppCompatActivity() {
             day = listOf("월","화","수","목","금","토","일")
         }
 
-        var time = listOf("8","9","10","11","12","1","2","3","4","5","6","7","8")
+        var period = listOf("1","2","3","4","5","6","7","8","9","10","11","12","13")
         var subject = listOf("화1","화2")
         var content = listOf("태경이삼촌과 레슨")
 
@@ -169,7 +167,7 @@ class MainActivity: AppCompatActivity() {
 
         Day_Line.addView(dayrow)
 
-        for (i in 0 until time.size) {
+        for (i in 0 until period.size) {
 
 
 
@@ -186,7 +184,7 @@ class MainActivity: AppCompatActivity() {
                 TableRow.LayoutParams.WRAP_CONTENT,
                 TableRow.LayoutParams.WRAP_CONTENT
             ).apply {
-                inittime.text = time[i]
+                inittime.text = period[i]
                 weight = 1f
                 gravity = Gravity.CENTER
                 width = 0
