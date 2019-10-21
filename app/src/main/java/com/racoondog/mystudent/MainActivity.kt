@@ -206,7 +206,7 @@ class MainActivity: AppCompatActivity() {
         }
 
         val initday = TextView(this)
-        initday.setBackgroundColor(Color.RED)
+        initday.setBackgroundResource(R.color.Actionbar_bg)// 색깔을 변경해서 얼마나 띄워지는지 확인 가능
         initday.layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT).apply {
 
             if(day_flag == 1){
@@ -218,7 +218,7 @@ class MainActivity: AppCompatActivity() {
             if(day_flag == 3) {
                 initday.text = "      "
             }
-            weight = 1f
+            weight = 1f //시간표 위에 날짜별 공백 줄을 맞추기 위한 부분
         }
 
         dayrow.addView(initday)
