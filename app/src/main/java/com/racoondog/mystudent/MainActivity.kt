@@ -22,7 +22,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 
 class MainActivity: AppCompatActivity() {
 
-    val memo = arrayListOf<Title>()
+    val memo = arrayListOf<Memo>()
     override fun onCreate(savedInstanceState: Bundle?) {
 
 
@@ -36,11 +36,11 @@ class MainActivity: AppCompatActivity() {
 
         // 알림창 객체 생성
 
-        title_view.apply {
+        memo_view.apply {
             layoutManager = LinearLayoutManager(this@MainActivity).apply {
                 orientation = LinearLayoutManager.HORIZONTAL
             }
-            adapter = TitleAdapter(memo){
+            adapter = MemoAdapter(memo){
 
                 val builder = AlertDialog.Builder(this@MainActivity)
                 builder.setTitle("메모 삭제")        // 제목 설정
@@ -49,7 +49,7 @@ class MainActivity: AppCompatActivity() {
 
                     .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, whichButton ->
 
-                        memo.remove(Title("${it.name}"))
+                        memo.remove(Memo("${it.name}"))
                         adapter?.notifyDataSetChanged()
                         Toast.makeText(this@MainActivity,"메모가 삭제되었습니다.",Toast.LENGTH_SHORT).show()
                     })
@@ -110,7 +110,7 @@ class MainActivity: AppCompatActivity() {
                     LoadSchedule(dayflag,start_time,end_time)
                 }
                 101 ->{
-                    memo.add(Title(data!!.getStringExtra("memo").toString()+",  "))
+                    memo.add(Memo(data!!.getStringExtra("memo").toString()+",  "))
                 }
             }
         }
@@ -129,7 +129,7 @@ class MainActivity: AppCompatActivity() {
 
         var content = listOf("태경이삼촌과 레슨")
 
-        var day_flag = 0 //마지막 요일 구분을 위한 flag 선언
+
 
         if (day_flag == 1){ //마지막 요일을 선택하고 그에 따라 day_flag 값을 반환 하고 day 배열에 추가
             day = listOf("월","화","수","목","금")
@@ -141,7 +141,7 @@ class MainActivity: AppCompatActivity() {
             day = listOf("   월","화","수","목","금","토","일")
         } // day_line 레이아웃 문제로 띄어쓰기함 늘리거나 줄일수록 위에 날짜 사이즈 변함
 
-
+        var AMPM_flag = 0 //마지막 요일 구분을 위한 flag 선언
 
         for (i in start_time..end_time){ // 24시 형식을 오전과 오후를 구분 하기위한 논리연산
             if (i == start_time && i < 10) {
@@ -152,13 +152,13 @@ class MainActivity: AppCompatActivity() {
             }
             else if (i == start_time && i > 12) {
                 period.add("${i-12}\n 오후 ")
-                day_flag =1
+                AMPM_flag =1
             }
             else if(i ==13){
                 period.add("${i-12}\n 오후 ")
-                day_flag = 1
+                AMPM_flag = 1
             }
-            else if (day_flag == 1){
+            else if (AMPM_flag == 1){
                 period.add("${i-12}")
             }
             else {
@@ -313,7 +313,8 @@ class MainActivity: AppCompatActivity() {
                 timetxt.textSize = 40f
                 timetxt.setMinTextSize(10)
 
-                for (k in 0 until subject.size) { // 임시적으로 만든 과목 부분
+                    // 임시적으로 만든 과목 부분
+                for (k in 0 until subject.size) {
                     if (timetxt.tag == subject[k]) {
                         timetxt.setBackgroundColor(Color.LTGRAY)
                     }
@@ -366,14 +367,14 @@ class MainActivity: AppCompatActivity() {
         }
     }
 }
-class TitleAdapter(val items :List<Title>, private val clickListener: (title:Title) ->Unit) : RecyclerView.Adapter<TitleAdapter.TitleViewHolder>(){
+class MemoAdapter(val items :List<Memo>, private val clickListener: (memo:Memo) ->Unit) : RecyclerView.Adapter<MemoAdapter.MemoViewHolder>(){
 
-    class TitleViewHolder(val binding : ItemNameBinding): RecyclerView.ViewHolder(binding.root)
+    class MemoViewHolder(val binding : ItemNameBinding): RecyclerView.ViewHolder(binding.root)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TitleViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemoViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_name,parent,false)
-        val viewHolder = TitleViewHolder(ItemNameBinding.bind(view))
+        val viewHolder = MemoViewHolder(ItemNameBinding.bind(view))
         view.setOnClickListener{
             clickListener.invoke(items[viewHolder.adapterPosition])
         }
@@ -382,8 +383,8 @@ class TitleAdapter(val items :List<Title>, private val clickListener: (title:Tit
 
     override fun getItemCount() = items.size
 
-    override fun onBindViewHolder(holder: TitleViewHolder, position: Int) {
-        holder.binding.title = items[position]
+    override fun onBindViewHolder(holder: MemoViewHolder, position: Int) {
+        holder.binding.memo = items[position]
     }
 
 }

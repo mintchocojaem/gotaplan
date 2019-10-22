@@ -1,3 +1,3 @@
 package com.racoondog.mystudent
 
-data class Title(val name:String)
+data class Memo(val name:String)

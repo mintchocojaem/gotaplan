@@ -112,7 +112,7 @@
         <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/title_view"
+                android:id="@+id/memo_view"
                 android:background="@color/Actionbar_bg"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -128,7 +128,7 @@
                 android:text="메모:  "
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/title_view"
+                app:layout_constraintEnd_toStartOf="@id/memo_view"
                 app:layout_constraintHorizontal_bias="0.1"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
@@ -142,7 +142,7 @@
                 android:background="@drawable/title_plus"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/title_view"
+                app:layout_constraintStart_toEndOf="@id/memo_view"
                 app:layout_constraintEnd_toEndOf="parent">
         </Button>
 
