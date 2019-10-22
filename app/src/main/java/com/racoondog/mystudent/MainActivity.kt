@@ -15,7 +15,9 @@ import me.grantland.widget.AutofitTextView
 import android.content.DialogInterface
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
-import kotlinx.android.synthetic.main.createschedule_layout.*
+
+
+
 
 
 class MainActivity: AppCompatActivity() {
@@ -28,7 +30,7 @@ class MainActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        setSupportActionBar(my_toolbar)
+        setSupportActionBar(my_toolbar)  //Actionbar 부분
         supportActionBar?.setDisplayUseLogoEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
@@ -41,10 +43,10 @@ class MainActivity: AppCompatActivity() {
             adapter = TitleAdapter(memo){
 
                 val builder = AlertDialog.Builder(this@MainActivity)
-                val dialog = builder.create()
                 builder.setTitle("메모 삭제")        // 제목 설정
                     .setMessage("메모를 삭제하시겠습니까?")        // 메세지 설정
                     .setCancelable(true)        // 뒤로 버튼 클릭시 취소 가능 설정
+
                     .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, whichButton ->
 
                         memo.remove(Title("${it.name}"))
@@ -53,11 +55,15 @@ class MainActivity: AppCompatActivity() {
                     })
 
                     .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, whichButton ->
-
                         //Toast.makeText(this@MainActivity,"취소되었습니다.",Toast.LENGTH_SHORT).show()
                         // 취소 버튼 클릭시 설정, 왼쪽 버튼입니다.
                         //원하는 클릭 이벤트를 넣으시면 됩니다.
                     })
+                val dialog = builder.create()
+                dialog.setOnShowListener { // Dialog Button Text Color Setting
+                    dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED)
+                }
                 dialog.show()
 
             }
@@ -90,6 +96,7 @@ class MainActivity: AppCompatActivity() {
 
     }
 
+    //MainActivity로 들어오는 onActivityResult 부분 ->Intent 후 값 반환
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -109,11 +116,12 @@ class MainActivity: AppCompatActivity() {
         }
     }
 
+    // 시간표를 그리는 함수
     fun  LoadSchedule(day_flag : Int, start_time : Int, end_time : Int) {
 
-        var day = listOf<String>()
+        var day = listOf<String>() // 마지막 요일의 선택에 따라 배열이 추가됨
 
-        var period = mutableListOf<String>()
+        var period = mutableListOf<String>() //원래는 교시부분이었으나 기획자의 변경에따라 시간으로 표시되는 배열 ex -> 오후 1시 2시 3시
 
         var time = mutableListOf<String>()
 
@@ -121,7 +129,9 @@ class MainActivity: AppCompatActivity() {
 
         var content = listOf("태경이삼촌과 레슨")
 
-        if (day_flag == 1){
+        var day_flag = 0 //마지막 요일 구분을 위한 flag 선언
+
+        if (day_flag == 1){ //마지막 요일을 선택하고 그에 따라 day_flag 값을 반환 하고 day 배열에 추가
             day = listOf("월","화","수","목","금")
         }
         else if (day_flag == 2){
@@ -131,9 +141,9 @@ class MainActivity: AppCompatActivity() {
             day = listOf("   월","화","수","목","금","토","일")
         } // day_line 레이아웃 문제로 띄어쓰기함 늘리거나 줄일수록 위에 날짜 사이즈 변함
 
-        var day_flag = 0
 
-        for (i in start_time..end_time){
+
+        for (i in start_time..end_time){ // 24시 형식을 오전과 오후를 구분 하기위한 논리연산
             if (i == start_time && i < 10) {
                 period.add("$i\n 오전 ")
             }
@@ -189,11 +199,11 @@ class MainActivity: AppCompatActivity() {
                 time.add(" $i" + ":00 ")
             }
         }*/
-        //period 밑에 작은 오전/오후 시간 표시 ex)오후 1:00 -> time 으로 정의 밑에 레이아웃도 세팅해야함
+        //period 밑에 작은 오전/오후 시간 표시 논리연산 부분 ex)오후 1:00 -> time 으로 정의 밑에 레이아웃도 세팅해야함
 
-        val layout = TableLayout(this)
+        val layout = TableLayout(this)  //전체 TableRow를 담기위한 Tablelayout
 
-        val dayrow = TableRow(this)
+        val dayrow = TableRow(this) //initday를 담기위한 TableRow
 
         layout.layoutParams = TableLayout.LayoutParams(
             TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT).apply {
@@ -205,7 +215,7 @@ class MainActivity: AppCompatActivity() {
 
         }
 
-        val initday = TextView(this)
+        val initday = TextView(this)  // timetext의 textsize에 의한 간격차를 매꾸기 위해 수동으로 공백을 추가하는 부분
         initday.setBackgroundResource(R.color.Actionbar_bg)// 색깔을 변경해서 얼마나 띄워지는지 확인 가능
         initday.layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT).apply {
 
@@ -226,7 +236,7 @@ class MainActivity: AppCompatActivity() {
 
         for (i in 0 until day.size) {
 
-            val daytxt = TextView(this)
+            val daytxt = TextView(this) // 요일을 나타내는 부분 ex -> 월 화 수 목
             daytxt.gravity = Gravity.CENTER
             daytxt.setBackgroundResource(R.color.Actionbar_bg)
             daytxt.layoutParams = TableRow.LayoutParams(
@@ -246,20 +256,20 @@ class MainActivity: AppCompatActivity() {
 
 
 
-            val timerow = TableRow(this)
+            val timerow = TableRow(this) // const_init을 담기위한 TableRow
             timerow.layoutParams  = TableLayout.LayoutParams(
                 TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT).apply {
                 weight =1f
             }
             timerow.setBackgroundResource(R.color.whitegray_bg)
 
-            val const_init = ConstraintLayout(this)
+            val const_init = ConstraintLayout(this) //initperiod를 담기위한 Constraintlayout 부분
             const_init.layoutParams = TableRow.LayoutParams(
                 TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT).apply{
                 weight - 1f
             }
 
-            val initperiod = TextView(this)
+            val initperiod = TextView(this) // 원래는 교시였으나 기획자의 변경사항에 따라 시간으로 치환된 부분 ex-> 1 2 3 4
             initperiod.gravity = Gravity.CENTER
             initperiod.layoutParams = ConstraintLayout.LayoutParams(
                 ConstraintLayout.LayoutParams.WRAP_CONTENT,
@@ -275,7 +285,7 @@ class MainActivity: AppCompatActivity() {
                 //time 사용시 period 레이아웃 영역 활성화
             }
             /*
-            val inittime = TextView(this)
+            val inittime = TextView(this) // 이 부분은 원래 시간이 부분이었으나 기확자의 지시에 따라 initperiod가 시간으로 대체됨 ex-> 오전 8:00시 9:00시
             inittime.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT,
                 ConstraintLayout.LayoutParams.WRAP_CONTENT).apply {
                 inittime.text = time[i]
@@ -295,7 +305,7 @@ class MainActivity: AppCompatActivity() {
 
             for (j in 0 until day.size) {
 
-                val timetxt =  AutofitTextView(this)
+                val timetxt =  AutofitTextView(this) // 각 시간표 일정이 들어가는 공백 부분
                 val tag  : String = day[j] + i
                 timetxt.tag = tag
                 timetxt.setBackgroundResource(R.drawable.cell_shape)
@@ -303,7 +313,7 @@ class MainActivity: AppCompatActivity() {
                 timetxt.textSize = 40f
                 timetxt.setMinTextSize(10)
 
-                for (k in 0 until subject.size) {
+                for (k in 0 until subject.size) { // 임시적으로 만든 과목 부분
                     if (timetxt.tag == subject[k]) {
                         timetxt.setBackgroundColor(Color.LTGRAY)
                     }
@@ -336,12 +346,12 @@ class MainActivity: AppCompatActivity() {
 
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean { //Menu 추가 부분
         val menuInflater = menuInflater
         menuInflater.inflate(R.menu.menu, menu)
         return true
     }
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean { //Menu 목록 부분
         when (item.getItemId()) {
             R.id.home -> {
                 //onBackPressed()
@@ -377,3 +387,4 @@ class TitleAdapter(val items :List<Title>, private val clickListener: (title:Tit
     }
 
 }
+
