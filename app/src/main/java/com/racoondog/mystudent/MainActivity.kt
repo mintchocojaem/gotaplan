@@ -131,15 +131,19 @@ class MainActivity: AppCompatActivity() {
 
         // var time = mutableListOf<String>() //원래는 시간을 나타내는 부분이었으나 기획자의 변경에 따라 period로 치환됨
 
+        var subject = listOf("화1","화2") // 임시적 과목 시간
+
+        var content = listOf("태경이삼촌과 레슨") // 임시적 과목 내용
+
 
         if (day_flag == 1){ //마지막 요일을 선택하고 그에 따라 day_flag 값을 반환 하고 day 배열에 추가
             day = listOf("월","화","수","목","금")
         }
         else if (day_flag == 2){
-            day = listOf("  월","화","수","목","금","토")
+            day = listOf("월","화","수","목","금","토")
         }
         else if(day_flag == 3){
-            day = listOf("   월","화","수","목","금","토","일")
+            day = listOf("월","화","수","목","금","토","일")
         } // day_line 레이아웃 문제로 띄어쓰기함 늘리거나 줄일수록 위에 날짜 사이즈 변함
 
         var AMPM_flag = 0 //마지막 요일 구분을 위한 flag 선언
@@ -217,17 +221,17 @@ class MainActivity: AppCompatActivity() {
         }
 
         val initday = TextView(this)  // timetext의 textsize에 의한 간격차를 매꾸기 위해 수동으로 공백을 추가하는 부분
-        initday.setBackgroundResource(R.color.Actionbar_bg)// 색깔을 변경해서 얼마나 띄워지는지 확인 가능
+        initday.setBackgroundResource(R.color.colorAccent)// 색깔을 변경해서 얼마나 띄워지는지 확인 가능
         initday.layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT).apply {
 
             if(day_flag == 1){
-                initday.text = "  "
+                initday.text = "   "
             }
             if(day_flag == 2) {
-                initday.text = "     "
+                initday.text = "    "
             }
             if(day_flag == 3) {
-                initday.text = "      "
+                initday.text = "     "
             }
             weight = 1f //시간표 위에 날짜별 공백 줄을 맞추기 위한 부분
         }
@@ -315,6 +319,18 @@ class MainActivity: AppCompatActivity() {
                 timetxt.setMinTextSize(10)
 
 
+                // 임시적으로 만든 과목 부분
+                for (k in 0 until subject.size) {
+                    if (timetxt.tag == subject[k]) {
+                        timetxt.setBackgroundColor(Color.LTGRAY)
+                    }
+                }
+                if(timetxt.tag == subject[0]){
+                    timetxt.text = content[0]
+                }
+
+
+                // timetxt lyaout 설정부분
                 timetxt.layoutParams = TableRow.LayoutParams(
                     TableRow.LayoutParams.WRAP_CONTENT,
                     TableRow.LayoutParams.WRAP_CONTENT
@@ -334,7 +350,7 @@ class MainActivity: AppCompatActivity() {
             layout.addView(timerow)
         }
 
-        scheduleview.addView(layout)
+        scheduleview.addView(layout) //activity_main 의 스크롤 뷰에 추가
 
     }
 
@@ -360,7 +376,7 @@ class MainActivity: AppCompatActivity() {
 }
 class MemoAdapter(val items :List<Memo>, private val clickListener: (memo:Memo) ->Unit) : RecyclerView.Adapter<MemoAdapter.MemoViewHolder>(){
 
-    class MemoViewHolder(val binding : ItemNameBinding): RecyclerView.ViewHolder(binding.root)
+    class MemoViewHolder(val binding: ItemNameBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemoViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -368,7 +384,7 @@ class MemoAdapter(val items :List<Memo>, private val clickListener: (memo:Memo) 
         val viewHolder = MemoViewHolder(ItemNameBinding.bind(view))
         view.setOnClickListener{
             clickListener.invoke(items[viewHolder.adapterPosition])
-        }
+        }   
         return viewHolder
     }
 

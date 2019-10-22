@@ -1,358 +1,367 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-        <TableLayout
+<ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="match_parent">
 
-
-
-
-            <TableRow
+            <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/colorPrimaryDark">
+                    android:orientation="vertical">
 
-                <TextView
-                        android:text=""
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+
+
+
+                <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/colorPrimaryDark">
+
+                    <TextView
+                            android:text=""
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                    </TextView>
+
+                    <TextView
+
+                            android:text="월"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:gravity="center"
+                            android:textColor="#ffffff"
+                            android:textStyle="bold">
+
+                    </TextView>
+
+                    <TextView
+                            android:text="화"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:gravity="center"
+                            android:textColor="#ffffff"
+                            android:textStyle="bold">
+
+                    </TextView>
+
+                    <TextView
+                            android:text="수"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:gravity="center"
+                            android:textColor="#ffffff"
+                            android:textStyle="bold">
+
+                    </TextView>
+
+                    <TextView
+                            android:text="목"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:gravity="center"
+                            android:textColor="#ffffff"
+                            android:textStyle="bold">
+
+                    </TextView>
+
+                    <TextView
+                            android:text="금"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:gravity="center"
+                            android:textColor="#ffffff"
+                            android:textStyle="bold">
+
+                    </TextView>
+
+                    <TextView
+                            android:text="토"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:gravity="center"
+                            android:textColor="#ffffff"
+                            android:textStyle="bold">
+
+                    </TextView>
+
+                    <TextView
+                            android:text="일"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:gravity="center"
+                            android:textColor="#ffffff"
+                            android:textStyle="bold">
+
+                    </TextView>
+
+
+                </TableRow>
+
+
+                <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/colorPrimaryDark"
                         android:layout_weight="1">
 
-                </TextView>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_height="match_parent"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1">
 
-                <TextView
+                        <TextView
+                                android:text="8"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@color/colorPrimaryDark"
+                                android:textColor="#ffffff"
+                                android:textStyle="bold"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                android:textSize="15sp">
 
-                        android:text="월"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:gravity="center"
-                        android:textColor="#ffffff"
-                        android:textStyle="bold">
-
-                </TextView>
-
-                <TextView
-                        android:text="화"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:gravity="center"
-                        android:textColor="#ffffff"
-                        android:textStyle="bold">
-
-                </TextView>
-
-                <TextView
-                        android:text="수"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:gravity="center"
-                        android:textColor="#ffffff"
-                        android:textStyle="bold">
-
-                </TextView>
-
-                <TextView
-                        android:text="목"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:gravity="center"
-                        android:textColor="#ffffff"
-                        android:textStyle="bold">
-
-                </TextView>
-
-                <TextView
-                        android:text="금"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:gravity="center"
-                        android:textColor="#ffffff"
-                        android:textStyle="bold">
-
-                </TextView>
-
-                <TextView
-                        android:text="토"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:gravity="center"
-                        android:textColor="#ffffff"
-                        android:textStyle="bold">
-
-                </TextView>
-
-                <TextView
-                        android:text="일"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:gravity="center"
-                        android:textColor="#ffffff"
-                        android:textStyle="bold">
-
-                </TextView>
+                        </TextView>
 
 
-            </TableRow>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:layout_weight="3"
+                            android:gravity="center"
+                            android:textColor="#ffffff"
+                            android:textStyle="bold"
+                            android:background="@drawable/cell_shape"
+                            android:id="@+id/monday0"
+                            android:tag="monday0"
+                            >
+
+                    </TextView>
+
+                    <TextView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="3"
+                            android:gravity="center"
+                            android:textColor="#ffffff"
+                            android:textStyle="bold"
+                            android:background="@drawable/cell_shape"
+                            android:id="@+id/tuesday0">
+
+                    </TextView>
+
+                    <TextView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="3"
+                            android:gravity="center"
+                            android:textColor="#ffffff"
+                            android:textStyle="bold"
+                            android:background="@drawable/cell_shape"
+                            android:id="@+id/wednesday0">
+
+                    </TextView>
+
+                    <TextView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="3"
+                            android:gravity="center"
+                            android:textColor="#ffffff"
+                            android:textStyle="bold"
+                            android:background="@drawable/cell_shape"
+                            android:id="@+id/thursday0">
+
+                    </TextView>
+
+                    <TextView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="3"
+                            android:gravity="center"
+                            android:textColor="#ffffff"
+                            android:textStyle="bold"
+                            android:background="@drawable/cell_shape"
+                            android:id="@+id/friday0">
+
+                    </TextView>
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="3"
+                            android:gravity="center"
+                            android:textColor="#ffffff"
+                            android:textStyle="bold"
+                            android:background="@drawable/cell_shape"
+                            android:id="@+id/saturday0">
+
+                    </TextView>
+
+                    <TextView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="3"
+                            android:gravity="center"
+                            android:textColor="#ffffff"
+                            android:textStyle="bold"
+                            android:background="@drawable/cell_shape"
+                            android:id="@+id/sunday0">
+
+                    </TextView>
 
 
-            <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorPrimaryDark"
-                    android:layout_weight="1">
+                </TableRow>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_height="match_parent"
+                <TableRow
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/colorPrimaryDark"
                         android:layout_weight="1">
 
                     <TextView
-                            android:text="8"
+                            android:text="9"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
                             android:background="@color/colorPrimaryDark"
                             android:textColor="#ffffff"
                             android:textStyle="bold"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            android:textSize="15sp">
+                            android:gravity="center"
+                            >
+
+                    </TextView>
+
+                    <TextView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="3"
+                            android:gravity="center"
+                            android:textColor="#ffffff"
+                            android:textStyle="bold"
+                            android:background="@drawable/cell_shape"
+                            android:id="@+id/monday1"
+                            android:tag="monday1">
+
+                    </TextView>
+
+                    <TextView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="100dp"
+                            android:layout_weight="3"
+                            android:gravity="center"
+                            android:textColor="#ffffff"
+                            android:textStyle="bold"
+                            android:background="@drawable/cell_shape"
+                            android:id="@+id/tuesday1">
+
+                    </TextView>
+
+                    <TextView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="3"
+                            android:gravity="center"
+                            android:textColor="#ffffff"
+                            android:textStyle="bold"
+                            android:background="@drawable/cell_shape"
+                            android:id="@+id/wednesday1">
+
+                    </TextView>
+
+                    <TextView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="3"
+                            android:gravity="center"
+                            android:textColor="#ffffff"
+                            android:textStyle="bold"
+                            android:background="@drawable/cell_shape"
+                            android:id="@+id/thursday1">
+
+                    </TextView>
+
+                    <TextView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="3"
+                            android:gravity="center"
+                            android:textColor="#ffffff"
+                            android:textStyle="bold"
+                            android:background="@drawable/cell_shape"
+                            android:id="@+id/friday1">
 
                     </TextView>
 
                     <TextView
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="8:00"
+                            android:layout_height="match_parent"
+                            android:layout_weight="3"
+                            android:gravity="center"
                             android:textColor="#ffffff"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintBottom_toBottomOf= "parent"
-                            app:layout_constraintTop_toTopOf="parent">
+                            android:textStyle="bold"
+                            android:background="@drawable/cell_shape"
+                            android:id="@+id/saturday1">
 
                     </TextView>
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
 
-                <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="3"
-                        android:gravity="center"
-                        android:textColor="#ffffff"
-                        android:textStyle="bold"
-                        android:background="@drawable/cell_shape"
-                        android:id="@+id/monday0"
-                        >
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="3"
+                            android:gravity="center"
+                            android:textColor="#ffffff"
+                            android:textStyle="bold"
+                            android:background="@drawable/cell_shape"
+                            android:id="@+id/sunday1">
 
-                </TextView>
-
-                <TextView
-
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="3"
-                        android:gravity="center"
-                        android:textColor="#ffffff"
-                        android:textStyle="bold"
-                        android:background="@drawable/cell_shape"
-                        android:id="@+id/tuesday0">
-
-                </TextView>
-
-                <TextView
-
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="3"
-                        android:gravity="center"
-                        android:textColor="#ffffff"
-                        android:textStyle="bold"
-                        android:background="@drawable/cell_shape"
-                        android:id="@+id/wednesday0">
-
-                </TextView>
-
-                <TextView
-
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="3"
-                        android:gravity="center"
-                        android:textColor="#ffffff"
-                        android:textStyle="bold"
-                        android:background="@drawable/cell_shape"
-                        android:id="@+id/thursday0">
-
-                </TextView>
-
-                <TextView
-
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="3"
-                        android:gravity="center"
-                        android:textColor="#ffffff"
-                        android:textStyle="bold"
-                        android:background="@drawable/cell_shape"
-                        android:id="@+id/friday0">
-
-                </TextView>
-
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="3"
-                        android:gravity="center"
-                        android:textColor="#ffffff"
-                        android:textStyle="bold"
-                        android:background="@drawable/cell_shape"
-                        android:id="@+id/saturday0">
-
-                </TextView>
-
-                <TextView
-
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="3"
-                        android:gravity="center"
-                        android:textColor="#ffffff"
-                        android:textStyle="bold"
-                        android:background="@drawable/cell_shape"
-                        android:id="@+id/sunday0">
-
-                </TextView>
+                    </TextView>
 
 
-            </TableRow>
+                </TableRow>
 
-            <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorPrimaryDark"
-                    android:layout_weight="1">
+            </TableLayout>
 
-                <TextView
-                        android:text="9"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@color/colorPrimaryDark"
-                        android:textColor="#ffffff"
-                        android:textStyle="bold"
-                        android:gravity="center"
-                        >
+            <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@color/colorAccent">
 
-                </TextView>
+            </ImageView>
 
-                <TextView
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="3"
-                        android:gravity="center"
-                        android:textColor="#ffffff"
-                        android:textStyle="bold"
-                        android:background="@drawable/cell_shape"
-                        android:id="@+id/monday1">
-
-                </TextView>
-
-                <TextView
-
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="3"
-                        android:gravity="center"
-                        android:textColor="#ffffff"
-                        android:textStyle="bold"
-                        android:background="@drawable/cell_shape"
-                        android:id="@+id/tuesday1">
-
-                </TextView>
-
-                <TextView
-
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="3"
-                        android:gravity="center"
-                        android:textColor="#ffffff"
-                        android:textStyle="bold"
-                        android:background="@drawable/cell_shape"
-                        android:id="@+id/wednesday1">
-
-                </TextView>
-
-                <TextView
-
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="3"
-                        android:gravity="center"
-                        android:textColor="#ffffff"
-                        android:textStyle="bold"
-                        android:background="@drawable/cell_shape"
-                        android:id="@+id/thursday1">
-
-                </TextView>
-
-                <TextView
-
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="3"
-                        android:gravity="center"
-                        android:textColor="#ffffff"
-                        android:textStyle="bold"
-                        android:background="@drawable/cell_shape"
-                        android:id="@+id/friday1">
-
-                </TextView>
-
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="3"
-                        android:gravity="center"
-                        android:textColor="#ffffff"
-                        android:textStyle="bold"
-                        android:background="@drawable/cell_shape"
-                        android:id="@+id/saturday1">
-
-                </TextView>
-
-                <TextView
-
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="3"
-                        android:gravity="center"
-                        android:textColor="#ffffff"
-                        android:textStyle="bold"
-                        android:background="@drawable/cell_shape"
-                        android:id="@+id/sunday1">
-
-                </TextView>
-
-
-            </TableRow>
-
-        </TableLayout>
-
-</FrameLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
