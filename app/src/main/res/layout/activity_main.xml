@@ -171,7 +171,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintVertical_bias="0.96"
             app:layout_constraintHorizontal_bias="0.94"
-            android:backgroundTint="#ffffff"
+            android:backgroundTint="@color/Actionbar_bg"
             android:src="@drawable/title_plus">
 
     </com.google.android.material.floatingactionbutton.FloatingActionButton>

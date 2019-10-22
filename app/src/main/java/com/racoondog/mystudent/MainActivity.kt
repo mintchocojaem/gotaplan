@@ -33,7 +33,6 @@ class MainActivity: AppCompatActivity() {
         setSupportActionBar(my_toolbar)  //Actionbar 부분
         supportActionBar?.setDisplayUseLogoEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-
         // 알림창 객체 생성
 
         memo_view.apply {
