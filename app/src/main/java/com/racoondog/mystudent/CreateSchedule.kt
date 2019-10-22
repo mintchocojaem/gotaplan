@@ -3,15 +3,12 @@ package com.racoondog.mystudent
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.createschedule_layout.*
-import android.app.TimePickerDialog
+import kotlinx.android.synthetic.main.create_schedule.*
 import android.graphics.Color
 import android.view.View
 import android.widget.NumberPicker
 import android.widget.Toast
-import androidx.appcompat.widget.AppCompatMultiAutoCompleteTextView
 
 
 class CreateSchedule : AppCompatActivity(){
@@ -19,12 +16,13 @@ class CreateSchedule : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
+
+        super.onCreate(savedInstanceState)
+
         var day_flag = 0
         val intent = Intent()
 
-
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.createschedule_layout)
+        setContentView(R.layout.create_schedule)
         start_AMPM.minValue = 0
         start_AMPM.maxValue = 1
         start_AMPM.value = 0

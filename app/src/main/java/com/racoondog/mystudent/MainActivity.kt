@@ -82,20 +82,24 @@ class MainActivity: AppCompatActivity() {
             close_list.visibility = View.INVISIBLE
         }
 
+        schedule_add.setOnClickListener{
+            val ScheduleIntent = Intent(this, CreateSchedule::class.java)
+            startActivityForResult(ScheduleIntent, 100)
+        }
 
         memo_add.setOnClickListener{
             val MemoIntent = Intent(this, CreateMemo::class.java)
             startActivityForResult(MemoIntent,101)
         }
 
-        schedule_add.setOnClickListener{
-            val ScheduleIntent = Intent(this, CreateSchedule::class.java)
-            startActivityForResult(ScheduleIntent, 100)
+        add_subject.setOnClickListener{
+            val SubjectIntent = Intent(this, CreateSubject::class.java)
+            startActivityForResult(SubjectIntent, 102)
         }
 
     }
 
-    //MainActivity로 들어오는 onActivityResult 부분 ->Intent 후 값 반환
+    //MainActivity로 들어오는 onActivityResult 부분 -> Intent 후 값 반환
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -111,6 +115,9 @@ class MainActivity: AppCompatActivity() {
                 101 ->{
                     memo.add(Memo(data!!.getStringExtra("memo").toString()+",  "))
                 }
+                102 ->{
+
+                }
             }
         }
     }
@@ -120,14 +127,9 @@ class MainActivity: AppCompatActivity() {
 
         var day = listOf<String>() // 마지막 요일의 선택에 따라 배열이 추가됨
 
-        var period = mutableListOf<String>() //원래는 교시부분이었으나 기획자의 변경에따라 시간으로 표시되는 배열 ex -> 오후 1시 2시 3시
+        var period = mutableListOf<String>() //원래는 교시부분이었으나 기획자의 변경에 따라 시간으로 표시되는 배열 ex -> 오후 1시 2시 3시
 
-        var time = mutableListOf<String>()
-
-        var subject = listOf("화1","화2")
-
-        var content = listOf("태경이삼촌과 레슨")
-
+        // var time = mutableListOf<String>() //원래는 시간을 나타내는 부분이었으나 기획자의 변경에 따라 period로 치환됨
 
 
         if (day_flag == 1){ //마지막 요일을 선택하고 그에 따라 day_flag 값을 반환 하고 day 배열에 추가
@@ -142,7 +144,7 @@ class MainActivity: AppCompatActivity() {
 
         var AMPM_flag = 0 //마지막 요일 구분을 위한 flag 선언
 
-        for (i in start_time..end_time){ // 24시 형식을 오전과 오후를 구분 하기위한 논리연산
+        for (i in start_time..end_time){  // 24시 형식을 오전과 오후를 구분 하기위한 논리연산
             if (i == start_time && i < 10) {
                 period.add("$i\n 오전 ")
             }
@@ -311,16 +313,6 @@ class MainActivity: AppCompatActivity() {
                 timetxt.maxLines = 2
                 timetxt.textSize = 40f
                 timetxt.setMinTextSize(10)
-
-                    // 임시적으로 만든 과목 부분
-                for (k in 0 until subject.size) {
-                    if (timetxt.tag == subject[k]) {
-                        timetxt.setBackgroundColor(Color.LTGRAY)
-                    }
-                }
-                if(timetxt.tag == subject[0]){
-                    timetxt.text = content[0]
-                }
 
 
                 timetxt.layoutParams = TableRow.LayoutParams(
