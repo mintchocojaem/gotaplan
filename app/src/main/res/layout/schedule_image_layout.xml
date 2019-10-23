@@ -354,12 +354,6 @@
 
             </TableLayout>
 
-            <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:src="@color/colorAccent">
-
-            </ImageView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

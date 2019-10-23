@@ -26,7 +26,6 @@ class MainActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
 
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -97,6 +96,11 @@ class MainActivity: AppCompatActivity() {
             startActivityForResult(SubjectIntent, 102)
         }
 
+        test.setOnClickListener {
+            canvas.bringToFront()
+
+        }
+
     }
 
     //MainActivity로 들어오는 onActivityResult 부분 -> Intent 후 값 반환
@@ -131,9 +135,9 @@ class MainActivity: AppCompatActivity() {
 
         // var time = mutableListOf<String>() //원래는 시간을 나타내는 부분이었으나 기획자의 변경에 따라 period로 치환됨
 
-        var subject = listOf("화1","화2") // 임시적 과목 시간
+        //var subject = listOf("화1","화2") // 임시적 과목 시간
 
-        var content = listOf("태경이삼촌과 레슨") // 임시적 과목 내용
+       //var content = listOf("태경이삼촌과 레슨") // 임시적 과목 내용
 
 
         if (day_flag == 1){ //마지막 요일을 선택하고 그에 따라 day_flag 값을 반환 하고 day 배열에 추가
@@ -319,7 +323,7 @@ class MainActivity: AppCompatActivity() {
                 timetxt.setMinTextSize(10)
 
 
-                // 임시적으로 만든 과목 부분
+               /* // 임시적으로 만든 과목 부분
                 for (k in 0 until subject.size) {
                     if (timetxt.tag == subject[k]) {
                         timetxt.setBackgroundColor(Color.LTGRAY)
@@ -327,7 +331,7 @@ class MainActivity: AppCompatActivity() {
                 }
                 if(timetxt.tag == subject[0]){
                     timetxt.text = content[0]
-                }
+                }*/
 
 
                 // timetxt lyaout 설정부분
@@ -374,6 +378,7 @@ class MainActivity: AppCompatActivity() {
         }
     }
 }
+    // 메모 Adapter 부분과 ViewHolder 부분
 class MemoAdapter(val items :List<Memo>, private val clickListener: (memo:Memo) ->Unit) : RecyclerView.Adapter<MemoAdapter.MemoViewHolder>(){
 
     class MemoViewHolder(val binding: ItemNameBinding): RecyclerView.ViewHolder(binding.root)
@@ -384,7 +389,7 @@ class MemoAdapter(val items :List<Memo>, private val clickListener: (memo:Memo) 
         val viewHolder = MemoViewHolder(ItemNameBinding.bind(view))
         view.setOnClickListener{
             clickListener.invoke(items[viewHolder.adapterPosition])
-        }   
+        }
         return viewHolder
     }
 

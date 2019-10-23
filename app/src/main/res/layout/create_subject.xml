@@ -24,7 +24,6 @@
                 android:layout_height="match_parent">
 
 
-
             <me.grantland.widget.AutofitTextView
                     android:id="@+id/CreateSubject_title"
                     android:layout_width="wrap_content"
@@ -40,7 +39,7 @@
             </me.grantland.widget.AutofitTextView>
 
             <Button
-                    android:id="@+id/CreateSchedule_Button"
+                    android:id="@+id/CreateSubject_Button"
                     android:text="Button"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
