@@ -41,7 +41,7 @@ class MainActivity: AppCompatActivity() {
             adapter = MemoAdapter(memo){
 
                 val builder = AlertDialog.Builder(this@MainActivity)
-                builder.setTitle("메모 삭제")        // 제목 설정
+                builder.setTitle("메모 삭제")  // 제목 설정
                     .setMessage("메모를 삭제하시겠습니까?")        // 메세지 설정
                     .setCancelable(true)        // 뒤로 버튼 클릭시 취소 가능 설정
 
