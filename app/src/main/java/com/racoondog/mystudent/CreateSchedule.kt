@@ -55,10 +55,10 @@ class CreateSchedule : AppCompatActivity(){
 
         start_AMPM.setOnValueChangedListener{numberpicker,i1,i2 ->
 
-            when{i2 == 1 -> start_time.value = 18 }
+            when{i2 == 1 -> start_time.value = start_time.maxValue }
             when {i2 == 1 -> textView_start.text = "오후 "+"${start_time.value-12}"+":00"}
 
-            when{i2 == 0 -> start_time.value = 6}
+            when{i2 == 0 -> start_time.value = start_time.minValue}
             when{i2 == 0 -> textView_start.text = "오전 "+"${start_time.value}"+":00"}
 
         }
@@ -68,24 +68,25 @@ class CreateSchedule : AppCompatActivity(){
            for ( i in 6 ..18){
                when {i2 == i && i2 < 12 -> textView_start.text = "오전 "+"$i"+":00"
                    i2 == i && i2 > 12 -> textView_start.text = "오후 "+"${i-12}"+":00"
-                   i2 == 12 -> textView_start.text = "오후 12:00"
+                   i2 == 12 -> textView_start.text = "오전 12:00"
+
                }
 
                when (start_AMPM.value == 0){
-                   i2 >= 12 -> start_AMPM.value = 1
+                   i2 > 12 -> start_AMPM.value = 1
                }
                when (start_AMPM.value == 1) {
-                   i2 < 12 -> start_AMPM.value = 0
+                   i2 <= 12 -> start_AMPM.value = 0
                }
            }
         }
 
         end_AMPM.setOnValueChangedListener{numberpicker,i1,i2 ->
 
-            when{i2 == 1 -> end_time.value = 24 }
-            when {i2 == 1 -> textView_end.text = "오후 "+"${end_time.value-12}"+":00"}
+            when{i2 == 1 -> end_time.value = end_time.maxValue }
+                     when {i2 == 1 -> textView_end.text = "오후 "+"${end_time.value-12}"+":00"}
 
-            when{i2 == 0 -> end_time.value = 7}
+            when{i2 == 0 -> end_time.value = end_time.minValue}
             when{i2 == 0 -> textView_end.text = "오전 "+"${end_time.value}"+":00"}
 
         }
@@ -95,14 +96,15 @@ class CreateSchedule : AppCompatActivity(){
             for ( i in 7 ..24){
                 when {i2 == i && i2 < 12 -> textView_end.text = "오전 "+"$i"+":00"
                     i2 == i && i2 > 12 -> textView_end.text = "오후 "+"${i-12}"+":00"
-                    i2 == 12 -> textView_end.text = "오후 12:00"
+                    i2 == 12 -> textView_end.text = "오전 12:00"
+
                 }
 
                 when (end_AMPM.value == 0){
-                    i2 >= 12 -> end_AMPM.value = 1
+                    i2 > 12 -> end_AMPM.value = 1
                 }
                 when (end_AMPM.value == 1) {
-                    i2 < 12 -> end_AMPM.value = 0
+                    i2 <= 12 -> end_AMPM.value = 0
                 }
             }
         }
@@ -121,8 +123,12 @@ class CreateSchedule : AppCompatActivity(){
                         intent.putExtra("day_flag", day_flag)
                         intent.putExtra("start_time",start_time.value)
                         intent.putExtra("end_time",end_time.value)
+
                         setResult(Activity.RESULT_OK, intent)
                         finish()
+                    }
+                    else if(start_time.value == end_time.value){
+                        Toast.makeText(this, "시작 시각이 종료 시각과 같을 수 없습니다.", Toast.LENGTH_SHORT).show()
                     }
                     else{
                         Toast.makeText(this,"시작 시각이 종료 시각보다 클 수 없습니다.", Toast.LENGTH_SHORT).show()

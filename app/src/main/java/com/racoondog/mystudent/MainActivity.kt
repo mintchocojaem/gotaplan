@@ -15,14 +15,17 @@ import me.grantland.widget.AutofitTextView
 import android.content.DialogInterface
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
-
-
-
+import kotlinx.android.synthetic.main.create_schedule.*
+import kotlinx.android.synthetic.main.day_layout.view.*
 
 
 class MainActivity: AppCompatActivity() {
 
     val memo = arrayListOf<Memo>()
+    var day = listOf<String>()
+    var intentStartTime : Int = 0
+    var intentEndTime : Int = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
 
@@ -82,23 +85,23 @@ class MainActivity: AppCompatActivity() {
         }
 
         schedule_add.setOnClickListener{
-            val ScheduleIntent = Intent(this, CreateSchedule::class.java)
-            startActivityForResult(ScheduleIntent, 100)
+            val scheduleIntent = Intent(this, CreateSchedule::class.java)
+            startActivityForResult(scheduleIntent, 100)
+            schedule_add.visibility = View.INVISIBLE
         }
 
         memo_add.setOnClickListener{
-            val MemoIntent = Intent(this, CreateMemo::class.java)
-            startActivityForResult(MemoIntent,101)
+            val memoIntent = Intent(this, CreateMemo::class.java)
+            startActivityForResult(memoIntent,101)
         }
 
         add_subject.setOnClickListener{
-            val SubjectIntent = Intent(this, CreateSubject::class.java)
-            startActivityForResult(SubjectIntent, 102)
-        }
+            val subjectIntent = Intent(this, CreateSubject::class.java)
 
-        test.setOnClickListener {
-            canvas.bringToFront()
+            subjectIntent.putExtra("start_time",intentStartTime)
+            subjectIntent.putExtra("end_time",intentEndTime)
 
+            startActivityForResult(subjectIntent, 102)
         }
 
     }
@@ -112,15 +115,21 @@ class MainActivity: AppCompatActivity() {
                 100 -> {
                     title_text.text = data!!.getStringExtra("title")
                     val dayflag = data.getIntExtra("day_flag",0)
-                    val start_time = data.getIntExtra("start_time",0)
-                    val end_time = data.getIntExtra("end_time",0)
-                    LoadSchedule(dayflag,start_time,end_time)
+                    val start_timer = data.getIntExtra("start_time",0)
+                    val end_timer = data.getIntExtra("end_time",0)
+
+                    LoadSchedule(dayflag,start_timer,end_timer)
+                    intentStartTime = start_timer
+                    intentEndTime = end_timer
                 }
                 101 ->{
                     memo.add(Memo(data!!.getStringExtra("memo").toString()+",  "))
                 }
                 102 ->{
-
+                    val SubjectStartTime = data!!.getIntExtra("SubjectStartTime",0)
+                    val SubjectEndTime = data!!.getIntExtra("SubjectEndTime",0)
+                    val DayFlag = data!!.getIntExtra("DayFlag",0)
+                    createSubjectLine(SubjectStartTime,SubjectEndTime,DayFlag)
                 }
             }
         }
@@ -129,7 +138,7 @@ class MainActivity: AppCompatActivity() {
     // 시간표를 그리는 함수
     fun  LoadSchedule(day_flag : Int, start_time : Int, end_time : Int) {
 
-        var day = listOf<String>() // 마지막 요일의 선택에 따라 배열이 추가됨
+         // 마지막 요일의 선택에 따라 배열이 추가됨
 
         var period = mutableListOf<String>() //원래는 교시부분이었으나 기획자의 변경에 따라 시간으로 표시되는 배열 ex -> 오후 1시 2시 3시
 
@@ -355,6 +364,56 @@ class MainActivity: AppCompatActivity() {
         }
 
         scheduleview.addView(layout) //activity_main 의 스크롤 뷰에 추가
+
+    }
+
+    fun createSubjectLine(StartTime:Int,EndTime:Int,DayFlag:Int){
+
+        val SubjectHeight = (EndTime - StartTime) * 57
+        val SubjectMargin = (StartTime - intentStartTime) * 57
+
+
+        for(i in 0 until day.size)  {
+
+            val tag : Int = i+1
+            val subjectLine = ConstraintLayout(this)
+
+            subjectLine.layoutParams = LinearLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.MATCH_CONSTRAINT,
+                ConstraintLayout.LayoutParams.MATCH_PARENT
+            ).apply {
+                width = 0
+                weight = 1f
+                subjectLine.tag = tag
+                if(subjectLine.tag == 1)subjectLine.setBackgroundColor(Color.LTGRAY)
+            }
+
+            canvas.bringToFront()
+            canvas.addView(subjectLine)
+
+            if(DayFlag == subjectLine.tag) {
+                val subject = ImageView(this)
+                subject.layoutParams = ConstraintLayout.LayoutParams(
+                    ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                    ConstraintLayout.LayoutParams.WRAP_CONTENT
+                ).apply {
+
+                    width = 74
+                    height = 55 + SubjectHeight
+                    topToTop = ConstraintLayout.LayoutParams.PARENT_ID
+                    bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
+                    rightToRight = ConstraintLayout.LayoutParams.PARENT_ID
+                    leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID
+                    subject.setBackgroundColor(Color.RED)
+                    verticalBias = 0f
+                    goneTopMargin = SubjectMargin
+
+                }
+                subjectLine.addView(subject)
+            }
+        }
+
+
 
     }
 
