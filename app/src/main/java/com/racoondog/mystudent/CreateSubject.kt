@@ -267,7 +267,7 @@ class CreateSubject :AppCompatActivity() {
         wednesday_button.setOnClickListener {
             dayflag = 3
         }
-        tuesday_button.setOnClickListener {
+        thursday_button.setOnClickListener {
             dayflag = 4
         }
         friday_button.setOnClickListener {

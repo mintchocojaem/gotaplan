@@ -404,24 +404,31 @@ class MainActivity: AppCompatActivity() {
 
     fun createSubjectLine(StartTime:Int,EndTime:Int,DayFlag:Int){
 
-        val SubjectHeight = (EndTime - StartTime) * 150
-        val SubjectMargin = (StartTime - intentStartTime) * 150
+        val subjectHeight = (EndTime - StartTime) * 150
+        val subjectMargin = (StartTime - intentStartTime) * 150
         val subject = ImageView(this)
+        var widthSubject = 260
+        if (intentflag == 2){
+            widthSubject = 215
+        }
+        else if (intentflag == 3){
+            widthSubject = 185
+        }
 
         subject.layoutParams = ConstraintLayout.LayoutParams(
             ConstraintLayout.LayoutParams.WRAP_CONTENT,
             ConstraintLayout.LayoutParams.WRAP_CONTENT
         ).apply {
 
-                width = 260
-                height = SubjectHeight
+                width = widthSubject
+                height = subjectHeight
                 topToTop = ConstraintLayout.LayoutParams.PARENT_ID
                 bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
                 rightToRight = ConstraintLayout.LayoutParams.PARENT_ID
                 leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID
-                subject.setBackgroundColor(Color.RED)
+                subject.setBackgroundColor(Color.BLUE)
                 verticalBias = 0f
-                topMargin = SubjectMargin
+                topMargin = subjectMargin
 
         }
         findViewById<ConstraintLayout>(DayFlag).addView(subject)
