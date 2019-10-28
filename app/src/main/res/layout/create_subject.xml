@@ -213,19 +213,21 @@
             app:layout_constraintLeft_toLeftOf="parent">
 
         <Button
-                android:layout_width="wrap_content"
+                android:layout_width="55dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/monday_button"
                 android:text="월"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/tuesday_button">
+                app:layout_constraintRight_toLeftOf="@id/tuesday_button"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintHorizontal_bias="0.5">
 
         </Button>
 
         <Button
-                android:layout_width="wrap_content"
+                android:layout_width="55dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/tuesday_button"
                 android:text="화"
@@ -237,14 +239,63 @@
         </Button>
 
         <Button
-                android:layout_width="wrap_content"
+                android:layout_width="55dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/wednesday_button"
                 android:text="수"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toRightOf="@id/tuesday_button"
-                app:layout_constraintRight_toRightOf="parent">
+                app:layout_constraintRight_toLeftOf="@id/thursday_button">
+
+        </Button>
+        <Button
+                android:layout_width="55dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/thursday_button"
+                android:text="목"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/wednesday_button"
+                app:layout_constraintRight_toLeftOf="@id/friday_button"
+                >
+
+        </Button>
+        <Button
+                android:layout_width="55dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/friday_button"
+                android:text="금"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/thursday_button"
+                app:layout_constraintRight_toLeftOf="@id/saturday_button"
+
+                >
+
+        </Button>
+        <Button
+                android:layout_width="55dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/saturday_button"
+                android:text="토"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/friday_button"
+                app:layout_constraintRight_toLeftOf="@id/sunday_button"
+                android:visibility="gone">
+
+        </Button>
+        <Button
+                android:layout_width="55dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/sunday_button"
+                android:text="일"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/saturday_button"
+                android:visibility="gone">
 
         </Button>
 

@@ -1,27 +1,43 @@
 package com.racoondog.mystudent
 
 
+import android.app.ActionBar
 import android.app.Activity
-import android.content.Intent
+import android.content.Context
+
 import android.os.Bundle
 import android.view.View
+
+import android.widget.Button
 import android.widget.NumberPicker
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import kotlinx.android.synthetic.main.create_subject.*
+import kotlinx.android.synthetic.main.schedule_image_layout.*
 
 
 class CreateSubject :AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+
         super.onCreate(savedInstanceState)
         super.setContentView(R.layout.create_subject)
 
         val intent = getIntent()
         val intentStartTime = intent.getIntExtra("start_time",0)
         val intentEndTime = intent.getIntExtra("end_time",0)
-        var dayflag : Int = 0
+        val intentFlag = intent.getIntExtra("day_flag",0)
+        var dayflag = 0
 
+        if (intentFlag == 2){
+            saturday_button.visibility = View.VISIBLE
+        }
+        else if (intentFlag == 3){
+            saturday_button.visibility = View.VISIBLE
+            sunday_button.visibility = View.VISIBLE
+        }
 
         val initStartTime = intentStartTime + 1
         val initEndTime = intentEndTime -1
@@ -225,6 +241,7 @@ class CreateSubject :AppCompatActivity() {
             }
         }
 
+
         textView_start.setOnClickListener{
             time_picker.visibility = View.VISIBLE
             end_AMPM.visibility = View.INVISIBLE
@@ -250,6 +267,19 @@ class CreateSubject :AppCompatActivity() {
         wednesday_button.setOnClickListener {
             dayflag = 3
         }
+        tuesday_button.setOnClickListener {
+            dayflag = 4
+        }
+        friday_button.setOnClickListener {
+            dayflag = 5
+        }
+        saturday_button.setOnClickListener {
+            dayflag = 6
+        }
+        sunday_button.setOnClickListener {
+            dayflag = 7
+        }
+
 
     }
 }

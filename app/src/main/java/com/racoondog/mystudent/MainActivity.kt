@@ -15,16 +15,17 @@ import me.grantland.widget.AutofitTextView
 import android.content.DialogInterface
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
-import kotlinx.android.synthetic.main.create_schedule.*
-import kotlinx.android.synthetic.main.day_layout.view.*
+
+
 
 
 class MainActivity: AppCompatActivity() {
 
     val memo = arrayListOf<Memo>()
     var day = listOf<String>()
-    var intentStartTime : Int = 0
-    var intentEndTime : Int = 0
+    var intentStartTime: Int = 0
+    var intentEndTime: Int = 0
+    var intentflag : Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -41,27 +42,33 @@ class MainActivity: AppCompatActivity() {
             layoutManager = LinearLayoutManager(this@MainActivity).apply {
                 orientation = LinearLayoutManager.HORIZONTAL
             }
-            adapter = MemoAdapter(memo){
+            adapter = MemoAdapter(memo) {
 
                 val builder = AlertDialog.Builder(this@MainActivity)
                 builder.setTitle("메모 삭제")  // 제목 설정
                     .setMessage("메모를 삭제하시겠습니까?")        // 메세지 설정
                     .setCancelable(true)        // 뒤로 버튼 클릭시 취소 가능 설정
 
-                    .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, whichButton ->
+                    .setPositiveButton(
+                        "확인",
+                        DialogInterface.OnClickListener { dialog, whichButton ->
 
-                        memo.remove(Memo("${it.name}"))
-                        adapter?.notifyDataSetChanged()
-                        Toast.makeText(this@MainActivity,"메모가 삭제되었습니다.",Toast.LENGTH_SHORT).show()
-                    })
+                            memo.remove(Memo("${it.name}"))
+                            adapter?.notifyDataSetChanged()
+                            Toast.makeText(this@MainActivity, "메모가 삭제되었습니다.", Toast.LENGTH_SHORT)
+                                .show()
+                        })
 
-                    .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, whichButton ->
-                        //Toast.makeText(this@MainActivity,"취소되었습니다.",Toast.LENGTH_SHORT).show()
-                        // 취소 버튼 클릭시 설정, 왼쪽 버튼입니다.
-                        //원하는 클릭 이벤트를 넣으시면 됩니다.
-                    })
+                    .setNegativeButton(
+                        "취소",
+                        DialogInterface.OnClickListener { dialog, whichButton ->
+                            //Toast.makeText(this@MainActivity,"취소되었습니다.",Toast.LENGTH_SHORT).show()
+                            // 취소 버튼 클릭시 설정, 왼쪽 버튼입니다.
+                            //원하는 클릭 이벤트를 넣으시면 됩니다.
+                        })
                 val dialog = builder.create()
-                dialog.setOnShowListener { // Dialog Button Text Color Setting
+                dialog.setOnShowListener {
+                    // Dialog Button Text Color Setting
                     dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED)
                 }
@@ -70,37 +77,37 @@ class MainActivity: AppCompatActivity() {
             }
         }
 
-        open_list.setOnClickListener{
+        open_list.setOnClickListener {
             title_bar.visibility = View.VISIBLE
             open_list.visibility = View.INVISIBLE
             close_list.visibility = View.VISIBLE
         }
-        title_text.setOnClickListener{
+        title_text.setOnClickListener {
 
         }
-        close_list.setOnClickListener{
+        close_list.setOnClickListener {
             title_bar.visibility = View.INVISIBLE
             open_list.visibility = View.VISIBLE
             close_list.visibility = View.INVISIBLE
         }
 
-        schedule_add.setOnClickListener{
+        schedule_add.setOnClickListener {
             val scheduleIntent = Intent(this, CreateSchedule::class.java)
             startActivityForResult(scheduleIntent, 100)
             schedule_add.visibility = View.INVISIBLE
         }
 
-        memo_add.setOnClickListener{
+        memo_add.setOnClickListener {
             val memoIntent = Intent(this, CreateMemo::class.java)
-            startActivityForResult(memoIntent,101)
+            startActivityForResult(memoIntent, 101)
         }
 
-        add_subject.setOnClickListener{
+        add_subject.setOnClickListener {
             val subjectIntent = Intent(this, CreateSubject::class.java)
 
-            subjectIntent.putExtra("start_time",intentStartTime)
-            subjectIntent.putExtra("end_time",intentEndTime)
-
+            subjectIntent.putExtra("start_time", intentStartTime)
+            subjectIntent.putExtra("end_time", intentEndTime)
+            subjectIntent.putExtra("day_flag",intentflag)
             startActivityForResult(subjectIntent, 102)
         }
 
@@ -114,72 +121,69 @@ class MainActivity: AppCompatActivity() {
             when (requestCode) {
                 100 -> {
                     title_text.text = data!!.getStringExtra("title")
-                    val dayflag = data.getIntExtra("day_flag",0)
-                    val start_timer = data.getIntExtra("start_time",0)
-                    val end_timer = data.getIntExtra("end_time",0)
+                    val dayflag = data.getIntExtra("day_flag", 0)
+                    val start_timer = data.getIntExtra("start_time", 0)
+                    val end_timer = data.getIntExtra("end_time", 0)
 
-                    LoadSchedule(dayflag,start_timer,end_timer)
+                    LoadSchedule(dayflag, start_timer, end_timer)
                     intentStartTime = start_timer
                     intentEndTime = end_timer
+                    intentflag = dayflag
+                    initSubjectLine()
                 }
-                101 ->{
-                    memo.add(Memo(data!!.getStringExtra("memo").toString()+",  "))
+                101 -> {
+                    memo.add(Memo(data!!.getStringExtra("memo").toString() + ",  "))
                 }
-                102 ->{
-                    val SubjectStartTime = data!!.getIntExtra("SubjectStartTime",0)
-                    val SubjectEndTime = data!!.getIntExtra("SubjectEndTime",0)
-                    val DayFlag = data!!.getIntExtra("DayFlag",0)
-                    createSubjectLine(SubjectStartTime,SubjectEndTime,DayFlag)
+                102 -> {
+                    val SubjectStartTime = data!!.getIntExtra("SubjectStartTime", 0)
+                    val SubjectEndTime = data!!.getIntExtra("SubjectEndTime", 0)
+                    val DayFlag = data!!.getIntExtra("DayFlag", 0)
+                    createSubjectLine(SubjectStartTime, SubjectEndTime, DayFlag)
+
                 }
             }
         }
     }
 
     // 시간표를 그리는 함수
-    fun  LoadSchedule(day_flag : Int, start_time : Int, end_time : Int) {
+    fun LoadSchedule(day_flag: Int, start_time: Int, end_time: Int) {
 
-         // 마지막 요일의 선택에 따라 배열이 추가됨
+        // 마지막 요일의 선택에 따라 배열이 추가됨
 
-        var period = mutableListOf<String>() //원래는 교시부분이었으나 기획자의 변경에 따라 시간으로 표시되는 배열 ex -> 오후 1시 2시 3시
+        var period =
+            mutableListOf<String>() //원래는 교시부분이었으나 기획자의 변경에 따라 시간으로 표시되는 배열 ex -> 오후 1시 2시 3시
 
         // var time = mutableListOf<String>() //원래는 시간을 나타내는 부분이었으나 기획자의 변경에 따라 period로 치환됨
 
         //var subject = listOf("화1","화2") // 임시적 과목 시간
 
-       //var content = listOf("태경이삼촌과 레슨") // 임시적 과목 내용
+        //var content = listOf("태경이삼촌과 레슨") // 임시적 과목 내용
 
 
-        if (day_flag == 1){ //마지막 요일을 선택하고 그에 따라 day_flag 값을 반환 하고 day 배열에 추가
-            day = listOf("월","화","수","목","금")
-        }
-        else if (day_flag == 2){
-            day = listOf("월","화","수","목","금","토")
-        }
-        else if(day_flag == 3){
-            day = listOf("월","화","수","목","금","토","일")
+        if (day_flag == 1) { //마지막 요일을 선택하고 그에 따라 day_flag 값을 반환 하고 day 배열에 추가
+            day = listOf("월", "화", "수", "목", "금")
+        } else if (day_flag == 2) {
+            day = listOf("월", "화", "수", "목", "금", "토")
+        } else if (day_flag == 3) {
+            day = listOf("월", "화", "수", "목", "금", "토", "일")
         } // day_line 레이아웃 문제로 띄어쓰기함 늘리거나 줄일수록 위에 날짜 사이즈 변함
 
         var AMPM_flag = 0 //마지막 요일 구분을 위한 flag 선언
 
-        for (i in start_time..end_time){  // 24시 형식을 오전과 오후를 구분 하기위한 논리연산
+        for (i in start_time until end_time) {  // 24시 형식을 오전과 오후를 구분 하기위한 논리연산
             if (i == start_time && i < 10) {
                 period.add("$i\n 오전 ")
-            }
-            else if (i == start_time && i < 12 && i >= 10) {
+            } else if (i == start_time && i < 12 && i >= 10) {
                 period.add("$i\n 오전 ")
-            }
-            else if (i == start_time && i > 12) {
-                period.add("${i-12}\n 오후 ")
-                AMPM_flag =1
-            }
-            else if(i ==13){
-                period.add("${i-12}\n 오후 ")
+            } else if (i == start_time && i > 12) {
+                period.add("${i - 12}\n 오후 ")
                 AMPM_flag = 1
-            }
-            else if (AMPM_flag == 1){
-                period.add("${i-12}")
-            }
-            else {
+            } else if (i == 13) {
+                period.add("${i - 12}\n 오후 ")
+                AMPM_flag = 1
+            } else if (AMPM_flag == 1) {
+                period.add("${i - 12}")
+            } else {
                 period.add("$i")
             }
         }
@@ -224,26 +228,31 @@ class MainActivity: AppCompatActivity() {
         val dayrow = TableRow(this) //initday를 담기위한 TableRow
 
         layout.layoutParams = TableLayout.LayoutParams(
-            TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT).apply {
+            TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT
+        ).apply {
 
         }
 
         dayrow.layoutParams = TableLayout.LayoutParams(
-            TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT).apply {
+            TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT
+        ).apply {
 
         }
 
         val initday = TextView(this)  // timetext의 textsize에 의한 간격차를 매꾸기 위해 수동으로 공백을 추가하는 부분
         initday.setBackgroundResource(R.color.colorAccent)// 색깔을 변경해서 얼마나 띄워지는지 확인 가능
-        initday.layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT).apply {
+        initday.layoutParams = TableRow.LayoutParams(
+            TableRow.LayoutParams.WRAP_CONTENT,
+            TableRow.LayoutParams.WRAP_CONTENT
+        ).apply {
 
-            if(day_flag == 1){
+            if (day_flag == 1) {
                 initday.text = "   "
             }
-            if(day_flag == 2) {
+            if (day_flag == 2) {
                 initday.text = "    "
             }
-            if(day_flag == 3) {
+            if (day_flag == 3) {
                 initday.text = "     "
             }
             weight = 1f //시간표 위에 날짜별 공백 줄을 맞추기 위한 부분
@@ -259,7 +268,8 @@ class MainActivity: AppCompatActivity() {
             daytxt.setBackgroundResource(R.color.Actionbar_bg)
             daytxt.layoutParams = TableRow.LayoutParams(
                 TableRow.LayoutParams.WRAP_CONTENT,
-                TableRow.LayoutParams.WRAP_CONTENT).apply{
+                TableRow.LayoutParams.WRAP_CONTENT
+            ).apply {
                 daytxt.text = day[i]
                 weight = 3f
 
@@ -273,17 +283,18 @@ class MainActivity: AppCompatActivity() {
         for (i in 0 until period.size) {
 
 
-
             val timerow = TableRow(this) // const_init을 담기위한 TableRow
-            timerow.layoutParams  = TableLayout.LayoutParams(
-                TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT).apply {
-                weight =1f
+            timerow.layoutParams = TableLayout.LayoutParams(
+                TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT
+            ).apply {
+                weight = 1f
             }
             timerow.setBackgroundResource(R.color.whitegray_bg)
 
             val const_init = ConstraintLayout(this) //initperiod를 담기위한 Constraintlayout 부분
             const_init.layoutParams = TableRow.LayoutParams(
-                TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT).apply{
+                TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT
+            ).apply {
                 weight - 1f
             }
 
@@ -323,16 +334,15 @@ class MainActivity: AppCompatActivity() {
 
             for (j in 0 until day.size) {
 
-                val timetxt =  AutofitTextView(this) // 각 시간표 일정이 들어가는 공백 부분
-                val tag  : String = day[j] + i
+                val timetxt = AutofitTextView(this) // 각 시간표 일정이 들어가는 공백 부분
+                val tag: String = day[j] + i
                 timetxt.tag = tag
                 timetxt.setBackgroundResource(R.drawable.cell_shape)
-                timetxt.maxLines = 2
-                timetxt.textSize = 40f
+
                 timetxt.setMinTextSize(10)
 
 
-               /* // 임시적으로 만든 과목 부분
+                /* // 임시적으로 만든 과목 부분
                 for (k in 0 until subject.size) {
                     if (timetxt.tag == subject[k]) {
                         timetxt.setBackgroundColor(Color.LTGRAY)
@@ -367,15 +377,12 @@ class MainActivity: AppCompatActivity() {
 
     }
 
-    fun createSubjectLine(StartTime:Int,EndTime:Int,DayFlag:Int){
+    fun initSubjectLine() {
 
-        val SubjectHeight = (EndTime - StartTime) * 57
-        val SubjectMargin = (StartTime - intentStartTime) * 57
+        for(i in 0 until day.size) {
 
+            val id: Int = i + 1
 
-        for(i in 0 until day.size)  {
-
-            val tag : Int = i+1
             val subjectLine = ConstraintLayout(this)
 
             subjectLine.layoutParams = LinearLayout.LayoutParams(
@@ -384,36 +391,40 @@ class MainActivity: AppCompatActivity() {
             ).apply {
                 width = 0
                 weight = 1f
-                subjectLine.tag = tag
-                if(subjectLine.tag == 1)subjectLine.setBackgroundColor(Color.LTGRAY)
+                subjectLine.id = id
             }
 
             canvas.bringToFront()
             canvas.addView(subjectLine)
 
-            if(DayFlag == subjectLine.tag) {
-                val subject = ImageView(this)
-                subject.layoutParams = ConstraintLayout.LayoutParams(
-                    ConstraintLayout.LayoutParams.WRAP_CONTENT,
-                    ConstraintLayout.LayoutParams.WRAP_CONTENT
-                ).apply {
 
-                    width = 74
-                    height = 55 + SubjectHeight
-                    topToTop = ConstraintLayout.LayoutParams.PARENT_ID
-                    bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
-                    rightToRight = ConstraintLayout.LayoutParams.PARENT_ID
-                    leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID
-                    subject.setBackgroundColor(Color.RED)
-                    verticalBias = 0f
-                    goneTopMargin = SubjectMargin
-
-                }
-                subjectLine.addView(subject)
-            }
         }
 
+    }
 
+    fun createSubjectLine(StartTime:Int,EndTime:Int,DayFlag:Int){
+
+        val SubjectHeight = (EndTime - StartTime) * 150
+        val SubjectMargin = (StartTime - intentStartTime) * 150
+        val subject = ImageView(this)
+
+        subject.layoutParams = ConstraintLayout.LayoutParams(
+            ConstraintLayout.LayoutParams.WRAP_CONTENT,
+            ConstraintLayout.LayoutParams.WRAP_CONTENT
+        ).apply {
+
+                width = 260
+                height = SubjectHeight
+                topToTop = ConstraintLayout.LayoutParams.PARENT_ID
+                bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
+                rightToRight = ConstraintLayout.LayoutParams.PARENT_ID
+                leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID
+                subject.setBackgroundColor(Color.RED)
+                verticalBias = 0f
+                topMargin = SubjectMargin
+
+        }
+        findViewById<ConstraintLayout>(DayFlag).addView(subject)
 
     }
 
