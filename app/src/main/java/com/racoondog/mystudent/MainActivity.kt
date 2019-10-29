@@ -15,8 +15,6 @@ import me.grantland.widget.AutofitTextView
 import android.content.DialogInterface
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
-import kotlinx.android.synthetic.main.create_subject.*
-import kotlinx.android.synthetic.main.lesson_detail.*
 
 
 class MainActivity: AppCompatActivity() {
@@ -392,7 +390,26 @@ class MainActivity: AppCompatActivity() {
 
         val subjectHeight = (EndTime - StartTime) * 150
         val subjectMargin = (StartTime - intentStartTime) * 150
-        val subject = ImageView(this)
+        val subject = ConstraintLayout(this)
+        val titleText = TextView(this)
+        var smallTitle : String = ""
+
+        if(SubjectTitle.length > 15){
+            smallTitle = SubjectTitle.substring(0,15)+".."
+        }
+        else{
+            smallTitle = SubjectTitle
+        }
+
+
+        titleText.layoutParams = ConstraintLayout.LayoutParams(
+            ConstraintLayout.LayoutParams.MATCH_PARENT,
+            ConstraintLayout.LayoutParams.WRAP_CONTENT
+        ).apply {
+            titleText.maxLines = 2
+            titleText.textSize = 13f
+            titleText.text = "$smallTitle"
+        }
 
         subject.layoutParams = ConstraintLayout.LayoutParams(
             ConstraintLayout.LayoutParams.WRAP_CONTENT,
@@ -404,9 +421,10 @@ class MainActivity: AppCompatActivity() {
             bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
             rightToRight = ConstraintLayout.LayoutParams.PARENT_ID
             leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID
-            subject.setBackgroundColor(Color.BLUE)
+            subject.setBackgroundColor(Color.LTGRAY)
             verticalBias = 0f
             topMargin = subjectMargin
+            subject.setPadding(20,10,20,10)
 
             subject.setOnClickListener{
                 val intentLessonDetail = Intent (this@MainActivity, LessonDetail::class.java)
@@ -416,8 +434,8 @@ class MainActivity: AppCompatActivity() {
                 startActivityForResult(intentLessonDetail,103)
             }
 
-
         }
+        subject.addView(titleText)
         findViewById<ConstraintLayout>(DayFlag).addView(subject)
 
 

@@ -224,15 +224,19 @@ class CreateSubject :AppCompatActivity() {
         createSubject_Button.setOnClickListener{
             if(dayflag != 0 ) {
                 if (start_time.value < end_time.value) {
-
-                    intent.putExtra("SubjectStartTime", start_time.value)
-                    intent.putExtra("SubjectEndTime", end_time.value)
-                    intent.putExtra("DayFlag",dayflag)
-                    intent.putExtra("SubjectTitle",TitleName_text.text.toString())
-                    intent.putExtra("StartTimeText", textView_start.text.toString())
-                    intent.putExtra("EndTimeText", textView_end.text.toString())
-                    setResult(Activity.RESULT_OK, intent)
-                    finish()
+                    if(TitleName_text.text.toString() !="") {
+                        intent.putExtra("SubjectStartTime", start_time.value)
+                        intent.putExtra("SubjectEndTime", end_time.value)
+                        intent.putExtra("DayFlag", dayflag)
+                        intent.putExtra("SubjectTitle", TitleName_text.text.toString())
+                        intent.putExtra("StartTimeText", textView_start.text.toString())
+                        intent.putExtra("EndTimeText", textView_end.text.toString())
+                        setResult(Activity.RESULT_OK, intent)
+                        finish()
+                    }
+                    else{
+                        Toast.makeText(this, "제목을 입력해 주세요.", Toast.LENGTH_SHORT).show()
+                    }
                 } else if (start_time.value == end_time.value) {
                     Toast.makeText(this, "시작 시각이 종료 시각과 같을 수 없습니다.", Toast.LENGTH_SHORT).show()
                 } else {
