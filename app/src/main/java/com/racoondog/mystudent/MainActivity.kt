@@ -394,8 +394,8 @@ class MainActivity: AppCompatActivity() {
         val titleText = TextView(this)
         var smallTitle : String = ""
 
-        if(SubjectTitle.length > 15){
-            smallTitle = SubjectTitle.substring(0,15)+".."
+        if(SubjectTitle.length > 10){
+            smallTitle = SubjectTitle.substring(0,10)+".."
         }
         else{
             smallTitle = SubjectTitle
