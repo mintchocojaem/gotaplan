@@ -245,27 +245,6 @@ class MainActivity: AppCompatActivity() {
 
         }
 
-        val initday = TextView(this)  // timetext의 textsize에 의한 간격차를 매꾸기 위해 수동으로 공백을 추가하는 부분
-        initday.setBackgroundResource(R.color.colorAccent)// 색깔을 변경해서 얼마나 띄워지는지 확인 가능
-        initday.layoutParams = TableRow.LayoutParams(
-            TableRow.LayoutParams.WRAP_CONTENT,
-            TableRow.LayoutParams.WRAP_CONTENT
-        ).apply {
-
-            if (day_flag == 1) {
-                initday.text = "   "
-            }
-            if (day_flag == 2) {
-                initday.text = "    "
-            }
-            if (day_flag == 3) {
-                initday.text = "     "
-            }
-            weight = 1f //시간표 위에 날짜별 공백 줄을 맞추기 위한 부분
-        }
-
-        dayrow.addView(initday)
-
 
         for (i in 0 until day.size) {
 
@@ -284,7 +263,7 @@ class MainActivity: AppCompatActivity() {
             dayrow.addView(daytxt)
         }
 
-        Day_Line.addView(dayrow)
+        day_line.addView(dayrow)
 
         for (i in 0 until period.size) {
 
