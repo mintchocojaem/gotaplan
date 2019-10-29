@@ -4,13 +4,14 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:orientation="vertical" android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/White_bg">
 
     <androidx.appcompat.widget.Toolbar
             android:id="@+id/CreateSubject_toolbar"
             android:layout_width="0dp"
             android:layout_height="60dp"
-            android:background="@color/Actionbar_bg"
+            android:background="@color/White_bg"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -56,38 +57,65 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="50dp"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/CreateSubject_toolbar"
             app:layout_constraintLeft_toLeftOf="parent"
             android:id="@+id/text_bar"
             app:layout_constraintVertical_chainStyle="packed"
             app:layout_constraintVertical_bias="0"
-            android:background="@drawable/layout_shape">
+            android:background="@color/White_bg">
         <EditText
                 android:id="@+id/TitleName_text"
                 android:layout_width="380dp"
                 android:layout_height="wrap_content"
                 android:hint="제목을 입력하세요."
+                android:textSize="20sp"
                 android:singleLine="true"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent">
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:background="@null">
 
         </EditText>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            app:layout_constraintTop_toBottomOf="@id/text_bar"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/Time_bar"
+            android:id="@+id/Content_bar"
+            android:background="@color/White_bg">
+        <EditText
+                android:id="@+id/Content_text"
+                android:layout_width="380dp"
+                android:layout_height="wrap_content"
+                android:hint="설명"
+                android:textSize="15sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:background="@null"
+                android:maxLength="100">
+
+        </EditText>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            app:layout_constraintTop_toBottomOf="@id/text_bar"
+            app:layout_constraintTop_toBottomOf="@id/Content_bar"
             android:id="@+id/Time_bar"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintBottom_toTopOf="@id/time_picker"
             app:layout_constraintVertical_chainStyle="packed"
-            android:background="@drawable/layout_shape">
+            android:background="@drawable/timepicker_layout">
 
         <TextView
                 android:layout_width="wrap_content"
@@ -146,7 +174,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="120dp"
             app:layout_constraintTop_toBottomOf="@id/Time_bar"
             android:id="@+id/time_picker"
             app:layout_constraintRight_toRightOf="parent"
@@ -205,12 +233,15 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="80dp"
             app:layout_constraintTop_toBottomOf="@id/time_picker"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent">
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:id="@+id/daySelect_bar"
+            app:layout_constraintBottom_toTopOf="@id/lessonMode_bar">
 
         <Button
                 android:layout_width="55dp"
@@ -298,6 +329,39 @@
                 android:visibility="gone">
 
         </Button>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            app:layout_constraintTop_toBottomOf="@id/daySelect_bar"
+            android:id="@+id/lessonMode_bar">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="개인 레슨:   "
+                android:textSize="15sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/lesson_OnOff"
+                android:id="@+id/lesson_text"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintHorizontal_bias="0.1">
+
+        </TextView>
+
+        <ToggleButton
+                android:layout_width="50dp"
+                android:layout_height="45dp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/lesson_text"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:id="@+id/lesson_OnOff">
+
+        </ToggleButton>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

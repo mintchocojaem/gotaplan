@@ -139,7 +139,8 @@ class MainActivity: AppCompatActivity() {
                     val SubjectTitle = data!!.getStringExtra("SubjectTitle")
                     val StartTimeText = data!!.getStringExtra("StartTimeText")
                     val EndTimeText = data!!.getStringExtra("EndTimeText")
-                    createSubjectLine(SubjectStartTime, SubjectEndTime, DayFlag, SubjectTitle,StartTimeText,EndTimeText)
+                    val ContentText = data?.getStringExtra("ContentText")
+                    createSubjectLine(SubjectStartTime, SubjectEndTime, DayFlag, SubjectTitle,StartTimeText,EndTimeText,ContentText)
 
                 }
                 103->{
@@ -248,7 +249,7 @@ class MainActivity: AppCompatActivity() {
 
             val daytxt = TextView(this) // 요일을 나타내는 부분 ex -> 월 화 수 목
             daytxt.gravity = Gravity.CENTER
-            daytxt.setBackgroundResource(R.color.Actionbar_bg)
+            daytxt.setBackgroundResource(R.color.White_bg)
             daytxt.layoutParams = TableRow.LayoutParams(
                 TableRow.LayoutParams.WRAP_CONTENT,
                 TableRow.LayoutParams.WRAP_CONTENT
@@ -386,7 +387,8 @@ class MainActivity: AppCompatActivity() {
 
     }
 
-    fun createSubjectLine(StartTime:Int,EndTime:Int,DayFlag:Int,SubjectTitle:String,StartTimeText:String,EndTimeText:String){
+    fun createSubjectLine(StartTime:Int,EndTime:Int,DayFlag:Int,SubjectTitle:String,StartTimeText:String,EndTimeText:String,
+                          ContentText:String?){
 
         val subjectHeight = (EndTime - StartTime) * 150
         val subjectMargin = (StartTime - intentStartTime) * 150
@@ -427,11 +429,12 @@ class MainActivity: AppCompatActivity() {
             subject.setPadding(20,10,20,10)
 
             subject.setOnClickListener{
-                val intentLessonDetail = Intent (this@MainActivity, LessonDetail::class.java)
-                intentLessonDetail.putExtra("LessonTitle",SubjectTitle)
-                intentLessonDetail.putExtra("StartTimeText",StartTimeText)
-                intentLessonDetail.putExtra("EndTimeText",EndTimeText)
-                startActivityForResult(intentLessonDetail,103)
+                val intentSubjectDetail = Intent (this@MainActivity, SubjectDetail::class.java)
+                intentSubjectDetail.putExtra("SubjectTitle",SubjectTitle)
+                intentSubjectDetail.putExtra("StartTimeText",StartTimeText)
+                intentSubjectDetail.putExtra("EndTimeText",EndTimeText)
+                intentSubjectDetail.putExtra("ContentText",ContentText)
+                startActivityForResult(intentSubjectDetail,103)
             }
 
         }

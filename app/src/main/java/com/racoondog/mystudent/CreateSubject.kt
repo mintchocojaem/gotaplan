@@ -231,6 +231,7 @@ class CreateSubject :AppCompatActivity() {
                         intent.putExtra("SubjectTitle", TitleName_text.text.toString())
                         intent.putExtra("StartTimeText", textView_start.text.toString())
                         intent.putExtra("EndTimeText", textView_end.text.toString())
+                        intent.putExtra("ContentText",Content_text.text.toString())
                         setResult(Activity.RESULT_OK, intent)
                         finish()
                     }

@@ -10,7 +10,7 @@
             android:id="@+id/my_toolbar"
             android:layout_width="0dp"
             android:layout_height="100dp"
-            android:background="@color/Actionbar_bg"
+            android:background="@color/White_bg"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -87,7 +87,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             android:id="@+id/Day_Line"
-            android:background="@color/Actionbar_bg">
+            android:background="@color/White_bg">
 
         <androidx.constraintlayout.widget.Guideline
                 android:layout_width="wrap_content"
@@ -167,7 +167,7 @@
             app:layout_constraintTop_toBottomOf="@id/my_toolbar"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:background="@color/Actionbar_bg"
+            android:background="@color/White_bg"
             android:visibility="gone">
 
 
@@ -175,7 +175,7 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/memo_view"
-                android:background="@color/Actionbar_bg"
+                android:background="@color/White_bg"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toEndOf="@id/memo_text"
@@ -233,7 +233,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintVertical_bias="0.96"
             app:layout_constraintHorizontal_bias="0.94"
-            android:backgroundTint="@color/Actionbar_bg"
+            android:backgroundTint="@color/White_bg"
             android:src="@drawable/title_plus">
 
     </com.google.android.material.floatingactionbutton.FloatingActionButton>

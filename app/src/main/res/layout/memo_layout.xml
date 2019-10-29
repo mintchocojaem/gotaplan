@@ -8,7 +8,7 @@
             android:id="@+id/CreateMemo_toolbar"
             android:layout_width="0dp"
             android:layout_height="60dp"
-            android:background="@color/Actionbar_bg"
+            android:background="@color/White_bg"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
