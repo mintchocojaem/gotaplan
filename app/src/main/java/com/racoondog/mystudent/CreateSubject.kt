@@ -228,6 +228,9 @@ class CreateSubject :AppCompatActivity() {
                     intent.putExtra("SubjectStartTime", start_time.value)
                     intent.putExtra("SubjectEndTime", end_time.value)
                     intent.putExtra("DayFlag",dayflag)
+                    intent.putExtra("SubjectTitle",TitleName_text.text.toString())
+                    intent.putExtra("StartTimeText", textView_start.text.toString())
+                    intent.putExtra("EndTimeText", textView_end.text.toString())
                     setResult(Activity.RESULT_OK, intent)
                     finish()
                 } else if (start_time.value == end_time.value) {

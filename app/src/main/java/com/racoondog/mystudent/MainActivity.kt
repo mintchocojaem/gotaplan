@@ -15,8 +15,8 @@ import me.grantland.widget.AutofitTextView
 import android.content.DialogInterface
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
-
-
+import kotlinx.android.synthetic.main.create_subject.*
+import kotlinx.android.synthetic.main.lesson_detail.*
 
 
 class MainActivity: AppCompatActivity() {
@@ -138,7 +138,13 @@ class MainActivity: AppCompatActivity() {
                     val SubjectStartTime = data!!.getIntExtra("SubjectStartTime", 0)
                     val SubjectEndTime = data!!.getIntExtra("SubjectEndTime", 0)
                     val DayFlag = data!!.getIntExtra("DayFlag", 0)
-                    createSubjectLine(SubjectStartTime, SubjectEndTime, DayFlag)
+                    val SubjectTitle = data!!.getStringExtra("SubjectTitle")
+                    val StartTimeText = data!!.getStringExtra("StartTimeText")
+                    val EndTimeText = data!!.getStringExtra("EndTimeText")
+                    createSubjectLine(SubjectStartTime, SubjectEndTime, DayFlag, SubjectTitle,StartTimeText,EndTimeText)
+
+                }
+                103->{
 
                 }
             }
@@ -403,7 +409,7 @@ class MainActivity: AppCompatActivity() {
 
     }
 
-    fun createSubjectLine(StartTime:Int,EndTime:Int,DayFlag:Int){
+    fun createSubjectLine(StartTime:Int,EndTime:Int,DayFlag:Int,SubjectTitle:String,StartTimeText:String,EndTimeText:String){
 
         val subjectHeight = (EndTime - StartTime) * 150
         val subjectMargin = (StartTime - intentStartTime) * 150
@@ -413,19 +419,28 @@ class MainActivity: AppCompatActivity() {
             ConstraintLayout.LayoutParams.WRAP_CONTENT,
             ConstraintLayout.LayoutParams.WRAP_CONTENT
         ).apply {
+            width = ConstraintLayout.LayoutParams.PARENT_ID
+            height = subjectHeight
+            topToTop = ConstraintLayout.LayoutParams.PARENT_ID
+            bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
+            rightToRight = ConstraintLayout.LayoutParams.PARENT_ID
+            leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID
+            subject.setBackgroundColor(Color.BLUE)
+            verticalBias = 0f
+            topMargin = subjectMargin
 
-                width = ConstraintLayout.LayoutParams.PARENT_ID
-                height = subjectHeight
-                topToTop = ConstraintLayout.LayoutParams.PARENT_ID
-                bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
-                rightToRight = ConstraintLayout.LayoutParams.PARENT_ID
-                leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID
-                subject.setBackgroundColor(Color.BLUE)
-                verticalBias = 0f
-                topMargin = subjectMargin
+            subject.setOnClickListener{
+                val intentLessonDetail = Intent (this@MainActivity, LessonDetail::class.java)
+                intentLessonDetail.putExtra("LessonTitle",SubjectTitle)
+                intentLessonDetail.putExtra("StartTimeText",StartTimeText)
+                intentLessonDetail.putExtra("EndTimeText",EndTimeText)
+                startActivityForResult(intentLessonDetail,103)
+            }
+
 
         }
         findViewById<ConstraintLayout>(DayFlag).addView(subject)
+
 
     }
 

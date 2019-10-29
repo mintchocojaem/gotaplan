@@ -16,6 +16,7 @@
         <activity android:name=".LessonDetailActivity"></activity>
         <activity android:name=".CreateMemo"></activity>
         <activity android:name=".CreateSubject"></activity>
+        <activity android:name=".LessonDetail"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
