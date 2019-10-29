@@ -392,6 +392,7 @@ class MainActivity: AppCompatActivity() {
                 width = 0
                 weight = 1f
                 subjectLine.id = id
+                subjectLine.setPadding(3,0,3,0)
             }
 
             canvas.bringToFront()
@@ -407,20 +408,13 @@ class MainActivity: AppCompatActivity() {
         val subjectHeight = (EndTime - StartTime) * 150
         val subjectMargin = (StartTime - intentStartTime) * 150
         val subject = ImageView(this)
-        var widthSubject = 260
-        if (intentflag == 2){
-            widthSubject = 215
-        }
-        else if (intentflag == 3){
-            widthSubject = 185
-        }
 
         subject.layoutParams = ConstraintLayout.LayoutParams(
             ConstraintLayout.LayoutParams.WRAP_CONTENT,
             ConstraintLayout.LayoutParams.WRAP_CONTENT
         ).apply {
 
-                width = widthSubject
+                width = ConstraintLayout.LayoutParams.PARENT_ID
                 height = subjectHeight
                 topToTop = ConstraintLayout.LayoutParams.PARENT_ID
                 bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
