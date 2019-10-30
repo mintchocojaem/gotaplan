@@ -146,8 +146,10 @@ class MainActivity: AppCompatActivity() {
                 103->{
 
                 }
+
             }
         }
+
     }
 
     // 시간표를 그리는 함수

@@ -45,9 +45,21 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     app:layout_constraintLeft_toRightOf="@id/toolbar_title"
-                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/lessonSave_Button"
                     app:layout_constraintTop_toTopOf="@id/toolbar_title"
                     app:layout_constraintBottom_toBottomOf="@id/toolbar_title"/>
+            <Button
+                    android:id="@+id/lessonSave_Button"
+                    android:text="저장"
+                    android:layout_width="60dp"
+                    android:layout_height="40dp"
+                    app:layout_constraintLeft_toRightOf="@id/lessonQuit_Button"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/toolbar_title"
+                    app:layout_constraintBottom_toBottomOf="@id/toolbar_title"
+                    android:clickable="false"
+                    android:background="@null"
+                    android:textColor="@color/originalText"/>
 
 
 
@@ -56,15 +68,15 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="80dp"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/lesson_toolbar"
             app:layout_constraintLeft_toLeftOf="parent"
             android:id="@+id/text_bar"
             app:layout_constraintVertical_chainStyle="packed"
             app:layout_constraintVertical_bias="0">
-        <TextView
-                android:id="@+id/lesson_title"
+        <EditText
+                android:id="@+id/subject_title"
                 android:layout_width="380dp"
                 android:layout_height="wrap_content"
                 android:hint="제목"
@@ -72,16 +84,18 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/lesson_time"
+                app:layout_constraintBottom_toTopOf="@id/subject_time"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent">
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:background="@null"
+                android:textColor="@color/originalText">
 
-        </TextView>
+        </EditText>
         <TextView
-                android:id="@+id/lesson_time"
+                android:id="@+id/subject_time"
                 android:layout_width="380dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/lesson_title"
+                app:layout_constraintTop_toBottomOf="@id/subject_title"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -107,8 +121,8 @@
                 android:textSize="16dp"
                 android:textStyle="bold"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/lesson_content"
-                app:layout_constraintLeft_toLeftOf="@id/lesson_content"
+                app:layout_constraintBottom_toTopOf="@id/subject_content"
+                app:layout_constraintLeft_toLeftOf="@id/subject_content"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintHorizontal_bias="0"
                 android:id="@+id/explain"
@@ -117,7 +131,7 @@
 
         </TextView>
 
-        <me.grantland.widget.AutofitTextView
+        <EditText
                 android:layout_width="380dp"
                 android:layout_height="wrap_content"
                 android:background="@null"
@@ -128,9 +142,11 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                android:id="@+id/lesson_content">
+                android:id="@+id/subject_content"
+                android:textColor="@color/originalText"
+                android:maxLength="100">
 
-        </me.grantland.widget.AutofitTextView>
+        </EditText>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -182,16 +198,18 @@
 
             </TextView>
 
-            <TextView
+            <EditText
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintLeft_toRightOf="@id/student_name"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="@id/student_name"
                     app:layout_constraintBottom_toBottomOf="@id/student_name"
-                    android:id="@+id/studentName_text">
+                    android:id="@+id/studentName_text"
+                    android:background="@null"
+                    android:textColor="@color/originalText">
 
-            </TextView>
+            </EditText>
 
             <TextView
                     android:layout_width="wrap_content"
@@ -207,16 +225,18 @@
 
             </TextView>
 
-            <TextView
+            <EditText
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintLeft_toRightOf="@id/student_birth"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="@id/student_birth"
                     app:layout_constraintBottom_toBottomOf="@id/student_birth"
-                    android:id="@+id/studentBirth_text">
+                    android:id="@+id/studentBirth_text"
+                    android:background="@null"
+                    android:textColor="@color/originalText">
 
-            </TextView>
+            </EditText>
 
             <TextView
                     android:layout_width="wrap_content"
@@ -232,16 +252,18 @@
 
             </TextView>
 
-            <TextView
+            <EditText
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintLeft_toRightOf="@id/student_phone"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="@id/student_phone"
                     app:layout_constraintBottom_toBottomOf="@id/student_phone"
-                    android:id="@+id/studentPhone_text">
+                    android:id="@+id/studentPhone_text"
+                    android:background="@null"
+                    android:textColor="@color/originalText">
 
-            </TextView>
+            </EditText>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
         <TextView
@@ -285,16 +307,18 @@
                     android:textSize="15sp">
 
             </TextView>
-            <TextView
+            <EditText
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintLeft_toRightOf="@id/lesson_fee"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="@id/lesson_fee"
                     app:layout_constraintBottom_toBottomOf="@id/lesson_fee"
-                    android:id="@+id/lessonFee_text">
+                    android:id="@+id/lessonFee_text"
+                    android:background="@null"
+                    android:textColor="@color/originalText">
 
-            </TextView>
+            </EditText>
 
             <TextView
                     android:layout_width="wrap_content"
@@ -309,16 +333,18 @@
                     android:textSize="15sp">
 
             </TextView>
-            <TextView
+            <EditText
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintLeft_toRightOf="@id/lesson_cycle"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="@id/lesson_cycle"
                     app:layout_constraintBottom_toBottomOf="@id/lesson_cycle"
-                    android:id="@+id/lessonCycle_text">
+                    android:id="@+id/lessonCycle_text"
+                    android:background="@null"
+                    android:textColor="@color/originalText">
 
-            </TextView>
+            </EditText>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

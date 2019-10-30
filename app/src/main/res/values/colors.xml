@@ -5,4 +5,5 @@
     <color name="colorAccent">#D81B60</color>
     <color name="White_bg">#ffffff</color>
     <color name="whitegray_bg">#ededed</color>
+    <color name="originalText">#808080</color>
 </resources>
