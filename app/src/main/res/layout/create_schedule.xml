@@ -78,7 +78,8 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:background="@null"
-                android:textSize="20sp">
+                android:textSize="20sp"
+                app:layout_constraintHorizontal_bias="1">
 
 
         </EditText>
