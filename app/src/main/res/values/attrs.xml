@@ -53,10 +53,10 @@
         <attr name="scrollDuration" format="integer"/>
     </declare-styleable>
 
-    <declare-styleable name="day_button">
-        <attr name="bg" format="reference|integer"/>
-        <attr name="text" format="reference|string"/>
-        <attr name="BG" format="reference|integer"/>
+    <declare-styleable name="weekview">
+        <attr name="lastDay" format="integer"/>
+        <attr name="startTime" format="integer"/>
+        <attr name="endTime" format="integer"/>
     </declare-styleable>
 
 </resources>
