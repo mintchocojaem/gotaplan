@@ -9,6 +9,7 @@ import android.graphics.Color
 import android.view.View
 import android.widget.NumberPicker
 import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class CreateSchedule : AppCompatActivity(){
@@ -150,21 +151,21 @@ class CreateSchedule : AppCompatActivity(){
             Friday.setBackgroundColor(Color.GRAY)
             Saturday.setBackgroundColor(Color.LTGRAY)
             Sunday.setBackgroundColor(Color.LTGRAY)
-            day_flag = 1
+            day_flag = 5
         }
 
         Saturday.setOnClickListener{
             Friday.setBackgroundColor(Color.LTGRAY)
             Saturday.setBackgroundColor(Color.GRAY)
             Sunday.setBackgroundColor(Color.LTGRAY)
-            day_flag = 2
+            day_flag = 6
         }
 
         Sunday.setOnClickListener{
             Friday.setBackgroundColor(Color.LTGRAY)
             Saturday.setBackgroundColor(Color.LTGRAY)
             Sunday.setBackgroundColor(Color.GRAY)
-            day_flag = 3
+            day_flag = 7
         }
 
         textView_start.setOnClickListener{

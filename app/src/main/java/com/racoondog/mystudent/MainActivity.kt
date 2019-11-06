@@ -109,7 +109,7 @@ class MainActivity: AppCompatActivity() {
     }
 
     //MainActivity로 들어오는 onActivityResult 부분 -> Intent 후 값 반환
-/*
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
@@ -120,13 +120,11 @@ class MainActivity: AppCompatActivity() {
                     val start_timer = data.getIntExtra("start_time", 0)
                     val end_timer = data.getIntExtra("end_time", 0)
 
-                    LoadSchedule(dayflag, start_timer, end_timer)
                     intentStartTime = start_timer
                     intentEndTime = end_timer
                     intentflag = dayflag
-                    initSubjectLine()
                 }
-                101 -> {
+                /*101 -> {
                     memo.add(Memo(data!!.getStringExtra("memo").toString() + ",  "))
                 }
                 102 -> {
@@ -139,7 +137,7 @@ class MainActivity: AppCompatActivity() {
                     val ContentText = data?.getStringExtra("ContentText")
                     createSubjectLine(SubjectStartTime, SubjectEndTime, DayFlag, SubjectTitle,StartTimeText,EndTimeText,ContentText)
 
-                }
+                }*/
                 103->{
 
                 }
@@ -148,7 +146,7 @@ class MainActivity: AppCompatActivity() {
         }
 
     }
-
+/*
     // 시간표를 그리는 함수
 
 

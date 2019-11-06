@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.LayoutInflater
+import android.widget.LinearLayout
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
@@ -24,6 +25,9 @@ class WeekView : ConstraintLayout {
     var lastDay = 0
     var endTime = 0
     var startTime = 0
+
+    var day = listOf<String>()
+    val cnxt = context as MainActivity
 
     constructor(context: Context) : super(context, null) {
 
@@ -65,14 +69,13 @@ class WeekView : ConstraintLayout {
         addView(view)
 
         LoadSchedule(lastDay,startTime,endTime)
-
+        initSubjectLine()
 
     }
 
     fun LoadSchedule(day_flag: Int, start_time: Int, end_time: Int) {
 
-        var day = listOf<String>()
-        val cnxt = context as MainActivity
+
 
         // 마지막 요일의 선택에 따라 배열이 추가됨
 
@@ -279,6 +282,37 @@ class WeekView : ConstraintLayout {
         }
 
         scheduleview.addView(layout) //activity_main 의 스크롤 뷰에 추가
+
+        // 시간표를 그리는 함수
+
+
+    }
+
+    // 시간표를 그리는 함수
+    fun initSubjectLine() {
+
+        for(i in 0 until day.size) {
+
+            val id: Int = i + 1
+
+            val subjectLine = ConstraintLayout(cnxt)
+
+            subjectLine.layoutParams = LinearLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.MATCH_CONSTRAINT,
+                ConstraintLayout.LayoutParams.MATCH_PARENT
+            ).apply {
+                width = 0
+                weight = 1f
+                subjectLine.id = id
+                subjectLine.setPadding(3,0,3,0)
+            }
+
+            canvas.bringToFront()
+            canvas.addView(subjectLine)
+
+
+        }
+
 
     }
 
