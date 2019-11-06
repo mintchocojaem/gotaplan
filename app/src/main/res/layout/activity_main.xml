@@ -4,7 +4,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools">
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/main">
 
     <androidx.appcompat.widget.Toolbar
             android:id="@+id/my_toolbar"
@@ -89,9 +90,9 @@
             app:layout_constraintTop_toBottomOf="@id/my_toolbar"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:lastDay="6"
-            app:startTime="6"
-            app:endTime="22">
+            app:lastDay="0"
+            app:startTime="0"
+            app:endTime="0">
 
     </com.racoondog.mystudent.WeekView>
 

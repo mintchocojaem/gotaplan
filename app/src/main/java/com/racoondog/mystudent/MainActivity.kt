@@ -120,9 +120,16 @@ class MainActivity: AppCompatActivity() {
                     val start_timer = data.getIntExtra("start_time", 0)
                     val end_timer = data.getIntExtra("end_time", 0)
 
+                    weekview.lastDay = dayflag
+                    weekview.startTime = start_timer
+                    weekview.endTime = end_timer
+
+
                     intentStartTime = start_timer
                     intentEndTime = end_timer
                     intentflag = dayflag
+
+
                 }
                 /*101 -> {
                     memo.add(Memo(data!!.getStringExtra("memo").toString() + ",  "))
