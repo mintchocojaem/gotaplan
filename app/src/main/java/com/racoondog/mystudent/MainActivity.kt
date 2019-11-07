@@ -117,16 +117,15 @@ class MainActivity: AppCompatActivity() {
                 100 -> {
                     title_text.text = data!!.getStringExtra("title")
                     val dayflag = data.getIntExtra("day_flag", 0)
-                    val start_timer = data.getIntExtra("start_time", 0)
-                    val end_timer = data.getIntExtra("end_time", 0)
+                    val startTimer = data.getIntExtra("start_time", 0)
+                    val endTimer = data.getIntExtra("end_time", 0)
 
                     weekview.lastDay = dayflag
-                    weekview.startTime = start_timer
-                    weekview.endTime = end_timer
+                    weekview.startTime = startTimer
+                    weekview.endTime = endTimer
 
-
-                    intentStartTime = start_timer
-                    intentEndTime = end_timer
+                    intentStartTime = startTimer
+                    intentEndTime = endTimer
                     intentflag = dayflag
 
 
