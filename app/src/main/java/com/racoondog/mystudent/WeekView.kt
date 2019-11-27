@@ -1,6 +1,8 @@
 package com.racoondog.mystudent
 
+import android.app.Instrumentation
 import android.content.Context
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Canvas
 import android.graphics.Color
@@ -9,18 +11,16 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
-import kotlinx.android.synthetic.main.activity_main.view.*
-import kotlinx.android.synthetic.main.create_schedule.view.*
 import kotlinx.android.synthetic.main.weekview.view.*
 
 import me.grantland.widget.AutofitTextView
 import kotlin.properties.Delegates
 
 
-class WeekView : ConstraintLayout {
+class WeekView : ConstraintLayout{
 
 
-    var endTime: Int by Delegates.observable(12) { property, oldValue, newValue ->
+    var endTime: Int by Delegates.observable(0) { property, oldValue, newValue ->
         if (oldValue != newValue) {
 
 
@@ -310,6 +310,63 @@ class WeekView : ConstraintLayout {
 
 
         }
+
+
+    }
+
+    fun createSubjectLine(StartTime:Int,EndTime:Int,DayFlag:Int,SubjectTitle:String,StartTimeText:String,EndTimeText:String,
+                          ContentText:String?,intentStartTime:Int){
+
+        val subjectHeight = (EndTime - StartTime) * 150
+        val subjectMargin = (StartTime - intentStartTime) * 150
+        val subject = ConstraintLayout(cnxt)
+        val titleText = TextView(cnxt)
+        var smallTitle : String = ""
+
+        if(SubjectTitle.length > 10){
+            smallTitle = SubjectTitle.substring(0,10)+".."
+        }
+        else{
+            smallTitle = SubjectTitle
+        }
+
+
+        titleText.layoutParams = ConstraintLayout.LayoutParams(
+            ConstraintLayout.LayoutParams.MATCH_PARENT,
+            ConstraintLayout.LayoutParams.WRAP_CONTENT
+        ).apply {
+            titleText.maxLines = 2
+            titleText.textSize = 13f
+            titleText.text = "$smallTitle"
+        }
+
+        subject.layoutParams = ConstraintLayout.LayoutParams(
+            ConstraintLayout.LayoutParams.WRAP_CONTENT,
+            ConstraintLayout.LayoutParams.WRAP_CONTENT
+        ).apply {
+            width = ConstraintLayout.LayoutParams.PARENT_ID
+            height = subjectHeight
+            topToTop = ConstraintLayout.LayoutParams.PARENT_ID
+            bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
+            rightToRight = ConstraintLayout.LayoutParams.PARENT_ID
+            leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID
+            subject.setBackgroundColor(Color.LTGRAY)
+            verticalBias = 0f
+            topMargin = subjectMargin
+            subject.setPadding(20,10,20,10)
+
+            subject.setOnClickListener{
+                val intentSubjectDetail = Intent (cnxt, SubjectDetail::class.java)
+                intentSubjectDetail.putExtra("SubjectTitle",SubjectTitle)
+                intentSubjectDetail.putExtra("StartTimeText",StartTimeText)
+                intentSubjectDetail.putExtra("EndTimeText",EndTimeText)
+                intentSubjectDetail.putExtra("ContentText",ContentText)
+                cnxt.startActivityForResult(intentSubjectDetail,103)
+            }
+
+        }
+        subject.addView(titleText)
+        findViewById<ConstraintLayout>(DayFlag).addView(subject)
 
 
     }

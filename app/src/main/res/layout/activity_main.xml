@@ -45,35 +45,13 @@
                     android:layout_gravity="center"
                     android:textSize="20sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf= "@id/open_list"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintHorizontal_chainStyle="packed">
 
             </me.grantland.widget.AutofitTextView>
 
-            <Button
-                    android:id="@+id/open_list"
-                    android:layout_width="20dp"
-                    android:layout_height="0dp"
-                    android:background="@drawable/open_list"
-                    app:layout_constraintStart_toEndOf="@id/title_text"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/title_text"
-                    app:layout_constraintBottom_toBottomOf="@id/title_text"
-                    >
-            </Button>
-            <Button
-                    android:id="@+id/close_list"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:background="@drawable/close_list"
-                    app:layout_constraintRight_toRightOf="@id/open_list"
-                    app:layout_constraintLeft_toLeftOf="@id/open_list"
-                    app:layout_constraintTop_toTopOf="@id/open_list"
-                    app:layout_constraintBottom_toBottomOf="@id/open_list"
-                    android:visibility="gone">
-            </Button>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -82,19 +60,16 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <com.racoondog.mystudent.WeekView
-            android:id="@+id/weekview"
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/weekView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/my_toolbar"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:lastDay="5"
-            app:startTime="6"
-            app:endTime="12">
+            app:layout_constraintRight_toRightOf="parent">
 
-    </com.racoondog.mystudent.WeekView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/title_bar"
