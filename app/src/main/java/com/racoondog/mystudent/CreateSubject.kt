@@ -31,10 +31,10 @@ class CreateSubject :AppCompatActivity() {
         val intentFlag = intent.getIntExtra("day_flag",0)
         var dayflag = 0
 
-        if (intentFlag == 2){
+        if (intentFlag == 6){
             saturday_button.visibility = View.VISIBLE
         }
-        else if (intentFlag == 3){
+        else if (intentFlag == 7){
             saturday_button.visibility = View.VISIBLE
             sunday_button.visibility = View.VISIBLE
         }

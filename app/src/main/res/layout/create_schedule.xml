@@ -69,8 +69,10 @@
             >
         <EditText
                 android:id="@+id/TitleName_text"
-                android:layout_width="380dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
                 android:hint="제목을 입력하세요."
                 android:singleLine="true"
                 app:layout_constraintTop_toTopOf="parent"

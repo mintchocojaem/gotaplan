@@ -301,8 +301,7 @@ class WeekView : ConstraintLayout{
                 width = 0
                 weight = 1f
                 subjectLine.id = id
-                subjectLine.setPadding(3, 0, 3, 0)
-
+                subjectLine.setPadding(1,1,1,1)
             }
 
             canvas.bringToFront()
@@ -350,9 +349,9 @@ class WeekView : ConstraintLayout{
             bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
             rightToRight = ConstraintLayout.LayoutParams.PARENT_ID
             leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID
-            subject.setBackgroundColor(Color.LTGRAY)
             verticalBias = 0f
             topMargin = subjectMargin
+            subject.setBackgroundResource(R.color.colorAccent)
             subject.setPadding(20,10,20,10)
 
             subject.setOnClickListener{
