@@ -287,6 +287,13 @@ class CreateSubject :AppCompatActivity() {
         sunday_button.setOnClickListener {
             dayflag = 7
         }
+        lesson_mode.setOnCheckedChangeListener{compoundButton,b ->
+            if (compoundButton.isChecked){
+                Toast.makeText(this, "개인 레슨: on", Toast.LENGTH_SHORT).show()
+            } else{
+                Toast.makeText(this, "개인 레슨: off", Toast.LENGTH_SHORT).show()
+            }
+        }
 
 
     }

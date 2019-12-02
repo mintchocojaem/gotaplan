@@ -31,9 +31,8 @@ class WeekView : ConstraintLayout{
 
     var startTime = 0
     var lastDay = 0
-
     val cnxt = context as MainActivity
-
+    var subjectID = 0
 
     constructor(context: Context) : super(context, null) {
 
@@ -321,6 +320,7 @@ class WeekView : ConstraintLayout{
         val subject = ConstraintLayout(cnxt)
         val titleText = TextView(cnxt)
         var smallTitle : String = ""
+        val id = subjectID
 
         if(SubjectTitle.length > 10){
             smallTitle = SubjectTitle.substring(0,10)+".."
@@ -353,14 +353,20 @@ class WeekView : ConstraintLayout{
             topMargin = subjectMargin
             subject.setBackgroundResource(R.color.colorAccent)
             subject.setPadding(20,10,20,10)
-
+            subjectID++
             subject.setOnClickListener{
+
+                Toast.makeText(cnxt, "$id", Toast.LENGTH_SHORT).show()
+
+                /*
                 val intentSubjectDetail = Intent (cnxt, SubjectDetail::class.java)
                 intentSubjectDetail.putExtra("SubjectTitle",SubjectTitle)
                 intentSubjectDetail.putExtra("StartTimeText",StartTimeText)
                 intentSubjectDetail.putExtra("EndTimeText",EndTimeText)
                 intentSubjectDetail.putExtra("ContentText",ContentText)
                 cnxt.startActivityForResult(intentSubjectDetail,103)
+                */
+
             }
 
         }
