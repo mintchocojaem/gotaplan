@@ -3,12 +3,17 @@ package com.racoondog.mystudent
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.*
+import android.widget.TextView
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import androidx.constraintlayout.widget.ConstraintLayout
+import io.realm.Realm
+import io.realm.kotlin.oneOf
 
 
 class MainActivity: AppCompatActivity() {
@@ -18,11 +23,14 @@ class MainActivity: AppCompatActivity() {
     var intentflag : Int = 0
     val weekview by lazy {WeekView(this)}
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
 
 
         setSupportActionBar(my_toolbar)  //Actionbar 부분
@@ -53,6 +61,7 @@ class MainActivity: AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 100 -> {
@@ -90,14 +99,43 @@ class MainActivity: AppCompatActivity() {
                     val StartTimeText = data!!.getStringExtra("StartTimeText")
                     val EndTimeText = data!!.getStringExtra("EndTimeText")
                     val ContentText = data?.getStringExtra("ContentText")
-                    weekview.createSubjectLine(SubjectStartTime, SubjectEndTime, DayFlag, SubjectTitle,
-                    StartTimeText,EndTimeText,ContentText,intentStartTime)
+
+
+                    /*
+                    Realm.init(this)
+                    val realm = Realm.getDefaultInstance()
+                    realm.beginTransaction()
+                    val SubjectData:SubjectInfo = realm.createObject(SubjectInfo::class.java)
+                    SubjectData.apply {
+                        this.SubjectTitle = SubjectTitle
+                        this.StartTimeText = StartTimeText
+                        this.EndTimeText = EndTimeText
+                        this.ContentText = ContentText
+                    }
+                    realm.commitTransaction()
+                     */
+                    SubjectData.SubjectTitle = SubjectTitle
+                    SubjectData.StartTimeText = StartTimeText
+                    SubjectData.EndTimeText = EndTimeText
+                    SubjectData.ContentText = ContentText
+                    SubjectData.id = weekview.subjectID
+                    SubjectData.setData(SubjectData.id)
+
+                    weekview.createSubjectLine(SubjectStartTime, SubjectEndTime, DayFlag,intentStartTime)
 
                 }
                 103->{
-
+                    val title = weekview.findViewWithTag<TextView>("title${SubjectData.id}")
+                    title.text = SubjectData.SubjectInfo[SubjectData.id][0]
                 }
 
+            }
+        }
+        if (resultCode == Activity.RESULT_CANCELED){
+            when(requestCode){
+                100 ->{
+
+                }
             }
         }
 

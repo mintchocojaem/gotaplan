@@ -9,8 +9,13 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.subject_detail.*
 
 import android.text.Editable
+import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import io.realm.Realm
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.create_subject.*
 
 
 class SubjectDetail : AppCompatActivity(){
@@ -24,23 +29,28 @@ class SubjectDetail : AppCompatActivity(){
             finish()
 
         }
+        /*
         val intent = getIntent()
         val intentTitle = intent.getStringExtra("SubjectTitle")
         val intentStartTimeText = intent.getStringExtra("StartTimeText")
         val intentEndTimeText = intent.getStringExtra("EndTimeText")
         val intentContentText = intent.getStringExtra("ContentText")
+        */
 
-        subject_time.setText("$intentStartTimeText ~ $intentEndTimeText")
-        subject_title.setText("$intentTitle")
-        subject_content.setText("$intentContentText")
+
+        subject_time.setText(SubjectData.SubjectInfo[SubjectData.id][1] +"~"+ SubjectData.SubjectInfo[SubjectData.id][2])
+        subject_title.setText(SubjectData.SubjectInfo[SubjectData.id][0])
+        subject_content.setText(SubjectData.SubjectInfo[SubjectData.id][3])
 
 
         val initTitle = subject_title.text.toString()
 
 
+
         val textWatcher = object : TextWatcher {
             override fun afterTextChanged(edit: Editable) {
                 // Text가 바뀌고 동작할 코드
+
 
             }
 
@@ -75,9 +85,13 @@ class SubjectDetail : AppCompatActivity(){
 
         lessonSave_Button.setOnClickListener {
             if(subject_title.isClickable == true) {
-                Toast.makeText(this, "true", Toast.LENGTH_SHORT).show()
+
+                SubjectData.setTitle(subject_title.text.toString())
+
+                Toast.makeText(this, "${SubjectData.SubjectInfo[SubjectData.id].contentDeepToString()}", Toast.LENGTH_SHORT).show()
             }
         }
+
 
     }
 }

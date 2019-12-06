@@ -1,18 +1,13 @@
 package com.racoondog.mystudent
 
-import android.app.Instrumentation
 import android.content.Context
 import android.content.Intent
-import android.content.res.ColorStateList
-import android.graphics.Canvas
-import android.graphics.Color
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import kotlinx.android.synthetic.main.weekview.view.*
-
 import me.grantland.widget.AutofitTextView
 import kotlin.properties.Delegates
 
@@ -33,6 +28,7 @@ class WeekView : ConstraintLayout{
     var lastDay = 0
     val cnxt = context as MainActivity
     var subjectID = 0
+
 
     constructor(context: Context) : super(context, null) {
 
@@ -300,7 +296,7 @@ class WeekView : ConstraintLayout{
                 width = 0
                 weight = 1f
                 subjectLine.id = id
-                subjectLine.setPadding(1,1,1,1)
+                subjectLine.setPadding(1,0,1,1)
             }
 
             canvas.bringToFront()
@@ -312,21 +308,25 @@ class WeekView : ConstraintLayout{
 
     }
 
-    fun createSubjectLine(StartTime:Int,EndTime:Int,DayFlag:Int,SubjectTitle:String,StartTimeText:String,EndTimeText:String,
-                          ContentText:String?,intentStartTime:Int){
+    fun createSubjectLine(StartTime:Int,EndTime:Int,DayFlag:Int,intentStartTime:Int){
 
         val subjectHeight = (EndTime - StartTime) * 150
         val subjectMargin = (StartTime - intentStartTime) * 150
         val subject = ConstraintLayout(cnxt)
         val titleText = TextView(cnxt)
+
+        titleText.apply {
+            titleText.tag = "title$subjectID"
+        }
+
         var smallTitle : String = ""
         val id = subjectID
 
-        if(SubjectTitle.length > 10){
-            smallTitle = SubjectTitle.substring(0,10)+".."
+        if(SubjectData.SubjectInfo[id][0].length > 10){
+            smallTitle = SubjectData.SubjectInfo[id][0].substring(0,10)+".."
         }
         else{
-            smallTitle = SubjectTitle
+            smallTitle = SubjectData.SubjectInfo[id][0]
         }
 
 
@@ -353,21 +353,23 @@ class WeekView : ConstraintLayout{
             topMargin = subjectMargin
             subject.setBackgroundResource(R.color.colorAccent)
             subject.setPadding(20,10,20,10)
+            subject.id = id
             subjectID++
             subject.setOnClickListener{
-
-                Toast.makeText(cnxt, "$id", Toast.LENGTH_SHORT).show()
-
-                /*
+                SubjectData.id = id
+                Toast.makeText(cnxt, "${SubjectData.getData(id)}", Toast.LENGTH_SHORT).show()
                 val intentSubjectDetail = Intent (cnxt, SubjectDetail::class.java)
+                /*
                 intentSubjectDetail.putExtra("SubjectTitle",SubjectTitle)
                 intentSubjectDetail.putExtra("StartTimeText",StartTimeText)
                 intentSubjectDetail.putExtra("EndTimeText",EndTimeText)
                 intentSubjectDetail.putExtra("ContentText",ContentText)
+
+                 */
                 cnxt.startActivityForResult(intentSubjectDetail,103)
-                */
 
             }
+
 
         }
         subject.addView(titleText)
@@ -375,5 +377,7 @@ class WeekView : ConstraintLayout{
 
 
     }
+
+
 
 }

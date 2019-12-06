@@ -4,6 +4,7 @@ package com.racoondog.mystudent
 import android.app.ActionBar
 import android.app.Activity
 import android.content.Context
+import android.opengl.Visibility
 
 import android.os.Bundle
 import android.view.View
@@ -13,8 +14,10 @@ import android.widget.NumberPicker
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import io.realm.Realm
 import kotlinx.android.synthetic.main.create_subject.*
 import kotlinx.android.synthetic.main.schedule_image_layout.*
+import kotlinx.android.synthetic.main.subject_detail.*
 
 
 class CreateSubject :AppCompatActivity() {
@@ -30,6 +33,7 @@ class CreateSubject :AppCompatActivity() {
         val intentEndTime = intent.getIntExtra("end_time",0)
         val intentFlag = intent.getIntExtra("day_flag",0)
         var dayflag = 0
+
 
         if (intentFlag == 6){
             saturday_button.visibility = View.VISIBLE
@@ -225,13 +229,15 @@ class CreateSubject :AppCompatActivity() {
             if(dayflag != 0 ) {
                 if (start_time.value < end_time.value) {
                     if(TitleName_text.text.toString() !="") {
+
                         intent.putExtra("SubjectStartTime", start_time.value)
                         intent.putExtra("SubjectEndTime", end_time.value)
                         intent.putExtra("DayFlag", dayflag)
                         intent.putExtra("SubjectTitle", TitleName_text.text.toString())
                         intent.putExtra("StartTimeText", textView_start.text.toString())
                         intent.putExtra("EndTimeText", textView_end.text.toString())
-                        intent.putExtra("ContentText",Content_text.text.toString())
+                        intent.putExtra("ContentText",Content_text.text?.toString())
+
                         setResult(Activity.RESULT_OK, intent)
                         finish()
                     }
