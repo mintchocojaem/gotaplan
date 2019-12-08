@@ -44,22 +44,20 @@
                     android:text="X"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    app:layout_constraintLeft_toRightOf="@id/toolbar_title"
-                    app:layout_constraintRight_toLeftOf="@id/lessonSave_Button"
+                    app:layout_constraintLeft_toRightOf="@id/lessonSave_Button"
+                    app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="@id/toolbar_title"
                     app:layout_constraintBottom_toBottomOf="@id/toolbar_title"/>
             <Button
                     android:id="@+id/lessonSave_Button"
-                    android:text="저장"
+                    android:text="수정"
                     android:layout_width="60dp"
                     android:layout_height="40dp"
-                    app:layout_constraintLeft_toRightOf="@id/lessonQuit_Button"
-                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/toolbar_title"
+                    app:layout_constraintRight_toLeftOf="@id/lessonQuit_Button"
                     app:layout_constraintTop_toTopOf="@id/toolbar_title"
                     app:layout_constraintBottom_toBottomOf="@id/toolbar_title"
-                    android:clickable="false"
-                    android:background="@null"
-                    android:textColor="@color/originalText"/>
+                    android:background="@null" />
 
 
 
@@ -90,7 +88,8 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:background="@null"
-                android:textColor="@color/originalText">
+                android:textColor="@color/originalText"
+                android:enabled="false">
 
         </EditText>
         <TextView
@@ -152,7 +151,8 @@
                 app:layout_constraintRight_toRightOf="parent"
                 android:id="@+id/subject_content"
                 android:textColor="@color/originalText"
-                android:maxLength="100">
+                android:maxLength="100"
+                android:enabled="false">
 
         </EditText>
 

@@ -23,12 +23,9 @@ class SubjectDetail : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.subject_detail)
-        lessonQuit_Button.setOnClickListener {
 
-            setResult(Activity.RESULT_OK, intent)
-            finish()
+       var saveEditFlag: Boolean = false
 
-        }
         /*
         val intent = getIntent()
         val intentTitle = intent.getStringExtra("SubjectTitle")
@@ -43,52 +40,40 @@ class SubjectDetail : AppCompatActivity(){
         subject_content.setText(SubjectData.SubjectInfo[SubjectData.id][3])
 
 
-        val initTitle = subject_title.text.toString()
+        lessonQuit_Button.setOnClickListener {
 
+            setResult(Activity.RESULT_OK, intent)
+            finish()
 
-
-        val textWatcher = object : TextWatcher {
-            override fun afterTextChanged(edit: Editable) {
-                // Text가 바뀌고 동작할 코드
-
-
-            }
-
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-                // Text가 바뀌기 전 동작할 코드
-
-            }
-
-            //
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                // 바뀌는 중에 동작 코드
-
-                if (subject_title.text.toString() == initTitle){
-                    lessonSave_Button.isClickable = false
-                    lessonSave_Button.setTextColor(resources.getColor(R.color.originalText))
-                }
-                else{
-                    lessonSave_Button.isClickable = true
-                    lessonSave_Button.setTextColor(Color.DKGRAY)
-                }
-
-            }
         }
 
-        subject_title.addTextChangedListener(textWatcher)
-        subject_content.addTextChangedListener(textWatcher)
-        studentName_text.addTextChangedListener(textWatcher)
-        studentBirth_text.addTextChangedListener(textWatcher)
-        studentPhone_text.addTextChangedListener(textWatcher)
-        lessonCycle_text.addTextChangedListener(textWatcher)
-        lessonFee_text.addTextChangedListener(textWatcher)
-
         lessonSave_Button.setOnClickListener {
-            if(subject_title.isClickable == true) {
+
+            if(saveEditFlag == false){
+
+                lessonSave_Button.text = "저장"
+
+                subject_title.isEnabled = true
+                subject_content.isEnabled = true
+
+                saveEditFlag = true
+
+            } else {
+                lessonSave_Button.text = "수정"
+
+                subject_title.isEnabled = false
+                subject_content.isEnabled = false
 
                 SubjectData.setTitle(subject_title.text.toString())
+                SubjectData.setContent(subject_content.text.toString())
 
-                Toast.makeText(this, "${SubjectData.SubjectInfo[SubjectData.id].contentDeepToString()}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    "${SubjectData.SubjectInfo[SubjectData.id].contentDeepToString()}",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                saveEditFlag = false
             }
         }
 
