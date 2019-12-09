@@ -324,11 +324,11 @@ class WeekView : ConstraintLayout{
         val id = subjectID
 
 
-        if(SubjectData.SubjectInfo[id][0].length > 10){
-            smallTitle = SubjectData.SubjectInfo[id][0].substring(0,10)+".."
+        if(SubjectData.SubjectInfo!!.get(SubjectData.id)!![0].length > 10){
+            smallTitle = SubjectData.SubjectInfo!!.get(SubjectData.id)!![0].substring(0,10)+".."
         }
         else{
-            smallTitle = SubjectData.SubjectInfo[id][0]
+            smallTitle = SubjectData.SubjectInfo!!.get(SubjectData.id)!![0]
         }
 
 
@@ -360,7 +360,9 @@ class WeekView : ConstraintLayout{
             subject.setOnClickListener{
                 SubjectData.id = id
                 dayFlag = DayFlag
+
                 Toast.makeText(cnxt, "${subject.id},${SubjectData.getData(id)}", Toast.LENGTH_SHORT).show()
+
                 val intentSubjectDetail = Intent (cnxt, SubjectDetail::class.java)
                 /*
                 intentSubjectDetail.putExtra("SubjectTitle",SubjectTitle)

@@ -27,9 +27,9 @@ class SubjectDetail : AppCompatActivity() {
         */
 
 
-        subject_time.setText(SubjectData.SubjectInfo[SubjectData.id][1] + "~" + SubjectData.SubjectInfo[SubjectData.id][2])
-        subject_title.setText(SubjectData.SubjectInfo[SubjectData.id][0])
-        subject_content.setText(SubjectData.SubjectInfo[SubjectData.id][3])
+        subject_time.setText(SubjectData.SubjectInfo!!.get(SubjectData.id)!![1] + "~" + SubjectData.SubjectInfo!!.get(SubjectData.id)!![2])
+        subject_title.setText(SubjectData.SubjectInfo!!.get(SubjectData.id)!![0])
+        subject_content.setText(SubjectData.SubjectInfo!!.get(SubjectData.id)!![3])
 
 
         lessonQuit_Button.setOnClickListener {
@@ -62,7 +62,7 @@ class SubjectDetail : AppCompatActivity() {
 
                 Toast.makeText(
                     this,
-                    "${SubjectData.SubjectInfo[SubjectData.id].contentDeepToString()}",
+                    "${SubjectData.SubjectInfo[SubjectData.id]!!.contentDeepToString()}",
                     Toast.LENGTH_SHORT
                 ).show()
 
@@ -78,7 +78,7 @@ class SubjectDetail : AppCompatActivity() {
 
             builder.setPositiveButton("확인") { _, _ ->
 
-                //SubjectData.SubjectInfo.removeAt(SubjectData.id)
+                SubjectData.SubjectInfo.set(SubjectData.id,null)
                 setResult(104,intent)
                 finish()
 
