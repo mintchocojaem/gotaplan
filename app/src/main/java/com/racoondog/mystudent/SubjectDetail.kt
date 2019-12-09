@@ -27,9 +27,9 @@ class SubjectDetail : AppCompatActivity() {
         */
 
 
-        subject_time.setText(SubjectData.SubjectInfo!!.get(SubjectData.id)!![1] + "~" + SubjectData.SubjectInfo!!.get(SubjectData.id)!![2])
-        subject_title.setText(SubjectData.SubjectInfo!!.get(SubjectData.id)!![0])
-        subject_content.setText(SubjectData.SubjectInfo!!.get(SubjectData.id)!![3])
+        subject_time.setText(SubjectData.SubjectInfo!![SubjectData.id]!![1] + "~" + SubjectData.SubjectInfo!![SubjectData.id]!![2])
+        subject_title.setText(SubjectData.SubjectInfo!![SubjectData.id]!![0])
+        subject_content.setText(SubjectData.SubjectInfo!![SubjectData.id]!![3])
 
 
         lessonQuit_Button.setOnClickListener {

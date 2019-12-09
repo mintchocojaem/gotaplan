@@ -126,7 +126,7 @@ class MainActivity: AppCompatActivity() {
                 }
                 103->{
                     val title = weekview.findViewWithTag<TextView>("title${SubjectData.id}")
-                    title.text = SubjectData.SubjectInfo!!.get(SubjectData.id)!![0]
+                    title.text = SubjectData.SubjectInfo!![SubjectData.id]!![0]
                 }
 
             }

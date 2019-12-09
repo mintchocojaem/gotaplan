@@ -324,11 +324,11 @@ class WeekView : ConstraintLayout{
         val id = subjectID
 
 
-        if(SubjectData.SubjectInfo!!.get(SubjectData.id)!![0].length > 10){
-            smallTitle = SubjectData.SubjectInfo!!.get(SubjectData.id)!![0].substring(0,10)+".."
+        if(SubjectData.SubjectInfo!![SubjectData.id]!![0].length > 10){
+            smallTitle = SubjectData.SubjectInfo!![SubjectData.id]!![0].substring(0,10)+".."
         }
         else{
-            smallTitle = SubjectData.SubjectInfo!!.get(SubjectData.id)!![0]
+            smallTitle = SubjectData.SubjectInfo!![SubjectData.id]!![0]
         }
 
 

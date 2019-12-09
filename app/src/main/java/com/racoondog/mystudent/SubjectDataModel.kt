@@ -31,10 +31,10 @@ object SubjectData {
     }
 
     fun setTitle(Title:String){
-        SubjectInfo!!.get(id)!![0] = Title
+        SubjectInfo!![id]!![0] = Title
     }
     fun setContent(Content:String){
-        SubjectInfo!!.get(id)!![3] = Content
+        SubjectInfo!![id]!![3] = Content
     }
 
 }
