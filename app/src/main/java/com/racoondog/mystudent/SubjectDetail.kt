@@ -1,30 +1,22 @@
 package com.racoondog.mystudent
 
 import android.app.Activity
-import android.graphics.Color
+import android.app.AlertDialog
 import android.os.Bundle
-import android.text.TextWatcher
-
+import android.view.ContextThemeWrapper
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.subject_detail.*
 
-import android.text.Editable
-import android.view.View
-import android.widget.TextView
-import android.widget.Toast
-import androidx.core.content.ContextCompat
-import io.realm.Realm
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.create_subject.*
 
-
-class SubjectDetail : AppCompatActivity(){
+class SubjectDetail : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.subject_detail)
 
-       var saveEditFlag: Boolean = false
+        var saveEditFlag: Boolean = false
 
         /*
         val intent = getIntent()
@@ -35,21 +27,22 @@ class SubjectDetail : AppCompatActivity(){
         */
 
 
-        subject_time.setText(SubjectData.SubjectInfo[SubjectData.id][1] +"~"+ SubjectData.SubjectInfo[SubjectData.id][2])
+        subject_time.setText(SubjectData.SubjectInfo[SubjectData.id][1] + "~" + SubjectData.SubjectInfo[SubjectData.id][2])
         subject_title.setText(SubjectData.SubjectInfo[SubjectData.id][0])
         subject_content.setText(SubjectData.SubjectInfo[SubjectData.id][3])
 
 
         lessonQuit_Button.setOnClickListener {
 
-            setResult(Activity.RESULT_OK, intent)
-            finish()
+               setResult(Activity.RESULT_OK, intent)
+               finish()
+
 
         }
 
         lessonSave_Button.setOnClickListener {
 
-            if(saveEditFlag == false){
+            if (saveEditFlag == false) {
 
                 lessonSave_Button.text = "저장"
 
@@ -77,6 +70,30 @@ class SubjectDetail : AppCompatActivity(){
             }
         }
 
+        subject_delete.setOnClickListener{
+
+            val builder = AlertDialog.Builder(ContextThemeWrapper(this, R.style.Theme_AppCompat_Light_Dialog))
+            builder.setTitle("삭제")
+            builder.setMessage("과목을 삭제하시겠습니까?")
+
+            builder.setPositiveButton("확인") { _, _ ->
+
+                //SubjectData.SubjectInfo.removeAt(SubjectData.id)
+                setResult(104,intent)
+                finish()
+
+            }
+
+            builder.setNegativeButton("취소") { _, _ ->
+
+            }
+            builder.show()
+
+        }
+
+
 
     }
+
+
 }

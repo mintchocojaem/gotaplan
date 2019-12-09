@@ -121,7 +121,7 @@ class MainActivity: AppCompatActivity() {
                     SubjectData.id = weekview.subjectID
                     SubjectData.setData(SubjectData.id)
 
-                    weekview.createSubjectLine(SubjectStartTime, SubjectEndTime, DayFlag,intentStartTime)
+                    weekview.createSubject(SubjectStartTime, SubjectEndTime, DayFlag,intentStartTime)
 
                 }
                 103->{
@@ -131,12 +131,16 @@ class MainActivity: AppCompatActivity() {
 
             }
         }
-        if (resultCode == Activity.RESULT_CANCELED){
-            when(requestCode){
-                100 ->{
+        if (resultCode == 104) {
 
+            when (requestCode) {
+
+                103->{
+                    weekview.deleteSubject(SubjectData.id)
                 }
+
             }
+
         }
 
     }

@@ -28,6 +28,7 @@ class WeekView : ConstraintLayout{
     var lastDay = 0
     val cnxt = context as MainActivity
     var subjectID = 0
+    var dayFlag = 0
 
 
     constructor(context: Context) : super(context, null) {
@@ -285,7 +286,7 @@ class WeekView : ConstraintLayout{
         //시간표위 레이아웃을 그리는 함수
         for (i in 0 until day.size) {
 
-            val id: Int = i + 1
+            val tag: Int = i + 1
 
             val subjectLine = ConstraintLayout(cnxt)
 
@@ -295,7 +296,7 @@ class WeekView : ConstraintLayout{
             ).apply {
                 width = 0
                 weight = 1f
-                subjectLine.id = id
+                subjectLine.tag = tag
                 subjectLine.setPadding(1,0,1,1)
             }
 
@@ -308,7 +309,7 @@ class WeekView : ConstraintLayout{
 
     }
 
-    fun createSubjectLine(StartTime:Int,EndTime:Int,DayFlag:Int,intentStartTime:Int){
+    fun createSubject(StartTime:Int,EndTime:Int,DayFlag:Int,intentStartTime:Int){
 
         val subjectHeight = (EndTime - StartTime) * 150
         val subjectMargin = (StartTime - intentStartTime) * 150
@@ -321,6 +322,7 @@ class WeekView : ConstraintLayout{
 
         var smallTitle : String = ""
         val id = subjectID
+
 
         if(SubjectData.SubjectInfo[id][0].length > 10){
             smallTitle = SubjectData.SubjectInfo[id][0].substring(0,10)+".."
@@ -357,7 +359,8 @@ class WeekView : ConstraintLayout{
             subjectID++
             subject.setOnClickListener{
                 SubjectData.id = id
-                Toast.makeText(cnxt, "${SubjectData.getData(id)}", Toast.LENGTH_SHORT).show()
+                dayFlag = DayFlag
+                Toast.makeText(cnxt, "${subject.id},${SubjectData.getData(id)}", Toast.LENGTH_SHORT).show()
                 val intentSubjectDetail = Intent (cnxt, SubjectDetail::class.java)
                 /*
                 intentSubjectDetail.putExtra("SubjectTitle",SubjectTitle)
@@ -373,9 +376,14 @@ class WeekView : ConstraintLayout{
 
         }
         subject.addView(titleText)
-        findViewById<ConstraintLayout>(DayFlag).addView(subject)
+        findViewWithTag<ConstraintLayout>(DayFlag).addView(subject)
 
 
+    }
+
+    fun deleteSubject(id:Int){
+        Toast.makeText(cnxt, "삭제되었습니다", Toast.LENGTH_SHORT).show()
+        findViewWithTag<ConstraintLayout>(dayFlag).removeView(findViewById(id))
     }
 
 
