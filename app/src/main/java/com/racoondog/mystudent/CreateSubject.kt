@@ -18,6 +18,7 @@ import io.realm.Realm
 import kotlinx.android.synthetic.main.create_subject.*
 import kotlinx.android.synthetic.main.schedule_image_layout.*
 import kotlinx.android.synthetic.main.subject_detail.*
+import kotlin.math.max
 
 
 class CreateSubject :AppCompatActivity() {
@@ -51,17 +52,26 @@ class CreateSubject :AppCompatActivity() {
         end_AMPM.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
         end_AMPM.wrapSelectorWheel = false
 
+        start_minute.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
+        start_minute.wrapSelectorWheel = false
+        end_minute.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
+        end_minute.wrapSelectorWheel = false
+
         if (intentStartTime < 12 && intentEndTime <= 12){
 
-            start_AMPM.minValue = 0
-            start_AMPM.maxValue = 0
-            start_AMPM.value = 0
-            start_AMPM.displayedValues = arrayOf("오전")
+            start_AMPM.apply {
+                minValue = 0
+                maxValue = 0
+                value = 0
+                displayedValues = arrayOf("오전")
+            }
 
-            end_AMPM.minValue = 0
-            end_AMPM.maxValue = 0
-            end_AMPM.value = 0
-            end_AMPM.displayedValues = arrayOf("오전")
+            end_AMPM.apply {
+                minValue = 0
+                maxValue = 0
+                value = 0
+                displayedValues = arrayOf("오전")
+            }
 
             textView_start.text = "오전 $intentStartTime:00"
             textView_end.text = "오전 $initStartTime:00"
@@ -70,15 +80,19 @@ class CreateSubject :AppCompatActivity() {
 
         if(intentStartTime > 12 && intentEndTime > 12) {
 
-            start_AMPM.minValue = 1
-            start_AMPM.maxValue = 1
-            start_AMPM.value = 1
-            start_AMPM.displayedValues = arrayOf("오후")
+            start_AMPM.apply {
+                minValue = 1
+                maxValue = 1
+                value = 1
+                displayedValues = arrayOf("오후")
+            }
 
-            end_AMPM.minValue = 1
-            end_AMPM.maxValue = 1
-            end_AMPM.value = 1
-            end_AMPM.displayedValues = arrayOf("오후")
+            end_AMPM.apply {
+                minValue = 1
+                maxValue = 1
+                value = 1
+                displayedValues = arrayOf("오후")
+            }
 
             textView_start.text = "오후 ${intentStartTime-12}:00"
             textView_end.text = "오후 ${initStartTime-12}:00"
@@ -87,15 +101,19 @@ class CreateSubject :AppCompatActivity() {
 
         if(intentStartTime < 12 && intentEndTime > 12) {
 
-            start_AMPM.minValue = 0
-            start_AMPM.maxValue = 1
-            start_AMPM.value = 0
-            start_AMPM.displayedValues = arrayOf("오전","오후")
+            start_AMPM.apply {
+                minValue = 0
+                maxValue = 1
+                value = 0
+                displayedValues = arrayOf("오전","오후")
+            }
 
-            end_AMPM.minValue = 0
-            end_AMPM.maxValue = 1
-            end_AMPM.value = 0
-            end_AMPM.displayedValues = arrayOf("오전","오후")
+            end_AMPM.apply {
+                minValue = 0
+                maxValue = 1
+                value = 0
+                displayedValues = arrayOf("오전","오후")
+            }
 
             textView_start.text = "오전 $intentStartTime:00"
             textView_end.text = "오전 $initStartTime:00"
@@ -104,15 +122,19 @@ class CreateSubject :AppCompatActivity() {
 
         if(intentStartTime == 12 && intentEndTime > 12) {
 
-            start_AMPM.minValue = 0
-            start_AMPM.maxValue = 1
-            start_AMPM.value = 0
-            start_AMPM.displayedValues = arrayOf("오전","오후")
+            start_AMPM.apply {
+                minValue = 0
+                maxValue = 1
+                value = 0
+                displayedValues = arrayOf("오전","오후")
+            }
 
-            end_AMPM.minValue = 0
-            end_AMPM.maxValue = 1
-            end_AMPM.value = 0
-            end_AMPM.displayedValues = arrayOf("오전","오후")
+            end_AMPM.apply {
+                minValue = 0
+                maxValue = 1
+                value = 0
+                displayedValues = arrayOf("오전","오후")
+            }
 
             textView_start.text = "오전 $intentStartTime:00"
             textView_end.text = "오후 ${initStartTime-12}:00"
@@ -120,18 +142,42 @@ class CreateSubject :AppCompatActivity() {
         }
 
 
+        start_hour.apply {
+            minValue = intentStartTime
+            maxValue = initEndTime
+            descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
+            wrapSelectorWheel = false
+        }
 
-        start_time.minValue = intentStartTime
-        start_time.maxValue = initEndTime
-        start_time.value = intentStartTime
-        start_time.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
-        start_time.wrapSelectorWheel = false
+        end_hour.apply {
+            minValue = initStartTime
+            maxValue = intentEndTime
+            value = initStartTime
+            descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
+            wrapSelectorWheel = false
+        }
 
-        end_time.minValue = initStartTime
-        end_time.maxValue = intentEndTime
-        end_time.value = initStartTime
-        end_time.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
-        end_time.wrapSelectorWheel = false
+        start_minute.apply{
+
+            minValue = 0
+            maxValue = 12
+            value = 0
+            displayedValues = arrayOf("00","05","10","15","20","25","30","35","40","45","50","55")
+
+
+        }
+
+        end_minute.apply{
+
+            minValue = 0
+            maxValue = 12
+            value = 0
+            displayedValues = arrayOf("00","05","10","15","20","25","30","35","40","45","50","55")
+
+
+        }
+
+
 
         val initDisplay = intentEndTime - intentStartTime
 
@@ -166,20 +212,20 @@ class CreateSubject :AppCompatActivity() {
 
         }
 
-        start_time.displayedValues = startDisplay
-        end_time.displayedValues = endDisplay
+        start_hour.displayedValues = startDisplay
+        end_hour.displayedValues = endDisplay
 
         start_AMPM.setOnValueChangedListener{numberpicker,i1,i2 ->
 
-            when{i2 == 1 -> start_time.value = start_time.maxValue }
-            when {i2 == 1 -> textView_start.text = "오후 "+"${start_time.value-12}"+":00"}
+            when{i2 == 1 -> start_hour.value = start_hour.maxValue }
+            when {i2 == 1 -> textView_start.text = "오후 "+"${start_hour.value-12}"+":00"}
 
-            when{i2 == 0 -> start_time.value = start_time.minValue}
-            when{i2 == 0 -> textView_start.text = "오전 "+"${start_time.value}"+":00"}
+            when{i2 == 0 -> start_hour.value = start_hour.minValue}
+            when{i2 == 0 -> textView_start.text = "오전 "+"${start_hour.value}"+":00"}
 
         }
 
-        start_time.setOnValueChangedListener{numberpicker,i1,i2 ->
+        start_hour.setOnValueChangedListener{numberpicker,i1,i2 ->
 
             for ( i in intentStartTime..initEndTime){
                 when {i2 == i && i2 < 12 -> textView_start.text = "오전 "+"$i"+":00"
@@ -199,15 +245,15 @@ class CreateSubject :AppCompatActivity() {
 
         end_AMPM.setOnValueChangedListener{numberpicker,i1,i2 ->
 
-            when{i2 == 1 -> end_time.value = end_time.maxValue }
-            when {i2 == 1 -> textView_end.text = "오후 "+"${end_time.value-12}"+":00"}
+            when{i2 == 1 -> end_hour.value = end_hour.maxValue }
+            when {i2 == 1 -> textView_end.text = "오후 "+"${end_hour.value-12}"+":00"}
 
-            when{i2 == 0 -> end_time.value = end_time.minValue}
-            when{i2 == 0 -> textView_end.text = "오전 "+"${end_time.value}"+":00"}
+            when{i2 == 0 -> end_hour.value = end_hour.minValue}
+            when{i2 == 0 -> textView_end.text = "오전 "+"${end_hour.value}"+":00"}
 
         }
 
-        end_time.setOnValueChangedListener{numberpicker,i1,i2 ->
+        end_hour.setOnValueChangedListener{numberpicker,i1,i2 ->
 
             for ( i in initStartTime..intentEndTime){
                 when {i2 == i && i2 < 12 -> textView_end.text = "오전 "+"$i"+":00"
@@ -227,11 +273,11 @@ class CreateSubject :AppCompatActivity() {
 
         createSubject_Button.setOnClickListener{
             if(dayflag != 0 ) {
-                if (start_time.value < end_time.value) {
+                if (start_hour.value <= end_hour.value && start_minute.value < end_minute.value) {
                     if(TitleName_text.text.toString() !="") {
 
-                        intent.putExtra("SubjectStartTime", start_time.value)
-                        intent.putExtra("SubjectEndTime", end_time.value)
+                        intent.putExtra("SubjectStartTime", start_hour.value)
+                        intent.putExtra("SubjectEndTime", end_hour.value)
                         intent.putExtra("DayFlag", dayflag)
                         intent.putExtra("SubjectTitle", TitleName_text.text.toString())
                         intent.putExtra("StartTimeText", textView_start.text.toString())
@@ -244,7 +290,7 @@ class CreateSubject :AppCompatActivity() {
                     else{
                         Toast.makeText(this, "제목을 입력해 주세요.", Toast.LENGTH_SHORT).show()
                     }
-                } else if (start_time.value == end_time.value) {
+                } else if (start_hour.value == end_hour.value && start_minute.value == end_minute.value) {
                     Toast.makeText(this, "시작 시각이 종료 시각과 같을 수 없습니다.", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this, "시작 시각이 종료 시각보다 클 수 없습니다.", Toast.LENGTH_SHORT).show()
@@ -258,17 +304,13 @@ class CreateSubject :AppCompatActivity() {
 
         textView_start.setOnClickListener{
             time_picker.visibility = View.VISIBLE
-            end_AMPM.visibility = View.INVISIBLE
-            end_time.visibility = View.INVISIBLE
-            start_AMPM.visibility = View.VISIBLE
-            start_time.visibility = View.VISIBLE
+            start_picker.visibility = View.VISIBLE
+            end_picker.visibility = View.INVISIBLE
         }
         textView_end.setOnClickListener{
             time_picker.visibility = View.VISIBLE
-            end_AMPM.visibility = View.VISIBLE
-            end_time.visibility = View.VISIBLE
-            start_AMPM.visibility = View.INVISIBLE
-            start_time.visibility = View.INVISIBLE
+            end_picker.visibility = View.VISIBLE
+            start_picker.visibility = View.INVISIBLE
 
         }
 
