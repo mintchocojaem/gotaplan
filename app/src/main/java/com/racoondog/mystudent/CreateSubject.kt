@@ -3,12 +3,17 @@ package com.racoondog.mystudent
 
 import android.app.Activity
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
 import android.widget.NumberPicker
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.create_schedule.*
 import kotlinx.android.synthetic.main.create_subject.*
-
+import kotlinx.android.synthetic.main.create_subject.TitleName_text
+import kotlinx.android.synthetic.main.create_subject.end_AMPM
+import kotlinx.android.synthetic.main.create_subject.start_AMPM
+import kotlinx.android.synthetic.main.create_subject.time_picker
 
 
 class CreateSubject :AppCompatActivity() {
@@ -20,10 +25,13 @@ class CreateSubject :AppCompatActivity() {
         super.setContentView(R.layout.create_subject)
 
         val intent = getIntent()
-        val intentStartTime = intent.getIntExtra("start_time",0)
-        val intentEndTime = intent.getIntExtra("end_time",0)
+        val intentStartHour = intent.getIntExtra("start_time",0)
+        val intentEndHour = intent.getIntExtra("end_time",0)
         val intentFlag = intent.getIntExtra("day_flag",0)
         var dayflag = 0
+        val displayValue = mutableListOf<String>()
+        val initEndHour = intentEndHour -1
+        val initstartHour = intentStartHour +1
 
         if (intentFlag == 6){
             saturday_button.visibility = View.VISIBLE
@@ -33,113 +41,89 @@ class CreateSubject :AppCompatActivity() {
             sunday_button.visibility = View.VISIBLE
         }
 
-        val initStartTime = intentStartTime + 1
-        val initEndTime = intentEndTime -1
-
-        start_AMPM.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
-        start_AMPM.wrapSelectorWheel = false
-        end_AMPM.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
-        end_AMPM.wrapSelectorWheel = false
-
-
-        if (intentStartTime < 12 && intentEndTime <= 12){
-
-            start_AMPM.apply {
+        start_AMPM.apply {
+            if (intentStartHour < 12 && initEndHour < 12) {
+                displayValue.add("오전")
                 minValue = 0
                 maxValue = 0
                 value = 0
-                displayedValues = arrayOf("오전")
-            }
-
-            end_AMPM.apply {
+            } else if (intentStartHour <= 12 && initEndHour >= 12){
+                displayValue.add("오전")
+                displayValue.add("오후")
+                minValue = 0
+                maxValue = 1
+                value = 0
+            } else {
+                displayValue.add("오후")
                 minValue = 0
                 maxValue = 0
                 value = 0
-                displayedValues = arrayOf("오전")
             }
-
-            startText_hour.text = "오전 $intentStartTime:"
-            endText_hour.text = "오전 $initStartTime:"
+            descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
+            wrapSelectorWheel = false
+            displayedValues = displayValue.toTypedArray()
+            displayValue.removeAll(displayValue)
 
         }
 
-        if(intentStartTime > 12 && intentEndTime > 12) {
-
-            start_AMPM.apply {
-                minValue = 1
-                maxValue = 1
-                value = 1
-                displayedValues = arrayOf("오후")
-            }
-
-            end_AMPM.apply {
-                minValue = 1
-                maxValue = 1
-                value = 1
-                displayedValues = arrayOf("오후")
-            }
-
-            startText_hour.text = "오후 ${intentStartTime-12}:"
-            endText_hour.text = "오후 ${initStartTime-12}:"
-
-            }
-
-        if(intentStartTime < 12 && intentEndTime > 12) {
-
-            start_AMPM.apply {
+        end_AMPM.apply {
+            if (intentStartHour < 12 && intentEndHour < 12) {
+                displayValue.add("오전")
+                minValue = 0
+                maxValue = 0
+                value = 0
+            } else if (intentStartHour <= 12 && intentEndHour >= 12){
+                displayValue.add("오전")
+                displayValue.add("오후")
                 minValue = 0
                 maxValue = 1
                 value = 0
-                displayedValues = arrayOf("오전","오후")
-            }
-
-            end_AMPM.apply {
+            } else {
+                displayValue.add("오후")
                 minValue = 0
-                maxValue = 1
+                maxValue = 0
                 value = 0
-                displayedValues = arrayOf("오전","오후")
             }
-
-            startText_hour.text = "오전 $intentStartTime:"
-            endText_hour.text = "오전 $initStartTime:"
-
-        }
-
-        if(intentStartTime == 12 && intentEndTime > 12) {
-
-            start_AMPM.apply {
-                minValue = 0
-                maxValue = 1
-                value = 0
-                displayedValues = arrayOf("오전","오후")
-            }
-
-            end_AMPM.apply {
-                minValue = 0
-                maxValue = 1
-                value = 0
-                displayedValues = arrayOf("오전","오후")
-            }
-
-            startText_hour.text = "오전 $intentStartTime:"
-            endText_hour.text = "오후 ${initStartTime-12}:"
+            descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
+            wrapSelectorWheel = false
+            displayedValues = displayValue.toTypedArray()
+            displayValue.removeAll(displayValue)
 
         }
 
 
         start_hour.apply {
-            minValue = intentStartTime
-            maxValue = initEndTime
+
+            minValue = intentStartHour
+            maxValue = initEndHour
             descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
             wrapSelectorWheel = false
+
+            for(i in intentStartHour..initEndHour){
+                when{
+                    i > 12 -> displayValue.add("${i - 12}")
+                    else -> displayValue.add("$i")
+                }
+            }
+            displayedValues = displayValue.toTypedArray()
+            displayValue.removeAll(displayValue)
         }
 
         end_hour.apply {
-            minValue = initStartTime
-            maxValue = intentEndTime
-            value = initStartTime
+            minValue = intentStartHour
+            maxValue = intentEndHour
+            value = initstartHour
             descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
             wrapSelectorWheel = false
+
+            for(i in intentStartHour..intentEndHour){
+                when{
+                    i > 12-> displayValue.add("${i - 12}")
+                    else -> displayValue.add("$i")
+                }
+            }
+            displayedValues = displayValue.toTypedArray()
+            displayValue.removeAll(displayValue)
         }
 
         start_minute.apply{
@@ -149,7 +133,6 @@ class CreateSubject :AppCompatActivity() {
             value = 0
             displayedValues = arrayOf("00","05","10","15","20","25","30","35","40","45","50","55")
             descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
-            //wrapSelectorWheel = false
 
         }
 
@@ -164,123 +147,35 @@ class CreateSubject :AppCompatActivity() {
         }
 
 
-        val initDisplay = intentEndTime - intentStartTime
+        start_minute.setOnValueChangedListener{_,i1,i2 ->
 
-        var startDisplay = Array<String>(initDisplay,{"1"})
-        var endDisplay = Array<String>(initDisplay,{"1"})
-
-        for(i in 0 until initDisplay){
-
-            val countDisplay = i+intentStartTime
-
-            if(countDisplay<=12) {
-                startDisplay[i] = "$countDisplay"
-            }
-            else if (countDisplay>12){
-                startDisplay[i] = "${countDisplay-12}"
-            }
-
+            startText_minute.text = start_minute.displayedValues[start_minute.value]
 
         }
+        start_hour.setOnValueChangedListener{_,i1,i2 ->
 
-        for(i in 0 until initDisplay){
-
-            val countDisplay = i+initStartTime
-
-            if(countDisplay<=12) {
-               endDisplay[i] = "$countDisplay"
-            }
-            else if (countDisplay>12){
-                endDisplay[i] = "${countDisplay-12}"
-            }
-
-
+            startText_hour.text = start_hour.displayedValues[start_hour.value - intentStartHour]
         }
+        start_AMPM.setOnValueChangedListener{_,i1,i2 ->
 
-        start_hour.displayedValues = startDisplay
-        end_hour.displayedValues = endDisplay
-
-        start_AMPM.setOnValueChangedListener{numberpicker,i1,i2 ->
-
-            when{
-                i2 == 0 -> {start_hour.value = start_hour.minValue
-                    startText_hour.text = "오전 "+"${start_hour.value}:"
-                }
-                i2 == 1 -> {start_hour.value = start_hour.maxValue
-                    startText_hour.text = "오후 "+"${start_hour.value-12}:"
-                }
-            }
-
-        }
-
-        start_hour.setOnValueChangedListener{numberpicker,i1,i2 ->
-
-                for ( i in intentStartTime..initEndTime){
-                    when {i2 == i && i2 < 12 -> startText_hour.text = "오전 $i:"
-                        i2 == i && i2 > 12 -> startText_hour.text = "오후 "+"${i-12}:"
-                        i2 == 12 -> startText_hour.text = "오전 12:"
-
-                    }
-
-                    when (start_AMPM.value == 0){
-                        i2 > 12 -> start_AMPM.value = 1
-                    }
-                    when (start_AMPM.value == 1) {
-                        i2 <= 12 -> start_AMPM.value = 0
-                    }
-                }
-
-        }
-
-        start_minute.setOnValueChangedListener{numberpicker,i1,i2 ->
-
-            if (i1 != i2){
-                startText_minute.text = start_minute.displayedValues[start_minute.value]
-            }
-            if (i1 == start_minute.maxValue && i2 == start_minute.minValue){
-                start_hour.value += 1
-            }
-
-        }
-
-        end_AMPM.setOnValueChangedListener{numberpicker,i1,i2 ->
-
-            when{
-                i2 == 0 -> {end_hour.value = end_hour.minValue
-                    endText_hour.text = "오전 ${end_hour.value}:"
-                }
-
-                i2 == 1 -> {end_hour.value = end_hour.maxValue
-                    endText_hour.text = "오후 ${end_hour.value-12}:"
-                }
-            }
-
-        }
-
-        end_hour.setOnValueChangedListener{numberpicker,i1,i2 ->
-
-            for ( i in initStartTime..intentEndTime){
-                when {i2 == i && i2 < 12 -> endText_hour.text = "오전 $i:"
-                    i2 == i && i2 > 12 -> endText_hour.text = "오후 ${i-12}:"
-                    i2 == 12 -> endText_hour.text = "오전 12:"
-
-                }
-
-                when (end_AMPM.value == 0){
-                    i2 > 12 -> end_AMPM.value = 1
-                }
-                when (end_AMPM.value == 1) {
-                    i2 <= 12 -> end_AMPM.value = 0
-                }
-            }
+            startText_AMPM.text = start_AMPM.displayedValues[start_AMPM.value]+" "//띄워쓰기를 위한 공백문자
         }
 
         end_minute.setOnValueChangedListener{_,i1,i2 ->
-            if(i1 != i2){
-                endText_minute.text = end_minute.displayedValues[end_minute.value]
-            }
+
+            endText_minute.text = end_minute.displayedValues[end_minute.value]
 
         }
+        end_hour.setOnValueChangedListener{_,i1,i2 ->
+
+            endText_hour.text = start_hour.displayedValues[end_hour.value]
+
+        }
+        end_AMPM.setOnValueChangedListener{_,i1,i2 ->
+
+            endText_AMPM.text = end_AMPM.displayedValues[end_AMPM.value]+" "//띄워쓰기를 위한 공백문자
+        }
+
 
         createSubject_Button.setOnClickListener{
             if(dayflag != 0 ) {
