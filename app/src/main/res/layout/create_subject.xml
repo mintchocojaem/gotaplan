@@ -296,7 +296,8 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@id/start_hour"
-                    app:layout_constraintHorizontal_chainStyle="packed">
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    android:theme="@style/AppTheme.Picker">
 
             </NumberPicker>
 
@@ -342,7 +343,8 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@id/end_hour"
-                    app:layout_constraintHorizontal_chainStyle="packed">
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    android:theme="@style/AppTheme.Picker">
 
             </NumberPicker>
 

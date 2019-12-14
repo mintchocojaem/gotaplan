@@ -12,5 +12,9 @@
         
     </style>
 
+    <style name="AppTheme.Picker" parent="Theme.AppCompat.Light.NoActionBar" >
+        <item name="android:textColorPrimary">#757575</item>
+    </style>
+
 
 </resources>

@@ -8,12 +8,7 @@ import android.view.View
 import android.widget.NumberPicker
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.create_schedule.*
 import kotlinx.android.synthetic.main.create_subject.*
-import kotlinx.android.synthetic.main.create_subject.TitleName_text
-import kotlinx.android.synthetic.main.create_subject.end_AMPM
-import kotlinx.android.synthetic.main.create_subject.start_AMPM
-import kotlinx.android.synthetic.main.create_subject.time_picker
 
 
 class CreateSubject :AppCompatActivity() {
@@ -31,7 +26,7 @@ class CreateSubject :AppCompatActivity() {
         var dayflag = 0
         val displayValue = mutableListOf<String>()
         val initEndHour = intentEndHour -1
-        val initstartHour = intentStartHour +1
+
 
         if (intentFlag == 6){
             saturday_button.visibility = View.VISIBLE
@@ -47,38 +42,45 @@ class CreateSubject :AppCompatActivity() {
                 minValue = 0
                 maxValue = 0
                 value = 0
-            } else if (intentStartHour <= 12 && initEndHour >= 12){
+
+            } else if (intentStartHour < 12 && initEndHour >= 12){
                 displayValue.add("오전")
                 displayValue.add("오후")
                 minValue = 0
                 maxValue = 1
                 value = 0
+
             } else {
                 displayValue.add("오후")
                 minValue = 0
                 maxValue = 0
                 value = 0
+
             }
             descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
             wrapSelectorWheel = false
             displayedValues = displayValue.toTypedArray()
+            startText_AMPM.text ="${displayValue[0]} "
             displayValue.removeAll(displayValue)
+
 
         }
 
         end_AMPM.apply {
+
             if (intentStartHour < 12 && intentEndHour < 12) {
                 displayValue.add("오전")
                 minValue = 0
                 maxValue = 0
                 value = 0
-            } else if (intentStartHour <= 12 && intentEndHour >= 12){
+            } else if (intentStartHour < 12 && intentEndHour >= 12){
                 displayValue.add("오전")
                 displayValue.add("오후")
                 minValue = 0
                 maxValue = 1
                 value = 0
-            } else {
+            }
+            else{
                 displayValue.add("오후")
                 minValue = 0
                 maxValue = 0
@@ -87,6 +89,7 @@ class CreateSubject :AppCompatActivity() {
             descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
             wrapSelectorWheel = false
             displayedValues = displayValue.toTypedArray()
+            endText_AMPM.text ="${displayValue[0]} "
             displayValue.removeAll(displayValue)
 
         }
@@ -96,6 +99,7 @@ class CreateSubject :AppCompatActivity() {
 
             minValue = intentStartHour
             maxValue = initEndHour
+            value = minValue
             descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
             wrapSelectorWheel = false
 
@@ -106,23 +110,26 @@ class CreateSubject :AppCompatActivity() {
                 }
             }
             displayedValues = displayValue.toTypedArray()
+            startText_hour.text = "${displayedValues[value - minValue]}"
             displayValue.removeAll(displayValue)
+
         }
 
         end_hour.apply {
             minValue = intentStartHour
             maxValue = intentEndHour
-            value = initstartHour
+            value = minValue
             descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
             wrapSelectorWheel = false
 
             for(i in intentStartHour..intentEndHour){
                 when{
-                    i > 12-> displayValue.add("${i - 12}")
+                    i > 12-> displayValue.add("${i-12}")
                     else -> displayValue.add("$i")
                 }
             }
             displayedValues = displayValue.toTypedArray()
+            endText_hour.text = "${displayedValues[value - minValue]}"
             displayValue.removeAll(displayValue)
         }
 
@@ -133,6 +140,7 @@ class CreateSubject :AppCompatActivity() {
             value = 0
             displayedValues = arrayOf("00","05","10","15","20","25","30","35","40","45","50","55")
             descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
+            wrapSelectorWheel = false
 
         }
 
@@ -140,12 +148,21 @@ class CreateSubject :AppCompatActivity() {
 
             minValue = 0
             maxValue = 11
-            value = 0
+            value = 6
             displayedValues = arrayOf("00","05","10","15","20","25","30","35","40","45","50","55")
             descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
             wrapSelectorWheel = false
+            endText_minute.text = displayedValues[value]
         }
 
+        start_AMPM.setOnTouchListener { _: View, event:MotionEvent ->
+            //리턴값은 return 없이 아래와 같이
+            true // or false
+        }
+        end_AMPM.setOnTouchListener { _: View, event:MotionEvent ->
+            //리턴값은 return 없이 아래와 같이
+            true // or false
+        }
 
         start_minute.setOnValueChangedListener{_,i1,i2 ->
 
@@ -155,25 +172,38 @@ class CreateSubject :AppCompatActivity() {
         start_hour.setOnValueChangedListener{_,i1,i2 ->
 
             startText_hour.text = start_hour.displayedValues[start_hour.value - intentStartHour]
-        }
-        start_AMPM.setOnValueChangedListener{_,i1,i2 ->
+            if(i2 < 12 || i2 == 24) {
+                start_AMPM.value = 0
+                startText_AMPM.text = start_AMPM.displayedValues[start_AMPM.value]+" "
+            }else {
+                start_AMPM.value = 1
+                startText_AMPM.text = start_AMPM.displayedValues[start_AMPM.value]+" "
+            }
 
-            startText_AMPM.text = start_AMPM.displayedValues[start_AMPM.value]+" "//띄워쓰기를 위한 공백문자
+
         }
 
         end_minute.setOnValueChangedListener{_,i1,i2 ->
 
             endText_minute.text = end_minute.displayedValues[end_minute.value]
+            if (end_hour.value == end_hour.maxValue) {
+                end_minute.value = 0
+                endText_minute.text = end_minute.displayedValues[end_minute.value]
+            }
 
         }
         end_hour.setOnValueChangedListener{_,i1,i2 ->
 
-            endText_hour.text = start_hour.displayedValues[end_hour.value]
+            endText_hour.text = end_hour.displayedValues[end_hour.value - intentStartHour]
+            if(i2 < 12 || i2 == 24) {
+                end_AMPM.value = 0
+                endText_AMPM.text = end_AMPM.displayedValues[end_AMPM.value]+" "
+            }else {
+                end_AMPM.value = 1
+                endText_AMPM.text = end_AMPM.displayedValues[end_AMPM.value]+" "
+            }
 
-        }
-        end_AMPM.setOnValueChangedListener{_,i1,i2 ->
 
-            endText_AMPM.text = end_AMPM.displayedValues[end_AMPM.value]+" "//띄워쓰기를 위한 공백문자
         }
 
 
@@ -255,4 +285,5 @@ class CreateSubject :AppCompatActivity() {
 
 
     }
+
 }
