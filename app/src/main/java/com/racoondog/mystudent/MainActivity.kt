@@ -31,8 +31,6 @@ class MainActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-
         setSupportActionBar(my_toolbar)  //Actionbar 부분
         supportActionBar?.setDisplayUseLogoEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
@@ -92,14 +90,17 @@ class MainActivity: AppCompatActivity() {
 
                 }
                 102 -> {
-                    val SubjectStartTime = data!!.getIntExtra("SubjectStartTime", 0)
-                    val SubjectEndTime = data!!.getIntExtra("SubjectEndTime", 0)
+
+                    val startHour = data!!.getIntExtra("StartHour", 0) // 24시 형식 시간
+                    val endHour = data!!.getIntExtra("EndHour", 0)// 24시 형식 시간
                     val DayFlag = data!!.getIntExtra("DayFlag", 0)
                     val SubjectTitle = data!!.getStringExtra("SubjectTitle")
-                    val StartTimeText = data!!.getStringExtra("StartTimeText")
-                    val EndTimeText = data!!.getStringExtra("EndTimeText")
+                    val StartTimeText = data!!.getStringArrayExtra("StartTimeText") // 24시 형식 시간
+                    val EndTimeText = data!!.getStringArrayExtra("EndTimeText")
                     val ContentText = data?.getStringExtra("ContentText")
 
+                    val startTimeText = "${StartTimeText[0]}${StartTimeText[1]}:${StartTimeText[2]}"
+                    val endTimeText = "${EndTimeText[0]}${EndTimeText[1]}:${EndTimeText[2]}"
 
                     /*
                     Realm.init(this)
@@ -115,13 +116,14 @@ class MainActivity: AppCompatActivity() {
                     realm.commitTransaction()
                      */
                     SubjectData.SubjectTitle = SubjectTitle
-                    SubjectData.StartTimeText = StartTimeText
-                    SubjectData.EndTimeText = EndTimeText
+                    SubjectData.StartTimeText = startTimeText
+                    SubjectData.EndTimeText = endTimeText
                     SubjectData.ContentText = ContentText
                     SubjectData.id = weekview.subjectID
                     SubjectData.setData(SubjectData.id)
 
-                    weekview.createSubject(SubjectStartTime, SubjectEndTime, DayFlag,intentStartTime)
+                    weekview.createSubject(startHour,StartTimeText[2].toInt()
+                        ,endHour,EndTimeText[2].toInt(), DayFlag,intentStartTime)
 
                 }
                 103->{

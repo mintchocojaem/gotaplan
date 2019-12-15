@@ -9,6 +9,7 @@ import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import kotlinx.android.synthetic.main.weekview.view.*
 import me.grantland.widget.AutofitTextView
+import kotlin.math.absoluteValue
 import kotlin.properties.Delegates
 
 
@@ -309,10 +310,10 @@ class WeekView : ConstraintLayout{
 
     }
 
-    fun createSubject(StartTime:Int,EndTime:Int,DayFlag:Int,intentStartTime:Int){
+    fun createSubject(StartHour:Int,StartMinute:Int,EndHour:Int,EndMinute:Int,DayFlag:Int,intentStartTime:Int){
 
-        val subjectHeight = (EndTime - StartTime) * 150
-        val subjectMargin = (StartTime - intentStartTime) * 150
+        val subjectHeight = (EndHour - StartHour) * 150 + (EndMinute - StartMinute) * 2.5
+        val subjectMargin = (StartHour - intentStartTime) * 150 + StartMinute * 2.5
         val subject = ConstraintLayout(cnxt)
         val titleText = TextView(cnxt)
 
@@ -346,13 +347,13 @@ class WeekView : ConstraintLayout{
             ConstraintLayout.LayoutParams.WRAP_CONTENT
         ).apply {
             width = ConstraintLayout.LayoutParams.PARENT_ID
-            height = subjectHeight
+            height = subjectHeight.toInt()
             topToTop = ConstraintLayout.LayoutParams.PARENT_ID
             bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
             rightToRight = ConstraintLayout.LayoutParams.PARENT_ID
             leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID
             verticalBias = 0f
-            topMargin = subjectMargin
+            topMargin = subjectMargin.toInt()
             subject.setBackgroundResource(R.color.colorAccent)
             subject.setPadding(20,10,20,10)
             subject.id = id

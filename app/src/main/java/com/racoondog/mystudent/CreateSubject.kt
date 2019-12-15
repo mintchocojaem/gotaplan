@@ -37,30 +37,24 @@ class CreateSubject :AppCompatActivity() {
         }
 
         start_AMPM.apply {
-            if (intentStartHour < 12 && initEndHour < 12) {
-                displayValue.add("오전")
-                minValue = 0
-                maxValue = 0
-                value = 0
 
-            } else if (intentStartHour < 12 && initEndHour >= 12){
-                displayValue.add("오전")
-                displayValue.add("오후")
-                minValue = 0
-                maxValue = 1
-                value = 0
+            displayValue.add("오전")
+            displayValue.add("오후")
+            minValue = 0
+            maxValue = 1
+            value = 0
 
-            } else {
-                displayValue.add("오후")
-                minValue = 0
-                maxValue = 0
-                value = 0
-
-            }
             descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
             wrapSelectorWheel = false
             displayedValues = displayValue.toTypedArray()
-            startText_AMPM.text ="${displayValue[0]} "
+            if(intentStartHour < 12) {
+                value = 0
+                startText_AMPM.text ="${displayValue[0]} "
+            }
+            else {
+                value = 1
+                startText_AMPM.text ="${displayValue[1]} "
+            }
             displayValue.removeAll(displayValue)
 
 
@@ -68,28 +62,24 @@ class CreateSubject :AppCompatActivity() {
 
         end_AMPM.apply {
 
-            if (intentStartHour < 12 && intentEndHour < 12) {
-                displayValue.add("오전")
-                minValue = 0
-                maxValue = 0
-                value = 0
-            } else if (intentStartHour < 12 && intentEndHour >= 12){
-                displayValue.add("오전")
-                displayValue.add("오후")
-                minValue = 0
-                maxValue = 1
-                value = 0
-            }
-            else{
-                displayValue.add("오후")
-                minValue = 0
-                maxValue = 0
-                value = 0
-            }
+            displayValue.add("오전")
+            displayValue.add("오후")
+            minValue = 0
+            maxValue = 1
+            value = 0
+
             descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
             wrapSelectorWheel = false
             displayedValues = displayValue.toTypedArray()
-            endText_AMPM.text ="${displayValue[0]} "
+            if(intentStartHour < 12) {
+                value = 0
+                endText_AMPM.text ="${displayValue[0]} "
+
+            }
+            else {
+                value = 1
+                endText_AMPM.text ="${displayValue[1]} "
+            }
             displayValue.removeAll(displayValue)
 
         }
@@ -168,6 +158,7 @@ class CreateSubject :AppCompatActivity() {
 
             startText_minute.text = start_minute.displayedValues[start_minute.value]
 
+
         }
         start_hour.setOnValueChangedListener{_,i1,i2 ->
 
@@ -186,6 +177,7 @@ class CreateSubject :AppCompatActivity() {
         end_minute.setOnValueChangedListener{_,i1,i2 ->
 
             endText_minute.text = end_minute.displayedValues[end_minute.value]
+
             if (end_hour.value == end_hour.maxValue) {
                 end_minute.value = 0
                 endText_minute.text = end_minute.displayedValues[end_minute.value]
@@ -203,6 +195,11 @@ class CreateSubject :AppCompatActivity() {
                 endText_AMPM.text = end_AMPM.displayedValues[end_AMPM.value]+" "
             }
 
+            if (end_hour.value == end_hour.maxValue){
+                end_minute.value = 0
+                endText_minute.text = end_minute.displayedValues[end_minute.value]
+            }
+
 
         }
 
@@ -213,12 +210,17 @@ class CreateSubject :AppCompatActivity() {
                     (start_hour.value == end_hour.value && ((end_minute.value - start_minute.value) >= 6))) {
                     if(TitleName_text.text.toString() !="") {
 
-                        intent.putExtra("SubjectStartTime", start_hour.value)
-                        intent.putExtra("SubjectEndTime", end_hour.value)
+                        intent.putExtra("StartHour",start_hour.value )
+                        intent.putExtra("EndHour", end_hour.value)
                         intent.putExtra("DayFlag", dayflag)
                         intent.putExtra("SubjectTitle", TitleName_text.text.toString())
-                        intent.putExtra("StartTimeText", startText_hour.text.toString())
-                        intent.putExtra("EndTimeText", endText_hour.text.toString())
+
+                        intent.putExtra("StartTimeText", arrayOf(startText_AMPM.text.toString()
+                            ,startText_hour.text.toString(), startText_minute.text.toString()))
+
+                        intent.putExtra("EndTimeText", arrayOf(endText_AMPM.text.toString()
+                            ,endText_hour.text.toString(), endText_minute.text.toString()))
+
                         intent.putExtra("ContentText",Content_text.text?.toString())
 
                         setResult(Activity.RESULT_OK, intent)
