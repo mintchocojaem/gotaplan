@@ -4,8 +4,8 @@ import io.realm.RealmObject
 
 open class SubjectInfo: RealmObject() {
 
-    lateinit var  Title:String
-    var ScheduleDayFlag = 0
-    var ScheduleStartHour = 0
-    var ScheduleEndHour = 0
+    var Title:String? = null
+    var ScheduleDayFlag:Int? = null
+    var ScheduleStartHour:Int? = null
+    var ScheduleEndHour:Int? = null
 }

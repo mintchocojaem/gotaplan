@@ -23,10 +23,9 @@ class MainActivity: AppCompatActivity() {
     var intentflag : Int = 0
     val weekview by lazy {WeekView(this)}
 
-
+    val realm = Realm.getDefaultInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -52,6 +51,30 @@ class MainActivity: AppCompatActivity() {
             startActivityForResult(subjectIntent, 102)
         }
 
+        val data = realm.where<SubjectInfo>(SubjectInfo::class.java).findFirst()
+
+        if( data != null){
+            weekview.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT,
+                ConstraintLayout.LayoutParams.MATCH_PARENT).apply {
+
+            }
+
+            weekview.lastDay = data.ScheduleDayFlag!!
+            weekview.startTime = data.ScheduleStartHour!!
+            weekview.endTime = data.ScheduleEndHour!!
+            title_text.text = data.Title
+            weekView.addView(weekview)
+            schedule_add.visibility = View.INVISIBLE
+
+        }
+
+
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        realm.close()
     }
 
     //MainActivity로 들어오는 onActivityResult 부분 -> Intent 후 값 반환
@@ -85,8 +108,6 @@ class MainActivity: AppCompatActivity() {
                     intentEndTime = scheduleEndHour
                     intentflag = scheduleDayFlag
 
-                    Realm.init(this)
-                    val realm = Realm.getDefaultInstance()
                     realm.beginTransaction()
                     val subjectDataSave:SubjectInfo = realm.createObject(SubjectInfo::class.java)
                     subjectDataSave.apply {
@@ -97,8 +118,6 @@ class MainActivity: AppCompatActivity() {
                     }
                     realm.commitTransaction()
                     Toast.makeText(this,"$subjectDataSave",Toast.LENGTH_SHORT).show()
-
-
 
                 }
                 101 -> {
@@ -169,6 +188,8 @@ class MainActivity: AppCompatActivity() {
             }
         }
     }
+
+
 }
 
 
