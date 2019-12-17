@@ -66,37 +66,37 @@ class MainActivity: AppCompatActivity() {
                     schedule_add.visibility = View.INVISIBLE
 
                     title_text.text = data!!.getStringExtra("title")
-                    ScheduleData.scheduleDayFlag = data.getIntExtra("scheduleDayFlag", 0)
-                    ScheduleData.scheduleStartHour = data.getIntExtra("scheduleStartHour", 0)
-                    ScheduleData.scheduleEndHour = data.getIntExtra("scheduleEndHour", 0)
+                    val scheduleDayFlag = data.getIntExtra("scheduleDayFlag", 0)
+                    val scheduleStartHour = data.getIntExtra("scheduleStartHour", 0)
+                    val scheduleEndHour = data.getIntExtra("scheduleEndHour", 0)
 
                     weekview.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT,
                         ConstraintLayout.LayoutParams.MATCH_PARENT).apply {
 
                     }
 
-                    weekview.lastDay = ScheduleData.scheduleDayFlag
-                    weekview.startTime =  ScheduleData.scheduleStartHour
-                    weekview.endTime =  ScheduleData.scheduleEndHour
+                    weekview.lastDay = scheduleDayFlag
+                    weekview.startTime = scheduleStartHour
+                    weekview.endTime = scheduleEndHour
 
                     weekView.addView(weekview)
 
-                    intentStartTime =  ScheduleData.scheduleStartHour
-                    intentEndTime =  ScheduleData.scheduleEndHour
-                    intentflag =  ScheduleData.scheduleDayFlag
+                    intentStartTime = scheduleStartHour
+                    intentEndTime = scheduleEndHour
+                    intentflag = scheduleDayFlag
 
-                    ScheduleData.setData()
-                    /*
                     Realm.init(this)
                     val realm = Realm.getDefaultInstance()
                     realm.beginTransaction()
-                    val subjectDataSave:SubjectData = realm.createObject(SubjectData::class.java)
+                    val subjectDataSave:SubjectInfo = realm.createObject(SubjectInfo::class.java)
                     subjectDataSave.apply {
-
+                        this.ScheduleDayFlag = scheduleDayFlag
+                        this.ScheduleStartHour = scheduleStartHour
+                        this.ScheduleEndHour = scheduleEndHour
                     }
-                    realm.copyToRealm(subjectDataSave)
                     realm.commitTransaction()
-                    */
+                    Toast.makeText(this,"$subjectDataSave",Toast.LENGTH_SHORT).show()
+
 
                 }
                 101 -> {

@@ -1,19 +1,13 @@
 package com.racoondog.mystudent
 
-object ScheduleData{
-    val ScheduleInfo = mutableListOf<Array<Int>>()
+/*object ScheduleData{
 
     var scheduleDayFlag = 0
     var scheduleStartHour = 0
     var scheduleEndHour = 0
 
-    fun setData() {
-
-        val dataInfo = arrayOf(scheduleDayFlag, scheduleStartHour, scheduleStartHour)
-        ScheduleInfo.add(dataInfo)
-
-    }
 }
+ */
 
 object SubjectData {
 
