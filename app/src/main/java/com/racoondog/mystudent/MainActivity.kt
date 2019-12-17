@@ -66,34 +66,37 @@ class MainActivity: AppCompatActivity() {
                     schedule_add.visibility = View.INVISIBLE
 
                     title_text.text = data!!.getStringExtra("title")
-                    val scheduleDayFlag = data.getIntExtra("scheduleDayFlag", 0)
-                    val scheduleStartHour = data.getIntExtra("scheduleStartHour", 0)
-                    val scheduleEndHour = data.getIntExtra("scheduleEndHour", 0)
+                    ScheduleData.scheduleDayFlag = data.getIntExtra("scheduleDayFlag", 0)
+                    ScheduleData.scheduleStartHour = data.getIntExtra("scheduleStartHour", 0)
+                    ScheduleData.scheduleEndHour = data.getIntExtra("scheduleEndHour", 0)
 
                     weekview.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT,
                         ConstraintLayout.LayoutParams.MATCH_PARENT).apply {
 
                     }
 
-                    weekview.lastDay = scheduleDayFlag
-                    weekview.startTime = scheduleStartHour
-                    weekview.endTime = scheduleEndHour
+                    weekview.lastDay = ScheduleData.scheduleDayFlag
+                    weekview.startTime =  ScheduleData.scheduleStartHour
+                    weekview.endTime =  ScheduleData.scheduleEndHour
 
                     weekView.addView(weekview)
 
-                    intentStartTime = scheduleStartHour
-                    intentEndTime = scheduleEndHour
-                    intentflag = scheduleDayFlag
+                    intentStartTime =  ScheduleData.scheduleStartHour
+                    intentEndTime =  ScheduleData.scheduleEndHour
+                    intentflag =  ScheduleData.scheduleDayFlag
 
+                    ScheduleData.setData()
+                    /*
                     Realm.init(this)
                     val realm = Realm.getDefaultInstance()
                     realm.beginTransaction()
                     val subjectDataSave:SubjectData = realm.createObject(SubjectData::class.java)
                     subjectDataSave.apply {
-                        
+
                     }
                     realm.copyToRealm(subjectDataSave)
                     realm.commitTransaction()
+                    */
 
                 }
                 101 -> {

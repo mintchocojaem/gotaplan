@@ -1,18 +1,26 @@
 package com.racoondog.mystudent
 
-import io.realm.RealmObject
-
-object SubjectData : RealmObject() {
-
-    val ScheduleInfo = mutableListOf<Int>()
-    var SubjectInfo = mutableListOf<Array<String>?>()
-    val LessonInfo = mutableListOf<Any>()
-
-    var id: Int = 0
+object ScheduleData{
+    val ScheduleInfo = mutableListOf<Array<Int>>()
 
     var scheduleDayFlag = 0
     var scheduleStartHour = 0
     var scheduleEndHour = 0
+
+    fun setData() {
+
+        val dataInfo = arrayOf(scheduleDayFlag, scheduleStartHour, scheduleStartHour)
+        ScheduleInfo.add(dataInfo)
+
+    }
+}
+
+object SubjectData {
+
+    var SubjectInfo = mutableListOf<Array<String>?>()
+    val LessonInfo = mutableListOf<Any>()
+
+    var id: Int = 0
 
     var SubjectTitle:String = ""
     var StartTimeText:String = ""
