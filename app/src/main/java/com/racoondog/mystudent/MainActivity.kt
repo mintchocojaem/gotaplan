@@ -93,9 +93,11 @@ class MainActivity: AppCompatActivity() {
                         this.ScheduleDayFlag = scheduleDayFlag
                         this.ScheduleStartHour = scheduleStartHour
                         this.ScheduleEndHour = scheduleEndHour
+                        this.Title = title_text.text.toString()
                     }
                     realm.commitTransaction()
                     Toast.makeText(this,"$subjectDataSave",Toast.LENGTH_SHORT).show()
+
 
 
                 }
