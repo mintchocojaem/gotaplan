@@ -154,9 +154,9 @@ class CreateSchedule : AppCompatActivity(){
                 if(day_flag != 0) {
                     if (start_hour.value < end_hour.value) {
                         intent.putExtra("title", TitleName_text.text.toString())
-                        intent.putExtra("day_flag", day_flag)
-                        intent.putExtra("start_time",start_hour.value)
-                        intent.putExtra("end_time",end_hour.value)
+                        intent.putExtra("scheduleDayFlag", day_flag)
+                        intent.putExtra("scheduleStartHour",start_hour.value)
+                        intent.putExtra("scheduleEndHour",end_hour.value)
 
                         setResult(Activity.RESULT_OK, intent)
                         finish()

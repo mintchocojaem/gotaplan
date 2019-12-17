@@ -39,7 +39,6 @@ class MainActivity: AppCompatActivity() {
         schedule_add.setOnClickListener {
             val scheduleIntent = Intent(this, CreateSchedule::class.java)
             startActivityForResult(scheduleIntent, 100)
-            schedule_add.visibility = View.INVISIBLE
 
         }
 
@@ -63,27 +62,38 @@ class MainActivity: AppCompatActivity() {
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 100 -> {
+
+                    schedule_add.visibility = View.INVISIBLE
+
                     title_text.text = data!!.getStringExtra("title")
-                    val dayflag = data.getIntExtra("day_flag", 0)
-                    val startTimer = data.getIntExtra("start_time", 0)
-                    val endTimer = data.getIntExtra("end_time", 0)
+                    val scheduleDayFlag = data.getIntExtra("scheduleDayFlag", 0)
+                    val scheduleStartHour = data.getIntExtra("scheduleStartHour", 0)
+                    val scheduleEndHour = data.getIntExtra("scheduleEndHour", 0)
 
                     weekview.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT,
                         ConstraintLayout.LayoutParams.MATCH_PARENT).apply {
 
                     }
 
-
-                    weekview.lastDay = dayflag
-                    weekview.startTime = startTimer
-                    weekview.endTime = endTimer
+                    weekview.lastDay = scheduleDayFlag
+                    weekview.startTime = scheduleStartHour
+                    weekview.endTime = scheduleEndHour
 
                     weekView.addView(weekview)
 
-                    intentStartTime = startTimer
-                    intentEndTime = endTimer
-                    intentflag = dayflag
+                    intentStartTime = scheduleStartHour
+                    intentEndTime = scheduleEndHour
+                    intentflag = scheduleDayFlag
 
+                    Realm.init(this)
+                    val realm = Realm.getDefaultInstance()
+                    realm.beginTransaction()
+                    val subjectDataSave:SubjectData = realm.createObject(SubjectData::class.java)
+                    subjectDataSave.apply {
+                        
+                    }
+                    realm.copyToRealm(subjectDataSave)
+                    realm.commitTransaction()
 
                 }
                 101 -> {
@@ -102,19 +112,7 @@ class MainActivity: AppCompatActivity() {
                     val startTimeText = "${StartTimeText[0]}${StartTimeText[1]}:${StartTimeText[2]}"
                     val endTimeText = "${EndTimeText[0]}${EndTimeText[1]}:${EndTimeText[2]}"
 
-                    /*
-                    Realm.init(this)
-                    val realm = Realm.getDefaultInstance()
-                    realm.beginTransaction()
-                    val SubjectData:SubjectInfo = realm.createObject(SubjectInfo::class.java)
-                    SubjectData.apply {
-                        this.SubjectTitle = SubjectTitle
-                        this.StartTimeText = StartTimeText
-                        this.EndTimeText = EndTimeText
-                        this.ContentText = ContentText
-                    }
-                    realm.commitTransaction()
-                     */
+
                     SubjectData.SubjectTitle = SubjectTitle
                     SubjectData.StartTimeText = startTimeText
                     SubjectData.EndTimeText = endTimeText
