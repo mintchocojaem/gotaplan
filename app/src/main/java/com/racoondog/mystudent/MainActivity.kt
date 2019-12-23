@@ -1,19 +1,16 @@
 package com.racoondog.mystudent
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Intent
-import android.content.SharedPreferences
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.view.*
 import android.widget.TextView
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import io.realm.Realm
-import io.realm.kotlin.oneOf
 
 
 class MainActivity: AppCompatActivity() {
@@ -29,6 +26,7 @@ class MainActivity: AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
 
         setSupportActionBar(my_toolbar)  //Actionbar 부분
         supportActionBar?.setDisplayUseLogoEnabled(true)
@@ -51,9 +49,10 @@ class MainActivity: AppCompatActivity() {
             startActivityForResult(subjectIntent, 102)
         }
 
-        val data = realm.where<SubjectInfo>(SubjectInfo::class.java).findFirst()
+        val data = DataModel.ScheduleData
+        val save = realm.where(DataModel::class.java).findFirst()
 
-        if( data != null){
+        if( save?.DataSaved == true){
             weekview.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT,
                 ConstraintLayout.LayoutParams.MATCH_PARENT).apply {
 
@@ -70,10 +69,20 @@ class MainActivity: AppCompatActivity() {
 
 
 
+
+
     }
 
     override fun onDestroy() {
         super.onDestroy()
+
+        realm.beginTransaction()
+        val data:DataModel = realm.createObject(DataModel::class.java)
+        data.apply {
+            this.DataSaved = true
+        }
+        realm.commitTransaction()
+
         realm.close()
     }
 
@@ -109,15 +118,15 @@ class MainActivity: AppCompatActivity() {
                     intentflag = scheduleDayFlag
 
                     realm.beginTransaction()
-                    val subjectDataSave:SubjectInfo = realm.createObject(SubjectInfo::class.java)
-                    subjectDataSave.apply {
+                    DataModel.ScheduleData.apply {
                         this.ScheduleDayFlag = scheduleDayFlag
                         this.ScheduleStartHour = scheduleStartHour
                         this.ScheduleEndHour = scheduleEndHour
                         this.Title = title_text.text.toString()
                     }
                     realm.commitTransaction()
-                    Toast.makeText(this,"$subjectDataSave",Toast.LENGTH_SHORT).show()
+
+
 
                 }
                 101 -> {
