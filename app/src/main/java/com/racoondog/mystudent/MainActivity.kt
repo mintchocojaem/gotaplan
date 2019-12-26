@@ -52,7 +52,7 @@ class MainActivity: AppCompatActivity() {
         val data = DataModel.ScheduleData
         val save = realm.where(DataModel::class.java).findFirst()
 
-        if( save?.DataSaved == true){
+        if( save?.dataSaved == true){
             weekview.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT,
                 ConstraintLayout.LayoutParams.MATCH_PARENT).apply {
 
@@ -79,7 +79,7 @@ class MainActivity: AppCompatActivity() {
         realm.beginTransaction()
         val data:DataModel = realm.createObject(DataModel::class.java)
         data.apply {
-            this.DataSaved = true
+            this.dataSaved = true
         }
         realm.commitTransaction()
 
@@ -136,30 +136,45 @@ class MainActivity: AppCompatActivity() {
 
                     val startHour = data!!.getIntExtra("StartHour", 0) // 24시 형식 시간
                     val endHour = data!!.getIntExtra("EndHour", 0)// 24시 형식 시간
-                    val DayFlag = data!!.getIntExtra("DayFlag", 0)
-                    val SubjectTitle = data!!.getStringExtra("SubjectTitle")
-                    val StartTimeText = data!!.getStringArrayExtra("StartTimeText") // 24시 형식 시간
-                    val EndTimeText = data!!.getStringArrayExtra("EndTimeText")
-                    val ContentText = data?.getStringExtra("ContentText")
+                    val dayFlag = data!!.getIntExtra("DayFlag", 0)
+                    val subjectTitle = data!!.getStringExtra("SubjectTitle")
+                    val startTimeText = data!!.getStringArrayExtra("StartTimeText") // 오전/오후 형식 시간
+                    val endTimeText = data!!.getStringArrayExtra("EndTimeText")
+                    val contentText = data?.getStringExtra("ContentText")
 
-                    val startTimeText = "${StartTimeText[0]}${StartTimeText[1]}:${StartTimeText[2]}"
-                    val endTimeText = "${EndTimeText[0]}${EndTimeText[1]}:${EndTimeText[2]}"
+                    val timeText = "${startTimeText[0]}${startTimeText[1]}:${startTimeText[2]}" + " ~ "
+                            "${endTimeText[0]}${endTimeText[1]}:${endTimeText[2]}" //StartTimeText[ ]은 오전/오후 변환시간
+
+                    realm.beginTransaction()
+                    val info:SubjectBox = realm.createObject(SubjectBox::class.java)
+                    info.apply {
+                        id = weekview.subjectID.toString()
+                        title = subjectTitle
+                        content = contentText
+                        starthour = startHour.toString()
+                        startminute = startTimeText[2]
+                        endhour = endHour.toString()
+                        endminute = endTimeText[2]
+                        time = timeText
+                    }
+                    realm.commitTransaction()
 
 
-                    SubjectData.SubjectTitle = SubjectTitle
-                    SubjectData.StartTimeText = startTimeText
-                    SubjectData.EndTimeText = endTimeText
-                    SubjectData.ContentText = ContentText
-                    SubjectData.id = weekview.subjectID
+                    SubjectData.SubjectTitle = subjectTitle
+                    SubjectData.TimeText = timeText
+                    SubjectData.ContentText = contentText
+                    SubjectData.id = weekview.subjectID.toString()
                     SubjectData.setData(SubjectData.id)
 
-                    weekview.createSubject(startHour,StartTimeText[2].toInt()
-                        ,endHour,EndTimeText[2].toInt(), DayFlag,intentStartTime)
+
+
+                    weekview.createSubject(startHour,startTimeText[2].toInt()
+                        ,endHour,endTimeText[2].toInt(), dayFlag,intentStartTime)
 
                 }
                 103->{
                     val title = weekview.findViewWithTag<TextView>("title${SubjectData.id}")
-                    title.text = SubjectData.SubjectInfo!![SubjectData.id]!![0]
+                    title.text = SubjectData.SubjectInfo!![SubjectData.id.toInt()]!![0]
                 }
 
             }
@@ -169,7 +184,7 @@ class MainActivity: AppCompatActivity() {
             when (requestCode) {
 
                 103->{
-                    weekview.deleteSubject(SubjectData.id)
+                    weekview.deleteSubject(SubjectData.id.toInt())
                 }
 
             }
