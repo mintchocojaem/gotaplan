@@ -142,10 +142,9 @@ class MainActivity: AppCompatActivity() {
                     val endTimeText = data!!.getStringArrayExtra("EndTimeText")
                     val contentText = data?.getStringExtra("ContentText")
 
-                    val timeText = "${startTimeText[0]}${startTimeText[1]}:${startTimeText[2]}" + " ~ "
-                            "${endTimeText[0]}${endTimeText[1]}:${endTimeText[2]}" //StartTimeText[ ]은 오전/오후 변환시간
+                    val timeText = "${startTimeText[0]}${startTimeText[1]}:${startTimeText[2]}"+ " ~ " + "${endTimeText[0]}${endTimeText[1]}:${endTimeText[2]}" //StartTimeText[ ]은 오전/오후 변환시간
 
-                    realm.beginTransaction()
+                    /*realm.beginTransaction()
                     val info:SubjectBox = realm.createObject(SubjectBox::class.java)
                     info.apply {
                         id = weekview.subjectID.toString()
@@ -158,12 +157,17 @@ class MainActivity: AppCompatActivity() {
                         time = timeText
                     }
                     realm.commitTransaction()
+                     */
 
 
-                    SubjectData.SubjectTitle = subjectTitle
+                    SubjectData.TitleText = subjectTitle
                     SubjectData.TimeText = timeText
                     SubjectData.ContentText = contentText
-                    SubjectData.id = weekview.subjectID.toString()
+                    SubjectData.id = weekview.subjectID
+                    SubjectData.StartHour = startHour
+                    SubjectData.StartMinute = startTimeText[2].toInt()
+                    SubjectData.EndHour = endHour
+                    SubjectData.EndMinute = endTimeText[2].toInt()
                     SubjectData.setData(SubjectData.id)
 
 
@@ -174,7 +178,7 @@ class MainActivity: AppCompatActivity() {
                 }
                 103->{
                     val title = weekview.findViewWithTag<TextView>("title${SubjectData.id}")
-                    title.text = SubjectData.SubjectInfo!![SubjectData.id.toInt()]!![0]
+                    title.text = SubjectData.SubjectInfo!![SubjectData.id]!![5].toString()
                 }
 
             }

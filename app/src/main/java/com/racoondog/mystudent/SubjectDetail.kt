@@ -18,18 +18,9 @@ class SubjectDetail : AppCompatActivity() {
 
         var saveEditFlag: Boolean = false
 
-        /*
-        val intent = getIntent()
-        val intentTitle = intent.getStringExtra("SubjectTitle")
-        val intentStartTimeText = intent.getStringExtra("StartTimeText")
-        val intentEndTimeText = intent.getStringExtra("EndTimeText")
-        val intentContentText = intent.getStringExtra("ContentText")
-        */
-
-
-        subject_time.setText(SubjectData.SubjectInfo!![SubjectData.id]!![1] + "~" + SubjectData.SubjectInfo!![SubjectData.id]!![2])
-        subject_title.setText(SubjectData.SubjectInfo!![SubjectData.id]!![0])
-        subject_content.setText(SubjectData.SubjectInfo!![SubjectData.id]!![3])
+        subject_time.text = SubjectData.SubjectInfo!![SubjectData.id]!![7].toString()
+        subject_title.setText(SubjectData.SubjectInfo!![SubjectData.id]!![5].toString())
+        subject_content.setText(SubjectData.SubjectInfo!![SubjectData.id]!![6].toString())
 
 
         lessonQuit_Button.setOnClickListener {

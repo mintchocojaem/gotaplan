@@ -12,33 +12,32 @@ package com.racoondog.mystudent
 
 object SubjectData {
 
-    var SubjectInfo = mutableListOf<Array<String>?>()
+    var SubjectInfo = mutableListOf<Array<Any>?>()
     val LessonInfo = mutableListOf<Any>()
 
-    lateinit var id: String
+    var id: Int = 0
 
-    lateinit var StartHour: String
-    lateinit var StartMinute: String
+    var StartHour: Int = 0
+    var StartMinute: Int = 0
 
-    lateinit var EndHour: String
-    lateinit var EndMinute: String
+    var EndHour: Int = 0
+    var EndMinute: Int = 0
 
-    lateinit var SubjectTitle: String
+    lateinit var TitleText: String
     lateinit var ContentText: String
     lateinit var TimeText: String
 
 
-    fun getData(ID: String): Any {
+    fun getData(ID: Int): Any {
         id = ID
-        return SubjectInfo[ID.toInt()]!!.contentDeepToString()
+        return SubjectInfo[ID]!!.contentDeepToString()
 
     }
 
-    fun setData(ID: String) {
+    fun setData(ID: Int) {
 
         id = ID
-        val dataInfo = arrayOf(SubjectTitle, StartHour,
-            StartMinute, EndHour, EndMinute, ContentText, TimeText)
+        val dataInfo = arrayOf(id, StartHour, StartMinute, EndHour, EndMinute, TitleText, ContentText, TimeText)
 
         SubjectInfo.add(dataInfo)
 
@@ -47,10 +46,10 @@ object SubjectData {
     }
 
     fun setTitle(Title:String){
-        SubjectInfo!![id.toInt()]!![0] = Title
+        SubjectInfo!![id]!![0] = Title
     }
     fun setContent(Content:String){
-        SubjectInfo!![id.toInt()]!![3] = Content
+        SubjectInfo!![id]!![3] = Content
     }
 
 }
