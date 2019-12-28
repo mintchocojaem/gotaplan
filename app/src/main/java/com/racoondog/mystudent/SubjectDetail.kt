@@ -6,10 +6,14 @@ import android.os.Bundle
 import android.view.ContextThemeWrapper
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import io.realm.Realm
+import io.realm.RealmResults
 import kotlinx.android.synthetic.main.subject_detail.*
 
 
 class SubjectDetail : AppCompatActivity() {
+
+    val realm = Realm.getDefaultInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -18,17 +22,18 @@ class SubjectDetail : AppCompatActivity() {
 
         var saveEditFlag: Boolean = false
 
-        subject_time.text = SubjectData.SubjectInfo!![SubjectData.id]!![7].toString()
-        subject_title.setText(SubjectData.SubjectInfo!![SubjectData.id]!![5].toString())
-        subject_content.setText(SubjectData.SubjectInfo!![SubjectData.id]!![6].toString())
+        var data: RealmResults<SubjectBox> = realm.where<SubjectBox>(SubjectBox::class.java)
+            .equalTo("id",WeekViewData.ID)
+            .findAll()
+        subject_time.text = data.get(0)!!.time.toString()
+        subject_title.setText(data.get(0)!!.title.toString())
+        subject_content.setText(data.get(0)!!.content.toString())
 
+        //Toast.makeText(this,"${WeekViewData.nextID}",Toast.LENGTH_SHORT).show()
 
         lessonQuit_Button.setOnClickListener {
-
                setResult(Activity.RESULT_OK, intent)
                finish()
-
-
         }
 
         lessonSave_Button.setOnClickListener {
@@ -48,14 +53,10 @@ class SubjectDetail : AppCompatActivity() {
                 subject_title.isEnabled = false
                 subject_content.isEnabled = false
 
-                SubjectData.setTitle(subject_title.text.toString())
-                SubjectData.setContent(subject_content.text.toString())
-
-                Toast.makeText(
-                    this,
-                    "${SubjectData.SubjectInfo[SubjectData.id]!!.contentDeepToString()}",
-                    Toast.LENGTH_SHORT
-                ).show()
+                realm.beginTransaction()
+                data.get(0)!!.title = subject_title.text.toString()
+                data.get(0)!!.content = subject_content.text.toString()
+                realm.commitTransaction()
 
                 saveEditFlag = false
             }
@@ -69,7 +70,23 @@ class SubjectDetail : AppCompatActivity() {
 
             builder.setPositiveButton("확인") { _, _ ->
 
-                SubjectData.SubjectInfo.set(SubjectData.id,null)
+                realm.beginTransaction()
+                data.get(0)!!.deleteFromRealm()
+                realm.commitTransaction()
+
+                /*val nextID: RealmResults<SubjectBox> = realm.where<SubjectBox>(SubjectBox::class.java).distinct("id").findAll()
+                for (i in 0 until nextID.size){
+                    if(i.toString() != nextID[i].toString()) {
+                        WeekViewData.nextID = i
+                        break
+                    }
+                    if(i.toString() == nextID[i].toString()){
+                        WeekViewData.nextID = nextID.size+1
+                    }
+                }
+
+                 */
+
                 setResult(104,intent)
                 finish()
 

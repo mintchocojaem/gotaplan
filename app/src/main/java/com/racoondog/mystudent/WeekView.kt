@@ -7,14 +7,17 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
+import io.realm.Realm
+import io.realm.RealmResults
+import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.weekview.view.*
 import me.grantland.widget.AutofitTextView
-import kotlin.math.absoluteValue
 import kotlin.properties.Delegates
 
 
 class WeekView : ConstraintLayout{
 
+    val realm = Realm.getDefaultInstance()
 
     var endTime: Int by Delegates.observable(0) { property, oldValue, newValue ->
         if (oldValue != newValue) {
@@ -24,11 +27,10 @@ class WeekView : ConstraintLayout{
 
         }
     }
-
+    var subjectID = 0
     var startTime = 0
     var lastDay = 0
     val cnxt = context as MainActivity
-    var subjectID = 0
     var dayFlag = 0
 
 
@@ -316,22 +318,24 @@ class WeekView : ConstraintLayout{
         val subjectMargin = (StartHour - intentStartTime) * 150 + StartMinute * 2.5
         val subject = ConstraintLayout(cnxt)
         val titleText = TextView(cnxt)
-
+        val id = subjectID
         titleText.apply {
             titleText.tag = "title$subjectID"
         }
 
-        var smallTitle : String = ""
-        val id = subjectID
+        var smallTitle = ""
+        var data:RealmResults<SubjectBox> = realm.where<SubjectBox>(SubjectBox::class.java)
+            .equalTo("id",id)
+            .findAll()
 
+        if(data.get(0)!!.title.length > 10){
 
-        if(SubjectData.SubjectInfo!![SubjectData.id]!![5].toString().length > 10){
-            smallTitle = SubjectData.SubjectInfo!![SubjectData.id]!![5].toString().substring(0,10)+".."
+            smallTitle = data.get(0)!!.title.toString().substring(0,10)+".."
+
         }
         else{
-            smallTitle = SubjectData.SubjectInfo!![SubjectData.id]!![5].toString()
+            smallTitle = data.get(0)!!.title.toString()
         }
-
 
         titleText.layoutParams = ConstraintLayout.LayoutParams(
             ConstraintLayout.LayoutParams.MATCH_PARENT,
@@ -339,7 +343,7 @@ class WeekView : ConstraintLayout{
         ).apply {
             titleText.maxLines = 2
             titleText.textSize = 13f
-            titleText.text = "$smallTitle"
+            titleText.text = smallTitle
         }
 
         subject.layoutParams = ConstraintLayout.LayoutParams(
@@ -359,19 +363,11 @@ class WeekView : ConstraintLayout{
             subject.id = id
             subjectID++
             subject.setOnClickListener{
-                SubjectData.id = id
+                WeekViewData.ID = id
                 dayFlag = DayFlag
 
-                Toast.makeText(cnxt, "${subject.id},${SubjectData.getData(id)}", Toast.LENGTH_SHORT).show()
-
                 val intentSubjectDetail = Intent (cnxt, SubjectDetail::class.java)
-                /*
-                intentSubjectDetail.putExtra("SubjectTitle",SubjectTitle)
-                intentSubjectDetail.putExtra("StartTimeText",StartTimeText)
-                intentSubjectDetail.putExtra("EndTimeText",EndTimeText)
-                intentSubjectDetail.putExtra("ContentText",ContentText)
-
-                 */
+                Toast.makeText(cnxt,"$data",Toast.LENGTH_LONG).show()
                 cnxt.startActivityForResult(intentSubjectDetail,103)
 
             }

@@ -2,16 +2,17 @@ package com.racoondog.mystudent
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.ContactsContract
-import android.view.*
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_main.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import io.realm.Realm
-
+import io.realm.RealmResults
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity: AppCompatActivity() {
 
@@ -49,23 +50,32 @@ class MainActivity: AppCompatActivity() {
             startActivityForResult(subjectIntent, 102)
         }
 
-        val data = DataModel.ScheduleData
-        val save = realm.where(DataModel::class.java).findFirst()
-
-        if( save?.dataSaved == true){
+        val scheduleData = realm.where(DataModel::class.java).findFirst()
+        if( scheduleData?.dataSaved == true){
             weekview.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT,
                 ConstraintLayout.LayoutParams.MATCH_PARENT).apply {
 
             }
 
-            weekview.lastDay = data.ScheduleDayFlag!!
-            weekview.startTime = data.ScheduleStartHour!!
-            weekview.endTime = data.ScheduleEndHour!!
-            title_text.text = data.Title
+            weekview.lastDay = scheduleData.scheduleDayFlag!!
+            weekview.startTime = scheduleData.scheduleStartHour!!
+            weekview.endTime = scheduleData.scheduleEndHour!!
+            title_text.text = scheduleData.scheduleTitle
             weekView.addView(weekview)
             schedule_add.visibility = View.INVISIBLE
 
+            val subjectData: RealmResults<SubjectBox> = realm.where<SubjectBox>(SubjectBox::class.java).findAll()
+            for (data in subjectData) {
+                weekview.createSubject(
+                    data.startHour.toInt(), data.startMinute.toInt()
+                    , data.endHour.toInt(), data.endMinute.toInt(),
+                    data.dayFlag.toInt(), scheduleData.scheduleStartHour!!.toInt())
+            }
+
+
         }
+
+
 
 
 
@@ -75,13 +85,6 @@ class MainActivity: AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-
-        realm.beginTransaction()
-        val data:DataModel = realm.createObject(DataModel::class.java)
-        data.apply {
-            this.dataSaved = true
-        }
-        realm.commitTransaction()
 
         realm.close()
     }
@@ -118,11 +121,14 @@ class MainActivity: AppCompatActivity() {
                     intentflag = scheduleDayFlag
 
                     realm.beginTransaction()
-                    DataModel.ScheduleData.apply {
-                        this.ScheduleDayFlag = scheduleDayFlag
-                        this.ScheduleStartHour = scheduleStartHour
-                        this.ScheduleEndHour = scheduleEndHour
-                        this.Title = title_text.text.toString()
+                    val data:DataModel = realm.createObject(DataModel::class.java)
+
+                    data.apply {
+                        this.dataSaved = true
+                        this.scheduleDayFlag = scheduleDayFlag
+                        this.scheduleStartHour = scheduleStartHour
+                        this.scheduleEndHour = scheduleEndHour
+                        this.scheduleTitle = title_text.text.toString()
                     }
                     realm.commitTransaction()
 
@@ -144,22 +150,25 @@ class MainActivity: AppCompatActivity() {
 
                     val timeText = "${startTimeText[0]}${startTimeText[1]}:${startTimeText[2]}"+ " ~ " + "${endTimeText[0]}${endTimeText[1]}:${endTimeText[2]}" //StartTimeText[ ]은 오전/오후 변환시간
 
-                    /*realm.beginTransaction()
-                    val info:SubjectBox = realm.createObject(SubjectBox::class.java)
-                    info.apply {
-                        id = weekview.subjectID.toString()
-                        title = subjectTitle
-                        content = contentText
-                        starthour = startHour.toString()
-                        startminute = startTimeText[2]
-                        endhour = endHour.toString()
-                        endminute = endTimeText[2]
-                        time = timeText
+
+                    realm.beginTransaction()
+
+                    val subjectInfo :SubjectBox = realm.createObject(SubjectBox::class.java)
+                    subjectInfo.apply {
+                        this.id = weekview.subjectID.toInt()
+                        this.dayFlag = dayFlag.toString()
+                        this.startHour = startHour.toString()
+                        this.startMinute = startTimeText[2]
+                        this.endHour = endHour.toString()
+                        this.endMinute = endTimeText[2]
+                        this.title = subjectTitle
+                        this.content = contentText
+                        this.time = timeText
+
                     }
                     realm.commitTransaction()
-                     */
 
-
+                    /*
                     SubjectData.TitleText = subjectTitle
                     SubjectData.TimeText = timeText
                     SubjectData.ContentText = contentText
@@ -170,15 +179,25 @@ class MainActivity: AppCompatActivity() {
                     SubjectData.EndMinute = endTimeText[2].toInt()
                     SubjectData.setData(SubjectData.id)
 
+                     */
 
+
+                    var data:RealmResults<SubjectBox> = realm.where<SubjectBox>(SubjectBox::class.java)
+                        .equalTo("id",WeekViewData.ID)
+                        .findAll()
 
                     weekview.createSubject(startHour,startTimeText[2].toInt()
                         ,endHour,endTimeText[2].toInt(), dayFlag,intentStartTime)
 
+
+
                 }
                 103->{
-                    val title = weekview.findViewWithTag<TextView>("title${SubjectData.id}")
-                    title.text = SubjectData.SubjectInfo!![SubjectData.id]!![5].toString()
+                    var data: RealmResults<SubjectBox> = realm.where<SubjectBox>(SubjectBox::class.java)
+                        .equalTo("id",WeekViewData.ID)
+                        .findAll()
+                    val title = weekview.findViewWithTag<TextView>("title${data.get(0)!!.id}")
+                    title.text = data.get(0)!!.title.toString()
                 }
 
             }
@@ -188,7 +207,8 @@ class MainActivity: AppCompatActivity() {
             when (requestCode) {
 
                 103->{
-                    weekview.deleteSubject(SubjectData.id.toInt())
+
+                    weekview.deleteSubject(WeekViewData.ID.toInt())
                 }
 
             }

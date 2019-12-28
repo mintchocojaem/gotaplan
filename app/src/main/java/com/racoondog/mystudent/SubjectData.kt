@@ -9,7 +9,11 @@ package com.racoondog.mystudent
 
 }
  */
-
+object WeekViewData {
+    var ID: Int = 0 //weekview subject 클릭시 id 값을 가리키는 포인터
+        //var nextID: Int = 0 // 다음으로 만들어질 weekview의 id 값을 결정하는 변수
+}
+/*
 object SubjectData {
 
     var SubjectInfo = mutableListOf<Array<Any>?>()
@@ -37,7 +41,8 @@ object SubjectData {
     fun setData(ID: Int) {
 
         id = ID
-        val dataInfo = arrayOf(id, StartHour, StartMinute, EndHour, EndMinute, TitleText, ContentText, TimeText)
+        val dataInfo = arrayOf(id, StartHour, StartMinute, EndHour, EndMinute, TitleText,
+            ContentText, TimeText)
 
         SubjectInfo.add(dataInfo)
 
@@ -45,11 +50,18 @@ object SubjectData {
 
     }
 
+
+
     fun setTitle(Title:String){
-        SubjectInfo!![id]!![0] = Title
+        SubjectInfo!![id]!![6] = Title
     }
     fun setContent(Content:String){
-        SubjectInfo!![id]!![3] = Content
+        SubjectInfo!![id]!![8] = Content
     }
 
+
+
 }
+
+
+ */
