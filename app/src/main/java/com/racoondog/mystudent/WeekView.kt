@@ -367,7 +367,7 @@ class WeekView : ConstraintLayout{
             verticalBias = 0f
             topMargin = subjectMargin.toInt()
             subject.setBackgroundResource(R.color.colorAccent)
-            subject.setPadding(3,10,3,10)
+            subject.setPadding(5,7,5,7)
             subject.id = ID
             subject.setOnClickListener{
                 WeekViewData.ID = ID
