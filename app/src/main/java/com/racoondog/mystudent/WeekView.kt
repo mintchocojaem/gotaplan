@@ -27,7 +27,6 @@ class WeekView : ConstraintLayout{
 
         }
     }
-    var subjectID = 0
     var startTime = 0
     var lastDay = 0
     val cnxt = context as MainActivity
@@ -312,20 +311,20 @@ class WeekView : ConstraintLayout{
 
     }
 
-    fun createSubject(StartHour:Int,StartMinute:Int,EndHour:Int,EndMinute:Int,DayFlag:Int,intentStartTime:Int){
+    fun createSubject(StartHour:Int,StartMinute:Int,EndHour:Int,EndMinute:Int,DayFlag:Int,intentStartTime:Int,id:Int){
 
         val subjectHeight = (EndHour - StartHour) * 150 + (EndMinute - StartMinute) * 2.5
         val subjectMargin = (StartHour - intentStartTime) * 150 + StartMinute * 2.5
         val subject = ConstraintLayout(cnxt)
         val titleText = TextView(cnxt)
-        val id = subjectID
+        val ID = id
         titleText.apply {
-            titleText.tag = "title$subjectID"
+            titleText.tag = "title$ID"
         }
 
         var smallTitle = ""
         var data:RealmResults<SubjectBox> = realm.where<SubjectBox>(SubjectBox::class.java)
-            .equalTo("id",id)
+            .equalTo("id",ID)
             .findAll()
 
         if(data.get(0)!!.title.length > 10){
@@ -360,10 +359,9 @@ class WeekView : ConstraintLayout{
             topMargin = subjectMargin.toInt()
             subject.setBackgroundResource(R.color.colorAccent)
             subject.setPadding(20,10,20,10)
-            subject.id = id
-            subjectID++
+            subject.id = ID
             subject.setOnClickListener{
-                WeekViewData.ID = id
+                WeekViewData.ID = ID
                 dayFlag = DayFlag
 
                 val intentSubjectDetail = Intent (cnxt, SubjectDetail::class.java)

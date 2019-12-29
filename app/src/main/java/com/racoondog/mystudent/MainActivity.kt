@@ -69,7 +69,7 @@ class MainActivity: AppCompatActivity() {
                 weekview.createSubject(
                     data.startHour.toInt(), data.startMinute.toInt()
                     , data.endHour.toInt(), data.endMinute.toInt(),
-                    data.dayFlag.toInt(), scheduleData.scheduleStartHour!!.toInt())
+                    data.dayFlag.toInt(), scheduleData.scheduleStartHour!!.toInt(),data.id.toInt())
             }
 
 
@@ -150,12 +150,12 @@ class MainActivity: AppCompatActivity() {
 
                     val timeText = "${startTimeText[0]}${startTimeText[1]}:${startTimeText[2]}"+ " ~ " + "${endTimeText[0]}${endTimeText[1]}:${endTimeText[2]}" //StartTimeText[ ]은 오전/오후 변환시간
 
+                    val ID = createID(0,128)
 
                     realm.beginTransaction()
-
                     val subjectInfo :SubjectBox = realm.createObject(SubjectBox::class.java)
                     subjectInfo.apply {
-                        this.id = weekview.subjectID.toInt()
+                        this.id = ID.toInt()
                         this.dayFlag = dayFlag.toString()
                         this.startHour = startHour.toString()
                         this.startMinute = startTimeText[2]
@@ -168,26 +168,9 @@ class MainActivity: AppCompatActivity() {
                     }
                     realm.commitTransaction()
 
-                    /*
-                    SubjectData.TitleText = subjectTitle
-                    SubjectData.TimeText = timeText
-                    SubjectData.ContentText = contentText
-                    SubjectData.id = weekview.subjectID
-                    SubjectData.StartHour = startHour
-                    SubjectData.StartMinute = startTimeText[2].toInt()
-                    SubjectData.EndHour = endHour
-                    SubjectData.EndMinute = endTimeText[2].toInt()
-                    SubjectData.setData(SubjectData.id)
-
-                     */
-
-
-                    var data:RealmResults<SubjectBox> = realm.where<SubjectBox>(SubjectBox::class.java)
-                        .equalTo("id",WeekViewData.ID)
-                        .findAll()
-
                     weekview.createSubject(startHour,startTimeText[2].toInt()
-                        ,endHour,endTimeText[2].toInt(), dayFlag,intentStartTime)
+                        ,endHour,endTimeText[2].toInt(), dayFlag,intentStartTime,ID)
+
 
 
 
@@ -215,6 +198,26 @@ class MainActivity: AppCompatActivity() {
 
         }
 
+    }
+    private fun createID(Min:Int, Max:Int):Int{
+
+        var result = 0
+
+        out@ for(ID in Min .. Max){
+
+            val data = realm.where<SubjectBox>(SubjectBox::class.java).equalTo("id",ID).findFirst()
+
+            if ( data == null ){
+                result = ID
+
+                break@out
+            }
+            else continue
+
+        }
+
+
+        return result
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean { //Menu 추가 부분
