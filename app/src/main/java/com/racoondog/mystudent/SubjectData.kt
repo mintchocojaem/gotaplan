@@ -11,7 +11,6 @@ package com.racoondog.mystudent
  */
 object WeekViewData {
     var ID: Int = 0 //weekview subject 클릭시 id 값을 가리키는 포인터
-        //var nextID: Int = 0 // 다음으로 만들어질 weekview의 id 값을 결정하는 변수
 }
 /*
 object SubjectData {

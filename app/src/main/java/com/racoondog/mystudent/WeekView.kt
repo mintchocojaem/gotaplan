@@ -365,7 +365,6 @@ class WeekView : ConstraintLayout{
                 dayFlag = DayFlag
 
                 val intentSubjectDetail = Intent (cnxt, SubjectDetail::class.java)
-                Toast.makeText(cnxt,"$data",Toast.LENGTH_LONG).show()
                 cnxt.startActivityForResult(intentSubjectDetail,103)
 
             }
@@ -382,7 +381,21 @@ class WeekView : ConstraintLayout{
         Toast.makeText(cnxt, "삭제되었습니다", Toast.LENGTH_SHORT).show()
         findViewWithTag<ConstraintLayout>(dayFlag).removeView(findViewById(id))
     }
+    fun createID(Min:Int, Max:Int):Int{
+        var result = 0
+        out@ for(ID in Min .. Max){
 
+            val data = realm.where<SubjectBox>(SubjectBox::class.java).equalTo("id",ID).findFirst()
+
+            if ( data == null ){
+                result = ID
+
+                break@out
+            }
+            else continue
+        }
+        return result
+    }
 
 
 }

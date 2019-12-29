@@ -29,7 +29,6 @@ class SubjectDetail : AppCompatActivity() {
         subject_title.setText(data.get(0)!!.title.toString())
         subject_content.setText(data.get(0)!!.content.toString())
 
-        //Toast.makeText(this,"${WeekViewData.nextID}",Toast.LENGTH_SHORT).show()
 
         lessonQuit_Button.setOnClickListener {
                setResult(Activity.RESULT_OK, intent)
@@ -74,18 +73,6 @@ class SubjectDetail : AppCompatActivity() {
                 data.get(0)!!.deleteFromRealm()
                 realm.commitTransaction()
 
-                /*val nextID: RealmResults<SubjectBox> = realm.where<SubjectBox>(SubjectBox::class.java).distinct("id").findAll()
-                for (i in 0 until nextID.size){
-                    if(i.toString() != nextID[i].toString()) {
-                        WeekViewData.nextID = i
-                        break
-                    }
-                    if(i.toString() == nextID[i].toString()){
-                        WeekViewData.nextID = nextID.size+1
-                    }
-                }
-
-                 */
 
                 setResult(104,intent)
                 finish()

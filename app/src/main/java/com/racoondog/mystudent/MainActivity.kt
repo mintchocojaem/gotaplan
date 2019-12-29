@@ -28,6 +28,7 @@ class MainActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        loadData()
 
         setSupportActionBar(my_toolbar)  //Actionbar 부분
         supportActionBar?.setDisplayUseLogoEnabled(true)
@@ -50,50 +51,12 @@ class MainActivity: AppCompatActivity() {
             startActivityForResult(subjectIntent, 102)
         }
 
-        val scheduleData = realm.where(DataModel::class.java).findFirst()
-        if( scheduleData?.dataSaved == true){
-            weekview.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT,
-                ConstraintLayout.LayoutParams.MATCH_PARENT).apply {
-
-            }
-
-            weekview.lastDay = scheduleData.scheduleDayFlag!!
-            weekview.startTime = scheduleData.scheduleStartHour!!
-            weekview.endTime = scheduleData.scheduleEndHour!!
-            title_text.text = scheduleData.scheduleTitle
-            weekView.addView(weekview)
-            schedule_add.visibility = View.INVISIBLE
-
-            val subjectData: RealmResults<SubjectBox> = realm.where<SubjectBox>(SubjectBox::class.java).findAll()
-            for (data in subjectData) {
-                weekview.createSubject(
-                    data.startHour.toInt(), data.startMinute.toInt()
-                    , data.endHour.toInt(), data.endMinute.toInt(),
-                    data.dayFlag.toInt(), scheduleData.scheduleStartHour!!.toInt(),data.id.toInt())
-            }
-
-
-        }
-
-
-
-
-
-
 
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        realm.close()
-    }
-
-    //MainActivity로 들어오는 onActivityResult 부분 -> Intent 후 값 반환
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
+        //MainActivity로 들어오는 onActivityResult 부분 -> Intent 후 값 반환
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 100 -> {
@@ -131,9 +94,6 @@ class MainActivity: AppCompatActivity() {
                         this.scheduleTitle = title_text.text.toString()
                     }
                     realm.commitTransaction()
-
-
-
                 }
                 101 -> {
 
@@ -150,7 +110,7 @@ class MainActivity: AppCompatActivity() {
 
                     val timeText = "${startTimeText[0]}${startTimeText[1]}:${startTimeText[2]}"+ " ~ " + "${endTimeText[0]}${endTimeText[1]}:${endTimeText[2]}" //StartTimeText[ ]은 오전/오후 변환시간
 
-                    val ID = createID(0,128)
+                    val ID = weekview.createID(0,128)//다음으로 만들어질 weekview의 id 값을 결정하는 변수
 
                     realm.beginTransaction()
                     val subjectInfo :SubjectBox = realm.createObject(SubjectBox::class.java)
@@ -170,10 +130,6 @@ class MainActivity: AppCompatActivity() {
 
                     weekview.createSubject(startHour,startTimeText[2].toInt()
                         ,endHour,endTimeText[2].toInt(), dayFlag,intentStartTime,ID)
-
-
-
-
                 }
                 103->{
                     var data: RealmResults<SubjectBox> = realm.where<SubjectBox>(SubjectBox::class.java)
@@ -190,7 +146,6 @@ class MainActivity: AppCompatActivity() {
             when (requestCode) {
 
                 103->{
-
                     weekview.deleteSubject(WeekViewData.ID.toInt())
                 }
 
@@ -199,26 +154,39 @@ class MainActivity: AppCompatActivity() {
         }
 
     }
-    private fun createID(Min:Int, Max:Int):Int{
+    fun loadData(){
 
-        var result = 0
+        val scheduleData = realm.where(DataModel::class.java).findFirst()
+        if( scheduleData?.dataSaved == true){
 
-        out@ for(ID in Min .. Max){
+            intentStartTime = scheduleData.scheduleStartHour!!
+            intentEndTime = scheduleData.scheduleEndHour!!
+            intentflag = scheduleData.scheduleDayFlag!!
 
-            val data = realm.where<SubjectBox>(SubjectBox::class.java).equalTo("id",ID).findFirst()
+            weekview.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT,
+                ConstraintLayout.LayoutParams.MATCH_PARENT).apply {
 
-            if ( data == null ){
-                result = ID
-
-                break@out
             }
-            else continue
+
+            weekview.lastDay = scheduleData.scheduleDayFlag!!
+            weekview.startTime = scheduleData.scheduleStartHour!!
+            weekview.endTime = scheduleData.scheduleEndHour!!
+            title_text.text = scheduleData.scheduleTitle
+            weekView.addView(weekview)
+            schedule_add.visibility = View.INVISIBLE
+
+            val subjectData: RealmResults<SubjectBox> = realm.where<SubjectBox>(SubjectBox::class.java).findAll()
+            for (data in subjectData) {
+                weekview.createSubject(
+                    data.startHour.toInt(), data.startMinute.toInt()
+                    , data.endHour.toInt(), data.endMinute.toInt(),
+                    data.dayFlag.toInt(), scheduleData.scheduleStartHour!!.toInt(),data.id.toInt())
+            }
+
 
         }
-
-
-        return result
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean { //Menu 추가 부분
         val menuInflater = menuInflater
@@ -238,6 +206,11 @@ class MainActivity: AppCompatActivity() {
                 return super.onOptionsItemSelected(item)
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        realm.close()
     }
 
 
