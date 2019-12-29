@@ -10,6 +10,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import io.realm.Realm
 import io.realm.RealmResults
 import kotlinx.android.synthetic.main.activity_main.view.*
+import kotlinx.android.synthetic.main.create_subject.view.*
 import kotlinx.android.synthetic.main.weekview.view.*
 import me.grantland.widget.AutofitTextView
 import kotlin.properties.Delegates
@@ -339,11 +340,19 @@ class WeekView : ConstraintLayout{
         titleText.layoutParams = ConstraintLayout.LayoutParams(
             ConstraintLayout.LayoutParams.MATCH_PARENT,
             ConstraintLayout.LayoutParams.WRAP_CONTENT
-        ).apply {
-            titleText.maxLines = 2
-            titleText.textSize = 13f
-            titleText.text = smallTitle
+        )
+        if( EndHour - StartHour > 1 ){
+            titleText.apply {
+                maxLines = 2
+                textSize = 12f
+                text = smallTitle}
+        } else{
+            titleText.apply {
+                maxLines = 1
+                textSize = 12f
+                text = smallTitle}
         }
+
 
         subject.layoutParams = ConstraintLayout.LayoutParams(
             ConstraintLayout.LayoutParams.WRAP_CONTENT,
@@ -358,7 +367,7 @@ class WeekView : ConstraintLayout{
             verticalBias = 0f
             topMargin = subjectMargin.toInt()
             subject.setBackgroundResource(R.color.colorAccent)
-            subject.setPadding(20,10,20,10)
+            subject.setPadding(3,10,3,10)
             subject.id = ID
             subject.setOnClickListener{
                 WeekViewData.ID = ID
