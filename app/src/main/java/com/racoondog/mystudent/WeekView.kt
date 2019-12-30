@@ -3,6 +3,7 @@ package com.racoondog.mystudent
 import android.content.Context
 import android.content.Intent
 import android.util.AttributeSet
+import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.widget.*
@@ -13,6 +14,7 @@ import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.create_subject.view.*
 import kotlinx.android.synthetic.main.weekview.view.*
 import me.grantland.widget.AutofitTextView
+import kotlin.math.roundToLong
 import kotlin.properties.Delegates
 
 
@@ -23,21 +25,20 @@ class WeekView : ConstraintLayout{
     var endTime: Int by Delegates.observable(0) { property, oldValue, newValue ->
         if (oldValue != newValue) {
 
-
             DrawSchedule(lastDay, startTime, endTime)
-
         }
     }
     var startTime = 0
     var lastDay = 0
-    val cnxt = context as MainActivity
+    private val cnxt = context as MainActivity
     var dayFlag = 0
 
+    private val dm:DisplayMetrics = context.resources.displayMetrics
+    private val dmWidth:Int = dm.widthPixels
+    private val cellHeight:Int = (dmWidth - 30)/6
 
     constructor(context: Context) : super(context, null) {
-
         initView()
-
     }
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
@@ -54,9 +55,7 @@ class WeekView : ConstraintLayout{
             // release the TypedArray so that it can be reused.
             a.recycle()
         }
-
         initView()
-
     }
 
     constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(
@@ -64,9 +63,7 @@ class WeekView : ConstraintLayout{
         attrs,
         defStyle
     ) {
-
         initView()
-
     }
 
     private fun initView() {
@@ -78,7 +75,6 @@ class WeekView : ConstraintLayout{
 
     }
 
-
     fun DrawSchedule(day_flag: Int, start_time: Int, end_time: Int) {
 
         var day = mutableListOf<String>()
@@ -87,12 +83,6 @@ class WeekView : ConstraintLayout{
 
         var period =
             mutableListOf<String>() //원래는 교시부분이었으나 기획자의 변경에 따라 시간으로 표시되는 배열 ex -> 오후 1시 2시 3시
-
-        // var time = mutableListOf<String>() //원래는 시간을 나타내는 부분이었으나 기획자의 변경에 따라 period로 치환됨
-
-        //var subject = listOf("화1","화2") // 임시적 과목 시간
-
-        //var content = listOf("태경이삼촌과 레슨") // 임시적 과목 내용
 
         //마지막 요일을 선택하고 그에 따라 day_flag 값을 반환 하고 day 배열에 추가
         for(i in 0 until day_flag){
@@ -119,41 +109,6 @@ class WeekView : ConstraintLayout{
             }
         }
 
-        /*
-            for (i in 1..end_time - start_time) {
-
-                period.add("$i")
-            }*/
-        //교시 ex ) 1,2,3
-
-        /*
-
-            var day_flag = 0
-
-            for (i in start_time..end_time){
-                if (i == start_time && i < 10) {
-                    time.add(" 오전\n $i" + ":00 ")
-                }
-                else if (i == start_time && i < 12 && i >= 10) {
-                    time.add("  오전\n$i" + ":00 ")
-                }
-                else if (i == start_time && i > 12) {
-                    time.add(" 오후\n ${i-12}" + ":00 ")
-                    day_flag =1
-                }
-                else if(i ==13){
-                    time.add(" 오후\n ${i-12}" + ":00 ")
-                    day_flag = 1
-                }
-                else if (day_flag == 1){
-                    time.add(" ${i-12}" + ":00 ")
-                }
-                else {
-                    time.add(" $i" + ":00 ")
-                }
-            }*/
-        //period 밑에 작은 오전/오후 시간 표시 논리연산 부분 ex)오후 1:00 -> time 으로 정의 밑에 레이아웃도 세팅해야함
-
         val layout = TableLayout(cnxt)  //전체 TableRow를 담기위한 Tablelayout
 
         val dayrow = TableRow(cnxt) //initday를 담기위한 TableRow
@@ -169,7 +124,6 @@ class WeekView : ConstraintLayout{
         ).apply {
 
         }
-
 
         for (i in 0 until  day.size) {
 
@@ -253,34 +207,18 @@ class WeekView : ConstraintLayout{
                 timetxt.setMinTextSize(10)
 
 
-                /* // 임시적으로 만든 과목 부분
-                    for (k in 0 until subject.size) {
-                        if (timetxt.tag == subject[k]) {
-                            timetxt.setBackgroundColor(Color.LTGRAY)
-                        }
-                    }
-                    if(timetxt.tag == subject[0]){
-                        timetxt.text = content[0]
-                    }*/
-
-
                 // timetxt lyaout 설정부분
                 timetxt.layoutParams = TableRow.LayoutParams(
                     TableRow.LayoutParams.WRAP_CONTENT,
                     TableRow.LayoutParams.WRAP_CONTENT
                 ).apply {
-                    height = 150
                     width = 0
+                    height = cellHeight
                     weight = 3f
 
                 }
-
                 timerow.addView(timetxt)
-
             }
-
-
-
             layout.addView(timerow)
         }
 
@@ -306,16 +244,14 @@ class WeekView : ConstraintLayout{
             canvas.bringToFront()
             canvas.addView(subjectLine)
 
-
         }
-
 
     }
 
     fun createSubject(StartHour:Int,StartMinute:Int,EndHour:Int,EndMinute:Int,DayFlag:Int,intentStartTime:Int,id:Int){
 
-        val subjectHeight = (EndHour - StartHour) * 150 + (EndMinute - StartMinute) * 2.5
-        val subjectMargin = (StartHour - intentStartTime) * 150 + StartMinute * 2.5
+        val subjectHeight = (EndHour - StartHour) * cellHeight + (EndMinute - StartMinute) * cellHeight/60
+        val subjectMargin = (StartHour - intentStartTime) * cellHeight + StartMinute * cellHeight/60
         val subject = ConstraintLayout(cnxt)
         val titleText = TextView(cnxt)
         val ID = id
@@ -375,14 +311,11 @@ class WeekView : ConstraintLayout{
 
                 val intentSubjectDetail = Intent (cnxt, SubjectDetail::class.java)
                 cnxt.startActivityForResult(intentSubjectDetail,103)
-
             }
-
 
         }
         subject.addView(titleText)
         findViewWithTag<ConstraintLayout>(DayFlag).addView(subject)
-
 
     }
 
@@ -405,6 +338,5 @@ class WeekView : ConstraintLayout{
         }
         return result
     }
-
 
 }
