@@ -171,7 +171,7 @@ class MainActivity: AppCompatActivity() {
             weekView.startTime = scheduleData.scheduleStartHour!!
             weekView.endTime = scheduleData.scheduleEndHour!!
             toolbar_title.text = scheduleData.scheduleTitle
-            weekView.addView(weekView)
+            week_View.addView(weekView)
             schedule_add.visibility = View.INVISIBLE
 
             val subjectData: RealmResults<SubjectBox> = realm.where<SubjectBox>(SubjectBox::class.java).findAll()
