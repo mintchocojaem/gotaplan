@@ -12,7 +12,7 @@ open class DataModel: RealmObject() {
     var scheduleStartHour:Int? = null
     var scheduleEndHour:Int? = null
 
-    lateinit var SubjectDB:RealmList<SubjectBox>
+    lateinit var subjectDB:RealmList<SubjectBox>
 
 }
 

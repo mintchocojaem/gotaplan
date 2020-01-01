@@ -19,11 +19,11 @@ class CreateSubject :AppCompatActivity() {
         super.onCreate(savedInstanceState)
         super.setContentView(R.layout.create_subject)
 
-        val intent = getIntent()
+        val intent = intent
         val intentStartHour = intent.getIntExtra("start_time",0)
         val intentEndHour = intent.getIntExtra("end_time",0)
         val intentFlag = intent.getIntExtra("day_flag",0)
-        var dayflag = 0
+        var dayFlag = 0
         val displayValue = mutableListOf<String>()
         val initEndHour = intentEndHour -1
 
@@ -205,14 +205,14 @@ class CreateSubject :AppCompatActivity() {
 
 
         createSubject_Button.setOnClickListener{
-            if(dayflag != 0 ) {
+            if(dayFlag != 0 ) {
                 if ((start_hour.value < end_hour.value)||
                     (start_hour.value == end_hour.value && ((end_minute.value - start_minute.value) >= 6))) {
                     if(TitleName_text.text.toString() !="") {
 
                         intent.putExtra("StartHour",start_hour.value )
                         intent.putExtra("EndHour", end_hour.value)
-                        intent.putExtra("DayFlag", dayflag)
+                        intent.putExtra("DayFlag", dayFlag)
                         intent.putExtra("SubjectTitle", TitleName_text.text.toString())
 
                         intent.putExtra("StartTimeText", arrayOf(startText_AMPM.text.toString()
@@ -257,25 +257,25 @@ class CreateSubject :AppCompatActivity() {
         }
 
         monday_button.setOnClickListener {
-            dayflag = 1
+            dayFlag = 1
         }
         tuesday_button.setOnClickListener {
-            dayflag = 2
+            dayFlag = 2
         }
         wednesday_button.setOnClickListener {
-            dayflag = 3
+            dayFlag = 3
         }
         thursday_button.setOnClickListener {
-            dayflag = 4
+            dayFlag = 4
         }
         friday_button.setOnClickListener {
-            dayflag = 5
+            dayFlag = 5
         }
         saturday_button.setOnClickListener {
-            dayflag = 6
+            dayFlag = 6
         }
         sunday_button.setOnClickListener {
-            dayflag = 7
+            dayFlag = 7
         }
         lesson_mode.setOnCheckedChangeListener{compoundButton,b ->
             if (compoundButton.isChecked){

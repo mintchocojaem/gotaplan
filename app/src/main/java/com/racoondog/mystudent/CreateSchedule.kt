@@ -5,12 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.create_schedule.*
-import android.graphics.Color
 import android.view.MotionEvent
 import android.view.View
 import android.widget.NumberPicker
 import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_main.*
 
 
 class CreateSchedule : AppCompatActivity(){
@@ -21,7 +19,7 @@ class CreateSchedule : AppCompatActivity(){
 
         super.onCreate(savedInstanceState)
 
-        var day_flag = 0
+        var dayFlag = 0
         val intent = Intent()
         val displayValue = mutableListOf<String>()
 
@@ -113,7 +111,7 @@ class CreateSchedule : AppCompatActivity(){
             true // or false
         }
 
-        start_hour.setOnValueChangedListener{_,i1,i2 ->
+        start_hour.setOnValueChangedListener{_,_,i2 ->
 
             startText_hour.text = start_hour.displayedValues[start_hour.value - start_hour.minValue]
             if(i2 < 12 || i2 == 24) {
@@ -128,7 +126,7 @@ class CreateSchedule : AppCompatActivity(){
         }
 
 
-        end_hour.setOnValueChangedListener{_,i1,i2 ->
+        end_hour.setOnValueChangedListener{_,_,i2 ->
 
             endText_hour.text = end_hour.displayedValues[end_hour.value - end_hour.minValue]
             if(i2 < 12 || i2 == 24) {
@@ -147,14 +145,14 @@ class CreateSchedule : AppCompatActivity(){
 
         CreateSchedule_Button.setOnClickListener{
 
-            val titlename = TitleName_text.text.toString()
+            val titleName = TitleName_text.text.toString()
 
-            if(titlename != "")
+            if(titleName != "")
             {
-                if(day_flag != 0) {
+                if(dayFlag != 0) {
                     if (start_hour.value < end_hour.value) {
                         intent.putExtra("title", TitleName_text.text.toString())
-                        intent.putExtra("scheduleDayFlag", day_flag)
+                        intent.putExtra("scheduleDayFlag", dayFlag)
                         intent.putExtra("scheduleStartHour",start_hour.value)
                         intent.putExtra("scheduleEndHour",end_hour.value)
 
@@ -181,24 +179,25 @@ class CreateSchedule : AppCompatActivity(){
 
 
         Friday.setOnClickListener{
-            Friday.setBackgroundColor(Color.GRAY)
-            Saturday.setBackgroundColor(Color.LTGRAY)
-            Sunday.setBackgroundColor(Color.LTGRAY)
-            day_flag = 5
+            Friday.setImageResource(R.drawable.friday_on)
+            Saturday.setImageResource(R.drawable.saturday_off)
+            Sunday.setImageResource(R.drawable.sunday_off)
+            dayFlag = 5
+
         }
 
         Saturday.setOnClickListener{
-            Friday.setBackgroundColor(Color.LTGRAY)
-            Saturday.setBackgroundColor(Color.GRAY)
-            Sunday.setBackgroundColor(Color.LTGRAY)
-            day_flag = 6
+            Friday.setImageResource(R.drawable.friday_off)
+            Saturday.setImageResource(R.drawable.saturday_on)
+            Sunday.setImageResource(R.drawable.sunday_off)
+            dayFlag = 6
         }
 
         Sunday.setOnClickListener{
-            Friday.setBackgroundColor(Color.LTGRAY)
-            Saturday.setBackgroundColor(Color.LTGRAY)
-            Sunday.setBackgroundColor(Color.GRAY)
-            day_flag = 7
+            Friday.setImageResource(R.drawable.friday_off)
+            Saturday.setImageResource(R.drawable.saturday_off)
+            Sunday.setImageResource(R.drawable.sunday_on)
+            dayFlag = 7
         }
 
         startTime.setOnClickListener{

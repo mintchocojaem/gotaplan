@@ -13,14 +13,14 @@ import kotlinx.android.synthetic.main.subject_detail.*
 
 class SubjectDetail : AppCompatActivity() {
 
-    val realm = Realm.getDefaultInstance()
+    private val realm = Realm.getDefaultInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.subject_detail)
 
-        var saveEditFlag: Boolean = false
+        var saveEditFlag = false
 
         var data: RealmResults<SubjectBox> = realm.where<SubjectBox>(SubjectBox::class.java)
             .equalTo("id",WeekViewData.ID)
@@ -37,7 +37,7 @@ class SubjectDetail : AppCompatActivity() {
 
         lessonSave_Button.setOnClickListener {
 
-            if (saveEditFlag == false) {
+            if (!saveEditFlag) {
 
                 lessonSave_Button.text = "저장"
 

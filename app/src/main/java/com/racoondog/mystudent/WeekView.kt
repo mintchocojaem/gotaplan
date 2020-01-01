@@ -10,22 +10,19 @@ import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import io.realm.Realm
 import io.realm.RealmResults
-import kotlinx.android.synthetic.main.activity_main.view.*
-import kotlinx.android.synthetic.main.create_subject.view.*
 import kotlinx.android.synthetic.main.weekview.view.*
 import me.grantland.widget.AutofitTextView
-import kotlin.math.roundToLong
 import kotlin.properties.Delegates
 
 
 class WeekView : ConstraintLayout{
 
-    val realm = Realm.getDefaultInstance()
+    private val realm = Realm.getDefaultInstance()
 
-    var endTime: Int by Delegates.observable(0) { property, oldValue, newValue ->
+    var endTime: Int by Delegates.observable(0) {_, oldValue, newValue ->
         if (oldValue != newValue) {
 
-            DrawSchedule(lastDay, startTime, endTime)
+            drawSchedule(lastDay, startTime, endTime)
         }
     }
     var startTime = 0
@@ -71,11 +68,11 @@ class WeekView : ConstraintLayout{
         val inflater: LayoutInflater = context.getSystemService(inflaterService) as LayoutInflater
         val view = inflater.inflate(R.layout.weekview, this, false)
         addView(view)
-        DrawSchedule(lastDay, startTime, endTime)
+        drawSchedule(lastDay, startTime, endTime)
 
     }
 
-    fun DrawSchedule(day_flag: Int, start_time: Int, end_time: Int) {
+    fun drawSchedule(day_flag: Int, start_time: Int, end_time: Int) {
 
         var day = mutableListOf<String>()
         val dayList = listOf("월","화","수","목","금","토","일")
@@ -89,7 +86,7 @@ class WeekView : ConstraintLayout{
             day.add("${dayList[i]}")
         }
 
-        var AMPM_flag = 0 //AmPm 구분을 위한 flag 선언
+        var timeFlag = 0 //AmPm 구분을 위한 flag 선언
 
         for (i in start_time until end_time) {  // 24시 형식을 오전과 오후를 구분 하기위한 논리연산
             if (i == start_time && i < 10) {
@@ -98,11 +95,11 @@ class WeekView : ConstraintLayout{
                 period.add("$i\n 오전 ")
             } else if (i == start_time && i > 12) {
                 period.add("${i - 12}\n 오후 ")
-                AMPM_flag = 1
+                timeFlag = 1
             } else if (i == 13) {
                 period.add("${i - 12}\n 오후 ")
-                AMPM_flag = 1
-            } else if (AMPM_flag == 1) {
+                timeFlag = 1
+            } else if (timeFlag == 1) {
                 period.add("${i - 12}")
             } else {
                 period.add("$i")
@@ -111,7 +108,7 @@ class WeekView : ConstraintLayout{
 
         val layout = TableLayout(cnxt)  //전체 TableRow를 담기위한 Tablelayout
 
-        val dayrow = TableRow(cnxt) //initday를 담기위한 TableRow
+        val dayRow = TableRow(cnxt) //initday를 담기위한 TableRow
 
         layout.layoutParams = TableLayout.LayoutParams(
             TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT
@@ -119,7 +116,7 @@ class WeekView : ConstraintLayout{
 
         }
 
-        dayrow.layoutParams = TableLayout.LayoutParams(
+        dayRow.layoutParams = TableLayout.LayoutParams(
             TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT
         ).apply {
 
@@ -129,48 +126,48 @@ class WeekView : ConstraintLayout{
 
 
             
-            val daytxt = TextView(cnxt) // 요일을 나타내는 부분 ex -> 월 화 수 목
-            daytxt.gravity = Gravity.CENTER
-            daytxt.setBackgroundResource(R.color.White_bg)
-            daytxt.layoutParams = TableRow.LayoutParams(
+            val dayText = TextView(cnxt) // 요일을 나타내는 부분 ex -> 월 화 수 목
+            dayText.gravity = Gravity.CENTER
+            dayText.setBackgroundResource(R.color.White_bg)
+            dayText.layoutParams = TableRow.LayoutParams(
                 TableRow.LayoutParams.WRAP_CONTENT,
                 TableRow.LayoutParams.WRAP_CONTENT
             ).apply {
-                daytxt.text = day[i]
+                dayText.text = day[i]
                 weight = 3f
             }
-            dayrow.addView(daytxt)
+            dayRow.addView(dayText)
 
         }
 
-        day_line.addView(dayrow)
+        day_line.addView(dayRow)
 
         for (i in 0 until period.size) {
 
 
-            val timerow = TableRow(cnxt) // const_init을 담기위한 TableRow
-            timerow.layoutParams = TableLayout.LayoutParams(
+            val timeRow = TableRow(cnxt) // const_init을 담기위한 TableRow
+            timeRow.layoutParams = TableLayout.LayoutParams(
                 TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT
             ).apply {
                 weight = 1f
             }
-            timerow.setBackgroundResource(R.color.whitegray_bg)
+            timeRow.setBackgroundResource(R.color.whitegray_bg)
 
-            val const_init = ConstraintLayout(cnxt) //initperiod를 담기위한 Constraintlayout 부분
-            const_init.layoutParams = TableRow.LayoutParams(
+            val constInit = ConstraintLayout(cnxt) //initperiod를 담기위한 Constraintlayout 부분
+            constInit.layoutParams = TableRow.LayoutParams(
                 TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT
             ).apply {
                 weight - 1f
             }
 
-            val initperiod = TextView(cnxt) // 원래는 교시였으나 기획자의 변경사항에 따라 시간으로 치환된 부분 ex-> 1 2 3 4
-            initperiod.gravity = Gravity.CENTER
-            initperiod.layoutParams = ConstraintLayout.LayoutParams(
+            val initPeriod = TextView(cnxt) // 원래는 교시였으나 기획자의 변경사항에 따라 시간으로 치환된 부분 ex-> 1 2 3 4
+            initPeriod.gravity = Gravity.CENTER
+            initPeriod.layoutParams = ConstraintLayout.LayoutParams(
                 ConstraintLayout.LayoutParams.WRAP_CONTENT,
                 ConstraintLayout.LayoutParams.WRAP_CONTENT
             ).apply {
-                initperiod.text = period[i]
-                initperiod.textSize = 13f
+                initPeriod.text = period[i]
+                initPeriod.textSize = 13f
                 topToTop = ConstraintLayout.LayoutParams.PARENT_ID
                 bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
                 rightToRight = ConstraintLayout.LayoutParams.PARENT_ID
@@ -194,21 +191,21 @@ class WeekView : ConstraintLayout{
                 const_init.addView(inittime)
                  */ //time 레이아웃 세팅 영역 ()
 
-            const_init.addView(initperiod)
-            timerow.addView(const_init)
+            constInit.addView(initPeriod)
+            timeRow.addView(constInit)
 
             for (j in 0 until day.size) {
 
-                val timetxt = AutofitTextView(cnxt) // 각 시간표 일정이 들어가는 공백 부분
+                val timeText = AutofitTextView(cnxt) // 각 시간표 일정이 들어가는 공백 부분
                 val tag: String = day[j] + i
-                timetxt.tag = tag
-                timetxt.setBackgroundResource(R.drawable.cell_shape)
+                timeText.tag = tag
+                timeText.setBackgroundResource(R.drawable.cell_shape)
 
-                timetxt.setMinTextSize(10)
+                timeText.setMinTextSize(10)
 
 
-                // timetxt lyaout 설정부분
-                timetxt.layoutParams = TableRow.LayoutParams(
+                // timetxet lyaout 설정부분
+                timeText.layoutParams = TableRow.LayoutParams(
                     TableRow.LayoutParams.WRAP_CONTENT,
                     TableRow.LayoutParams.WRAP_CONTENT
                 ).apply {
@@ -217,9 +214,9 @@ class WeekView : ConstraintLayout{
                     weight = 3f
 
                 }
-                timerow.addView(timetxt)
+                timeRow.addView(timeText)
             }
-            layout.addView(timerow)
+            layout.addView(timeRow)
         }
 
         scheduleview.addView(layout) //activity_main 의 스크롤 뷰에 추가
