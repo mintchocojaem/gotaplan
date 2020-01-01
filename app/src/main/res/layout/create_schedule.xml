@@ -34,8 +34,8 @@
 
             <ImageButton
                     android:id="@+id/CreateSchedule_Button"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
                     android:background="@drawable/ic_check_black_36dp"
                     app:layout_constraintLeft_toRightOf="@id/CreateSchedule_title"
                     app:layout_constraintRight_toRightOf="parent"
