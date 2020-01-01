@@ -204,7 +204,7 @@ class WeekView : ConstraintLayout{
                 timeText.setMinTextSize(10)
 
 
-                // timetxet lyaout 설정부분
+                // timeText lyaout 설정부분
                 timeText.layoutParams = TableRow.LayoutParams(
                     TableRow.LayoutParams.WRAP_CONTENT,
                     TableRow.LayoutParams.WRAP_CONTENT

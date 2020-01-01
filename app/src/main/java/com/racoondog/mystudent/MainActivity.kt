@@ -2,7 +2,6 @@ package com.racoondog.mystudent
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -31,6 +30,7 @@ class MainActivity: AppCompatActivity() {
         loadData()//데이터 불러오기
 
         setSupportActionBar(my_toolbar)  //Actionbar 부분
+        supportActionBar?.setDisplayUseLogoEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         // 알림창 객체 생성
 
@@ -76,7 +76,7 @@ class MainActivity: AppCompatActivity() {
                     weekView.startTime = scheduleStartHour
                     weekView.endTime = scheduleEndHour
 
-                    weekView.addView(weekView)
+                    week_View.addView(weekView)
 
                     intentStartTime = scheduleStartHour
                     intentEndTime = scheduleEndHour
