@@ -5,8 +5,6 @@ import io.realm.RealmObject
 
 open class DataModel: RealmObject() {
 
-    var dataSaved:Boolean = false
-
     var scheduleTitle:String? = null
     var scheduleDayFlag:Int? = null
     var scheduleStartHour:Int? = null

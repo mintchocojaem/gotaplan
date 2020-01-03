@@ -61,6 +61,7 @@ class MainActivity: AppCompatActivity() {
                 100 -> {
 
                     schedule_add.visibility = View.INVISIBLE
+                    add_subject.visibility = View.VISIBLE
 
                     toolbar_title.text = data!!.getStringExtra("title")
                     val scheduleDayFlag = data.getIntExtra("scheduleDayFlag", 0)
@@ -76,17 +77,16 @@ class MainActivity: AppCompatActivity() {
                     weekView.startTime = scheduleStartHour
                     weekView.endTime = scheduleEndHour
 
-                    week_View.addView(weekView)
+                    weekView_layout.addView(weekView)
 
                     intentStartTime = scheduleStartHour
                     intentEndTime = scheduleEndHour
                     intentflag = scheduleDayFlag
 
                     realm.beginTransaction()
-                    val data:DataModel = realm.createObject(DataModel::class.java)
+                    val dataBase:DataModel = realm.createObject(DataModel::class.java)
 
-                    data.apply {
-                        this.dataSaved = true
+                    dataBase.apply {
                         this.scheduleDayFlag = scheduleDayFlag
                         this.scheduleStartHour = scheduleStartHour
                         this.scheduleEndHour = scheduleEndHour
@@ -100,12 +100,12 @@ class MainActivity: AppCompatActivity() {
                 102 -> {
 
                     val startHour = data!!.getIntExtra("StartHour", 0) // 24시 형식 시간
-                    val endHour = data!!.getIntExtra("EndHour", 0)// 24시 형식 시간
-                    val dayFlag = data!!.getIntExtra("DayFlag", 0)
-                    val subjectTitle = data!!.getStringExtra("SubjectTitle")
-                    val startTimeText = data!!.getStringArrayExtra("StartTimeText") // 오전/오후 형식 시간
-                    val endTimeText = data!!.getStringArrayExtra("EndTimeText")
-                    val contentText = data?.getStringExtra("ContentText")
+                    val endHour = data.getIntExtra("EndHour", 0)// 24시 형식 시간
+                    val dayFlag = data.getIntExtra("DayFlag", 0)
+                    val subjectTitle = data.getStringExtra("SubjectTitle")
+                    val startTimeText = data.getStringArrayExtra("StartTimeText") // 오전/오후 형식 시간
+                    val endTimeText = data.getStringArrayExtra("EndTimeText")
+                    val contentText = data.getStringExtra("ContentText")
 
                     val timeText = "${startTimeText[0]}${startTimeText[1]}:${startTimeText[2]}"+ " ~ " + "${endTimeText[0]}${endTimeText[1]}:${endTimeText[2]}" //StartTimeText[ ]은 오전/오후 변환시간
 
@@ -131,11 +131,11 @@ class MainActivity: AppCompatActivity() {
                         ,endHour,endTimeText[2].toInt(), dayFlag,intentStartTime,ID)
                 }
                 103->{
-                    var data: RealmResults<SubjectBox> = realm.where<SubjectBox>(SubjectBox::class.java)
+                    var dataBase: RealmResults<SubjectBox> = realm.where<SubjectBox>(SubjectBox::class.java)
                         .equalTo("id",WeekViewData.ID)
                         .findAll()
-                    val title = weekView.findViewWithTag<TextView>("title${data.get(0)!!.id}")
-                    title.text = data.get(0)!!.title.toString()
+                    val title = weekView.findViewWithTag<TextView>("title${dataBase.get(0)!!.id}")
+                    title.text = dataBase.get(0)!!.title.toString()
                 }
 
             }
@@ -156,7 +156,10 @@ class MainActivity: AppCompatActivity() {
     private fun loadData(){
 
         val scheduleData = realm.where(DataModel::class.java).findFirst()
-        if( scheduleData?.dataSaved == true){
+        if( scheduleData != null) {
+
+            schedule_add.visibility = View.INVISIBLE
+            add_subject.visibility = View.VISIBLE
 
             intentStartTime = scheduleData.scheduleStartHour!!
             intentEndTime = scheduleData.scheduleEndHour!!
@@ -171,7 +174,7 @@ class MainActivity: AppCompatActivity() {
             weekView.startTime = scheduleData.scheduleStartHour!!
             weekView.endTime = scheduleData.scheduleEndHour!!
             toolbar_title.text = scheduleData.scheduleTitle
-            week_View.addView(weekView)
+            weekView_layout.addView(weekView)
             schedule_add.visibility = View.INVISIBLE
 
             val subjectData: RealmResults<SubjectBox> = realm.where<SubjectBox>(SubjectBox::class.java).findAll()

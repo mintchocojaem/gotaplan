@@ -34,9 +34,9 @@
 
             <ImageButton
                     android:id="@+id/CreateSchedule_Button"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:background="@drawable/ic_check_black_36dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/icon_check"
                     app:layout_constraintLeft_toRightOf="@id/CreateSchedule_title"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="@id/CreateSchedule_title"
@@ -68,7 +68,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:background="@null"
-                android:textSize="20sp">
+                android:textSize="18sp">
 
 
         </EditText>
@@ -82,7 +82,6 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintBottom_toTopOf="@id/Day_bar"
-            app:layout_constraintVertical_chainStyle="packed"
             android:background="@drawable/timepicker_layout">
 
         <TextView
@@ -94,21 +93,22 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:id="@+id/Start"
                 android:text="시작 "
-                android:textSize="15sp">
+                android:textSize="16sp"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                android:paddingStart="20dp">
 
         </TextView>
 
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toRightOf="@id/startTime"
                 app:layout_constraintRight_toLeftOf="@id/endTime"
                 android:id="@+id/End"
                 android:text="종료 "
-                android:textSize="15sp">
+                android:textSize="16sp">
 
         </TextView>
 
@@ -180,7 +180,8 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintLeft_toRightOf="@id/End"
                 android:id="@+id/endTime"
-                android:onClick="OnClickHandler">
+                android:onClick="OnClickHandler"
+                android:paddingEnd="20dp">
             <TextView
                     android:id="@+id/endText_AMPM"
                     android:layout_width="wrap_content"
@@ -333,52 +334,70 @@
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="마지막 요일"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/Friday"
-                android:textSize="16sp"
-                android:id="@+id/last_day"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent">
-
-        </TextView>
-
-        <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/Friday"
-                app:layout_constraintRight_toLeftOf="@id/Saturday"
-                app:layout_constraintLeft_toRightOf="@id/last_day"
-                android:background="@drawable/friday_off"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                >
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/schedule_day_group"
+                android:id="@+id/last_day"
+                android:text="마지막 요일"
+                android:textSize="16sp"
+                android:paddingStart="20dp"
+                app:layout_constraintHorizontal_chainStyle="spread_inside">
+        </TextView>
 
-        </ImageButton>
 
-        <ImageButton
+        <RadioGroup
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/Saturday"
-                app:layout_constraintLeft_toRightOf="@id/Friday"
-                app:layout_constraintRight_toLeftOf="@id/Sunday"
-                android:background="@drawable/saturday_off"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent">
-
-        </ImageButton>
-
-        <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/Sunday"
+                android:orientation="horizontal"
+                android:id="@+id/schedule_day_group"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/Saturday"
-                android:background="@drawable/sunday_off"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent">
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/last_day"
+                android:paddingEnd="20dp">
 
-        </ImageButton>
+            <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/Friday"
+                    app:layout_constraintRight_toLeftOf="@id/Saturday"
+                    app:layout_constraintLeft_toRightOf="parent"
+                    android:button="@drawable/friday_btn"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:paddingEnd="16dp">
+
+            </RadioButton>
+
+            <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/Saturday"
+                    app:layout_constraintLeft_toRightOf="@id/Friday"
+                    app:layout_constraintRight_toLeftOf="@id/Sunday"
+                    android:button="@drawable/saturday_btn"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:paddingEnd="16dp">
+
+            </RadioButton>
+
+            <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/Sunday"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/Saturday"
+                    android:button="@drawable/sunday_btn"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent">
+
+            </RadioButton>
+
+        </RadioGroup>
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

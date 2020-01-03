@@ -176,27 +176,17 @@ class CreateSchedule : AppCompatActivity(){
 
         }
 
-
-
         Friday.setOnClickListener{
-            Friday.setImageResource(R.drawable.friday_on)
-            Saturday.setImageResource(R.drawable.saturday_off)
-            Sunday.setImageResource(R.drawable.sunday_off)
             dayFlag = 5
-
         }
 
         Saturday.setOnClickListener{
-            Friday.setImageResource(R.drawable.friday_off)
-            Saturday.setImageResource(R.drawable.saturday_on)
-            Sunday.setImageResource(R.drawable.sunday_off)
+
             dayFlag = 6
         }
 
         Sunday.setOnClickListener{
-            Friday.setImageResource(R.drawable.friday_off)
-            Saturday.setImageResource(R.drawable.saturday_off)
-            Sunday.setImageResource(R.drawable.sunday_on)
+
             dayFlag = 7
         }
 

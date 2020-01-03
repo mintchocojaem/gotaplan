@@ -32,8 +32,7 @@ class WeekView : ConstraintLayout{
 
     private val dm:DisplayMetrics = context.resources.displayMetrics
     private val dmWidth:Int = dm.widthPixels
-    private val cellHeight:Int = (dmWidth - 30)/6
-
+    private  var cellHeight = 0
     constructor(context: Context) : super(context, null) {
         initView()
     }
@@ -72,7 +71,7 @@ class WeekView : ConstraintLayout{
 
     }
 
-    fun drawSchedule(day_flag: Int, start_time: Int, end_time: Int) {
+    private fun drawSchedule(day_flag: Int, start_time: Int, end_time: Int) {
 
         var day = mutableListOf<String>()
         val dayList = listOf("월","화","수","목","금","토","일")
@@ -200,9 +199,9 @@ class WeekView : ConstraintLayout{
                 val tag: String = day[j] + i
                 timeText.tag = tag
                 timeText.setBackgroundResource(R.drawable.cell_shape)
-
                 timeText.setMinTextSize(10)
 
+                cellHeight = (dmWidth - 30)/day_flag
 
                 // timeText lyaout 설정부분
                 timeText.layoutParams = TableRow.LayoutParams(
