@@ -5,24 +5,16 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:background="@color/White_bg">
 
-    <androidx.appcompat.widget.Toolbar
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/lesson_toolbar"
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="80dp"
             android:background="@color/White_bg"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+            app:layout_constraintTop_toTopOf="parent">
 
-
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/toolbar_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
 
 
             <me.grantland.widget.AutofitTextView
@@ -39,15 +31,16 @@
 
             </me.grantland.widget.AutofitTextView>
 
-            <Button
+            <ImageButton
                     android:id="@+id/lessonQuit_Button"
-                    android:text="X"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:background="@drawable/icon_close"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     app:layout_constraintLeft_toRightOf="@id/lessonSave_Button"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="@id/toolbar_title"
                     app:layout_constraintBottom_toBottomOf="@id/toolbar_title"/>
+
             <Button
                     android:id="@+id/lessonSave_Button"
                     android:text="수정"
@@ -62,7 +55,6 @@
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.appcompat.widget.Toolbar>
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -81,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:hint="제목"
                 android:singleLine="true"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/subject_time"
@@ -103,7 +95,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintVertical_bias="0"
-                android:textSize="15sp"
+                android:textSize="16sp"
                 android:text="2019.xx.xx">
 
         </TextView>
@@ -144,7 +136,7 @@
                 android:background="@null"
                 android:hint="내용이 없습니다. "
                 android:maxLines="5"
-                android:textSize="15sp"
+                android:textSize="16sp"
                 app:layout_constraintTop_toBottomOf="@id/explain"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -206,7 +198,7 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintHorizontal_bias="0"
                     android:id="@+id/student_name"
-                    android:textSize="15sp">
+                    android:textSize="16sp">
 
             </TextView>
 
@@ -234,7 +226,7 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintHorizontal_bias="0"
                     android:id="@+id/student_birth"
-                    android:textSize="15sp">
+                    android:textSize="16sp">
 
             </TextView>
 
@@ -262,7 +254,7 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintHorizontal_bias="0"
                     android:id="@+id/student_phone"
-                    android:textSize="15sp">
+                    android:textSize="16sp">
 
             </TextView>
 
@@ -323,7 +315,7 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintHorizontal_bias="0"
                     android:id="@+id/lesson_fee"
-                    android:textSize="15sp">
+                    android:textSize="16sp">
 
             </TextView>
             <EditText
@@ -350,7 +342,7 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintHorizontal_bias="0"
                     android:id="@+id/lesson_cycle"
-                    android:textSize="15sp">
+                    android:textSize="16sp">
 
             </TextView>
             <EditText
@@ -389,7 +381,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                android:background="@drawable/ic_delete_48dp"
+                android:background="@drawable/icon_delete"
                 android:id="@+id/subject_delete">
 
         </androidx.appcompat.widget.AppCompatImageButton>
