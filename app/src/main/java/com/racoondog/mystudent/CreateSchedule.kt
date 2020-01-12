@@ -1,15 +1,16 @@
 package com.racoondog.mystudent
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.create_schedule.*
 import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.NumberPicker
 import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.create_schedule.*
 
 
 class CreateSchedule : AppCompatActivity(){
@@ -146,13 +147,13 @@ class CreateSchedule : AppCompatActivity(){
 
         CreateSchedule_Button.setOnClickListener{
 
-            val titleName = TitleName_text.text.toString()
+            val titleName = Title_text.text.toString()
 
             if(titleName != "")
             {
                 if(dayFlag != 0) {
                     if (start_hour.value < end_hour.value) {
-                        intent.putExtra("title", TitleName_text.text.toString())
+                        intent.putExtra("title", Title_text.text.toString())
                         intent.putExtra("scheduleDayFlag", dayFlag)
                         intent.putExtra("scheduleStartHour",start_hour.value)
                         intent.putExtra("scheduleEndHour",end_hour.value)
@@ -192,16 +193,23 @@ class CreateSchedule : AppCompatActivity(){
         }
 
         startTime.setOnClickListener{
+            Title_text.hideKeyboard()
             time_picker.visibility = View.VISIBLE
             start_picker.visibility = View.VISIBLE
             end_picker.visibility = View.INVISIBLE
+
         }
         endTime.setOnClickListener{
+            Title_text.hideKeyboard()
             time_picker.visibility = View.VISIBLE
             end_picker.visibility = View.VISIBLE
             start_picker.visibility = View.INVISIBLE
 
         }
+        schedule_day_group.setOnCheckedChangeListener{_,_ ->
+            Title_text.hideKeyboard()
+        }
+
 
     }
 
@@ -210,6 +218,11 @@ class CreateSchedule : AppCompatActivity(){
         if(time_picker.visibility == View.VISIBLE){
         time_picker.visibility = View.GONE}
         else super.onBackPressed()
+    }
+
+    private fun View.hideKeyboard() {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(windowToken, 0)
     }
 
 }

@@ -2,9 +2,11 @@ package com.racoondog.mystudent
 
 
 import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.NumberPicker
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -208,12 +210,12 @@ class CreateSubject :AppCompatActivity() {
             if(dayFlag != 0 ) {
                 if ((start_hour.value < end_hour.value)||
                     (start_hour.value == end_hour.value && ((end_minute.value - start_minute.value) >= 6))) {
-                    if(TitleName_text.text.toString() !="") {
+                    if(Title_text.text.toString() !="") {
 
                         intent.putExtra("StartHour",start_hour.value )
                         intent.putExtra("EndHour", end_hour.value)
                         intent.putExtra("DayFlag", dayFlag)
-                        intent.putExtra("SubjectTitle", TitleName_text.text.toString())
+                        intent.putExtra("SubjectTitle", Title_text.text.toString())
 
                         intent.putExtra("StartTimeText", arrayOf(startText_AMPM.text.toString()
                             ,startText_hour.text.toString(), startText_minute.text.toString()))
@@ -245,11 +247,16 @@ class CreateSubject :AppCompatActivity() {
 
 
         startTime.setOnClickListener{
+            Title_text.hideKeyboard()
+            Content_text.hideKeyboard()
             time_picker.visibility = View.VISIBLE
             start_picker.visibility = View.VISIBLE
             end_picker.visibility = View.INVISIBLE
+
         }
         endTime.setOnClickListener{
+            Title_text.hideKeyboard()
+            Content_text.hideKeyboard()
             time_picker.visibility = View.VISIBLE
             end_picker.visibility = View.VISIBLE
             start_picker.visibility = View.INVISIBLE
@@ -280,11 +287,19 @@ class CreateSubject :AppCompatActivity() {
 
 
         lesson_mode.setOnCheckedChangeListener{compoundButton,b ->
+            Title_text.hideKeyboard()
+            Content_text.hideKeyboard()
+
             if (compoundButton.isChecked){
                 Toast.makeText(this, "개인 레슨: on", Toast.LENGTH_SHORT).show()
             } else{
                 Toast.makeText(this, "개인 레슨: off", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        subject_day_group.setOnCheckedChangeListener{_,_->
+            Title_text.hideKeyboard()
+            Content_text.hideKeyboard()
         }
 
 
@@ -295,5 +310,10 @@ class CreateSubject :AppCompatActivity() {
             time_picker.visibility = View.GONE}
         else super.onBackPressed()
     }
+    private fun View.hideKeyboard() {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(windowToken, 0)
+    }
+
 
 }
