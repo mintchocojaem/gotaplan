@@ -9,6 +9,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.NumberPicker
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 
 
 class CreateSchedule : AppCompatActivity(){
@@ -202,6 +203,13 @@ class CreateSchedule : AppCompatActivity(){
 
         }
 
+    }
+
+    override fun onBackPressed() {
+
+        if(time_picker.visibility == View.VISIBLE){
+        time_picker.visibility = View.GONE}
+        else super.onBackPressed()
     }
 
 }

@@ -289,5 +289,11 @@ class CreateSubject :AppCompatActivity() {
 
 
     }
+    override fun onBackPressed() {
+
+        if(time_picker.visibility == View.VISIBLE){
+            time_picker.visibility = View.GONE}
+        else super.onBackPressed()
+    }
 
 }
