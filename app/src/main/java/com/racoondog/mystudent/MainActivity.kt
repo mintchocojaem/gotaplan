@@ -106,7 +106,7 @@ class MainActivity: AppCompatActivity() {
                     val startTimeText = data.getStringArrayExtra("StartTimeText") // 오전/오후 형식 시간
                     val endTimeText = data.getStringArrayExtra("EndTimeText")
                     val contentText = data.getStringExtra("ContentText")
-
+                    val lessonOnOff = data.getBooleanExtra("LessonOnOff",false)
                     val timeText = "${startTimeText[0]}${startTimeText[1]}:${startTimeText[2]}"+ " ~ " + "${endTimeText[0]}${endTimeText[1]}:${endTimeText[2]}" //StartTimeText[ ]은 오전/오후 변환시간
 
                     val ID = weekView.createID(0,128)//다음으로 만들어질 weekview의 id 값을 결정하는 변수
@@ -123,6 +123,7 @@ class MainActivity: AppCompatActivity() {
                         this.title = subjectTitle
                         this.content = contentText
                         this.time = timeText
+                        this.lessonOnOff = lessonOnOff
 
                     }
                     realm.commitTransaction()

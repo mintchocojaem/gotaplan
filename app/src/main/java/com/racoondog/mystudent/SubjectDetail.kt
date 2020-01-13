@@ -4,7 +4,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.ContextThemeWrapper
-import android.widget.Toast
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import io.realm.Realm
 import io.realm.RealmResults
@@ -22,13 +22,22 @@ class SubjectDetail : AppCompatActivity() {
 
         var saveEditFlag = false
 
-        var data: RealmResults<SubjectBox> = realm.where<SubjectBox>(SubjectBox::class.java)
+        var subjectData: RealmResults<SubjectBox> = realm.where<SubjectBox>(SubjectBox::class.java)
             .equalTo("id",WeekViewData.ID)
             .findAll()
-        subject_time.text = data.get(0)!!.time.toString()
-        subject_title.setText(data.get(0)!!.title.toString())
-        subject_content.setText(data.get(0)!!.content.toString())
+        subject_time.text = subjectData[0]!!.time.toString()
+        subject_title.setText(subjectData.get(0)!!.title.toString())
+        subject_content.setText(subjectData.get(0)!!.content.toString())
 
+        if(subjectData[0]!!.lessonOnOff) lesson_bar.visibility = View.VISIBLE
+        else lesson_bar.visibility = View.GONE
+
+        /*studentName_text.setText(subjectData[0]!!.lessonDB[0]!!.studentName.toString())
+        studentBirth_text.setText(subjectData[0]!!.lessonDB[0]!!.studentBirth.toString())
+        studentPhone_text.setText(subjectData[0]!!.lessonDB[0]!!.studentPhoneNumber.toString())
+        lessonCost_text.setText(subjectData[0]!!.lessonDB[0]!!.lessonCost.toString())
+
+         */
 
         lessonQuit_Button.setOnClickListener {
                setResult(Activity.RESULT_OK, intent)
@@ -53,8 +62,14 @@ class SubjectDetail : AppCompatActivity() {
                 subject_content.isEnabled = false
 
                 realm.beginTransaction()
-                data.get(0)!!.title = subject_title.text.toString()
-                data.get(0)!!.content = subject_content.text.toString()
+                subjectData.get(0)!!.title = subject_title.text.toString()
+                subjectData.get(0)!!.content = subject_content.text.toString()
+
+                /*subjectData[0]!!.lessonDB[0]!!.studentName = studentName_text.text.toString()
+                subjectData[0]!!.lessonDB[0]!!.studentBirth = studentBirth_text.text.toString()
+                subjectData[0]!!.lessonDB[0]!!.studentPhoneNumber = studentPhone_text.text.toString()
+                subjectData[0]!!.lessonDB[0]!!.lessonCost = lessonCost_text.text.toString()
+                 */
                 realm.commitTransaction()
 
                 saveEditFlag = false
@@ -70,7 +85,7 @@ class SubjectDetail : AppCompatActivity() {
             builder.setPositiveButton("확인") { _, _ ->
 
                 realm.beginTransaction()
-                data.get(0)!!.deleteFromRealm()
+                subjectData.get(0)!!.deleteFromRealm()
                 realm.commitTransaction()
 
 

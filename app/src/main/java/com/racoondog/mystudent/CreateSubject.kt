@@ -216,7 +216,7 @@ class CreateSubject :AppCompatActivity() {
                         intent.putExtra("EndHour", end_hour.value)
                         intent.putExtra("DayFlag", dayFlag)
                         intent.putExtra("SubjectTitle", Title_text.text.toString())
-
+                        intent.putExtra("LessonOnOff",lesson_mode.isChecked)
                         intent.putExtra("StartTimeText", arrayOf(startText_AMPM.text.toString()
                             ,startText_hour.text.toString(), startText_minute.text.toString()))
 

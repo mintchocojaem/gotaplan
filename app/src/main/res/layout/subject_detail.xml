@@ -311,54 +311,28 @@
                     android:layout_height="wrap_content"
                     android:text="레슨 비용: "
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/lesson_cycle"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintHorizontal_bias="0"
-                    android:id="@+id/lesson_fee"
-                    android:textSize="16sp">
-
-            </TextView>
-            <EditText
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintLeft_toRightOf="@id/lesson_fee"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/lesson_fee"
-                    app:layout_constraintBottom_toBottomOf="@id/lesson_fee"
-                    android:id="@+id/lessonFee_text"
-                    android:background="@null"
-                    android:textColor="@color/originalText"
-                    android:enabled="false">
-
-            </EditText>
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="레슨 횟수: "
-                    app:layout_constraintTop_toBottomOf="@id/lesson_fee"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintHorizontal_bias="0"
-                    android:id="@+id/lesson_cycle"
+                    android:id="@+id/lesson_cost"
                     android:textSize="16sp">
 
             </TextView>
             <EditText
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:layout_constraintLeft_toRightOf="@id/lesson_cycle"
+                    app:layout_constraintLeft_toRightOf="@id/lesson_cost"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/lesson_cycle"
-                    app:layout_constraintBottom_toBottomOf="@id/lesson_cycle"
-                    android:id="@+id/lessonCycle_text"
+                    app:layout_constraintTop_toTopOf="@id/lesson_cost"
+                    app:layout_constraintBottom_toBottomOf="@id/lesson_cost"
+                    android:id="@+id/lessonCost_text"
                     android:background="@null"
                     android:textColor="@color/originalText"
                     android:enabled="false">
 
             </EditText>
+
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
