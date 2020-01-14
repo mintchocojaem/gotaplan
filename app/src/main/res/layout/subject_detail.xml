@@ -81,7 +81,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:background="@null"
-                android:textColor="@color/originalText"
+                android:textColor="@color/defaultColor"
                 android:enabled="false">
 
         </EditText>
@@ -113,7 +113,7 @@
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="설명: "
+                android:text="설명 "
                 android:textSize="16dp"
                 android:textStyle="bold"
                 android:paddingEnd="20dp"
@@ -143,7 +143,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 android:id="@+id/subject_content"
-                android:textColor="@color/originalText"
+                android:textColor="@color/defaultColor"
                 android:maxLength="100"
                 android:enabled="false">
 
@@ -162,7 +162,7 @@
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="수강생 정보: "
+                android:text="수강생 정보 "
                 android:textSize="16dp"
                 android:textStyle="bold"
                 android:paddingEnd="20dp"
@@ -212,8 +212,10 @@
                     app:layout_constraintBottom_toBottomOf="@id/student_name"
                     android:id="@+id/studentName_text"
                     android:background="@null"
-                    android:textColor="@color/originalText"
-                    android:enabled="false">
+                    android:textColor="@color/defaultColor"
+                    android:enabled="false"
+                    android:textSize="16sp"
+                    android:textStyle="bold">
 
             </EditText>
 
@@ -240,7 +242,7 @@
                     app:layout_constraintBottom_toBottomOf="@id/student_birth"
                     android:id="@+id/studentBirth_text"
                     android:background="@null"
-                    android:textColor="@color/originalText"
+                    android:textColor="@color/defaultColor"
                     android:enabled="false">
 
             </EditText>
@@ -268,7 +270,7 @@
                     app:layout_constraintBottom_toBottomOf="@id/student_phone"
                     android:id="@+id/studentPhone_text"
                     android:background="@null"
-                    android:textColor="@color/originalText"
+                    android:textColor="@color/defaultColor"
                     android:enabled="false">
 
             </EditText>
@@ -277,7 +279,7 @@
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="레슨 정보: "
+                android:text="레슨 정보 "
                 android:textSize="16dp"
                 android:paddingEnd="20dp"
                 android:paddingStart="20dp"
@@ -311,7 +313,7 @@
                     android:layout_height="wrap_content"
                     android:text="레슨 비용: "
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/lesson_cycle"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintHorizontal_bias="0"
@@ -328,10 +330,39 @@
                     app:layout_constraintBottom_toBottomOf="@id/lesson_cost"
                     android:id="@+id/lessonCost_text"
                     android:background="@null"
-                    android:textColor="@color/originalText"
+                    android:textColor="@color/defaultColor"
                     android:enabled="false">
 
             </EditText>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="레슨 횟수: "
+                    app:layout_constraintTop_toBottomOf="@id/lesson_cost"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
+                    android:id="@+id/lesson_cycle"
+                    android:textSize="16sp">
+
+            </TextView>
+            <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintLeft_toRightOf="@id/lesson_cycle"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/lesson_cycle"
+                    app:layout_constraintBottom_toBottomOf="@id/lesson_cycle"
+                    android:id="@+id/lessonCycle_text"
+                    android:background="@null"
+                    android:textColor="@color/defaultColor"
+                    android:enabled="false">
+
+            </EditText>
+
+            
 
 
 

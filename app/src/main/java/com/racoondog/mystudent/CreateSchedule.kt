@@ -3,6 +3,8 @@ package com.racoondog.mystudent
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
@@ -11,6 +13,7 @@ import android.widget.NumberPicker
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.create_schedule.*
+
 
 
 class CreateSchedule : AppCompatActivity(){
@@ -208,6 +211,11 @@ class CreateSchedule : AppCompatActivity(){
         }
         schedule_day_group.setOnCheckedChangeListener{_,_ ->
             Title_text.hideKeyboard()
+        }
+
+        colorPickerButton.setOnClickListener {
+            val intent = Intent(this, ScheduleColor::class.java)
+            startActivity(intent)
         }
 
 

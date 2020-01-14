@@ -18,7 +18,6 @@ open class SubjectBox: RealmObject(){
 
     var id: Int = 0
     var lessonOnOff : Boolean = false
-    lateinit var lessonDB:RealmList<LessonBox>
 
     lateinit var dayFlag: String
 
@@ -32,13 +31,10 @@ open class SubjectBox: RealmObject(){
     lateinit var content: String
     lateinit var time: String
 
-}
-open class LessonBox: RealmObject(){
-
-    var studentName = ""
-    var studentBirth = ""
-    var studentPhoneNumber = ""
-    var lessonCost = ""
-
+    lateinit var studentName : String
+    lateinit var studentBirth : String
+    lateinit var studentPhoneNumber : String
+    lateinit var lessonCost : String
+    lateinit var lessonCycle : String
 
 }

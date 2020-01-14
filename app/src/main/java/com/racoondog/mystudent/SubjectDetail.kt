@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.view.ContextThemeWrapper
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import io.realm.Realm
 import io.realm.RealmResults
@@ -32,12 +33,13 @@ class SubjectDetail : AppCompatActivity() {
         if(subjectData[0]!!.lessonOnOff) lesson_bar.visibility = View.VISIBLE
         else lesson_bar.visibility = View.GONE
 
-        /*studentName_text.setText(subjectData[0]!!.lessonDB[0]!!.studentName.toString())
-        studentBirth_text.setText(subjectData[0]!!.lessonDB[0]!!.studentBirth.toString())
-        studentPhone_text.setText(subjectData[0]!!.lessonDB[0]!!.studentPhoneNumber.toString())
-        lessonCost_text.setText(subjectData[0]!!.lessonDB[0]!!.lessonCost.toString())
 
-         */
+        studentName_text.setText(subjectData[0]!!.studentName.toString())
+        studentBirth_text.setText(subjectData[0]!!.studentBirth.toString())
+        studentPhone_text.setText(subjectData[0]!!.studentPhoneNumber.toString())
+        lessonCost_text.setText(subjectData[0]!!.lessonCost.toString())
+        lessonCycle_text.setText(subjectData[0]!!.lessonCycle.toString())
+
 
         lessonQuit_Button.setOnClickListener {
                setResult(Activity.RESULT_OK, intent)
@@ -53,6 +55,12 @@ class SubjectDetail : AppCompatActivity() {
                 subject_title.isEnabled = true
                 subject_content.isEnabled = true
 
+                studentName_text.isEnabled = true
+                studentBirth_text.isEnabled = true
+                studentPhone_text.isEnabled = true
+                lessonCost_text.isEnabled = true
+                lessonCycle_text.isEnabled = true
+
                 saveEditFlag = true
 
             } else {
@@ -61,15 +69,23 @@ class SubjectDetail : AppCompatActivity() {
                 subject_title.isEnabled = false
                 subject_content.isEnabled = false
 
+                studentName_text.isEnabled = false
+                studentBirth_text.isEnabled = false
+                studentPhone_text.isEnabled = false
+                lessonCost_text.isEnabled = false
+                lessonCycle_text.isEnabled = false
+
+
                 realm.beginTransaction()
                 subjectData.get(0)!!.title = subject_title.text.toString()
                 subjectData.get(0)!!.content = subject_content.text.toString()
 
-                /*subjectData[0]!!.lessonDB[0]!!.studentName = studentName_text.text.toString()
-                subjectData[0]!!.lessonDB[0]!!.studentBirth = studentBirth_text.text.toString()
-                subjectData[0]!!.lessonDB[0]!!.studentPhoneNumber = studentPhone_text.text.toString()
-                subjectData[0]!!.lessonDB[0]!!.lessonCost = lessonCost_text.text.toString()
-                 */
+                subjectData[0]!!.studentName = studentName_text.text.toString()
+                subjectData[0]!!.studentBirth = studentBirth_text.text.toString()
+                subjectData[0]!!.studentPhoneNumber = studentPhone_text.text.toString()
+                subjectData[0]!!.lessonCost = lessonCost_text.text.toString()
+                subjectData[0]!!.lessonCycle = lessonCycle_text.text.toString()
+
                 realm.commitTransaction()
 
                 saveEditFlag = false
