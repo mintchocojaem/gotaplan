@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <declare-styleable name="weekView">
-        <attr name="lastDay" format="integer"/>
-        <attr name="startTime" format="integer"/>
-        <attr name="endTime" format="integer"/>
-    </declare-styleable>
-
     <declare-styleable name="colorPicker">
         <attr name="colorTint" format="reference|integer"/>
     </declare-styleable>

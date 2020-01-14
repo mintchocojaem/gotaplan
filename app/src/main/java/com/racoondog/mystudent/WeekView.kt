@@ -38,19 +38,7 @@ class WeekView : ConstraintLayout{
     }
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
-
-        val a = context.theme.obtainStyledAttributes(attrs, R.styleable.weekView, 0, 0)
-
-        try {
-
-            lastDay = a.getInt(R.styleable.weekView_lastDay, 0)
-            startTime = a.getInt(R.styleable.weekView_startTime, 0)
-            endTime = a.getInt(R.styleable.weekView_endTime, 0)
-
-        } finally {
-            // release the TypedArray so that it can be reused.
-            a.recycle()
-        }
+        
         initView()
     }
 
