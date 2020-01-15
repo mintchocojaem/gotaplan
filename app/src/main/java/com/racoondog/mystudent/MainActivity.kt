@@ -73,9 +73,7 @@ class MainActivity: AppCompatActivity() {
 
                     }
 
-                    weekView.lastDay = scheduleDayFlag
-                    weekView.startTime = scheduleStartHour
-                    weekView.endTime = scheduleEndHour
+                    weekView.drawSchedule(scheduleDayFlag,scheduleStartHour,scheduleEndHour)
 
                     weekView_layout.addView(weekView)
 
@@ -162,18 +160,17 @@ class MainActivity: AppCompatActivity() {
             schedule_add.visibility = View.INVISIBLE
             add_subject.visibility = View.VISIBLE
 
+            intentflag = scheduleData.scheduleDayFlag!!
             intentStartTime = scheduleData.scheduleStartHour!!
             intentEndTime = scheduleData.scheduleEndHour!!
-            intentflag = scheduleData.scheduleDayFlag!!
 
             weekView.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT,
                 ConstraintLayout.LayoutParams.MATCH_PARENT).apply {
 
             }
 
-            weekView.lastDay = scheduleData.scheduleDayFlag!!
-            weekView.startTime = scheduleData.scheduleStartHour!!
-            weekView.endTime = scheduleData.scheduleEndHour!!
+            weekView.drawSchedule(intentflag,intentStartTime,intentEndTime)
+
             toolbar_title.text = scheduleData.scheduleTitle
             weekView_layout.addView(weekView)
             schedule_add.visibility = View.INVISIBLE
@@ -188,6 +185,8 @@ class MainActivity: AppCompatActivity() {
 
 
         }
+
+
     }
 
 

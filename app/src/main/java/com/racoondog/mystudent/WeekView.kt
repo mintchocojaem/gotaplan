@@ -17,22 +17,7 @@ import kotlin.properties.Delegates
 
 class WeekView : ConstraintLayout{
 
-    private val realm = Realm.getDefaultInstance()
 
-    var endTime: Int by Delegates.observable(0) {_, oldValue, newValue ->
-        if (oldValue != newValue) {
-
-            drawSchedule(lastDay, startTime, endTime)
-        }
-    }
-    var startTime = 0
-    var lastDay = 0
-    private val cnxt = context as MainActivity
-    var dayFlag = 0
-
-    private val dm:DisplayMetrics = context.resources.displayMetrics
-    private val dmWidth:Int = dm.widthPixels
-    private  var cellHeight = 0
     constructor(context: Context) : super(context, null) {
         initView()
     }
@@ -55,11 +40,21 @@ class WeekView : ConstraintLayout{
         val inflater: LayoutInflater = context.getSystemService(inflaterService) as LayoutInflater
         val view = inflater.inflate(R.layout.weekview, this, false)
         addView(view)
-        drawSchedule(lastDay, startTime, endTime)
 
     }
 
-    private fun drawSchedule(day_flag: Int, start_time: Int, end_time: Int) {
+    private val realm = Realm.getDefaultInstance()
+
+    var dayFlag = 0
+
+    private val cnxt = context as MainActivity
+    private val dm:DisplayMetrics = context.resources.displayMetrics
+    private val dmWidth:Int = dm.widthPixels
+    private  var cellHeight = 0
+
+
+
+    fun drawSchedule(day_flag: Int, start_time: Int, end_time: Int) {
 
         var day = mutableListOf<String>()
         val dayList = listOf("월","화","수","목","금","토","일")
@@ -239,6 +234,7 @@ class WeekView : ConstraintLayout{
         val subject = ConstraintLayout(cnxt)
         val titleText = TextView(cnxt)
         val ID = id
+
         titleText.apply {
             titleText.tag = "title$ID"
         }
