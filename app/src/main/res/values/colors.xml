@@ -8,4 +8,10 @@
     <color name="clear">#00000000</color>
     <color name="defaultColor">#808080</color>
     <color name="purpleColor">#7A6CCF</color>
+    
+    <integer-array name="color_picker">
+        <item>@color/defaultColor</item>
+        <item>@color/purpleColor</item>
+    </integer-array>
+    
 </resources>

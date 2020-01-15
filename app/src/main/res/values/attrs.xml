@@ -2,7 +2,7 @@
 <resources>
 
     <declare-styleable name="colorPicker">
-        <attr name="colorTint" format="reference|integer"/>
+
     </declare-styleable>
 
 </resources>

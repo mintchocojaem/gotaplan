@@ -94,16 +94,11 @@ class WeekView : ConstraintLayout{
 
         layout.layoutParams = TableLayout.LayoutParams(
             TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT
-        ).apply {
-
-        }
+        )
 
         dayRow.layoutParams = TableLayout.LayoutParams(
             TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT
-        ).apply {
-
-        }
-
+        )
         for (i in 0 until  day.size) {
 
 
