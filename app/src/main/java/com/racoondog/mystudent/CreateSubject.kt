@@ -210,12 +210,12 @@ class CreateSubject :AppCompatActivity() {
             if(dayFlag != 0 ) {
                 if ((start_hour.value < end_hour.value)||
                     (start_hour.value == end_hour.value && ((end_minute.value - start_minute.value) >= 6))) {
-                    if(Title_text.text.toString() !="") {
+                    if(title_text.text.toString() !="") {
 
                         intent.putExtra("StartHour",start_hour.value )
                         intent.putExtra("EndHour", end_hour.value)
                         intent.putExtra("DayFlag", dayFlag)
-                        intent.putExtra("SubjectTitle", Title_text.text.toString())
+                        intent.putExtra("SubjectTitle", title_text.text.toString())
                         intent.putExtra("LessonOnOff",lesson_mode.isChecked)
                         intent.putExtra("StartTimeText", arrayOf(startText_AMPM.text.toString()
                             ,startText_hour.text.toString(), startText_minute.text.toString()))
@@ -247,7 +247,7 @@ class CreateSubject :AppCompatActivity() {
 
 
         startTime.setOnClickListener{
-            Title_text.hideKeyboard()
+            title_text.hideKeyboard()
             Content_text.hideKeyboard()
             time_picker.visibility = View.VISIBLE
             start_picker.visibility = View.VISIBLE
@@ -255,7 +255,7 @@ class CreateSubject :AppCompatActivity() {
 
         }
         endTime.setOnClickListener{
-            Title_text.hideKeyboard()
+            title_text.hideKeyboard()
             Content_text.hideKeyboard()
             time_picker.visibility = View.VISIBLE
             end_picker.visibility = View.VISIBLE
@@ -287,7 +287,7 @@ class CreateSubject :AppCompatActivity() {
 
 
         lesson_mode.setOnCheckedChangeListener{compoundButton,b ->
-            Title_text.hideKeyboard()
+            title_text.hideKeyboard()
             Content_text.hideKeyboard()
 
             if (compoundButton.isChecked){
@@ -298,7 +298,7 @@ class CreateSubject :AppCompatActivity() {
         }
 
         subject_day_group.setOnCheckedChangeListener{_,_->
-            Title_text.hideKeyboard()
+            title_text.hideKeyboard()
             Content_text.hideKeyboard()
         }
 

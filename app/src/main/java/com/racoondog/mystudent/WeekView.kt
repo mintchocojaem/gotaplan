@@ -60,6 +60,8 @@ class WeekView : ConstraintLayout{
         var period =
             mutableListOf<String>() //원래는 교시부분이었으나 기획자의 변경에 따라 시간으로 표시되는 배열 ex -> 오후 1시 2시 3시
 
+        val colorList = realm.where(DataModel::class.java).findFirst()!!.scheduleColor
+
         //마지막 요일을 선택하고 그에 따라 day_flag 값을 반환 하고 day 배열에 추가
         for(i in 0 until day_flag){
             day.add("${dayList[i]}")
@@ -96,13 +98,17 @@ class WeekView : ConstraintLayout{
         dayRow.layoutParams = TableLayout.LayoutParams(
             TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT
         )
+
+        Day_Line.setBackgroundColor(colorList)// 가이드 라인 색
+
         for (i in 0 until  day.size) {
 
 
             
             val dayText = TextView(cnxt) // 요일을 나타내는 부분 ex -> 월 화 수 목
             dayText.gravity = Gravity.CENTER
-            dayText.setBackgroundResource(R.color.White_bg)
+
+            dayText.setBackgroundColor(colorList) //day_bar color
             dayText.layoutParams = TableRow.LayoutParams(
                 TableRow.LayoutParams.WRAP_CONTENT,
                 TableRow.LayoutParams.WRAP_CONTENT
@@ -125,7 +131,7 @@ class WeekView : ConstraintLayout{
             ).apply {
                 weight = 1f
             }
-            timeRow.setBackgroundResource(R.color.whitegray_bg)
+            timeRow.setBackgroundResource(R.color.White_bg)// 시간 라인 background color
 
             val constInit = ConstraintLayout(cnxt) //initperiod를 담기위한 Constraintlayout 부분
             constInit.layoutParams = TableRow.LayoutParams(
@@ -140,8 +146,6 @@ class WeekView : ConstraintLayout{
                 ConstraintLayout.LayoutParams.WRAP_CONTENT,
                 ConstraintLayout.LayoutParams.WRAP_CONTENT
             ).apply {
-                initPeriod.text = period[i]
-                initPeriod.textSize = 13f
                 topToTop = ConstraintLayout.LayoutParams.PARENT_ID
                 bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
                 rightToRight = ConstraintLayout.LayoutParams.PARENT_ID
@@ -149,6 +153,10 @@ class WeekView : ConstraintLayout{
                 //verticalBias = 0.2f
                 //time 사용시 period 레이아웃 영역 활성화
             }
+            initPeriod.text = period[i]
+            initPeriod.textSize = 13f
+
+            initPeriod.setBackgroundResource(R.color.White_bg) // 시간 라인 텍스트 background color
             /*
                 val inittime = TextView(this) // 이 부분은 원래 시간이 부분이었으나 기확자의 지시에 따라 initperiod가 시간으로 대체됨 ex-> 오전 8:00시 9:00시
                 inittime.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT,

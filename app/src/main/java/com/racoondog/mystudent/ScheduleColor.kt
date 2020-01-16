@@ -9,8 +9,8 @@ class ScheduleColor : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.schedule_color_picker)
-
-        color_picker.createColorButton(this)
+        val colorList = resources.getIntArray(R.array.color_picker)
+        color_picker.colorList(colorList,this)
 
 
 

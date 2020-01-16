@@ -4,8 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
-import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
@@ -13,21 +11,23 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.NumberPicker
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.create_schedule.*
 
 
 
 class CreateSchedule : AppCompatActivity(){
 
+    var colorList : Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
 
         super.onCreate(savedInstanceState)
 
         var dayFlag = 0
         val intent = Intent()
         val displayValue = mutableListOf<String>()
+
 
         setContentView(R.layout.create_schedule)
 
@@ -149,19 +149,19 @@ class CreateSchedule : AppCompatActivity(){
 
         //Number Picker
 
-        CreateSchedule_Button.setOnClickListener{
+        createSchedule_Button.setOnClickListener{
 
-            val titleName = Title_text.text.toString()
+            val titleName = title_text.text.toString()
 
             if(titleName != "")
             {
                 if(dayFlag != 0) {
                     if (start_hour.value < end_hour.value) {
-                        intent.putExtra("title", Title_text.text.toString())
+                        intent.putExtra("title", title_text.text.toString())
                         intent.putExtra("scheduleDayFlag", dayFlag)
                         intent.putExtra("scheduleStartHour",start_hour.value)
                         intent.putExtra("scheduleEndHour",end_hour.value)
-
+                        intent.putExtra("scheduleColor",colorList)
                         setResult(Activity.RESULT_OK, intent)
                         finish()
                     }
@@ -197,21 +197,21 @@ class CreateSchedule : AppCompatActivity(){
         }
 
         startTime.setOnClickListener{
-            Title_text.hideKeyboard()
+            title_text.hideKeyboard()
             time_picker.visibility = View.VISIBLE
             start_picker.visibility = View.VISIBLE
             end_picker.visibility = View.INVISIBLE
 
         }
         endTime.setOnClickListener{
-            Title_text.hideKeyboard()
+            title_text.hideKeyboard()
             time_picker.visibility = View.VISIBLE
             end_picker.visibility = View.VISIBLE
             start_picker.visibility = View.INVISIBLE
 
         }
         schedule_day_group.setOnCheckedChangeListener{_,_ ->
-            Title_text.hideKeyboard()
+            title_text.hideKeyboard()
         }
 
         colorPickerButton.setOnClickListener {
@@ -222,12 +222,18 @@ class CreateSchedule : AppCompatActivity(){
 
     }
 
+    private fun changeTheme(colorList:Int){
+        createSchedule_toolbar.setBackgroundColor(colorList)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == Activity.RESULT_OK){
             when(requestCode){
                 0->{
-                    colorPickerButton.backgroundTintList = ColorStateList.valueOf(data!!.getIntExtra("colorCode",0))
+                    colorList = data!!.getIntExtra("colorCode",0)
+                    colorPickerButton.backgroundTintList = ColorStateList.valueOf(colorList)
+                    changeTheme(colorList)
                 }
             }
         }

@@ -60,22 +60,17 @@ class MainActivity: AppCompatActivity() {
             when (requestCode) {
                 100 -> {
 
+
+                    val scheduleDayFlag = data!!.getIntExtra("scheduleDayFlag", 0)
+                    val scheduleStartHour = data.getIntExtra("scheduleStartHour", 0)
+                    val scheduleEndHour = data.getIntExtra("scheduleEndHour", 0)
+                    val scheduleColor = data.getIntExtra("scheduleColor",0)
+
                     schedule_add.visibility = View.INVISIBLE
                     add_subject.visibility = View.VISIBLE
 
-                    toolbar_title.text = data!!.getStringExtra("title")
-                    val scheduleDayFlag = data.getIntExtra("scheduleDayFlag", 0)
-                    val scheduleStartHour = data.getIntExtra("scheduleStartHour", 0)
-                    val scheduleEndHour = data.getIntExtra("scheduleEndHour", 0)
-
-                    weekView.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT,
-                        ConstraintLayout.LayoutParams.MATCH_PARENT).apply {
-
-                    }
-
-                    weekView.drawSchedule(scheduleDayFlag,scheduleStartHour,scheduleEndHour)
-
-                    weekView_layout.addView(weekView)
+                    toolbar_title.text = data.getStringExtra("title")
+                    my_toolbar.setBackgroundColor(scheduleColor)
 
                     intentStartTime = scheduleStartHour
                     intentEndTime = scheduleEndHour
@@ -89,8 +84,18 @@ class MainActivity: AppCompatActivity() {
                         this.scheduleStartHour = scheduleStartHour
                         this.scheduleEndHour = scheduleEndHour
                         this.scheduleTitle = toolbar_title.text.toString()
+                        this.scheduleColor = scheduleColor
                     }
                     realm.commitTransaction()
+
+                    weekView.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT,
+                        ConstraintLayout.LayoutParams.MATCH_PARENT).apply {
+
+                    }
+
+                    weekView.drawSchedule(scheduleDayFlag,scheduleStartHour,scheduleEndHour)
+
+                    weekView_layout.addView(weekView)
                 }
                 101 -> {
 
@@ -159,6 +164,8 @@ class MainActivity: AppCompatActivity() {
 
             schedule_add.visibility = View.INVISIBLE
             add_subject.visibility = View.VISIBLE
+            toolbar_title.text = scheduleData.scheduleTitle
+            my_toolbar.setBackgroundColor(scheduleData.scheduleColor)
 
             intentflag = scheduleData.scheduleDayFlag!!
             intentStartTime = scheduleData.scheduleStartHour!!
@@ -170,10 +177,8 @@ class MainActivity: AppCompatActivity() {
             }
 
             weekView.drawSchedule(intentflag,intentStartTime,intentEndTime)
-
-            toolbar_title.text = scheduleData.scheduleTitle
             weekView_layout.addView(weekView)
-            schedule_add.visibility = View.INVISIBLE
+
 
             val subjectData: RealmResults<SubjectBox> = realm.where<SubjectBox>(SubjectBox::class.java).findAll()
             for (data in subjectData) {

@@ -58,10 +58,8 @@ class ColorPicker: ConstraintLayout {
     }
 
 
-    fun createColorButton(activity: Activity){
+    fun colorList(colorList : IntArray,activity: Activity){
 
-
-        val colorList = resources.getIntArray(R.array.color_picker)
 
         for ( i in colorList.indices){
 

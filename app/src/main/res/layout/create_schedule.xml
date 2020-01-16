@@ -8,10 +8,10 @@
         android:background="@color/White_bg">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/CreateSchedule_toolbar"
+            android:id="@+id/createSchedule_toolbar"
             android:layout_width="0dp"
             android:layout_height="80dp"
-            android:background="@color/White_bg"
+            android:background="@color/defaultColor"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -19,7 +19,7 @@
             >
 
             <TextView
-                    android:id="@+id/CreateSchedule_title"
+                    android:id="@+id/createSchedule_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="시간표 만들기"
@@ -33,14 +33,14 @@
             </TextView>
 
             <ImageButton
-                    android:id="@+id/CreateSchedule_Button"
+                    android:id="@+id/createSchedule_Button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/icon_check"
-                    app:layout_constraintLeft_toRightOf="@id/CreateSchedule_title"
+                    app:layout_constraintLeft_toRightOf="@id/createSchedule_title"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/CreateSchedule_title"
-                    app:layout_constraintBottom_toBottomOf="@id/CreateSchedule_title"/>
+                    app:layout_constraintTop_toTopOf="@id/createSchedule_title"
+                    app:layout_constraintBottom_toBottomOf="@id/createSchedule_title"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -48,15 +48,15 @@
             android:layout_width="match_parent"
             android:layout_height="80dp"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/CreateSchedule_toolbar"
-            app:layout_constraintBottom_toTopOf="@id/Time_bar"
+            app:layout_constraintTop_toBottomOf="@id/createSchedule_toolbar"
+            app:layout_constraintBottom_toTopOf="@id/time_bar"
             app:layout_constraintLeft_toLeftOf="parent"
             android:id="@+id/text_bar"
             app:layout_constraintVertical_chainStyle="packed"
             app:layout_constraintVertical_bias="0"
             >
         <EditText
-                android:id="@+id/Title_text"
+                android:id="@+id/title_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:paddingStart="20dp"
@@ -78,10 +78,10 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             app:layout_constraintTop_toBottomOf="@id/text_bar"
-            android:id="@+id/Time_bar"
+            android:id="@+id/time_bar"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/Day_bar"
+            app:layout_constraintBottom_toTopOf="@id/day_bar"
             android:background="@drawable/timepicker_layout">
 
         <TextView
@@ -236,7 +236,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="120dp"
-            app:layout_constraintTop_toBottomOf="@id/Time_bar"
+            app:layout_constraintTop_toBottomOf="@id/time_bar"
             android:id="@+id/time_picker"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -325,7 +325,7 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             app:layout_constraintTop_toBottomOf="@id/time_picker"
-            android:id="@+id/Day_bar"
+            android:id="@+id/day_bar"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -401,7 +401,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            app:layout_constraintTop_toBottomOf="@id/Day_bar"
+            app:layout_constraintTop_toBottomOf="@id/day_bar"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent">
 

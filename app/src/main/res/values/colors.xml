@@ -6,16 +6,16 @@
     <color name="White_bg">#ffffff</color>
     <color name="whitegray_bg">#ededed</color>
     <color name="clear">#00000000</color>
-    <color name="defaultColor">#808080</color>
-    <color name="purpleColor">#7A6CCF</color>
+    <color name="defaultColor">#EEEEEE</color>
+    <color name="purpleColor">#BEAED4</color>
     <color name="orangeColor">#FFC686</color>
     <color name="skyColor">#ADE7F7</color>
     <color name="pinkColor">#FFDDDD</color>
     <color name="mauveColor">#DDDDFF</color>
     <color name="roseColor">#E2758C</color>
-    <color name="yellowColor">#FFCC33</color>
-    <color name="greenColor">#7CC135</color>
-    <color name="mintColor">#aaf0d1</color>
+    <color name="yellowColor">#FFDE66</color>
+    <color name="greenColor">#82D580</color>
+    <color name="mintColor">#95E0C8	</color>
 
     <integer-array name="color_picker">
         <item>@color/defaultColor</item>
