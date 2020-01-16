@@ -8,10 +8,26 @@
     <color name="clear">#00000000</color>
     <color name="defaultColor">#808080</color>
     <color name="purpleColor">#7A6CCF</color>
-    
+    <color name="orangeColor">#FFC686</color>
+    <color name="skyColor">#ADE7F7</color>
+    <color name="pinkColor">#FFDDDD</color>
+    <color name="mauveColor">#DDDDFF</color>
+    <color name="roseColor">#E2758C</color>
+    <color name="yellowColor">#FFCC33</color>
+    <color name="greenColor">#7CC135</color>
+    <color name="mintColor">#aaf0d1</color>
+
     <integer-array name="color_picker">
         <item>@color/defaultColor</item>
         <item>@color/purpleColor</item>
+        <item>@color/orangeColor</item>
+        <item>@color/skyColor</item>
+        <item>@color/pinkColor</item>
+        <item>@color/mauveColor</item>
+        <item>@color/roseColor</item>
+        <item>@color/yellowColor</item>
+        <item>@color/greenColor</item>
+        <item>@color/mintColor</item>
     </integer-array>
     
 </resources>

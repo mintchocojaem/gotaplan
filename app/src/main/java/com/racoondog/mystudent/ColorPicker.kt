@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import kotlinx.android.synthetic.main.color_picker.view.*
 import kotlinx.android.synthetic.main.create_schedule.view.*
+import kotlin.math.acosh
 
 class ColorPicker: ConstraintLayout {
 
@@ -53,6 +54,7 @@ class ColorPicker: ConstraintLayout {
 
     }
 
+
     private fun createColorButton(){
 
         val colorList = resources.getIntArray(R.array.color_picker)
@@ -61,18 +63,22 @@ class ColorPicker: ConstraintLayout {
         for ( i in colorList.indices){
 
             val colorButton = RadioButton(cnxt)
-            colorButton.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+            colorButton.layoutParams = LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT).apply {
                 weight = 1f
-
+                setPadding(64,32,0,32)
             }
             colorButton.setButtonDrawable(R.drawable.color_picker_btn)
             colorButton.buttonTintList = ColorStateList.valueOf(colorList[i])
+            colorButton.setOnClickListener {
+                colorList[i]
+            }
             color_group.addView(colorButton)
 
 
 
         }
     }
+
 
 }
