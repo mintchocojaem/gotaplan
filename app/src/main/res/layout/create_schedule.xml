@@ -406,8 +406,8 @@
             app:layout_constraintRight_toRightOf="parent">
 
         <ImageButton
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:id="@+id/colorPickerButton"
                 android:background="@drawable/color_picker_btn"
                 app:layout_constraintTop_toTopOf="parent"

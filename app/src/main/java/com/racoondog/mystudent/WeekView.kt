@@ -17,6 +17,14 @@ import kotlin.properties.Delegates
 
 class WeekView : ConstraintLayout{
 
+    private val realm = Realm.getDefaultInstance()
+
+    var dayFlag = 0
+
+    private val cnxt = context as MainActivity
+    private val dm:DisplayMetrics = context.resources.displayMetrics
+    private val dmWidth:Int = dm.widthPixels
+    private  var cellHeight = 0
 
     constructor(context: Context) : super(context, null) {
         initView()
@@ -42,17 +50,6 @@ class WeekView : ConstraintLayout{
         addView(view)
 
     }
-
-    private val realm = Realm.getDefaultInstance()
-
-    var dayFlag = 0
-
-    private val cnxt = context as MainActivity
-    private val dm:DisplayMetrics = context.resources.displayMetrics
-    private val dmWidth:Int = dm.widthPixels
-    private  var cellHeight = 0
-
-
 
     fun drawSchedule(day_flag: Int, start_time: Int, end_time: Int) {
 

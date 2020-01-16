@@ -3,6 +3,7 @@ package com.racoondog.mystudent
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
@@ -215,12 +216,23 @@ class CreateSchedule : AppCompatActivity(){
 
         colorPickerButton.setOnClickListener {
             val intent = Intent(this, ScheduleColor::class.java)
-            startActivity(intent)
+            startActivityForResult(intent,0)
         }
 
 
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == Activity.RESULT_OK){
+            when(requestCode){
+                0->{
+                    colorPickerButton.backgroundTintList = ColorStateList.valueOf(data!!.getIntExtra("colorCode",0))
+                }
+            }
+        }
+
+    }
     override fun onBackPressed() {
 
         if(time_picker.visibility == View.VISIBLE){

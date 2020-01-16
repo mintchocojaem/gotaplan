@@ -1,14 +1,20 @@
 package com.racoondog.mystudent
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.content.res.TypedArray
+import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.RadioButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import kotlinx.android.synthetic.main.color_picker.view.*
@@ -40,9 +46,6 @@ class ColorPicker: ConstraintLayout {
     }
     private fun setTypeArray(typedArray: TypedArray) {
 
-        //val colorTint:Int = typedArray.getColor(R.styleable.colorPicker_colorTint, 0)
-        //(colorPickerButton.background as GradientDrawable).setColor(colorTint)
-        createColorButton()
         typedArray.recycle()
     }
 
@@ -55,14 +58,14 @@ class ColorPicker: ConstraintLayout {
     }
 
 
-    private fun createColorButton(){
+    fun createColorButton(activity: Activity){
+
 
         val colorList = resources.getIntArray(R.array.color_picker)
-        val cnxt = context as ScheduleColor
 
         for ( i in colorList.indices){
 
-            val colorButton = RadioButton(cnxt)
+            val colorButton = RadioButton(activity.applicationContext)
             colorButton.layoutParams = LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT).apply {
                 weight = 1f
@@ -71,7 +74,9 @@ class ColorPicker: ConstraintLayout {
             colorButton.setButtonDrawable(R.drawable.color_picker_btn)
             colorButton.buttonTintList = ColorStateList.valueOf(colorList[i])
             colorButton.setOnClickListener {
-                colorList[i]
+                activity.intent.putExtra("colorCode",colorList[i])
+                activity.setResult(Activity.RESULT_OK,activity.intent)
+                activity.finish()
             }
             color_group.addView(colorButton)
 
