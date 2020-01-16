@@ -131,7 +131,7 @@ class WeekView : ConstraintLayout{
             ).apply {
                 weight = 1f
             }
-            timeRow.setBackgroundResource(R.color.White_bg)// 시간 라인 background color
+            timeRow.setBackgroundResource(R.drawable.cell_shape) //시간 라인 background color
 
             val constInit = ConstraintLayout(cnxt) //initperiod를 담기위한 Constraintlayout 부분
             constInit.layoutParams = TableRow.LayoutParams(
