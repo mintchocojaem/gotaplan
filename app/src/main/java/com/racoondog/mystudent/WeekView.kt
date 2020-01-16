@@ -2,6 +2,7 @@ package com.racoondog.mystudent
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.util.AttributeSet
 import android.util.DisplayMetrics
 import android.view.Gravity
@@ -107,13 +108,15 @@ class WeekView : ConstraintLayout{
             
             val dayText = TextView(cnxt) // 요일을 나타내는 부분 ex -> 월 화 수 목
             dayText.gravity = Gravity.CENTER
-
             dayText.setBackgroundColor(colorList) //day_bar color
+            dayText.text = day[i]
+            dayText.textSize = 14f
+            dayText.setTextColor(resources.getColor(R.color.darkColor))//day_bar text color
             dayText.layoutParams = TableRow.LayoutParams(
                 TableRow.LayoutParams.WRAP_CONTENT,
                 TableRow.LayoutParams.WRAP_CONTENT
             ).apply {
-                dayText.text = day[i]
+
                 weight = 3f
             }
             dayRow.addView(dayText)
@@ -154,7 +157,8 @@ class WeekView : ConstraintLayout{
                 //time 사용시 period 레이아웃 영역 활성화
             }
             initPeriod.text = period[i]
-            initPeriod.textSize = 13f
+            initPeriod.textSize = 14f
+            initPeriod.setTextColor(resources.getColor(R.color.darkColor))
 
             initPeriod.setBackgroundResource(R.color.White_bg) // 시간 라인 텍스트 background color
             /*

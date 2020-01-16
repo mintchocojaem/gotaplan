@@ -6,6 +6,7 @@
     <color name="White_bg">#ffffff</color>
     <color name="whitegray_bg">#ededed</color>
     <color name="clear">#00000000</color>
+    <color name="darkColor">#494949</color>
     <color name="defaultColor">#EEEEEE</color>
     <color name="purpleColor">#BEAED4</color>
     <color name="orangeColor">#FFC686</color>
