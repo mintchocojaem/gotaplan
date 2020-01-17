@@ -23,7 +23,7 @@
                     android:layout_height="wrap_content"
                     android:text="과목 정보"
                     android:layout_gravity="center"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"

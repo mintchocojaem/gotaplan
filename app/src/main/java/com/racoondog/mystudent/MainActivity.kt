@@ -77,14 +77,7 @@ class MainActivity: AppCompatActivity() {
                     toolbar_title.text = data.getStringExtra("title")
                     window.statusBarColor = scheduleColor
 
-                    when(scheduleColor){
-                        resources.getColor(R.color.whiteColor)-> {
-                            addSubjectButton.backgroundTintList = resources.getColorStateList(R.color.darkColor)
-                        }
-                        else -> {
-                            addSubjectButton.backgroundTintList = ColorStateList.valueOf(scheduleColor)
-                        }
-                    }
+                    changeTheme(scheduleColor)
 
                     intentStartTime = scheduleStartHour
                     intentEndTime = scheduleEndHour
@@ -181,14 +174,7 @@ class MainActivity: AppCompatActivity() {
             toolbar_title.text = scheduleData.scheduleTitle
             window.statusBarColor = scheduleData.scheduleColor
 
-            when(scheduleData.scheduleColor){
-                resources.getColor(R.color.whiteColor)-> {
-                    addSubjectButton.backgroundTintList = resources.getColorStateList(R.color.darkColor)
-                }
-                else -> {
-                    addSubjectButton.backgroundTintList = ColorStateList.valueOf(scheduleData.scheduleColor)
-                }
-            }
+            changeTheme(scheduleData.scheduleColor)
 
             intentflag = scheduleData.scheduleDayFlag!!
             intentStartTime = scheduleData.scheduleStartHour!!
@@ -215,6 +201,17 @@ class MainActivity: AppCompatActivity() {
         }
 
 
+    }
+
+    private fun changeTheme(theme:Int){
+        when(theme) {
+            resources.getColor(R.color.whiteColor) -> {
+                addSubjectButton.backgroundTintList = resources.getColorStateList(R.color.darkColor)
+            }
+            else ->{
+                addSubjectButton.backgroundTintList = ColorStateList.valueOf(theme)
+            }
+        }
     }
 
 

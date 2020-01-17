@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.create_schedule.*
 
 class CreateSchedule : AppCompatActivity(){
 
-    var colorList : Int = 0
+    var colorList : Int = -1 //white color
 
     override fun onCreate(savedInstanceState: Bundle?) {
 

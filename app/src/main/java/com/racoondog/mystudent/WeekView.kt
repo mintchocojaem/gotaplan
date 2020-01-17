@@ -158,7 +158,6 @@ class WeekView : ConstraintLayout{
             initPeriod.textSize = 12f
             initPeriod.setTextColor(resources.getColor(R.color.darkColor))
 
-            initPeriod.setBackgroundResource(R.color.defaultColor) // 시간 라인 텍스트 background color
             /*
                 val inittime = TextView(this) // 이 부분은 원래 시간이 부분이었으나 기확자의 지시에 따라 initperiod가 시간으로 대체됨 ex-> 오전 8:00시 9:00시
                 inittime.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT,
