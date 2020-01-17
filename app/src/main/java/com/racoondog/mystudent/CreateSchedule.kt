@@ -28,8 +28,8 @@ class CreateSchedule : AppCompatActivity(){
         val intent = Intent()
         val displayValue = mutableListOf<String>()
 
-
         setContentView(R.layout.create_schedule)
+        window.statusBarColor = resources.getColor(R.color.whiteColor)
 
 
         start_AMPM.apply {
@@ -223,8 +223,10 @@ class CreateSchedule : AppCompatActivity(){
     }
 
     private fun changeTheme(colorList:Int){
-        createSchedule_toolbar.setBackgroundColor(colorList)
+       createSchedule_toolbar.setBackgroundColor(colorList)
+        window.statusBarColor = colorList
     }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

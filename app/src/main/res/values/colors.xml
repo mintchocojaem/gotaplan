@@ -3,11 +3,12 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
-    <color name="White_bg">#ffffff</color>
-    <color name="whitegray_bg">#ededed</color>
+    <color name="whiteGrayColor">#ededed</color>
+    <color name="grayColor">#979797</color>
     <color name="clear">#00000000</color>
     <color name="darkColor">#494949</color>
-    <color name="defaultColor">#EEEEEE</color>
+    <color name="whiteColor">#ffffff</color>
+    <color name="defaultColor">#fafafa</color>
     <color name="purpleColor">#BEAED4</color>
     <color name="orangeColor">#FFC686</color>
     <color name="skyColor">#ADE7F7</color>
@@ -18,8 +19,21 @@
     <color name="greenColor">#82D580</color>
     <color name="mintColor">#95E0C8	</color>
 
-    <integer-array name="color_picker">
-        <item>@color/defaultColor</item>
+    <integer-array name="schedule_color">
+        <item>@color/whiteColor</item>
+        <item>@color/purpleColor</item>
+        <item>@color/orangeColor</item>
+        <item>@color/skyColor</item>
+        <item>@color/pinkColor</item>
+        <item>@color/mauveColor</item>
+        <item>@color/roseColor</item>
+        <item>@color/yellowColor</item>
+        <item>@color/greenColor</item>
+        <item>@color/mintColor</item>
+    </integer-array>
+
+    <integer-array name="subject_color">
+        <item>@color/whiteColor</item>
         <item>@color/purpleColor</item>
         <item>@color/orangeColor</item>
         <item>@color/skyColor</item>

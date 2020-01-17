@@ -9,7 +9,7 @@ open class DataModel: RealmObject() {
     var scheduleDayFlag:Int? = null
     var scheduleStartHour:Int? = null
     var scheduleEndHour:Int? = null
-    var scheduleColor:Int = R.color.defaultColor
+    var scheduleColor:Int = R.color.whiteColor
 
     lateinit var subjectDB:RealmList<SubjectBox>
 

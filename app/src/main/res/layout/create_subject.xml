@@ -5,13 +5,13 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/White_bg">
+        android:background="@color/whiteColor">
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/CreateSubject_toolbar"
             android:layout_width="0dp"
             android:layout_height="80dp"
-            android:background="@color/White_bg"
+            android:background="@color/whiteColor"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -54,7 +54,7 @@
             android:id="@+id/text_bar"
             app:layout_constraintVertical_chainStyle="packed"
             app:layout_constraintVertical_bias="0"
-            android:background="@color/White_bg">
+            android:background="@color/whiteColor">
         <EditText
                 android:id="@+id/title_text"
                 android:layout_width="0dp"
@@ -80,7 +80,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintBottom_toTopOf="@id/time_bar"
             android:id="@+id/Content_bar"
-            android:background="@color/White_bg">
+            android:background="@color/whiteColor">
         <EditText
                 android:id="@+id/Content_text"
                 android:layout_width="0dp"
@@ -108,7 +108,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintBottom_toTopOf="@id/time_picker"
-            android:background="@drawable/timepicker_layout">
+            android:background="@drawable/time_picker_layout">
 
         <TextView
                 android:layout_width="wrap_content"

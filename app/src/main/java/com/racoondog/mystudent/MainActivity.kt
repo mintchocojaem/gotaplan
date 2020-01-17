@@ -2,11 +2,14 @@ package com.racoondog.mystudent
 
 import android.app.Activity
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import io.realm.Realm
@@ -27,12 +30,14 @@ class MainActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        loadData()//데이터 불러오기
-
         setSupportActionBar(my_toolbar)  //Actionbar 부분
         supportActionBar?.setDisplayUseLogoEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
+        window.statusBarColor = resources.getColor(R.color.whiteColor)
+
         // 알림창 객체 생성
+
+        loadData()//데이터 불러오기
 
         schedule_add.setOnClickListener {
             val scheduleIntent = Intent(this, CreateSchedule::class.java)
@@ -41,7 +46,7 @@ class MainActivity: AppCompatActivity() {
         }
 
 
-        add_subject.setOnClickListener {
+        addSubjectButton.setOnClickListener {
             val subjectIntent = Intent(this, CreateSubject::class.java)
 
             subjectIntent.putExtra("start_time", intentStartTime)
@@ -67,10 +72,19 @@ class MainActivity: AppCompatActivity() {
                     val scheduleColor = data.getIntExtra("scheduleColor",0)
 
                     schedule_add.visibility = View.INVISIBLE
-                    add_subject.visibility = View.VISIBLE
+                    addSubjectButton.visibility = View.VISIBLE
 
                     toolbar_title.text = data.getStringExtra("title")
-                    my_toolbar.setBackgroundColor(scheduleColor)
+                    window.statusBarColor = scheduleColor
+
+                    when(scheduleColor){
+                        resources.getColor(R.color.whiteColor)-> {
+                            addSubjectButton.backgroundTintList = resources.getColorStateList(R.color.darkColor)
+                        }
+                        else -> {
+                            addSubjectButton.backgroundTintList = ColorStateList.valueOf(scheduleColor)
+                        }
+                    }
 
                     intentStartTime = scheduleStartHour
                     intentEndTime = scheduleEndHour
@@ -163,9 +177,18 @@ class MainActivity: AppCompatActivity() {
         if( scheduleData != null) {
 
             schedule_add.visibility = View.INVISIBLE
-            add_subject.visibility = View.VISIBLE
+            addSubjectButton.visibility = View.VISIBLE
             toolbar_title.text = scheduleData.scheduleTitle
-            my_toolbar.setBackgroundColor(scheduleData.scheduleColor)
+            window.statusBarColor = scheduleData.scheduleColor
+
+            when(scheduleData.scheduleColor){
+                resources.getColor(R.color.whiteColor)-> {
+                    addSubjectButton.backgroundTintList = resources.getColorStateList(R.color.darkColor)
+                }
+                else -> {
+                    addSubjectButton.backgroundTintList = ColorStateList.valueOf(scheduleData.scheduleColor)
+                }
+            }
 
             intentflag = scheduleData.scheduleDayFlag!!
             intentStartTime = scheduleData.scheduleStartHour!!

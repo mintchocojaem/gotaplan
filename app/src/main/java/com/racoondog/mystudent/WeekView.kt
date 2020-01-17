@@ -2,7 +2,6 @@ package com.racoondog.mystudent
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.util.AttributeSet
 import android.util.DisplayMetrics
 import android.view.Gravity
@@ -13,7 +12,6 @@ import io.realm.Realm
 import io.realm.RealmResults
 import kotlinx.android.synthetic.main.weekview.view.*
 import me.grantland.widget.AutofitTextView
-import kotlin.properties.Delegates
 
 
 class WeekView : ConstraintLayout{
@@ -100,7 +98,7 @@ class WeekView : ConstraintLayout{
             TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT
         )
 
-        Day_Line.setBackgroundColor(colorList)// 가이드 라인 색
+        Day_Line.setBackgroundResource(R.color.whiteColor)// 가이드 라인 색
 
         for (i in 0 until  day.size) {
 
@@ -108,7 +106,7 @@ class WeekView : ConstraintLayout{
             
             val dayText = TextView(cnxt) // 요일을 나타내는 부분 ex -> 월 화 수 목
             dayText.gravity = Gravity.CENTER
-            dayText.setBackgroundColor(colorList) //day_bar color
+            dayText.setBackgroundResource(R.color.whiteColor) //day_bar color
             dayText.text = day[i]
             dayText.textSize = 14f
             dayText.setTextColor(resources.getColor(R.color.darkColor))//day_bar text color
@@ -157,10 +155,10 @@ class WeekView : ConstraintLayout{
                 //time 사용시 period 레이아웃 영역 활성화
             }
             initPeriod.text = period[i]
-            initPeriod.textSize = 14f
+            initPeriod.textSize = 12f
             initPeriod.setTextColor(resources.getColor(R.color.darkColor))
 
-            initPeriod.setBackgroundResource(R.color.White_bg) // 시간 라인 텍스트 background color
+            initPeriod.setBackgroundResource(R.color.defaultColor) // 시간 라인 텍스트 background color
             /*
                 val inittime = TextView(this) // 이 부분은 원래 시간이 부분이었으나 기확자의 지시에 따라 initperiod가 시간으로 대체됨 ex-> 오전 8:00시 9:00시
                 inittime.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT,

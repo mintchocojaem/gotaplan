@@ -3,13 +3,13 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent" android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:background="@color/White_bg">
+        android:background="@color/whiteColor">
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/lesson_toolbar"
             android:layout_width="0dp"
             android:layout_height="80dp"
-            android:background="@color/White_bg"
+            android:background="@color/whiteColor"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -109,7 +109,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:id="@+id/Content_bar"
-            android:background="@drawable/timepicker_layout">
+            android:background="@drawable/time_picker_layout">
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

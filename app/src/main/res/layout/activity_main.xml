@@ -10,8 +10,8 @@
     <androidx.appcompat.widget.Toolbar
             android:id="@+id/my_toolbar"
             android:layout_width="0dp"
-            android:layout_height="80dp"
-            android:background="@color/defaultColor"
+            android:layout_height="100dp"
+            android:background="@color/whiteColor"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -26,8 +26,8 @@
                     android:text="시간표"
                     android:layout_gravity="center"
                     android:id="@+id/toolbar_title"
-                    android:textSize="20sp"
-
+                    android:textSize="22sp"
+                    android:fontFamily="@font/yd_child_fund_korea"
                 />
 
     </androidx.appcompat.widget.Toolbar>
@@ -41,7 +41,8 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/my_toolbar"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintVertical_bias="0.0"
+            android:background="@color/defaultColor">
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -57,7 +58,7 @@
     </ImageButton>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/add_subject"
+            android:id="@+id/addSubjectButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
@@ -66,9 +67,9 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintVertical_bias="0.96"
             app:layout_constraintHorizontal_bias="0.94"
-            android:backgroundTint="@color/White_bg"
             android:src ="@drawable/icon_add"
-            android:visibility="gone">
+            android:visibility="gone"
+            android:tint="@color/whiteColor">
 
     </com.google.android.material.floatingactionbutton.FloatingActionButton>
 
