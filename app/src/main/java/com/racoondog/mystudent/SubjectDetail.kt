@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.ContextThemeWrapper
+import android.view.KeyEvent
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -26,19 +27,21 @@ class SubjectDetail : AppCompatActivity() {
         var subjectData: RealmResults<SubjectBox> = realm.where<SubjectBox>(SubjectBox::class.java)
             .equalTo("id",WeekViewData.ID)
             .findAll()
-        subject_time.text = subjectData[0]!!.time.toString()
-        subject_title.setText(subjectData.get(0)!!.title.toString())
-        subject_content.setText(subjectData.get(0)!!.content.toString())
+        val data = subjectData[0]!!
+        subject_time.text = data.time.toString()
+        subject_title.setText(data.title.toString())
+        subject_content.setText(data.content.toString())
+        themeChange(data.subjectColor)
 
         if(subjectData[0]!!.lessonOnOff) lesson_bar.visibility = View.VISIBLE
         else lesson_bar.visibility = View.GONE
 
 
-        studentName_text.setText(subjectData[0]!!.studentName.toString())
-        studentBirth_text.setText(subjectData[0]!!.studentBirth.toString())
-        studentPhone_text.setText(subjectData[0]!!.studentPhoneNumber.toString())
-        lessonCost_text.setText(subjectData[0]!!.lessonCost.toString())
-        lessonCycle_text.setText(subjectData[0]!!.lessonCycle.toString())
+        studentName_text.setText(data.studentName.toString())
+        studentBirth_text.setText(data.studentBirth.toString())
+        studentPhone_text.setText(data.studentPhoneNumber.toString())
+        lessonCost_text.setText(data.lessonCost.toString())
+        lessonCycle_text.setText(data.lessonCycle.toString())
 
 
         lessonQuit_Button.setOnClickListener {
@@ -54,6 +57,16 @@ class SubjectDetail : AppCompatActivity() {
 
                 subject_title.isEnabled = true
                 subject_content.isEnabled = true
+                subject_content.setOnKeyListener { v, keyCode, event ->
+
+                    if(event.getAction() == KeyEvent.ACTION_DOWN){
+                        if(keyCode == KeyEvent.KEYCODE_ENTER){
+                            false
+                        }
+                    }
+                    true
+
+                }
 
                 studentName_text.isEnabled = true
                 studentBirth_text.isEnabled = true
@@ -77,14 +90,14 @@ class SubjectDetail : AppCompatActivity() {
 
 
                 realm.beginTransaction()
-                subjectData.get(0)!!.title = subject_title.text.toString()
-                subjectData.get(0)!!.content = subject_content.text.toString()
+                data.title = subject_title.text.toString()
+                data.content = subject_content.text.toString()
 
-                subjectData[0]!!.studentName = studentName_text.text.toString()
-                subjectData[0]!!.studentBirth = studentBirth_text.text.toString()
-                subjectData[0]!!.studentPhoneNumber = studentPhone_text.text.toString()
-                subjectData[0]!!.lessonCost = lessonCost_text.text.toString()
-                subjectData[0]!!.lessonCycle = lessonCycle_text.text.toString()
+                data.studentName = studentName_text.text.toString()
+                data.studentBirth = studentBirth_text.text.toString()
+                data.studentPhoneNumber = studentPhone_text.text.toString()
+                data.lessonCost = lessonCost_text.text.toString()
+                data.lessonCycle = lessonCycle_text.text.toString()
 
                 realm.commitTransaction()
 
@@ -101,7 +114,7 @@ class SubjectDetail : AppCompatActivity() {
             builder.setPositiveButton("확인") { _, _ ->
 
                 realm.beginTransaction()
-                subjectData.get(0)!!.deleteFromRealm()
+                data.deleteFromRealm()
                 realm.commitTransaction()
 
 
@@ -118,6 +131,13 @@ class SubjectDetail : AppCompatActivity() {
         }
 
 
+
+    }
+
+    private fun themeChange(colorCode:Int){
+
+        window.statusBarColor = colorCode
+        lesson_toolbar.setBackgroundColor(colorCode)
 
     }
 

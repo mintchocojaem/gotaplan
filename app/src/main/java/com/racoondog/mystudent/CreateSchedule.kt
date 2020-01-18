@@ -18,8 +18,6 @@ import kotlinx.android.synthetic.main.create_schedule.*
 
 class CreateSchedule : AppCompatActivity(){
 
-    var colorList : Int = -1 //white color
-
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -29,7 +27,6 @@ class CreateSchedule : AppCompatActivity(){
         val displayValue = mutableListOf<String>()
 
         setContentView(R.layout.create_schedule)
-        window.statusBarColor = resources.getColor(R.color.whiteColor)
 
 
         start_AMPM.apply {
@@ -161,7 +158,6 @@ class CreateSchedule : AppCompatActivity(){
                         intent.putExtra("scheduleDayFlag", dayFlag)
                         intent.putExtra("scheduleStartHour",start_hour.value)
                         intent.putExtra("scheduleEndHour",end_hour.value)
-                        intent.putExtra("scheduleColor",colorList)
                         setResult(Activity.RESULT_OK, intent)
                         finish()
                     }
@@ -214,33 +210,9 @@ class CreateSchedule : AppCompatActivity(){
             title_text.hideKeyboard()
         }
 
-        colorPickerButton.setOnClickListener {
-            val intent = Intent(this, ScheduleColor::class.java)
-            startActivityForResult(intent,0)
-        }
-
 
     }
 
-    private fun changeTheme(colorList:Int){
-       createSchedule_toolbar.setBackgroundColor(colorList)
-        window.statusBarColor = colorList
-    }
-
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode == Activity.RESULT_OK){
-            when(requestCode){
-                0->{
-                    colorList = data!!.getIntExtra("colorCode",0)
-                    colorPickerButton.backgroundTintList = ColorStateList.valueOf(colorList)
-                    changeTheme(colorList)
-                }
-            }
-        }
-
-    }
     override fun onBackPressed() {
 
         if(time_picker.visibility == View.VISIBLE){

@@ -2,24 +2,15 @@ package com.racoondog.mystudent
 
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.content.res.ColorStateList
 import android.content.res.TypedArray
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.RadioButton
-import android.widget.TextView
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
-import kotlinx.android.synthetic.main.color_picker.view.*
-import kotlinx.android.synthetic.main.create_schedule.view.*
-import kotlin.math.acosh
+import kotlinx.android.synthetic.main.color_picker_layout.view.*
+import java.util.*
 
 class ColorPicker: ConstraintLayout {
 
@@ -52,7 +43,7 @@ class ColorPicker: ConstraintLayout {
     private fun initView(){
         val inflaterService: String = Context.LAYOUT_INFLATER_SERVICE
         val inflater: LayoutInflater = context.getSystemService(inflaterService) as LayoutInflater
-        val view = inflater.inflate(R.layout.color_picker, this, false)
+        val view = inflater.inflate(R.layout.color_picker_layout, this, false)
         addView(view)
 
     }
@@ -82,6 +73,13 @@ class ColorPicker: ConstraintLayout {
 
         }
     }
+    fun randomColor(colorList: IntArray):Int{
 
+        val random = Random()
+        val number = random.nextInt(colorList.size -1)
+
+        return colorList[number]
+
+    }
 
 }

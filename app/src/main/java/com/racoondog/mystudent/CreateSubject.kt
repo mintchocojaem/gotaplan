@@ -3,6 +3,8 @@ package com.racoondog.mystudent
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
@@ -15,8 +17,9 @@ import kotlinx.android.synthetic.main.create_subject.*
 
 class CreateSubject :AppCompatActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    private var colorCode:Int = -1 // init colorCode White
 
+    override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         super.setContentView(R.layout.create_subject)
@@ -37,6 +40,8 @@ class CreateSubject :AppCompatActivity() {
             saturday_button.visibility = View.VISIBLE
             sunday_button.visibility = View.VISIBLE
         }
+
+        randomSubjectColor()
 
         start_AMPM.apply {
 
@@ -224,7 +229,7 @@ class CreateSubject :AppCompatActivity() {
                             ,endText_hour.text.toString(), endText_minute.text.toString()))
 
                         intent.putExtra("ContentText",Content_text.text?.toString())
-
+                        intent.putExtra("colorCode", this.colorCode)
                         setResult(Activity.RESULT_OK, intent)
                         finish()
                     }
@@ -285,7 +290,6 @@ class CreateSubject :AppCompatActivity() {
             dayFlag = 7
         }
 
-
         lesson_mode.setOnCheckedChangeListener{compoundButton,b ->
             title_text.hideKeyboard()
             Content_text.hideKeyboard()
@@ -302,8 +306,41 @@ class CreateSubject :AppCompatActivity() {
             Content_text.hideKeyboard()
         }
 
+        colorPickerButton_layout.setOnClickListener {
+            val intent = Intent(this, SubjectColor::class.java)
+            startActivityForResult(intent,0)
+        }
 
     }
+
+    private fun changeTheme(colorList:Int){
+        window.statusBarColor = colorList
+        createSubject_toolbar.setBackgroundColor(colorList)
+    }
+
+    private fun randomSubjectColor(){
+
+        val colorList = resources.getIntArray(R.array.subject_color)
+        colorCode = ColorPicker(this).randomColor(colorList)
+        colorPickerButton.backgroundTintList = ColorStateList.valueOf(colorCode)
+        changeTheme(colorCode)
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == Activity.RESULT_OK){
+            when(requestCode){
+                0->{
+                    colorCode = data!!.getIntExtra("colorCode",0)
+                    colorPickerButton.backgroundTintList = ColorStateList.valueOf(colorCode)
+                    changeTheme(colorCode)
+                }
+            }
+        }
+
+    }
+
     override fun onBackPressed() {
 
         if(time_picker.visibility == View.VISIBLE){

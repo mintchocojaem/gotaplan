@@ -33,8 +33,7 @@ class MainActivity: AppCompatActivity() {
         setSupportActionBar(my_toolbar)  //Actionbar 부분
         supportActionBar?.setDisplayUseLogoEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        window.statusBarColor = resources.getColor(R.color.whiteColor)
-
+        changeTheme()
         // 알림창 객체 생성
 
         loadData()//데이터 불러오기
@@ -69,15 +68,11 @@ class MainActivity: AppCompatActivity() {
                     val scheduleDayFlag = data!!.getIntExtra("scheduleDayFlag", 0)
                     val scheduleStartHour = data.getIntExtra("scheduleStartHour", 0)
                     val scheduleEndHour = data.getIntExtra("scheduleEndHour", 0)
-                    val scheduleColor = data.getIntExtra("scheduleColor",0)
 
                     schedule_add.visibility = View.INVISIBLE
                     addSubjectButton.visibility = View.VISIBLE
 
                     toolbar_title.text = data.getStringExtra("title")
-                    window.statusBarColor = scheduleColor
-
-                    changeTheme(scheduleColor)
 
                     intentStartTime = scheduleStartHour
                     intentEndTime = scheduleEndHour
@@ -91,7 +86,6 @@ class MainActivity: AppCompatActivity() {
                         this.scheduleStartHour = scheduleStartHour
                         this.scheduleEndHour = scheduleEndHour
                         this.scheduleTitle = toolbar_title.text.toString()
-                        this.scheduleColor = scheduleColor
                     }
                     realm.commitTransaction()
 
@@ -118,6 +112,7 @@ class MainActivity: AppCompatActivity() {
                     val contentText = data.getStringExtra("ContentText")
                     val lessonOnOff = data.getBooleanExtra("LessonOnOff",false)
                     val timeText = "${startTimeText[0]}${startTimeText[1]}:${startTimeText[2]}"+ " ~ " + "${endTimeText[0]}${endTimeText[1]}:${endTimeText[2]}" //StartTimeText[ ]은 오전/오후 변환시간
+                    val colorCode = data.getIntExtra("colorCode",0)
 
                     val ID = weekView.createID(0,128)//다음으로 만들어질 weekview의 id 값을 결정하는 변수
 
@@ -134,12 +129,13 @@ class MainActivity: AppCompatActivity() {
                         this.content = contentText
                         this.time = timeText
                         this.lessonOnOff = lessonOnOff
+                        this.subjectColor = colorCode
 
                     }
                     realm.commitTransaction()
 
                     weekView.createSubject(startHour,startTimeText[2].toInt()
-                        ,endHour,endTimeText[2].toInt(), dayFlag,intentStartTime,ID)
+                        ,endHour,endTimeText[2].toInt(), dayFlag,intentStartTime,ID,colorCode)
                 }
                 103->{
                     var dataBase: RealmResults<SubjectBox> = realm.where<SubjectBox>(SubjectBox::class.java)
@@ -172,9 +168,6 @@ class MainActivity: AppCompatActivity() {
             schedule_add.visibility = View.INVISIBLE
             addSubjectButton.visibility = View.VISIBLE
             toolbar_title.text = scheduleData.scheduleTitle
-            window.statusBarColor = scheduleData.scheduleColor
-
-            changeTheme(scheduleData.scheduleColor)
 
             intentflag = scheduleData.scheduleDayFlag!!
             intentStartTime = scheduleData.scheduleStartHour!!
@@ -194,7 +187,7 @@ class MainActivity: AppCompatActivity() {
                 weekView.createSubject(
                     data.startHour.toInt(), data.startMinute.toInt()
                     , data.endHour.toInt(), data.endMinute.toInt(),
-                    data.dayFlag.toInt(), scheduleData.scheduleStartHour!!.toInt(),data.id.toInt())
+                    data.dayFlag.toInt(), scheduleData.scheduleStartHour!!.toInt(),data.id.toInt(),data.subjectColor)
             }
 
 
@@ -203,15 +196,10 @@ class MainActivity: AppCompatActivity() {
 
     }
 
-    private fun changeTheme(theme:Int){
-        when(theme) {
-            resources.getColor(R.color.whiteColor) -> {
-                addSubjectButton.backgroundTintList = resources.getColorStateList(R.color.darkColor)
-            }
-            else ->{
-                addSubjectButton.backgroundTintList = ColorStateList.valueOf(theme)
-            }
-        }
+    private fun changeTheme(){
+        window.statusBarColor = resources.getColor(R.color.whiteColor)
+        addSubjectButton.backgroundTintList = resources.getColorStateList(R.color.darkColor)
+
     }
 
 

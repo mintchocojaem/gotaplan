@@ -59,8 +59,6 @@ class WeekView : ConstraintLayout{
         var period =
             mutableListOf<String>() //원래는 교시부분이었으나 기획자의 변경에 따라 시간으로 표시되는 배열 ex -> 오후 1시 2시 3시
 
-        val colorList = realm.where(DataModel::class.java).findFirst()!!.scheduleColor
-
         //마지막 요일을 선택하고 그에 따라 day_flag 값을 반환 하고 day 배열에 추가
         for(i in 0 until day_flag){
             day.add("${dayList[i]}")
@@ -228,7 +226,7 @@ class WeekView : ConstraintLayout{
 
     }
 
-    fun createSubject(StartHour:Int,StartMinute:Int,EndHour:Int,EndMinute:Int,DayFlag:Int,intentStartTime:Int,id:Int){
+    fun createSubject(StartHour:Int,StartMinute:Int,EndHour:Int,EndMinute:Int,DayFlag:Int,intentStartTime:Int,id:Int,colorCode:Int){
 
         val subjectHeight = (EndHour - StartHour) * cellHeight + (EndMinute - StartMinute) * cellHeight/60
         val subjectMargin = (StartHour - intentStartTime) * cellHeight + StartMinute * cellHeight/60
@@ -261,12 +259,12 @@ class WeekView : ConstraintLayout{
         if( EndHour - StartHour > 1 ){
             titleText.apply {
                 maxLines = 2
-                textSize = 12f
+                textSize = 14f
                 text = smallTitle}
         } else{
             titleText.apply {
                 maxLines = 1
-                textSize = 12f
+                textSize = 14f
                 text = smallTitle}
         }
 
@@ -283,7 +281,7 @@ class WeekView : ConstraintLayout{
             leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID
             verticalBias = 0f
             topMargin = subjectMargin.toInt()
-            subject.setBackgroundResource(R.color.colorAccent)
+            subject.setBackgroundColor(colorCode)
             subject.setPadding(5,7,5,7)
             subject.id = ID
             subject.setOnClickListener{

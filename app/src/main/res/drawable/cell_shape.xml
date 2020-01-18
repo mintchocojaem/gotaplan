@@ -15,7 +15,7 @@
 
         <shape android:shape="rectangle">
 
-            <solid android:color="@color/defaultColor" />
+            <solid android:color="@color/weekViewBackGroundColor" />
 
         </shape>
 

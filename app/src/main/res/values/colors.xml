@@ -3,21 +3,25 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="defaultColor">#757575</color>
+    <color name="defaultAccentColor">#494949</color>
+    <color name="weekViewBackGroundColor">#fafafa</color>
+
     <color name="whiteGrayColor">#ededed</color>
     <color name="grayColor">#979797</color>
     <color name="clear">#00000000</color>
     <color name="darkColor">#494949</color>
     <color name="whiteColor">#ffffff</color>
-    <color name="defaultColor">#fafafa</color>
     <color name="purpleColor">#BEAED4</color>
     <color name="orangeColor">#FFC686</color>
     <color name="skyColor">#ADE7F7</color>
     <color name="pinkColor">#FFDDDD</color>
     <color name="mauveColor">#DDDDFF</color>
-    <color name="roseColor">#E2758C</color>
+    <color name="roseColor">#edacb1</color>
     <color name="yellowColor">#FFDE66</color>
-    <color name="greenColor">#82D580</color>
-    <color name="mintColor">#95E0C8	</color>
+    <color name="greenColor">#8ce08b</color>
+    <color name="mintColor">#9feed5</color>
+    <color name="ivoryColor">#ece6cc</color>
 
     <integer-array name="schedule_color">
         <item>@color/whiteColor</item>
@@ -33,7 +37,7 @@
     </integer-array>
 
     <integer-array name="subject_color">
-        <item>@color/whiteColor</item>
+        <item>@color/ivoryColor</item>
         <item>@color/purpleColor</item>
         <item>@color/orangeColor</item>
         <item>@color/skyColor</item>

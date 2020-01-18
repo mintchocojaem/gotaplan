@@ -13,7 +13,9 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp">
 
 
 
@@ -27,31 +29,45 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent">
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:textStyle="bold">
 
             </me.grantland.widget.AutofitTextView>
 
             <ImageButton
                     android:id="@+id/lessonQuit_Button"
-                    android:background="@drawable/icon_close"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintLeft_toRightOf="@id/lessonSave_Button"
-                    app:layout_constraintRight_toRightOf="parent"
+                    android:src ="@drawable/ic_keyboard_backspace_black_24dp"
+                    android:background="@null"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintRight_toLeftOf="@id/toolbar_title"
                     app:layout_constraintTop_toTopOf="@id/toolbar_title"
-                    app:layout_constraintBottom_toBottomOf="@id/toolbar_title"/>
+                    app:layout_constraintBottom_toBottomOf="@id/toolbar_title"
+                    android:paddingStart="24dp"
+                    android:paddingEnd="24dp"
+                    android:paddingTop="24dp"
+                    android:paddingBottom="24dp"
+                    android:tint="@color/defaultAccentColor">
+
+            </ImageButton>
+
 
             <Button
                     android:id="@+id/lessonSave_Button"
                     android:text="수정"
-                    android:textSize="16sp"
-                    android:layout_width="60dp"
-                    android:layout_height="40dp"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     app:layout_constraintLeft_toRightOf="@id/toolbar_title"
-                    app:layout_constraintRight_toLeftOf="@id/lessonQuit_Button"
+                    app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="@id/toolbar_title"
                     app:layout_constraintBottom_toBottomOf="@id/toolbar_title"
-                    android:background="@null" />
+                    app:layout_constraintHorizontal_bias="1"
+                    android:background="@null"
+                    android:textColor="@color/defaultAccentColor"/>
 
 
 
@@ -65,12 +81,13 @@
             app:layout_constraintLeft_toLeftOf="parent"
             android:id="@+id/text_bar"
             app:layout_constraintVertical_chainStyle="packed"
-            app:layout_constraintVertical_bias="0">
+            app:layout_constraintVertical_bias="0"
+            android:paddingEnd="20dp"
+            android:paddingStart="20dp">
         <EditText
                 android:id="@+id/subject_title"
                 android:layout_width="0dp"
-                android:paddingEnd="20dp"
-                android:paddingStart="20dp"
+
                 android:layout_height="wrap_content"
                 android:hint="제목"
                 android:singleLine="true"
@@ -81,15 +98,14 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:background="@null"
-                android:textColor="@color/defaultColor"
-                android:enabled="false">
+                android:enabled="false"
+                android:textColor="@color/defaultColor">
 
         </EditText>
         <TextView
                 android:id="@+id/subject_time"
                 android:layout_width="0dp"
-                android:paddingEnd="20dp"
-                android:paddingStart="20dp"
+
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/subject_title"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -109,15 +125,15 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:id="@+id/Content_bar"
-            android:background="@drawable/time_picker_layout">
+            android:background="@drawable/time_picker_layout"
+            android:paddingEnd="20dp"
+            android:paddingStart="20dp">
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="설명 "
                 android:textSize="16dp"
                 android:textStyle="bold"
-                android:paddingEnd="20dp"
-                android:paddingStart="20dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/subject_content"
                 app:layout_constraintLeft_toLeftOf="@id/subject_content"
@@ -132,19 +148,17 @@
         <EditText
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:paddingEnd="20dp"
-                android:paddingStart="20dp"
                 android:background="@null"
                 android:hint="내용이 없습니다. "
-                android:maxLines="5"
                 android:textSize="16sp"
                 app:layout_constraintTop_toBottomOf="@id/explain"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 android:id="@+id/subject_content"
-                android:textColor="@color/defaultColor"
-                android:maxLength="100"
+                android:textColor="@color/grayColor"
+                android:maxLength="80"
+                android:lines="2"
                 android:enabled="false">
 
         </EditText>
@@ -158,15 +172,16 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:id="@+id/lesson_bar"
-            android:background="@drawable/layout_shape">
+            android:background="@drawable/layout_shape"
+            android:paddingEnd="20dp"
+            android:paddingStart="20dp">
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="수강생 정보 "
                 android:textSize="16dp"
                 android:textStyle="bold"
-                android:paddingEnd="20dp"
-                android:paddingStart="20dp"
+
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/studentDetail_bar"
                 app:layout_constraintLeft_toLeftOf="@id/studentDetail_bar"
@@ -186,8 +201,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                android:paddingEnd="20dp"
-                android:paddingStart="20dp">
+                >
 
             <TextView
                     android:layout_width="wrap_content"
@@ -212,7 +226,7 @@
                     app:layout_constraintBottom_toBottomOf="@id/student_name"
                     android:id="@+id/studentName_text"
                     android:background="@null"
-                    android:textColor="@color/defaultColor"
+                    android:textColor="@color/grayColor"
                     android:enabled="false"
                     android:textSize="16sp"
                     android:textStyle="bold">
@@ -242,7 +256,7 @@
                     app:layout_constraintBottom_toBottomOf="@id/student_birth"
                     android:id="@+id/studentBirth_text"
                     android:background="@null"
-                    android:textColor="@color/defaultColor"
+                    android:textColor="@color/grayColor"
                     android:enabled="false">
 
             </EditText>
@@ -270,7 +284,7 @@
                     app:layout_constraintBottom_toBottomOf="@id/student_phone"
                     android:id="@+id/studentPhone_text"
                     android:background="@null"
-                    android:textColor="@color/defaultColor"
+                    android:textColor="@color/grayColor"
                     android:enabled="false">
 
             </EditText>
@@ -281,8 +295,7 @@
                 android:layout_height="wrap_content"
                 android:text="레슨 정보 "
                 android:textSize="16dp"
-                android:paddingEnd="20dp"
-                android:paddingStart="20dp"
+
                 android:textStyle="bold"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/lessonDetail_bar"
@@ -298,8 +311,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="80dp"
-                android:paddingEnd="20dp"
-                android:paddingStart="20dp"
+
                 app:layout_constraintTop_toBottomOf="@id/studentDetail_bar"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -330,7 +342,7 @@
                     app:layout_constraintBottom_toBottomOf="@id/lesson_cost"
                     android:id="@+id/lessonCost_text"
                     android:background="@null"
-                    android:textColor="@color/defaultColor"
+                    android:textColor="@color/grayColor"
                     android:enabled="false">
 
             </EditText>
@@ -357,7 +369,7 @@
                     app:layout_constraintBottom_toBottomOf="@id/lesson_cycle"
                     android:id="@+id/lessonCycle_text"
                     android:background="@null"
-                    android:textColor="@color/defaultColor"
+                    android:textColor="@color/grayColor"
                     android:enabled="false">
 
             </EditText>
