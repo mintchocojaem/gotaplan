@@ -45,10 +45,10 @@
                     app:layout_constraintTop_toTopOf="@id/CreateSubject_title"
                     app:layout_constraintBottom_toBottomOf="@id/CreateSubject_title"
                     app:layout_constraintHorizontal_bias="1"
-                    android:paddingStart="24dp"
-                    android:paddingEnd="24dp"
-                    android:paddingTop="24dp"
-                    android:paddingBottom="24dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
                     android:tint="@color/defaultAccentColor"/>
 
 
@@ -537,7 +537,7 @@
                 android:id="@+id/colorPickerButton_layout">
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-            
+
 
 
 

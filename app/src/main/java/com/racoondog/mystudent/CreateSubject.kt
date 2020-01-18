@@ -295,9 +295,9 @@ class CreateSubject :AppCompatActivity() {
             Content_text.hideKeyboard()
 
             if (compoundButton.isChecked){
-                Toast.makeText(this, "개인 레슨: on", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "개인 레슨: On", Toast.LENGTH_SHORT).show()
             } else{
-                Toast.makeText(this, "개인 레슨: off", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "개인 레슨: Off", Toast.LENGTH_SHORT).show()
             }
         }
 
