@@ -38,7 +38,7 @@ class MainActivity: AppCompatActivity() {
 
         loadData()//데이터 불러오기
 
-        schedule_add.setOnClickListener {
+        weekView_layout.setOnClickListener {
             val scheduleIntent = Intent(this, CreateSchedule::class.java)
             startActivityForResult(scheduleIntent, 100)
 

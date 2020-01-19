@@ -57,16 +57,6 @@ class SubjectDetail : AppCompatActivity() {
 
                 subject_title.isEnabled = true
                 subject_content.isEnabled = true
-                subject_content.setOnKeyListener { v, keyCode, event ->
-
-                    if(event.getAction() == KeyEvent.ACTION_DOWN){
-                        if(keyCode == KeyEvent.KEYCODE_ENTER){
-                            false
-                        }
-                    }
-                    true
-
-                }
 
                 studentName_text.isEnabled = true
                 studentBirth_text.isEnabled = true

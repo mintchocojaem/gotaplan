@@ -3,17 +3,16 @@ package com.racoondog.mystudent
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.NumberPicker
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.create_schedule.*
-
 
 
 class CreateSchedule : AppCompatActivity(){
@@ -192,14 +191,15 @@ class CreateSchedule : AppCompatActivity(){
             dayFlag = 7
         }
 
-        startTime.setOnClickListener{
+        start_picker_layout.setOnClickListener{
             title_text.hideKeyboard()
             time_picker.visibility = View.VISIBLE
             start_picker.visibility = View.VISIBLE
             end_picker.visibility = View.INVISIBLE
+            getchild()
 
         }
-        endTime.setOnClickListener{
+        end_picker_layout.setOnClickListener{
             title_text.hideKeyboard()
             time_picker.visibility = View.VISIBLE
             end_picker.visibility = View.VISIBLE
@@ -212,6 +212,15 @@ class CreateSchedule : AppCompatActivity(){
 
 
     }
+
+    fun getchild(){
+        for (index in 0 until (start_picker_layout as ViewGroup).childCount) {
+            val nextChild = (start_picker_layout as ViewGroup).getChildAt(index)
+            if(nextChild is TextView) nextChild.setTextColor(resources.getColor(R.color.pinkColor))
+        }
+    }
+
+
 
     override fun onBackPressed() {
 

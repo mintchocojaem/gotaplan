@@ -16,7 +16,8 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            >
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp">
 
             <TextView
                     android:id="@+id/createSchedule_title"
@@ -25,6 +26,7 @@
                     android:text="시간표 만들기"
                     android:layout_gravity="center"
                     android:textSize="18sp"
+                    android:textStyle="bold"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -32,15 +34,22 @@
 
             </TextView>
 
-            <ImageButton
-                    android:id="@+id/createSchedule_Button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/icon_check"
-                    app:layout_constraintLeft_toRightOf="@id/createSchedule_title"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/createSchedule_title"
-                    app:layout_constraintBottom_toBottomOf="@id/createSchedule_title"/>
+        <ImageButton
+                android:id="@+id/createSchedule_Button"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/icon_check"
+                android:background="@null"
+                app:layout_constraintLeft_toRightOf="@id/createSchedule_title"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_bias="1"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:tint="@color/defaultAccentColor"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -86,151 +95,193 @@
             android:paddingStart="20dp"
             android:paddingEnd="20dp">
 
-        <TextView
+        <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintRight_toLeftOf="@id/startTime"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_height="match_parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                android:id="@+id/Start"
-                android:text="시작 "
-                android:textSize="16sp"
-                app:layout_constraintHorizontal_chainStyle="spread_inside"
-                >
-
-        </TextView>
-
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/startTime"
-                app:layout_constraintRight_toLeftOf="@id/endTime"
-                android:id="@+id/End"
-                android:text="종료 "
-                android:textSize="16sp">
-
-        </TextView>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/End"
-                app:layout_constraintLeft_toRightOf="@id/Start"
-                android:id="@+id/startTime"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:onClick="OnClickHandler">
-
-            <TextView
-                    android:id="@+id/startText_AMPM"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="오전 "
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@id/startText_hour"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:textSize="18sp" />
-
-            <TextView
-                    android:id="@+id/startText_hour"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="8"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintRight_toLeftOf="@id/startHourAddMinute"
-                    app:layout_constraintLeft_toRightOf="@id/startText_AMPM"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:textSize="18sp" />
-            <TextView
-                    android:id="@+id/startHourAddMinute"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text=":"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintRight_toLeftOf="@id/startText_minute"
-                    app:layout_constraintLeft_toRightOf="@id/startText_hour"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:textSize="18sp" />
-            <TextView
-                    android:id="@+id/startText_minute"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="00"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintLeft_toRightOf="@id/startHourAddMinute"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:textSize="18sp" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/End"
-                android:id="@+id/endTime"
-                android:onClick="OnClickHandler">
+                android:background="@drawable/ic_time_picker_line"
+                android:id="@+id/time_picker_line">
+
+        </ImageView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:id="@+id/start_picker_layout"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/time_picker_line">
+
             <TextView
-                    android:id="@+id/endText_AMPM"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="오전 "
+                    app:layout_constraintRight_toLeftOf="@id/startTime"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@id/endText_hour"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:textSize="18sp" />
+                    android:id="@+id/Start"
+                    android:text="시작 "
+                    android:textSize="16sp"
 
-            <TextView
-                    android:id="@+id/endText_hour"
+                    >
+
+            </TextView>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="8"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintRight_toLeftOf="@id/endHourAddMinute"
-                    app:layout_constraintLeft_toRightOf="@id/endText_AMPM"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:textSize="18sp" />
-            <TextView
-                    android:id="@+id/endHourAddMinute"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text=":"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintRight_toLeftOf="@id/endText_minute"
-                    app:layout_constraintLeft_toRightOf="@id/endText_hour"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:textSize="18sp" />
-            <TextView
-                    android:id="@+id/endText_minute"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="00"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintLeft_toRightOf="@id/endHourAddMinute"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:textSize="18sp" />
+                    app:layout_constraintLeft_toRightOf="@id/Start"
+                    android:id="@+id/startTime"
+                    app:layout_constraintBottom_toBottomOf="parent">
 
+                <TextView
+                        android:id="@+id/startText_AMPM"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="오전 "
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/startText_hour"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:textSize="18sp"
+                        />
+
+                <TextView
+                        android:id="@+id/startText_hour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="8"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/startHourAddMinute"
+                        app:layout_constraintLeft_toRightOf="@id/startText_AMPM"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:textSize="18sp"
+
+                        />
+                <TextView
+                        android:id="@+id/startHourAddMinute"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text=":"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/startText_minute"
+                        app:layout_constraintLeft_toRightOf="@id/startText_hour"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:textSize="18sp"
+                        />
+                <TextView
+                        android:id="@+id/startText_minute"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="00"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintLeft_toRightOf="@id/startHourAddMinute"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:textSize="18sp"
+                        />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:id="@+id/end_picker_layout"
+                app:layout_constraintLeft_toRightOf="@id/time_picker_line"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/endTime"
+                    android:id="@+id/End"
+                    android:text="종료 "
+                    android:textSize="16sp"
+                    >
+
+            </TextView>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/End"
+                    android:id="@+id/endTime">
+                <TextView
+                        android:id="@+id/endText_AMPM"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="오전 "
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/endText_hour"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:textSize="18sp"
+                        />
+
+                <TextView
+                        android:id="@+id/endText_hour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="8"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/endHourAddMinute"
+                        app:layout_constraintLeft_toRightOf="@id/endText_AMPM"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:textSize="18sp"
+                        />
+                <TextView
+                        android:id="@+id/endHourAddMinute"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text=":"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/endText_minute"
+                        app:layout_constraintLeft_toRightOf="@id/endText_hour"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:textSize="18sp"
+                        />
+                <TextView
+                        android:id="@+id/endText_minute"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="00"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintLeft_toRightOf="@id/endHourAddMinute"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:textSize="18sp" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
