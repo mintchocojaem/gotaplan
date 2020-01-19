@@ -196,14 +196,16 @@ class CreateSchedule : AppCompatActivity(){
             time_picker.visibility = View.VISIBLE
             start_picker.visibility = View.VISIBLE
             end_picker.visibility = View.INVISIBLE
-            getchild()
-
+            changedTextColor(start_picker_layout,true)
+            changedTextColor(end_picker_layout,false)
         }
         end_picker_layout.setOnClickListener{
             title_text.hideKeyboard()
             time_picker.visibility = View.VISIBLE
             end_picker.visibility = View.VISIBLE
             start_picker.visibility = View.INVISIBLE
+            changedTextColor(start_picker_layout,false)
+            changedTextColor(end_picker_layout,true)
 
         }
         schedule_day_group.setOnCheckedChangeListener{_,_ ->
@@ -213,11 +215,20 @@ class CreateSchedule : AppCompatActivity(){
 
     }
 
-    fun getchild(){
-        for (index in 0 until (start_picker_layout as ViewGroup).childCount) {
-            val nextChild = (start_picker_layout as ViewGroup).getChildAt(index)
-            if(nextChild is TextView) nextChild.setTextColor(resources.getColor(R.color.pinkColor))
+    private fun changedTextColor(viewGroup: ViewGroup,focused:Boolean){
+
+        if(focused){
+            for (index in 0 until (viewGroup as ViewGroup).childCount) {
+                val nextChild = (viewGroup as ViewGroup).getChildAt(index)
+                if(nextChild is TextView) nextChild.setTextColor(resources.getColor(R.color.defaultColor))
+            }
+        }else{
+            for (index in 0 until (viewGroup as ViewGroup).childCount) {
+                val nextChild = (viewGroup as ViewGroup).getChildAt(index)
+                if(nextChild is TextView) nextChild.setTextColor(resources.getColor(R.color.whiteGrayColor))
+            }
         }
+
     }
 
 
@@ -225,13 +236,18 @@ class CreateSchedule : AppCompatActivity(){
     override fun onBackPressed() {
 
         if(time_picker.visibility == View.VISIBLE){
-        time_picker.visibility = View.GONE}
+            time_picker.visibility = View.GONE
+            changedTextColor(start_picker_layout,true)
+            changedTextColor(end_picker_layout,true)}
+
         else super.onBackPressed()
     }
 
     private fun View.hideKeyboard() {
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(windowToken, 0)
+
+
     }
 
 }
