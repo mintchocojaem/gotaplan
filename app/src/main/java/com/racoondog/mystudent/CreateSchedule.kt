@@ -13,6 +13,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.create_schedule.*
+import kotlinx.android.synthetic.main.time_picker_layout.*
 
 
 class CreateSchedule : AppCompatActivity(){
@@ -21,129 +22,11 @@ class CreateSchedule : AppCompatActivity(){
 
         super.onCreate(savedInstanceState)
 
-        var dayFlag = 0
-        val intent = Intent()
-        val displayValue = mutableListOf<String>()
-
         setContentView(R.layout.create_schedule)
 
+        var dayFlag = 0
+        val intent = Intent()
 
-        start_AMPM.apply {
-
-            displayValue.add("오전")
-            displayValue.add("오후")
-            minValue = 0
-            maxValue = 1
-            value = 0
-            startText_AMPM.text ="${displayValue[0]} "
-
-            descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
-            wrapSelectorWheel = false
-            displayedValues = displayValue.toTypedArray()
-
-            displayValue.removeAll(displayValue)
-
-
-        }
-
-        end_AMPM.apply {
-
-            displayValue.add("오전")
-            displayValue.add("오후")
-            minValue = 0
-            maxValue = 1
-            value = 1
-            endText_AMPM.text ="${displayValue[1]} "
-
-            descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
-            wrapSelectorWheel = false
-            displayedValues = displayValue.toTypedArray()
-
-            displayValue.removeAll(displayValue)
-
-        }
-
-
-        start_hour.apply {
-
-            minValue = 6
-            maxValue = 18
-            value = 8
-
-            for (i in minValue .. maxValue) {
-                when{
-                    i > 12-> displayValue.add("${i-12}")
-                    else -> displayValue.add("$i")
-                }
-            }
-
-            displayedValues = displayValue.toTypedArray()
-            wrapSelectorWheel = false
-            descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
-
-            displayValue.removeAll(displayValue)
-        }
-
-        end_hour.apply {
-
-            minValue = 7
-            maxValue = 24
-            value = 20
-            for (i in minValue .. maxValue) {
-                when{
-                    i > 12-> displayValue.add("${i-12}")
-                    else -> displayValue.add("$i")
-                }
-            }
-
-            displayedValues = displayValue.toTypedArray()
-            wrapSelectorWheel = false
-            descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
-
-
-        }
-
-
-        start_AMPM.setOnTouchListener { _: View, event:MotionEvent ->
-            //리턴값은 return 없이 아래와 같이
-            true // or false
-        }
-        end_AMPM.setOnTouchListener { _: View, event:MotionEvent ->
-            //리턴값은 return 없이 아래와 같이
-            true // or false
-        }
-
-        start_hour.setOnValueChangedListener{_,_,i2 ->
-
-            startText_hour.text = start_hour.displayedValues[start_hour.value - start_hour.minValue]
-            if(i2 < 12 || i2 == 24) {
-                start_AMPM.value = 0
-                startText_AMPM.text = start_AMPM.displayedValues[start_AMPM.value]+" "
-            }else {
-                start_AMPM.value = 1
-                startText_AMPM.text = start_AMPM.displayedValues[start_AMPM.value]+" "
-            }
-
-
-        }
-
-
-        end_hour.setOnValueChangedListener{_,_,i2 ->
-
-            endText_hour.text = end_hour.displayedValues[end_hour.value - end_hour.minValue]
-            if(i2 < 12 || i2 == 24) {
-                end_AMPM.value = 0
-                endText_AMPM.text = end_AMPM.displayedValues[end_AMPM.value]+" "
-            }else {
-                end_AMPM.value = 1
-                endText_AMPM.text = end_AMPM.displayedValues[end_AMPM.value]+" "
-            }
-
-
-
-        }
-
-        //Number Picker
 
         createSchedule_Button.setOnClickListener{
 
@@ -177,6 +60,7 @@ class CreateSchedule : AppCompatActivity(){
 
         }
 
+
         Friday.setOnClickListener{
             dayFlag = 5
         }
@@ -191,23 +75,7 @@ class CreateSchedule : AppCompatActivity(){
             dayFlag = 7
         }
 
-        start_picker_layout.setOnClickListener{
-            title_text.hideKeyboard()
-            time_picker.visibility = View.VISIBLE
-            start_picker.visibility = View.VISIBLE
-            end_picker.visibility = View.INVISIBLE
-            changedTextColor(start_picker_layout,true)
-            changedTextColor(end_picker_layout,false)
-        }
-        end_picker_layout.setOnClickListener{
-            title_text.hideKeyboard()
-            time_picker.visibility = View.VISIBLE
-            end_picker.visibility = View.VISIBLE
-            start_picker.visibility = View.INVISIBLE
-            changedTextColor(start_picker_layout,false)
-            changedTextColor(end_picker_layout,true)
 
-        }
         schedule_day_group.setOnCheckedChangeListener{_,_ ->
             title_text.hideKeyboard()
         }
@@ -215,33 +83,17 @@ class CreateSchedule : AppCompatActivity(){
 
     }
 
-    private fun changedTextColor(viewGroup: ViewGroup,focused:Boolean){
-
-        if(focused){
-            for (index in 0 until (viewGroup as ViewGroup).childCount) {
-                val nextChild = (viewGroup as ViewGroup).getChildAt(index)
-                if(nextChild is TextView) nextChild.setTextColor(resources.getColor(R.color.defaultColor))
-            }
-        }else{
-            for (index in 0 until (viewGroup as ViewGroup).childCount) {
-                val nextChild = (viewGroup as ViewGroup).getChildAt(index)
-                if(nextChild is TextView) nextChild.setTextColor(resources.getColor(R.color.whiteGrayColor))
-            }
-        }
-
-    }
-
-
-
     override fun onBackPressed() {
 
         if(time_picker.visibility == View.VISIBLE){
             time_picker.visibility = View.GONE
-            changedTextColor(start_picker_layout,true)
-            changedTextColor(end_picker_layout,true)}
+            TimePicker(this).changedTextColor(start_picker_layout,true)
+            TimePicker(this).changedTextColor(end_picker_layout,true)
+            }
 
         else super.onBackPressed()
     }
+
 
     private fun View.hideKeyboard() {
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

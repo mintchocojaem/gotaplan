@@ -61,7 +61,7 @@
             app:layout_constraintTop_toBottomOf="@id/createSubject_toolbar"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintBottom_toTopOf="@id/Content_bar"
-            android:id="@+id/text_bar"
+            android:id="@+id/title_bar"
             app:layout_constraintVertical_chainStyle="packed"
             app:layout_constraintVertical_bias="0">
         <EditText
@@ -84,7 +84,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            app:layout_constraintTop_toBottomOf="@id/text_bar"
+            app:layout_constraintTop_toBottomOf="@id/title_bar"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintBottom_toTopOf="@id/time_bar"
