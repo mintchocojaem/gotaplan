@@ -13,7 +13,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.create_schedule.*
-import kotlinx.android.synthetic.main.time_picker_layout.*
+import kotlinx.android.synthetic.main.create_schedule.view.*
+import kotlinx.android.synthetic.main.time_picker.*
 
 
 class CreateSchedule : AppCompatActivity(){
@@ -21,8 +22,10 @@ class CreateSchedule : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.create_schedule)
+
+        schedule_picker.schedulePicker()
+
 
         var dayFlag = 0
         val intent = Intent()

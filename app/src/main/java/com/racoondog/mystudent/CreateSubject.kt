@@ -13,6 +13,7 @@ import android.widget.NumberPicker
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.create_subject.*
+import kotlinx.android.synthetic.main.time_picker.*
 
 
 class CreateSubject :AppCompatActivity() {
@@ -24,13 +25,12 @@ class CreateSubject :AppCompatActivity() {
         super.onCreate(savedInstanceState)
         super.setContentView(R.layout.create_subject)
 
-        val intent = intent
         val intentStartHour = intent.getIntExtra("start_time",0)
         val intentEndHour = intent.getIntExtra("end_time",0)
+        subject_picker.subjectPicker(intentStartHour,intentEndHour)
+
         val intentFlag = intent.getIntExtra("day_flag",0)
         var dayFlag = 0
-        val displayValue = mutableListOf<String>()
-        val initEndHour = intentEndHour -1
 
 
         if (intentFlag == 6){
@@ -41,174 +41,7 @@ class CreateSubject :AppCompatActivity() {
             sunday_button.visibility = View.VISIBLE
         }
 
-        randomSubjectColor()
-
-        start_AMPM.apply {
-
-            displayValue.add("오전")
-            displayValue.add("오후")
-            minValue = 0
-            maxValue = 1
-            value = 0
-
-            descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
-            wrapSelectorWheel = false
-            displayedValues = displayValue.toTypedArray()
-            if(intentStartHour < 12) {
-                value = 0
-                startText_AMPM.text ="${displayValue[0]} "
-            }
-            else {
-                value = 1
-                startText_AMPM.text ="${displayValue[1]} "
-            }
-            displayValue.removeAll(displayValue)
-
-
-        }
-
-        end_AMPM.apply {
-
-            displayValue.add("오전")
-            displayValue.add("오후")
-            minValue = 0
-            maxValue = 1
-            value = 0
-
-            descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
-            wrapSelectorWheel = false
-            displayedValues = displayValue.toTypedArray()
-            if(intentStartHour < 12) {
-                value = 0
-                endText_AMPM.text ="${displayValue[0]} "
-
-            }
-            else {
-                value = 1
-                endText_AMPM.text ="${displayValue[1]} "
-            }
-            displayValue.removeAll(displayValue)
-
-        }
-
-
-        start_hour.apply {
-
-            minValue = intentStartHour
-            maxValue = initEndHour
-            value = minValue
-            descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
-            wrapSelectorWheel = false
-
-            for(i in intentStartHour..initEndHour){
-                when{
-                    i > 12 -> displayValue.add("${i - 12}")
-                    else -> displayValue.add("$i")
-                }
-            }
-            displayedValues = displayValue.toTypedArray()
-            startText_hour.text = "${displayedValues[value - minValue]}"
-            displayValue.removeAll(displayValue)
-
-        }
-
-        end_hour.apply {
-            minValue = intentStartHour
-            maxValue = intentEndHour
-            value = minValue
-            descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
-            wrapSelectorWheel = false
-
-            for(i in intentStartHour..intentEndHour){
-                when{
-                    i > 12-> displayValue.add("${i-12}")
-                    else -> displayValue.add("$i")
-                }
-            }
-            displayedValues = displayValue.toTypedArray()
-            endText_hour.text = "${displayedValues[value - minValue]}"
-            displayValue.removeAll(displayValue)
-        }
-
-        start_minute.apply{
-
-            minValue = 0
-            maxValue = 11
-            value = 0
-            displayedValues = arrayOf("00","05","10","15","20","25","30","35","40","45","50","55")
-            descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
-            wrapSelectorWheel = false
-
-        }
-
-        end_minute.apply{
-
-            minValue = 0
-            maxValue = 11
-            value = 6
-            displayedValues = arrayOf("00","05","10","15","20","25","30","35","40","45","50","55")
-            descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
-            wrapSelectorWheel = false
-            endText_minute.text = displayedValues[value]
-        }
-
-        start_AMPM.setOnTouchListener { _: View, event:MotionEvent ->
-            //리턴값은 return 없이 아래와 같이
-            true // or false
-        }
-        end_AMPM.setOnTouchListener { _: View, event:MotionEvent ->
-            //리턴값은 return 없이 아래와 같이
-            true // or false
-        }
-
-        start_minute.setOnValueChangedListener{_,i1,i2 ->
-
-            startText_minute.text = start_minute.displayedValues[start_minute.value]
-
-
-        }
-        start_hour.setOnValueChangedListener{_,i1,i2 ->
-
-            startText_hour.text = start_hour.displayedValues[start_hour.value - intentStartHour]
-            if(i2 < 12 || i2 == 24) {
-                start_AMPM.value = 0
-                startText_AMPM.text = start_AMPM.displayedValues[start_AMPM.value]+" "
-            }else {
-                start_AMPM.value = 1
-                startText_AMPM.text = start_AMPM.displayedValues[start_AMPM.value]+" "
-            }
-
-
-        }
-
-        end_minute.setOnValueChangedListener{_,i1,i2 ->
-
-            endText_minute.text = end_minute.displayedValues[end_minute.value]
-
-            if (end_hour.value == end_hour.maxValue) {
-                end_minute.value = 0
-                endText_minute.text = end_minute.displayedValues[end_minute.value]
-            }
-
-        }
-        end_hour.setOnValueChangedListener{_,i1,i2 ->
-
-            endText_hour.text = end_hour.displayedValues[end_hour.value - intentStartHour]
-            if(i2 < 12 || i2 == 24) {
-                end_AMPM.value = 0
-                endText_AMPM.text = end_AMPM.displayedValues[end_AMPM.value]+" "
-            }else {
-                end_AMPM.value = 1
-                endText_AMPM.text = end_AMPM.displayedValues[end_AMPM.value]+" "
-            }
-
-            if (end_hour.value == end_hour.maxValue){
-                end_minute.value = 0
-                endText_minute.text = end_minute.displayedValues[end_minute.value]
-            }
-
-
-        }
+        randomSubjectColor()// subject color
 
 
         createSubject_Button.setOnClickListener{
@@ -250,23 +83,6 @@ class CreateSubject :AppCompatActivity() {
             }
         }
 
-
-        startTime.setOnClickListener{
-            title_text.hideKeyboard()
-            Content_text.hideKeyboard()
-            time_picker.visibility = View.VISIBLE
-            start_picker.visibility = View.VISIBLE
-            end_picker.visibility = View.INVISIBLE
-
-        }
-        endTime.setOnClickListener{
-            title_text.hideKeyboard()
-            Content_text.hideKeyboard()
-            time_picker.visibility = View.VISIBLE
-            end_picker.visibility = View.VISIBLE
-            start_picker.visibility = View.INVISIBLE
-
-        }
 
         monday_button.setOnClickListener {
             dayFlag = 1
@@ -343,10 +159,15 @@ class CreateSubject :AppCompatActivity() {
 
     override fun onBackPressed() {
 
-        if(time_picker.visibility == View.VISIBLE){
-            time_picker.visibility = View.GONE}
+        if(time_picker.visibility == View.VISIBLE) {
+            time_picker.visibility = View.GONE
+            TimePicker(this).changedTextColor(start_picker_layout, true)
+            TimePicker(this).changedTextColor(end_picker_layout, true)
+        }
         else super.onBackPressed()
     }
+
+
     private fun View.hideKeyboard() {
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(windowToken, 0)
