@@ -234,9 +234,7 @@ class WeekView : ConstraintLayout{
         val titleText = TextView(cnxt)
         val ID = id
 
-        titleText.apply {
-            titleText.tag = "title$ID"
-        }
+        titleText.tag = "title$ID"
 
         var smallTitle = ""
         var data:RealmResults<SubjectBox> = realm.where<SubjectBox>(SubjectBox::class.java)

@@ -6,19 +6,18 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.NumberPicker
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.racoondog.mystudent.ColorPickerDialog.ICustomDialogEventListener
 import kotlinx.android.synthetic.main.create_subject.*
 import kotlinx.android.synthetic.main.time_picker.*
 
 
 class CreateSubject :AppCompatActivity() {
 
-    private var colorCode:Int = -1 // init colorCode White
+    private var colorCode = -1 // init color White
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -123,8 +122,16 @@ class CreateSubject :AppCompatActivity() {
         }
 
         colorPickerButton_layout.setOnClickListener {
-            val intent = Intent(this, SubjectColor::class.java)
-            startActivityForResult(intent,0)
+
+            val dialog = ColorPickerDialog(this, object : ICustomDialogEventListener {
+                override fun customDialogEvent(colorcode: Int) {
+                    // Do something with the value here, e.g. set a variable in the calling activity
+                    colorCode = colorcode
+                    colorPickerButton.backgroundTintList = ColorStateList.valueOf(colorCode)
+                    changeTheme(colorCode)
+                }
+            })
+            dialog.show()
         }
 
     }
@@ -143,19 +150,6 @@ class CreateSubject :AppCompatActivity() {
 
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode == Activity.RESULT_OK){
-            when(requestCode){
-                0->{
-                    colorCode = data!!.getIntExtra("colorCode",0)
-                    colorPickerButton.backgroundTintList = ColorStateList.valueOf(colorCode)
-                    changeTheme(colorCode)
-                }
-            }
-        }
-
-    }
 
     override fun onBackPressed() {
 
