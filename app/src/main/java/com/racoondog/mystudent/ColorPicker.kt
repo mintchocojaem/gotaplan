@@ -1,16 +1,12 @@
 package com.racoondog.mystudent
 
-import android.app.Activity
-import android.app.Dialog
 import android.content.Context
 import android.content.res.ColorStateList
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
-import kotlinx.android.synthetic.main.color_picker_layout.view.*
+import kotlinx.android.synthetic.main.color_picker.view.*
 import java.util.*
 
 class ColorPicker: ConstraintLayout {
@@ -31,7 +27,7 @@ class ColorPicker: ConstraintLayout {
     private fun initView(){
         val inflaterService: String = Context.LAYOUT_INFLATER_SERVICE
         val inflater: LayoutInflater = context.getSystemService(inflaterService) as LayoutInflater
-        val view = inflater.inflate(R.layout.color_picker_layout, this, false)
+        val view = inflater.inflate(R.layout.color_picker, this, false)
         addView(view)
 
     }
