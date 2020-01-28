@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.racoondog.mystudent.ColorPickerDialog.ICustomDialogEventListener
 import kotlinx.android.synthetic.main.create_subject.*
 import kotlinx.android.synthetic.main.time_picker.*
+import java.util.*
 
 
 class CreateSubject :AppCompatActivity() {
@@ -24,13 +25,14 @@ class CreateSubject :AppCompatActivity() {
         super.onCreate(savedInstanceState)
         super.setContentView(R.layout.create_subject)
 
+        val colorList = resources.getIntArray(R.array.subject_color)
+
         val intentStartHour = intent.getIntExtra("start_time",0)
         val intentEndHour = intent.getIntExtra("end_time",0)
         subject_picker.subjectPicker(intentStartHour,intentEndHour)
 
         val intentFlag = intent.getIntExtra("day_flag",0)
         var dayFlag = 0
-
 
         if (intentFlag == 6){
             saturday_button.visibility = View.VISIBLE
@@ -40,7 +42,7 @@ class CreateSubject :AppCompatActivity() {
             sunday_button.visibility = View.VISIBLE
         }
 
-        randomSubjectColor()// subject color
+        randomSubjectColor(colorList)// subject color
 
 
         createSubject_Button.setOnClickListener{
@@ -141,10 +143,12 @@ class CreateSubject :AppCompatActivity() {
         createSubject_toolbar.setBackgroundColor(colorList)
     }
 
-    private fun randomSubjectColor(){
+    private fun randomSubjectColor(ColorList: IntArray){
 
-        val colorList = resources.getIntArray(R.array.subject_color)
-        colorCode = ColorPicker(this).randomColor(colorList)
+        val random = Random()
+        val number = random.nextInt(ColorList.size -1)
+
+        colorCode = ColorList[number]
         colorPickerButton.backgroundTintList = ColorStateList.valueOf(colorCode)
         changeTheme(colorCode)
 

@@ -18,12 +18,13 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity: AppCompatActivity() {
 
+    private val realm = Realm.getDefaultInstance()
+    private val weekView by lazy {WeekView(this)}
+
     var intentStartTime: Int = 0
     var intentEndTime: Int = 0
     var intentflag : Int = 0
-    private val weekView by lazy {WeekView(this)}
 
-    private val realm = Realm.getDefaultInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
