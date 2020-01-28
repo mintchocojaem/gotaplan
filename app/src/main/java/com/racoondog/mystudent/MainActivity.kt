@@ -36,6 +36,8 @@ import java.io.FileOutputStream
 
 class MainActivity: AppCompatActivity() {
 
+    //Developer: Void
+
     private val realm = Realm.getDefaultInstance()
     private val weekView by lazy { WeekView(this) }
 
