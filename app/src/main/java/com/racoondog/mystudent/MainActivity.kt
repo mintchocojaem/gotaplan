@@ -318,7 +318,7 @@ class MainActivity: AppCompatActivity() {
         }
         finally
         {
-            Toast.makeText(this, "시간표가 이미지 파일로 저장되었습니다.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "시간표가 갤러리에 저장되었습니다.", Toast.LENGTH_SHORT).show()
             sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(File(strFilePath))))
         }
 
