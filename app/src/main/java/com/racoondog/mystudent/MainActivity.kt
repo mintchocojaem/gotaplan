@@ -1,10 +1,20 @@
 package com.racoondog.mystudent
 
+import android.Manifest
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.ContextWrapper
 import android.content.Intent
-import android.content.res.ColorStateList
-import android.graphics.Color
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Matrix
+import android.graphics.Path
+import android.media.MediaScannerConnection
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.view.ContextThemeWrapper
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -12,19 +22,26 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import io.realm.Realm
 import io.realm.RealmResults
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.weekview.*
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+
+
 
 class MainActivity: AppCompatActivity() {
 
     private val realm = Realm.getDefaultInstance()
-    private val weekView by lazy {WeekView(this)}
+    private val weekView by lazy { WeekView(this) }
 
     var intentStartTime: Int = 0
     var intentEndTime: Int = 0
-    var intentflag : Int = 0
-
+    var intentflag: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -51,7 +68,7 @@ class MainActivity: AppCompatActivity() {
 
             subjectIntent.putExtra("start_time", intentStartTime)
             subjectIntent.putExtra("end_time", intentEndTime)
-            subjectIntent.putExtra("day_flag",intentflag)
+            subjectIntent.putExtra("day_flag", intentflag)
             startActivityForResult(subjectIntent, 102)
         }
 
@@ -80,7 +97,7 @@ class MainActivity: AppCompatActivity() {
                     intentflag = scheduleDayFlag
 
                     realm.beginTransaction()
-                    val dataBase:DataModel = realm.createObject(DataModel::class.java)
+                    val dataBase: DataModel = realm.createObject(DataModel::class.java)
 
                     dataBase.apply {
                         this.scheduleDayFlag = scheduleDayFlag
@@ -90,12 +107,14 @@ class MainActivity: AppCompatActivity() {
                     }
                     realm.commitTransaction()
 
-                    weekView.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT,
-                        ConstraintLayout.LayoutParams.MATCH_PARENT).apply {
+                    weekView.layoutParams = ConstraintLayout.LayoutParams(
+                        ConstraintLayout.LayoutParams.MATCH_PARENT,
+                        ConstraintLayout.LayoutParams.MATCH_PARENT
+                    ).apply {
 
                     }
 
-                    weekView.drawSchedule(scheduleDayFlag,scheduleStartHour,scheduleEndHour)
+                    weekView.drawSchedule(scheduleDayFlag, scheduleStartHour, scheduleEndHour)
 
                     weekView_layout.addView(weekView)
                 }
@@ -111,14 +130,15 @@ class MainActivity: AppCompatActivity() {
                     val startTimeText = data.getStringArrayExtra("StartTimeText") // 오전/오후 형식 시간
                     val endTimeText = data.getStringArrayExtra("EndTimeText")
                     val contentText = data.getStringExtra("ContentText")
-                    val lessonOnOff = data.getBooleanExtra("LessonOnOff",false)
-                    val timeText = "${startTimeText[0]}${startTimeText[1]}:${startTimeText[2]}"+ " ~ " + "${endTimeText[0]}${endTimeText[1]}:${endTimeText[2]}" //StartTimeText[ ]은 오전/오후 변환시간
-                    val colorCode = data.getIntExtra("colorCode",0)
+                    val lessonOnOff = data.getBooleanExtra("LessonOnOff", false)
+                    val timeText =
+                        "${startTimeText[0]}${startTimeText[1]}:${startTimeText[2]}" + " ~ " + "${endTimeText[0]}${endTimeText[1]}:${endTimeText[2]}" //StartTimeText[ ]은 오전/오후 변환시간
+                    val colorCode = data.getIntExtra("colorCode", 0)
 
-                    val ID = weekView.createID(0,128)//다음으로 만들어질 weekview의 id 값을 결정하는 변수
+                    val ID = weekView.createID(0, 128)//다음으로 만들어질 weekview의 id 값을 결정하는 변수
 
                     realm.beginTransaction()
-                    val subjectInfo :SubjectBox = realm.createObject(SubjectBox::class.java)
+                    val subjectInfo: SubjectBox = realm.createObject(SubjectBox::class.java)
                     subjectInfo.apply {
                         this.id = ID.toInt()
                         this.dayFlag = dayFlag.toString()
@@ -135,13 +155,16 @@ class MainActivity: AppCompatActivity() {
                     }
                     realm.commitTransaction()
 
-                    weekView.createSubject(startHour,startTimeText[2].toInt()
-                        ,endHour,endTimeText[2].toInt(), dayFlag,intentStartTime,ID,colorCode)
+                    weekView.createSubject(
+                        startHour, startTimeText[2].toInt()
+                        , endHour, endTimeText[2].toInt(), dayFlag, intentStartTime, ID, colorCode
+                    )
                 }
-                103->{
-                    var dataBase: RealmResults<SubjectBox> = realm.where<SubjectBox>(SubjectBox::class.java)
-                        .equalTo("id",WeekViewData.ID)
-                        .findAll()
+                103 -> {
+                    var dataBase: RealmResults<SubjectBox> =
+                        realm.where<SubjectBox>(SubjectBox::class.java)
+                            .equalTo("id", WeekViewData.ID)
+                            .findAll()
                     val title = weekView.findViewWithTag<TextView>("title${dataBase.get(0)!!.id}")
                     title.text = dataBase.get(0)!!.title.toString()
                 }
@@ -152,7 +175,7 @@ class MainActivity: AppCompatActivity() {
 
             when (requestCode) {
 
-                103->{
+                103 -> {
                     weekView.deleteSubject(WeekViewData.ID.toInt())
                 }
 
@@ -161,10 +184,11 @@ class MainActivity: AppCompatActivity() {
         }
 
     }
-    private fun loadData(){
+
+    private fun loadData() {
 
         val scheduleData = realm.where(DataModel::class.java).findFirst()
-        if( scheduleData != null) {
+        if (scheduleData != null) {
 
             schedule_add.visibility = View.INVISIBLE
             addSubjectButton.visibility = View.VISIBLE
@@ -174,21 +198,31 @@ class MainActivity: AppCompatActivity() {
             intentStartTime = scheduleData.scheduleStartHour!!
             intentEndTime = scheduleData.scheduleEndHour!!
 
-            weekView.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT,
-                ConstraintLayout.LayoutParams.MATCH_PARENT).apply {
+            weekView.layoutParams = ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.MATCH_PARENT,
+                ConstraintLayout.LayoutParams.MATCH_PARENT
+            ).apply {
 
             }
 
-            weekView.drawSchedule(intentflag,intentStartTime,intentEndTime)
+            weekView.drawSchedule(intentflag, intentStartTime, intentEndTime)
             weekView_layout.addView(weekView)
 
 
-            val subjectData: RealmResults<SubjectBox> = realm.where<SubjectBox>(SubjectBox::class.java).findAll()
+            val subjectData: RealmResults<SubjectBox> =
+                realm.where<SubjectBox>(SubjectBox::class.java).findAll()
             for (data in subjectData) {
                 weekView.createSubject(
-                    data.startHour.toInt(), data.startMinute.toInt()
-                    , data.endHour.toInt(), data.endMinute.toInt(),
-                    data.dayFlag.toInt(), scheduleData.scheduleStartHour!!.toInt(),data.id.toInt(),data.subjectColor)
+                    data.startHour.toInt(),
+                    data.startMinute.toInt()
+                    ,
+                    data.endHour.toInt(),
+                    data.endMinute.toInt(),
+                    data.dayFlag.toInt(),
+                    scheduleData.scheduleStartHour!!.toInt(),
+                    data.id.toInt(),
+                    data.subjectColor
+                )
             }
 
 
@@ -197,7 +231,7 @@ class MainActivity: AppCompatActivity() {
 
     }
 
-    private fun changeTheme(){
+    private fun changeTheme() {
         window.statusBarColor = resources.getColor(R.color.whiteColor)
         addSubjectButton.backgroundTintList = resources.getColorStateList(R.color.darkColor)
 
@@ -209,8 +243,9 @@ class MainActivity: AppCompatActivity() {
         menuInflater.inflate(R.menu.menu, menu)
         return true
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean { //Menu 목록 부분
-        when (item.getItemId()) {
+        when (item.itemId) {
             R.id.home -> {
                 //onBackPressed()
                 return true
@@ -218,17 +253,124 @@ class MainActivity: AppCompatActivity() {
             R.id.setting -> {
                 return true
             }
-            else -> {
-                return super.onOptionsItemSelected(item)
+            R.id.saveImage -> {
+
+                checkPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE){
+                    val bitmap1 = getBitmapFromView(scheduleView, scheduleView.height, scheduleView.width)
+                    val bitmap2 = getBitmapFromView(dayLine, dayLine.height, dayLine.width)
+                    val bitmap3 = getBitmapFromView(my_toolbar, my_toolbar.height, my_toolbar.width)
+                    val bitmap = combineImages(bitmap1, bitmap2, bitmap3)
+                    saveBitmap(bitmap) }
+
+                return true
             }
+            else -> return super.onOptionsItemSelected(item)
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         realm.close()
+
     }
 
+    private fun getBitmapFromView(view: View, height:Int, width:Int):Bitmap {
+
+
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        view.draw(canvas)
+        return bitmap
+    }
+
+    fun combineImages(first:Bitmap, second:Bitmap,third:Bitmap ):Bitmap {
+
+        val bitmap = Bitmap.createBitmap(first.width, first.height+second.height+third.height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        canvas.drawBitmap(third, Matrix(), null)
+        canvas.drawBitmap(second,0.toFloat(), third.height.toFloat(), null)
+        canvas.drawBitmap(first, 0.toFloat(), third.height.toFloat()+second.height.toFloat(), null)
+
+        return bitmap
+    }
+
+    private fun saveBitmap(bitmap:Bitmap) { // 버튼 onClick 리스너
+        // WRITE_EXTERNAL_STORAGE 외부 공간 사용 권한 허용
+
+        val fos:FileOutputStream // FileOutputStream 이용 파일 쓰기 한다
+        val strFolderPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/myStudent"
+        val folder = File(strFolderPath)
+        if (!folder.exists())
+        { // 해당 폴더 없으면 만들어라
+            folder.mkdirs()
+        }
+        val strFilePath = strFolderPath + "/" + System.currentTimeMillis() + ".png"
+        val fileCacheItem = File(strFilePath)
+        try
+        {
+            fos = FileOutputStream(fileCacheItem)
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)
+            fos.flush()
+            fos.close()
+        }
+        catch (e:FileNotFoundException) {
+            e.printStackTrace()
+        }
+        finally
+        {
+            Toast.makeText(this, "시간표가 이미지 파일로 저장되었습니다.", Toast.LENGTH_SHORT).show()
+            sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(File(strFilePath))))
+        }
+
+    }
+
+    private fun checkPermissions(permission: String,result: ()->Unit){
+        //거절되었거나 아직 수락하지 않은 권한(퍼미션)을 저장할 문자열 배열 리스트
+        //필요한 퍼미션들을 하나씩 끄집어내서 현재 권한을 받았는지 체크
+        var rejectedPermissionList = ArrayList<String>()
+
+        if(ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+            //만약 권한이 없다면 rejectedPermissionList에 추가
+            rejectedPermissionList.add(permission)
+
+        }
+        else{
+            result()
+        }
+
+        //거절된 퍼미션이 있다면...
+        if(permission in rejectedPermissionList){
+            //권한 요청!
+            val array = arrayOfNulls<String>(rejectedPermissionList.size)
+            ActivityCompat.requestPermissions(this, rejectedPermissionList.toArray(array),100)
+        }
+
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            100->{
+                if(grantResults.isNotEmpty()) {
+                    for((i, permission) in permissions.withIndex()) {
+                        if(grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+
+                            //권한 획득 실패
+
+                            val dialog = AlertDialog.Builder(ContextThemeWrapper(this, R.style.Theme_AppCompat_Light_Dialog))
+                                .setCancelable(false)
+                                .setMessage("이 기능을 사용하기 위해서는 $permission 권한이 필요합니다. 계속 하시겠습니까?")
+                                .setPositiveButton("확인") { _, _ ->
+                                    ActivityCompat.requestPermissions(this, permissions,100) }
+
+                            dialog.show()
+
+                        }
+                    }
+                }
+
+            }
+        }
+    }
 
 }
 

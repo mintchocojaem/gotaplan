@@ -3,7 +3,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent" android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/mainview">
+        android:id="@+id/mainView">
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -11,8 +11,8 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/scroll"
-            android:id="@+id/Day_Line"
+            app:layout_constraintBottom_toTopOf="@id/scrollView"
+            android:id="@+id/dayLine"
             android:background="@color/whiteColor">
 
         <androidx.constraintlayout.widget.Guideline
@@ -42,15 +42,15 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/Day_Line"
+            app:layout_constraintTop_toBottomOf="@id/dayLine"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:id="@+id/scroll">
+            android:id="@+id/scrollView">
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/scheduleview">
+                android:id="@+id/scheduleView">
 
             <androidx.constraintlayout.widget.Guideline
                     android:layout_width="wrap_content"

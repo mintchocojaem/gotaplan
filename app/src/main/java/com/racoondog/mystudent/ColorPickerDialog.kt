@@ -94,7 +94,7 @@ class ColorPickerDialog(context: Context?, private var onCustomDialogEventListen
             color_picker_main.findViewWithTag<LinearLayout>(row).addView(colorButton)
 
         }
-        customColorButton(dialog,row)
+        //customColorButton(dialog,row)
 
     }
 

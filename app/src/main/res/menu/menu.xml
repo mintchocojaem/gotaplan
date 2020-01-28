@@ -11,4 +11,10 @@
             app:showAsAction="never"
             android:title="대하여">
     </item>
+    <item
+            android:id="@+id/saveImage"
+            app:showAsAction="never"
+            android:title="시간표 캡쳐">
+    </item>
+
 </menu>

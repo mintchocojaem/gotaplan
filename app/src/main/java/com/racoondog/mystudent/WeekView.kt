@@ -96,7 +96,7 @@ class WeekView : ConstraintLayout{
             TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT
         )
 
-        Day_Line.setBackgroundResource(R.color.whiteColor)// 가이드 라인 색
+        dayLine.setBackgroundResource(R.color.whiteColor)// 가이드 라인 색
 
         for (i in 0 until  day.size) {
 
@@ -200,7 +200,7 @@ class WeekView : ConstraintLayout{
             layout.addView(timeRow)
         }
 
-        scheduleview.addView(layout) //activity_main 의 스크롤 뷰에 추가
+        scheduleView.addView(layout) //activity_main 의 스크롤 뷰에 추가
 
         //시간표위 레이아웃을 그리는 함수
         for (i in 0 until day.size) {
