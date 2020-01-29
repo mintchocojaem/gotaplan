@@ -3,14 +3,11 @@ package com.racoondog.mystudent
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.ContextWrapper
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Matrix
-import android.graphics.Path
-import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -18,6 +15,8 @@ import android.view.ContextThemeWrapper
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -27,6 +26,7 @@ import androidx.core.content.ContextCompat
 import io.realm.Realm
 import io.realm.RealmResults
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.schedule_widget.*
 import kotlinx.android.synthetic.main.weekview.*
 import java.io.File
 import java.io.FileNotFoundException
@@ -41,9 +41,9 @@ class MainActivity: AppCompatActivity() {
     private val realm = Realm.getDefaultInstance()
     private val weekView by lazy { WeekView(this) }
 
-    var intentStartTime: Int = 0
-    var intentEndTime: Int = 0
-    var intentflag: Int = 0
+    private var intentStartTime: Int = 0
+    private var intentEndTime: Int = 0
+    private var intentFlag: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -57,7 +57,7 @@ class MainActivity: AppCompatActivity() {
         // 알림창 객체 생성
 
         loadData()//데이터 불러오기
-
+        bitmap = R.drawable.color_picker_btn
         weekView_layout.setOnClickListener {
             val scheduleIntent = Intent(this, CreateSchedule::class.java)
             startActivityForResult(scheduleIntent, 100)
@@ -70,7 +70,7 @@ class MainActivity: AppCompatActivity() {
 
             subjectIntent.putExtra("start_time", intentStartTime)
             subjectIntent.putExtra("end_time", intentEndTime)
-            subjectIntent.putExtra("day_flag", intentflag)
+            subjectIntent.putExtra("day_flag", intentFlag)
             startActivityForResult(subjectIntent, 102)
         }
 
@@ -96,7 +96,7 @@ class MainActivity: AppCompatActivity() {
 
                     intentStartTime = scheduleStartHour
                     intentEndTime = scheduleEndHour
-                    intentflag = scheduleDayFlag
+                    intentFlag = scheduleDayFlag
 
                     realm.beginTransaction()
                     val dataBase: DataModel = realm.createObject(DataModel::class.java)
@@ -196,7 +196,7 @@ class MainActivity: AppCompatActivity() {
             addSubjectButton.visibility = View.VISIBLE
             toolbar_title.text = scheduleData.scheduleTitle
 
-            intentflag = scheduleData.scheduleDayFlag!!
+            intentFlag = scheduleData.scheduleDayFlag!!
             intentStartTime = scheduleData.scheduleStartHour!!
             intentEndTime = scheduleData.scheduleEndHour!!
 
@@ -207,7 +207,7 @@ class MainActivity: AppCompatActivity() {
 
             }
 
-            weekView.drawSchedule(intentflag, intentStartTime, intentEndTime)
+            weekView.drawSchedule(intentFlag, intentStartTime, intentEndTime)
             weekView_layout.addView(weekView)
 
 
@@ -247,6 +247,7 @@ class MainActivity: AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean { //Menu 목록 부분
+
         when (item.itemId) {
             R.id.home -> {
                 //onBackPressed()
@@ -285,7 +286,7 @@ class MainActivity: AppCompatActivity() {
         return bitmap
     }
 
-    fun combineImages(first:Bitmap, second:Bitmap,third:Bitmap ):Bitmap {
+    private fun combineImages(first:Bitmap, second:Bitmap,third:Bitmap ):Bitmap {
 
         val bitmap = Bitmap.createBitmap(first.width, first.height+second.height+third.height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
