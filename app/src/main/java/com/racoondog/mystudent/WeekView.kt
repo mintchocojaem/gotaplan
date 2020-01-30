@@ -287,6 +287,7 @@ class WeekView : ConstraintLayout{
                 dayFlag = DayFlag
 
                 val intentSubjectDetail = Intent (cnxt, SubjectDetail::class.java)
+                intentSubjectDetail.flags = (Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 cnxt.startActivityForResult(intentSubjectDetail,103)
             }
 
@@ -297,7 +298,6 @@ class WeekView : ConstraintLayout{
     }
 
     fun deleteSubject(id:Int){
-        Toast.makeText(cnxt, "삭제되었습니다", Toast.LENGTH_SHORT).show()
         findViewWithTag<ConstraintLayout>(dayFlag).removeView(findViewById(id))
     }
     fun createID(Min:Int, Max:Int):Int{

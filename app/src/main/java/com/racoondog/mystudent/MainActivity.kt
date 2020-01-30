@@ -56,6 +56,7 @@ class MainActivity: AppCompatActivity() {
 
         weekView_layout.setOnClickListener {
             val scheduleIntent = Intent(this, CreateSchedule::class.java)
+            scheduleIntent.flags = (Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivityForResult(scheduleIntent, 100)
 
         }
@@ -63,7 +64,7 @@ class MainActivity: AppCompatActivity() {
 
         addSubjectButton.setOnClickListener {
             val subjectIntent = Intent(this, CreateSubject::class.java)
-
+            subjectIntent.flags = (Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
             subjectIntent.putExtra("start_time", intentStartTime)
             subjectIntent.putExtra("end_time", intentEndTime)
             subjectIntent.putExtra("day_flag", intentflag)
