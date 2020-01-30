@@ -248,9 +248,6 @@ class MainActivity: AppCompatActivity() {
                 //onBackPressed()
                 return true
             }
-            R.id.setting -> {
-                return true
-            }
             R.id.saveImage -> {
                 if(weekView_layout.childCount == 1){
                     Toast.makeText(this,"시간표를 먼저 추가해 주세요.",Toast.LENGTH_SHORT).show()
