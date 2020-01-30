@@ -13,12 +13,10 @@
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:background="@color/whiteColor"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:titleTextColor="@color/colorPrimaryDark">
 
             <TextView
@@ -26,7 +24,7 @@
                     android:layout_height="wrap_content"
                     android:text="시간표"
                     android:layout_gravity="center"
-                    android:id="@+id/toolbar_title"
+                    android:id="@+id/license_title"
                     android:textSize="22sp"
                     android:fontFamily="@font/yd_child_fund_korea"
                 />
