@@ -47,7 +47,7 @@ class MainActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        setSupportActionBar(my_toolbar)  //Actionbar 부분
+        setSupportActionBar(main_toolbar)  //Actionbar 부분
         supportActionBar?.setDisplayUseLogoEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         changeTheme()
@@ -88,7 +88,7 @@ class MainActivity: AppCompatActivity() {
                     schedule_add.visibility = View.INVISIBLE
                     addSubjectButton.visibility = View.VISIBLE
 
-                    license_title.text = data.getStringExtra("title")
+                    toolbar_title.text = data.getStringExtra("title")
 
                     intentStartTime = scheduleStartHour
                     intentEndTime = scheduleEndHour
@@ -101,7 +101,7 @@ class MainActivity: AppCompatActivity() {
                         this.scheduleDayFlag = scheduleDayFlag
                         this.scheduleStartHour = scheduleStartHour
                         this.scheduleEndHour = scheduleEndHour
-                        this.scheduleTitle = license_title.text.toString()
+                        this.scheduleTitle = toolbar_title.text.toString()
                     }
                     realm.commitTransaction()
 
@@ -190,7 +190,7 @@ class MainActivity: AppCompatActivity() {
 
             schedule_add.visibility = View.INVISIBLE
             addSubjectButton.visibility = View.VISIBLE
-            license_title.text = scheduleData.scheduleTitle
+            toolbar_title.text = scheduleData.scheduleTitle
 
             intentflag = scheduleData.scheduleDayFlag!!
             intentStartTime = scheduleData.scheduleStartHour!!
@@ -228,6 +228,50 @@ class MainActivity: AppCompatActivity() {
 
 
     }
+    private  fun deleteSchedule(){
+
+        if(weekView_layout.childCount != 1) {
+
+            val builder = AlertDialog.Builder(ContextThemeWrapper(this, R.style.Theme_AppCompat_Light_Dialog))
+
+                .setTitle("삭제")
+                .setMessage("시간표를 삭제하시겠습니까? \n\n(모든 시간표와 과목의 데이터가 삭제됩니다.)")
+
+                .setPositiveButton("확인") { _, _ ->
+
+                    weekView.removeAllViews()
+
+                    addSubjectButton.visibility = View.GONE
+                    schedule_add.visibility = View.VISIBLE
+                    toolbar_title.text = "시간표"
+
+                    var scheduleData: RealmResults<DataModel> =
+                        realm.where<DataModel>(DataModel::class.java)
+                            .findAll()
+                    val data = scheduleData[0]
+                    realm.beginTransaction()
+                    data?.deleteFromRealm()
+                    realm.commitTransaction()
+
+                    Toast.makeText(this,"시간표가 삭제되었습니다.",Toast.LENGTH_SHORT).show()
+
+                 }
+
+                .setNegativeButton("취소") { _, _ ->
+
+                }
+
+                .show()
+                builder.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(resources.getColor(R.color.colorAccent))
+                builder.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(resources.getColor(R.color.defaultAccentColor))
+
+
+        }
+        else{
+            Toast.makeText(this,"시간표를 먼저 추가해 주세요.",Toast.LENGTH_SHORT).show()
+        }
+
+    }
 
     private fun changeTheme() {
         window.statusBarColor = resources.getColor(R.color.whiteColor)
@@ -244,6 +288,11 @@ class MainActivity: AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean { //Menu 목록 부분
         when (item.itemId) {
+            R.id.deleteSchedule -> {
+                deleteSchedule()
+                return true
+            }
+
             R.id.home -> {
                 //onBackPressed()
                 return true
@@ -257,7 +306,7 @@ class MainActivity: AppCompatActivity() {
                     checkPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE){
                         val bitmap1 = getBitmapFromView(scheduleView, scheduleView.height, scheduleView.width)
                         val bitmap2 = getBitmapFromView(dayLine, dayLine.height, dayLine.width)
-                        val bitmap3 = getBitmapFromView(my_toolbar, my_toolbar.height, my_toolbar.width)
+                        val bitmap3 = getBitmapFromView(main_toolbar, main_toolbar.height, main_toolbar.width)
                         val bitmap = combineImages(bitmap1, bitmap2, bitmap3)
                         saveBitmap(bitmap) }
 
@@ -369,7 +418,8 @@ class MainActivity: AppCompatActivity() {
                                 .setPositiveButton("확인") { _, _ ->
                                     ActivityCompat.requestPermissions(this, permissions,100) }
 
-                            dialog.show()
+                                .show()
+                            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(resources.getColor(R.color.defaultAccentColor))
 
                         }
                     }

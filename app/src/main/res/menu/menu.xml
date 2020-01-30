@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+            android:id="@+id/deleteSchedule"
+            app:showAsAction="never"
+            android:title="시간표 삭제">
+    </item>
+    <item
             android:id="@+id/saveImage"
             app:showAsAction="never"
             android:title="시간표 캡쳐">

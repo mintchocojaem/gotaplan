@@ -14,11 +14,16 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
 
-        <activity android:name=".CreateSchedule" />
-        <activity android:name=".CreateSubject" />
-        <activity android:name=".SubjectDetail" />
-        <activity android:name=".License"></activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".CreateSchedule"
+                android:screenOrientation="portrait"/>
+        <activity android:name=".CreateSubject"
+                android:screenOrientation="portrait"/>
+        <activity android:name=".SubjectDetail"
+                android:screenOrientation="portrait"/>
+        <activity android:name=".License"
+                android:screenOrientation="portrait"></activity>
+        <activity android:name=".MainActivity"
+                android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

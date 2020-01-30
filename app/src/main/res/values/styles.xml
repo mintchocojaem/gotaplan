@@ -6,7 +6,7 @@
         <item name="colorPrimary">@color/colorPrimaryDark</item>
         <item name="colorPrimaryDark">@color/whiteColor</item>
         <!--item name="colorAccent">@color/colorAccent</item-->
-        <item name="colorAccent">#7A6CCF</item>
+        <item name="colorAccent">@color/defaultAccentColor</item>
         <item name="android:windowLightStatusBar">true</item>
 
     </style>

@@ -20,7 +20,7 @@
 
 
             <me.grantland.widget.AutofitTextView
-                    android:id="@+id/license_title"
+                    android:id="@+id/toolbar_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="과목 정보"
@@ -42,9 +42,9 @@
                     android:layout_height="48dp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintHorizontal_bias="0"
-                    app:layout_constraintRight_toLeftOf="@id/license_title"
-                    app:layout_constraintTop_toTopOf="@id/license_title"
-                    app:layout_constraintBottom_toBottomOf="@id/license_title"
+                    app:layout_constraintRight_toLeftOf="@id/toolbar_title"
+                    app:layout_constraintTop_toTopOf="@id/toolbar_title"
+                    app:layout_constraintBottom_toBottomOf="@id/toolbar_title"
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
                     android:paddingTop="16dp"
@@ -61,10 +61,10 @@
                     android:textStyle="bold"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    app:layout_constraintLeft_toRightOf="@id/license_title"
+                    app:layout_constraintLeft_toRightOf="@id/toolbar_title"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/license_title"
-                    app:layout_constraintBottom_toBottomOf="@id/license_title"
+                    app:layout_constraintTop_toTopOf="@id/toolbar_title"
+                    app:layout_constraintBottom_toBottomOf="@id/toolbar_title"
                     app:layout_constraintHorizontal_bias="1"
                     android:background="@null"
                     android:textColor="@color/defaultAccentColor"/>
