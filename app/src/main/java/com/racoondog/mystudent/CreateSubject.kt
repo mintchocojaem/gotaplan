@@ -136,6 +136,10 @@ class CreateSubject :AppCompatActivity() {
             dialog.show()
         }
 
+        subjectQuit_Button.setOnClickListener {
+            finish()
+        }
+
     }
 
     private fun changeTheme(colorList:Int){

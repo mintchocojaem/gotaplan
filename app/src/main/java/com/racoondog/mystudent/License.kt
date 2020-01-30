@@ -1,0 +1,17 @@
+package com.racoondog.mystudent
+
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.license_layout.*
+
+class License :AppCompatActivity(){
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.license_layout)
+
+        licenseQuit_Button.setOnClickListener {
+            finish()
+        }
+
+    }
+}

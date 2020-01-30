@@ -82,6 +82,9 @@ class CreateSchedule : AppCompatActivity(){
         schedule_day_group.setOnCheckedChangeListener{_,_ ->
             title_text.hideKeyboard()
         }
+        scheduleQuit_Button.setOnClickListener {
+            finish()
+        }
 
 
     }

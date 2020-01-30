@@ -6,15 +6,17 @@
             app:showAsAction="never"
             android:title="설정">
     </item>
-    <item
-            android:id="@+id/about"
-            app:showAsAction="never"
-            android:title="대하여">
-    </item>
+
     <item
             android:id="@+id/saveImage"
             app:showAsAction="never"
             android:title="시간표 캡쳐">
+    </item>
+
+    <item
+            android:id="@+id/license"
+            app:showAsAction="never"
+            android:title="라이선스">
     </item>
 
 </menu>

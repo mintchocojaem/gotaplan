@@ -3,14 +3,11 @@ package com.racoondog.mystudent
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.ContextWrapper
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Matrix
-import android.graphics.Path
-import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -54,7 +51,6 @@ class MainActivity: AppCompatActivity() {
         supportActionBar?.setDisplayUseLogoEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         changeTheme()
-        // 알림창 객체 생성
 
         loadData()//데이터 불러오기
 
@@ -92,7 +88,7 @@ class MainActivity: AppCompatActivity() {
                     schedule_add.visibility = View.INVISIBLE
                     addSubjectButton.visibility = View.VISIBLE
 
-                    toolbar_title.text = data.getStringExtra("title")
+                    license_title.text = data.getStringExtra("title")
 
                     intentStartTime = scheduleStartHour
                     intentEndTime = scheduleEndHour
@@ -105,7 +101,7 @@ class MainActivity: AppCompatActivity() {
                         this.scheduleDayFlag = scheduleDayFlag
                         this.scheduleStartHour = scheduleStartHour
                         this.scheduleEndHour = scheduleEndHour
-                        this.scheduleTitle = toolbar_title.text.toString()
+                        this.scheduleTitle = license_title.text.toString()
                     }
                     realm.commitTransaction()
 
@@ -194,7 +190,7 @@ class MainActivity: AppCompatActivity() {
 
             schedule_add.visibility = View.INVISIBLE
             addSubjectButton.visibility = View.VISIBLE
-            toolbar_title.text = scheduleData.scheduleTitle
+            license_title.text = scheduleData.scheduleTitle
 
             intentflag = scheduleData.scheduleDayFlag!!
             intentStartTime = scheduleData.scheduleStartHour!!
@@ -256,14 +252,26 @@ class MainActivity: AppCompatActivity() {
                 return true
             }
             R.id.saveImage -> {
+                if(weekView_layout.childCount == 1){
+                    Toast.makeText(this,"시간표를 먼저 추가해 주세요.",Toast.LENGTH_SHORT).show()
+                }
+                else{
 
-                checkPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE){
-                    val bitmap1 = getBitmapFromView(scheduleView, scheduleView.height, scheduleView.width)
-                    val bitmap2 = getBitmapFromView(dayLine, dayLine.height, dayLine.width)
-                    val bitmap3 = getBitmapFromView(my_toolbar, my_toolbar.height, my_toolbar.width)
-                    val bitmap = combineImages(bitmap1, bitmap2, bitmap3)
-                    saveBitmap(bitmap) }
+                    checkPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE){
+                        val bitmap1 = getBitmapFromView(scheduleView, scheduleView.height, scheduleView.width)
+                        val bitmap2 = getBitmapFromView(dayLine, dayLine.height, dayLine.width)
+                        val bitmap3 = getBitmapFromView(my_toolbar, my_toolbar.height, my_toolbar.width)
+                        val bitmap = combineImages(bitmap1, bitmap2, bitmap3)
+                        saveBitmap(bitmap) }
 
+
+                }
+
+                return true
+            }
+            R.id.license -> {
+                val licenseIntent = Intent(this, License::class.java)
+                startActivity(licenseIntent)
                 return true
             }
             else -> return super.onOptionsItemSelected(item)
@@ -285,7 +293,7 @@ class MainActivity: AppCompatActivity() {
         return bitmap
     }
 
-    fun combineImages(first:Bitmap, second:Bitmap,third:Bitmap ):Bitmap {
+    private fun combineImages(first:Bitmap, second:Bitmap,third:Bitmap ):Bitmap {
 
         val bitmap = Bitmap.createBitmap(first.width, first.height+second.height+third.height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)

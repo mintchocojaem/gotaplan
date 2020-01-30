@@ -17,6 +17,7 @@
         <activity android:name=".CreateSchedule" />
         <activity android:name=".CreateSubject" />
         <activity android:name=".SubjectDetail" />
+        <activity android:name=".License"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
