@@ -13,6 +13,12 @@
     </item>
 
     <item
+            android:id="@+id/directFeedback"
+            app:showAsAction="never"
+            android:title="다이렉트 피드백">
+    </item>
+
+    <item
             android:id="@+id/license"
             app:showAsAction="never"
             android:title="라이선스">

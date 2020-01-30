@@ -321,6 +321,11 @@ class MainActivity: AppCompatActivity() {
                 startActivity(licenseIntent)
                 return true
             }
+            R.id.directFeedback -> {
+                val directFeedbackIntent = Intent(this, DirectFeedback::class.java)
+                startActivity(directFeedbackIntent)
+                return true
+            }
             else -> return super.onOptionsItemSelected(item)
         }
     }

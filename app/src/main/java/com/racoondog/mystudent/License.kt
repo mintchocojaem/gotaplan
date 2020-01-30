@@ -9,7 +9,7 @@ class License :AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.license_layout)
 
-        licenseQuit_Button.setOnClickListener {
+        directFeedbackQuit_Button.setOnClickListener {
             finish()
         }
 
