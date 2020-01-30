@@ -90,7 +90,8 @@
                 android:layout_height="wrap_content"
                 android:hint="제목 (최대 20자)"
                 android:textStyle="bold"
-                android:textSize="18dp"
+                android:textColor="@color/defaultColor"
+                android:textSize="16dp"
                 android:maxLength="20"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -109,6 +110,7 @@
                 android:gravity="center"
                 android:textSize="16dp"
                 android:maxLength="200"
+                android:textColor="@color/defaultColor"
                 android:id="@+id/directFeedback_content_text"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:background="@drawable/text_box_layout">
@@ -117,5 +119,17 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="피드백 내용은 Gmail 앱을 통해 전송됩니다."
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/Feedback_content"
+            android:paddingEnd="20dp"
+            android:paddingStart="20dp"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+    </TextView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
