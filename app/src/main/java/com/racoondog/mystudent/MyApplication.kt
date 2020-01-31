@@ -17,12 +17,13 @@ class MyApplication: Application() {
                 /*
                 var oldVer = oldVersion // 이전 schema 버전
                 val schema = realm.schema
+
                 //schema migration 작성 예시
                 if (oldVer == 0L)
                 {
                         schema.get("DataModel")
                         ?.addField("testdata",Int::class.java) // 바뀐 데이터 베이스 필드
-                    oldVer++ // 다음 업데이트로 넘어가서 이어서 적용( 사용자가 2,3단 업데이트 가능 ) / 없으면 여러 업데이트 한번에 적용 불가
+                    oldVer++ // 다음 업데이트를 이어서 적용( 사용자가 2,3단 업데이트 가능 ) / 없으면 여러 업데이트 한번에 적용 불가
 
                 }
                 if(oldVer == 1L){

@@ -184,6 +184,7 @@
                         android:text="Email : kooltaez@naver.com"
                         android:autoLink="email"
                         android:id="@+id/owner_email"
+                        android:textColorLink="@color/defaultAccentColor"
                         app:layout_constraintTop_toBottomOf="@id/owner_info"
                         app:layout_constraintBottom_toTopOf="@id/owner_youtube">
 
@@ -196,6 +197,7 @@
                         android:text="YouTube : https://www.youtube.com/channel/UCqsosjx-60mN0B2W5sbwAWg"
                         android:autoLink="web"
                         android:id="@+id/owner_youtube"
+                        android:textColorLink="@color/defaultAccentColor"
                         app:layout_constraintTop_toBottomOf="@id/owner_email"
                         app:layout_constraintBottom_toBottomOf="parent">
 
@@ -230,6 +232,7 @@
                         android:text="Email : heyinsoo@gmail.com"
                         android:autoLink="email"
                         android:id="@+id/manager_email"
+                        android:textColorLink="@color/defaultAccentColor"
                         app:layout_constraintTop_toBottomOf="@id/manager_info"
                         app:layout_constraintBottom_toBottomOf="parent">
 
@@ -259,6 +262,7 @@
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textColorLink="@color/defaultAccentColor"
                         android:text="Email : void0629@gmail.com"
                         android:autoLink="email"
                         android:id="@+id/developer_email"

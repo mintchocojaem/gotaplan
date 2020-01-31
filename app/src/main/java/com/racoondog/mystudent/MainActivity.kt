@@ -231,7 +231,7 @@ class MainActivity: AppCompatActivity() {
     }
     private  fun deleteSchedule(){
 
-        if(weekView_layout.childCount != 1) {
+        if(weekView_layout.childCount != 2) {
 
             val builder = AlertDialog.Builder(ContextThemeWrapper(this, R.style.Theme_AppCompat_Light_Dialog))
 
@@ -299,7 +299,7 @@ class MainActivity: AppCompatActivity() {
                 return true
             }
             R.id.saveImage -> {
-                if(weekView_layout.childCount == 1){
+                if(weekView_layout.childCount == 2){
                     Toast.makeText(this,"시간표를 먼저 추가해 주세요.",Toast.LENGTH_SHORT).show()
                 }
                 else{

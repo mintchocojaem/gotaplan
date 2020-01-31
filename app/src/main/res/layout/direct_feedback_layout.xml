@@ -106,7 +106,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 app:layout_constraintTop_toBottomOf="@id/directFeedback_title_text"
-                android:hint="수정 및 개선되었으면 하는 사항을 적어주세요. \n(최대 200자)"
+                android:hint="개발, 수정 및 문의 사항이 있으시면 적어주세요. \n(최대 200자)"
                 android:gravity="center"
                 android:textSize="16dp"
                 android:maxLength="200"
