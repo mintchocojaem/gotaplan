@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.racoondog.mystudent.ColorPickerDialog.ICustomDialogEventListener
 import io.realm.Realm
 import io.realm.RealmResults
+import io.realm.Sort
 import kotlinx.android.synthetic.main.create_subject.*
 import kotlinx.android.synthetic.main.time_picker.*
 import java.util.*
@@ -94,9 +95,21 @@ class CreateSubject :AppCompatActivity() {
         }
         tuesday_button.setOnClickListener {
             dayFlag = 2
+
         }
         wednesday_button.setOnClickListener {
             dayFlag = 3
+
+            var subjectData: RealmResults<SubjectBox> =
+                realm.where<SubjectBox>(SubjectBox::class.java)
+                    .equalTo("dayFlag", 4.toString())
+                    .findAll()
+            val data = subjectData.sort("startHour",Sort.DESCENDING) // 이건 첫번째 과목만 해당함으로 변경 해야함
+            val secondIndex = checkNull(data.toArray(),2)
+            val firstIndex = checkNull(data.toArray(),1)
+            Toast.makeText(this,"$secondIndex,$firstIndex",Toast.LENGTH_SHORT).show()
+
+
         }
         thursday_button.setOnClickListener {
 
@@ -106,48 +119,60 @@ class CreateSubject :AppCompatActivity() {
                     .equalTo("dayFlag", dayFlag.toString())
                     .findAll()
 
-            var checkTime = false
+            var startTime = true
+            var endTime = true
+            var amongTime = true
+            var sideTime = true
+            var checkTime = true
 
-            for (i in 0 until subjectData.size) {
+            val data = subjectData.sort("startHour",Sort.ASCENDING) // 이건 첫번째 과목만 해당함으로 변경 해야함
 
-                val data = subjectData[i]!! // 이건 첫번째 과목만 해당함으로 변경 해야함
+            for (i in data.indices) {
 
-                // 여기서 과목 중복생산 방지 기능 실험 (이후 위의 인텐트 쪽으로 옮기면 됨
+                val secondIndex = checkNull(data.toArray(),i+1)
+                val firstIndex = checkNull(data.toArray(),i)
+                    // 여기서 과목 중복생산 방지 기능 실험 (이후 위의 인텐트 쪽으로 옮기면 됨
+                if(firstIndex && secondIndex){
+                    if(start_hour.value > data[i]!!.endHour.toInt()){
+                        startTime = true
+                    }else if (start_hour.value == data[i]!!.endHour.toInt()){
+                        startTime = (start_minute.displayedValues[start_minute.value].toInt() >= data[i]!!.endMinute.toInt())
 
-
-                    if (start_hour.value.toInt() < data.startHour.toInt()) {
-
-                        if (end_hour.value.toInt() < data.startHour.toInt()) {
-                            checkTime = true
-                        } else if (end_hour.value.toInt() == data.startHour.toInt()) {
-
-                            if (end_minute.displayedValues[end_minute.value].toInt() <= data.startMinute.toInt()) {
-                                checkTime = true
-                            } else
-                                checkTime = false
-                        }
-
-                    } else if (start_hour.value.toInt() == data.startHour.toInt()) {
-                        if (end_hour.value.toInt() <= data.startHour.toInt()) {
-                            if (end_minute.displayedValues[end_minute.value].toInt() <= data.startMinute.toInt()) {
-                                checkTime = true
-                            }
-                            checkTime = false
-                        }
-                    }
-                    if (start_hour.value.toInt() > data.endHour.toInt()) {
-                        checkTime = true
-                    } else if (start_hour.value.toInt() == data.endHour.toInt()) {
-                        if (start_minute.displayedValues[start_minute.value].toInt() >= data.endMinute.toInt()) {
-                            checkTime = true
-                        }
-                        checkTime = false
                     }
 
+                    if(end_hour.value < data[i+1]!!.startHour.toInt()){
+                        endTime = true
+                    }else if (end_hour.value == data[i+1]!!.startHour.toInt()){
+
+                        endTime = (end_minute.displayedValues[end_minute.value].toInt() <= data[i]!!.startMinute.toInt())
+                    }
+
+                    amongTime = startTime && endTime
+
+                }else if((!firstIndex) || (firstIndex && !secondIndex)){
+
+                    if (start_hour.value <= data[i]!!.startHour.toInt()){
+                        if(end_hour.value < data[i]!!.startHour.toInt()){
+                            sideTime = true
+                        }
+                        if(end_hour.value == data[i]!!.startHour.toInt()){
+                            sideTime = (end_minute.displayedValues[end_minute.value].toInt() <= data[i]!!.startMinute.toInt())
+
+                        }
+                    }
+                    if (start_hour.value >= data[i]!!.endHour.toInt()){
+                        if(start_hour.value > data[i]!!.endHour.toInt()){
+                            sideTime = true
+                        }
+                        if(start_hour.value == data[i]!!.endHour.toInt()){
+                            sideTime = (start_minute.displayedValues[start_minute.value].toInt() >= data[i]!!.endMinute.toInt())
+                        }
+                    }
                 }
 
-
-            Toast.makeText(this,"${checkTime}",Toast.LENGTH_SHORT).show()
+            }
+            checkTime = amongTime && sideTime
+            Toast.makeText(this,"$checkTime",Toast.LENGTH_SHORT).show()
 
 
         }
@@ -195,6 +220,15 @@ class CreateSubject :AppCompatActivity() {
         }
 
     }
+    private fun checkNull(array: Array<Any>,int: Int):Boolean{
+        try {
+            array[int]
+        } catch (e: IndexOutOfBoundsException) {
+            return false
+        }
+        return true
+    }
+
 
     private fun changeTheme(colorList:Int){
         window.statusBarColor = colorList
