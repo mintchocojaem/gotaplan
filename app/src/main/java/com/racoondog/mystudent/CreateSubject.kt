@@ -3,7 +3,6 @@ package com.racoondog.mystudent
 
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.View
@@ -11,6 +10,8 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.racoondog.mystudent.ColorPickerDialog.ICustomDialogEventListener
+import io.realm.Realm
+import io.realm.RealmResults
 import kotlinx.android.synthetic.main.create_subject.*
 import kotlinx.android.synthetic.main.time_picker.*
 import java.util.*
@@ -18,6 +19,7 @@ import java.util.*
 
 class CreateSubject :AppCompatActivity() {
 
+    private val realm = Realm.getDefaultInstance()
     private var colorCode = -1 // init color White
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,6 +80,7 @@ class CreateSubject :AppCompatActivity() {
                 else {
                     Toast.makeText(this, "시작 시각이 종료 시각보다 클 수 없습니다.", Toast.LENGTH_SHORT).show()
                 }
+
             }
             else{
                 Toast.makeText(this, "날짜를 선택해 주세요.", Toast.LENGTH_SHORT).show()
@@ -87,6 +90,7 @@ class CreateSubject :AppCompatActivity() {
 
         monday_button.setOnClickListener {
             dayFlag = 1
+
         }
         tuesday_button.setOnClickListener {
             dayFlag = 2
@@ -95,7 +99,57 @@ class CreateSubject :AppCompatActivity() {
             dayFlag = 3
         }
         thursday_button.setOnClickListener {
+
             dayFlag = 4
+            var subjectData: RealmResults<SubjectBox> =
+                realm.where<SubjectBox>(SubjectBox::class.java)
+                    .equalTo("dayFlag", dayFlag.toString())
+                    .findAll()
+
+            var checkTime = false
+
+            for (i in 0 until subjectData.size) {
+
+                val data = subjectData[i]!! // 이건 첫번째 과목만 해당함으로 변경 해야함
+
+                // 여기서 과목 중복생산 방지 기능 실험 (이후 위의 인텐트 쪽으로 옮기면 됨
+
+
+                    if (start_hour.value.toInt() < data.startHour.toInt()) {
+
+                        if (end_hour.value.toInt() < data.startHour.toInt()) {
+                            checkTime = true
+                        } else if (end_hour.value.toInt() == data.startHour.toInt()) {
+
+                            if (end_minute.displayedValues[end_minute.value].toInt() <= data.startMinute.toInt()) {
+                                checkTime = true
+                            } else
+                                checkTime = false
+                        }
+
+                    } else if (start_hour.value.toInt() == data.startHour.toInt()) {
+                        if (end_hour.value.toInt() <= data.startHour.toInt()) {
+                            if (end_minute.displayedValues[end_minute.value].toInt() <= data.startMinute.toInt()) {
+                                checkTime = true
+                            }
+                            checkTime = false
+                        }
+                    }
+                    if (start_hour.value.toInt() > data.endHour.toInt()) {
+                        checkTime = true
+                    } else if (start_hour.value.toInt() == data.endHour.toInt()) {
+                        if (start_minute.displayedValues[start_minute.value].toInt() >= data.endMinute.toInt()) {
+                            checkTime = true
+                        }
+                        checkTime = false
+                    }
+
+                }
+
+
+            Toast.makeText(this,"${checkTime}",Toast.LENGTH_SHORT).show()
+
+
         }
         friday_button.setOnClickListener {
             dayFlag = 5

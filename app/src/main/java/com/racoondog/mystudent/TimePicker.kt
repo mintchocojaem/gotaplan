@@ -95,14 +95,14 @@ class TimePicker:ConstraintLayout {
             descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
 
         }
-
+        startText_hour.text = "8"
         displayValue.removeAll(displayValue)
 
         end_hour.apply {
 
             minValue = 7
             maxValue = 24
-            value = 20
+            value = 18
             for (i in minValue .. maxValue) {
                 when{
                     i > 12-> displayValue.add("${i-12}")
@@ -116,7 +116,8 @@ class TimePicker:ConstraintLayout {
 
 
         }
-
+        endText_hour.text = "6"
+        displayValue.removeAll(displayValue)
 
         start_AMPM.setOnTouchListener { _: View, event: MotionEvent ->
             //리턴값은 return 없이 아래와 같이

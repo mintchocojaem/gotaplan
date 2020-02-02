@@ -263,7 +263,7 @@ class MainActivity: AppCompatActivity() {
                 }
 
                 .show()
-                builder.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(resources.getColor(R.color.colorAccent))
+                builder.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(resources.getColor(R.color.colorCancel))
                 builder.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(resources.getColor(R.color.defaultAccentColor))
 
 
