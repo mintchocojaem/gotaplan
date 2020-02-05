@@ -9,6 +9,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.common.util.CollectionUtils
 import com.racoondog.mystudent.ColorPickerDialog.ICustomDialogEventListener
 import io.realm.Realm
 import io.realm.RealmResults
@@ -105,9 +106,7 @@ class CreateSubject :AppCompatActivity() {
                     .equalTo("dayFlag", 4.toString())
                     .findAll()
             val data = subjectData.sort("startHour",Sort.DESCENDING) // 이건 첫번째 과목만 해당함으로 변경 해야함
-            val secondIndex = checkNull(data.toArray(),2)
-            val firstIndex = checkNull(data.toArray(),1)
-            Toast.makeText(this,"$secondIndex,$firstIndex",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this,"$data",Toast.LENGTH_SHORT).show()
 
 
         }
@@ -118,62 +117,43 @@ class CreateSubject :AppCompatActivity() {
                 realm.where<SubjectBox>(SubjectBox::class.java)
                     .equalTo("dayFlag", dayFlag.toString())
                     .findAll()
+            val data = subjectData.sort("startHour",Sort.ASCENDING)
 
-            var startTime = true
-            var endTime = true
-            var amongTime = true
-            var sideTime = true
-            var checkTime = true
+            val pickerTime = arrayListOf<Double>()
 
-            val data = subjectData.sort("startHour",Sort.ASCENDING) // 이건 첫번째 과목만 해당함으로 변경 해야함
+            pickerTime.add(start_hour.value.toDouble() + (start_minute.displayedValues[start_minute.value].toDouble() / 100))
+            pickerTime.add(end_hour.value.toDouble() + (end_minute.displayedValues[end_minute.value].toDouble() / 100))
 
-            for (i in data.indices) {
+            val checkTime = arrayListOf<Boolean>()
 
-                val secondIndex = checkNull(data.toArray(),i+1)
-                val firstIndex = checkNull(data.toArray(),i)
-                    // 여기서 과목 중복생산 방지 기능 실험 (이후 위의 인텐트 쪽으로 옮기면 됨
-                if(firstIndex && secondIndex){
-                    if(start_hour.value > data[i]!!.endHour.toInt()){
-                        startTime = true
-                    }else if (start_hour.value == data[i]!!.endHour.toInt()){
-                        startTime = (start_minute.displayedValues[start_minute.value].toInt() >= data[i]!!.endMinute.toInt())
+            if(data.size != 0){
 
-                    }
+                for ( i in data.indices){
 
-                    if(end_hour.value < data[i+1]!!.startHour.toInt()){
-                        endTime = true
-                    }else if (end_hour.value == data[i+1]!!.startHour.toInt()){
+                    val subjectTime = arrayListOf<Double>()
+                    var checkFlag = false
 
-                        endTime = (end_minute.displayedValues[end_minute.value].toInt() <= data[i]!!.startMinute.toInt())
-                    }
+                    subjectTime.add(data[i]!!.startHour.toDouble()+ (data[i]!!.startMinute.toDouble() / 100))
+                    subjectTime.add(data[i]!!.endHour.toDouble()+ (data[i]!!.endMinute.toDouble() / 100))
 
-                    amongTime = startTime && endTime
+                    if(pickerTime[0] >= subjectTime[1]){
 
-                }else if((!firstIndex) || (firstIndex && !secondIndex)){
+                        checkFlag = true
 
-                    if (start_hour.value <= data[i]!!.startHour.toInt()){
-                        if(end_hour.value < data[i]!!.startHour.toInt()){
-                            sideTime = true
-                        }
-                        if(end_hour.value == data[i]!!.startHour.toInt()){
-                            sideTime = (end_minute.displayedValues[end_minute.value].toInt() <= data[i]!!.startMinute.toInt())
+                    }else if(pickerTime[0] < subjectTime[0]) {
 
-                        }
-                    }
-                    if (start_hour.value >= data[i]!!.endHour.toInt()){
-                        if(start_hour.value > data[i]!!.endHour.toInt()){
-                            sideTime = true
-                        }
-                        if(start_hour.value == data[i]!!.endHour.toInt()){
-                            sideTime = (start_minute.displayedValues[start_minute.value].toInt() >= data[i]!!.endMinute.toInt())
-                        }
-                    }
+                        checkFlag = pickerTime[1] <= subjectTime[0]
+
+                    }else checkFlag = false
+
+                    checkTime.add(checkFlag)
+
                 }
 
-            }
-            checkTime = amongTime && sideTime
-            Toast.makeText(this,"$checkTime",Toast.LENGTH_SHORT).show()
 
+            }
+            if(checkTime.contains(element = false)) Toast.makeText(this,"no",Toast.LENGTH_SHORT).show()
+            else Toast.makeText(this,"ok",Toast.LENGTH_SHORT).show()
 
         }
         friday_button.setOnClickListener {

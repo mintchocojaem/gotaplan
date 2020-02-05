@@ -16,15 +16,16 @@ open class DataModel: RealmObject() {
 
 open class SubjectBox: RealmObject(){
 
-    var id: Int = 0
+    var id = 0
     var lessonOnOff : Boolean = false
 
     lateinit var dayFlag: String
 
-    lateinit var startHour: String
+    var startHour = 0
+
     lateinit var startMinute: String
 
-    lateinit var endHour: String
+    var endHour = 0
     lateinit var endMinute: String
 
     lateinit var title: String

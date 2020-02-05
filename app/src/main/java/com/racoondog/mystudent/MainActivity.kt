@@ -141,9 +141,9 @@ class MainActivity: AppCompatActivity() {
                     subjectInfo.apply {
                         this.id = ID.toInt()
                         this.dayFlag = dayFlag.toString()
-                        this.startHour = startHour.toString()
+                        this.startHour = startHour.toInt()
                         this.startMinute = startTimeText[2]
-                        this.endHour = endHour.toString()
+                        this.endHour = endHour.toInt()
                         this.endMinute = endTimeText[2]
                         this.title = subjectTitle
                         this.content = contentText
