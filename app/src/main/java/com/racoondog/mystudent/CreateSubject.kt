@@ -101,18 +101,11 @@ class CreateSubject :AppCompatActivity() {
         wednesday_button.setOnClickListener {
             dayFlag = 3
 
-            var subjectData: RealmResults<SubjectBox> =
-                realm.where<SubjectBox>(SubjectBox::class.java)
-                    .equalTo("dayFlag", 4.toString())
-                    .findAll()
-            val data = subjectData.sort("startHour",Sort.DESCENDING) // 이건 첫번째 과목만 해당함으로 변경 해야함
-            Toast.makeText(this,"$data",Toast.LENGTH_SHORT).show()
-
-
         }
         thursday_button.setOnClickListener {
 
             dayFlag = 4
+
             var subjectData: RealmResults<SubjectBox> =
                 realm.where<SubjectBox>(SubjectBox::class.java)
                     .equalTo("dayFlag", dayFlag.toString())
@@ -131,27 +124,24 @@ class CreateSubject :AppCompatActivity() {
                 for ( i in data.indices){
 
                     val subjectTime = arrayListOf<Double>()
-                    var checkFlag = false
 
                     subjectTime.add(data[i]!!.startHour.toDouble()+ (data[i]!!.startMinute.toDouble() / 100))
                     subjectTime.add(data[i]!!.endHour.toDouble()+ (data[i]!!.endMinute.toDouble() / 100))
 
-                    if(pickerTime[0] >= subjectTime[1]){
+                    var checkFlag = when{
 
-                        checkFlag = true
+                        pickerTime[0] >= subjectTime[1] -> true
+                        pickerTime[0] < subjectTime[0] -> pickerTime[1] <= subjectTime[0]
+                        else -> false
 
-                    }else if(pickerTime[0] < subjectTime[0]) {
-
-                        checkFlag = pickerTime[1] <= subjectTime[0]
-
-                    }else checkFlag = false
+                    }
 
                     checkTime.add(checkFlag)
 
                 }
 
-
             }
+
             if(checkTime.contains(element = false)) Toast.makeText(this,"no",Toast.LENGTH_SHORT).show()
             else Toast.makeText(this,"ok",Toast.LENGTH_SHORT).show()
 
