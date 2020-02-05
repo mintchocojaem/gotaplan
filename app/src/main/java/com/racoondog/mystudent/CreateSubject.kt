@@ -140,7 +140,7 @@ class CreateSubject :AppCompatActivity() {
 
                 }
 
-            }
+            }else  checkTime.add(true)
 
             if(checkTime.contains(element = false)) Toast.makeText(this,"no",Toast.LENGTH_SHORT).show()
             else Toast.makeText(this,"ok",Toast.LENGTH_SHORT).show()
