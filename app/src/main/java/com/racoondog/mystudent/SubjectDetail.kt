@@ -99,7 +99,7 @@ class SubjectDetail : AppCompatActivity() {
 
             val builder = AlertDialog.Builder(ContextThemeWrapper(this, R.style.Theme_AppCompat_Light_Dialog))
                 .setTitle("삭제")
-                .setMessage("과목을 삭제하시겠습니까?")
+                .setMessage("해당 과목을 삭제하시겠습니까?")
 
                 .setPositiveButton("확인") { _, _ ->
 

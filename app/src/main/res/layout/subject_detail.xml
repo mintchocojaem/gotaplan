@@ -394,14 +394,19 @@
             android:id="@+id/subjectDelete_bar">
 
         <androidx.appcompat.widget.AppCompatImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                android:background="@drawable/icon_delete"
-                android:id="@+id/subject_delete">
+                android:src="@drawable/icon_delete"
+                android:id="@+id/subject_delete"
+                android:background="@color/clear"
+                android:paddingTop="12dp"
+                android:paddingLeft="12dp"
+                android:paddingBottom="12dp"
+                android:paddingRight="12dp">
 
         </androidx.appcompat.widget.AppCompatImageButton>
 

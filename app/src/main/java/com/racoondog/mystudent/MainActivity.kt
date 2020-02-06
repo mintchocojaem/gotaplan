@@ -56,9 +56,14 @@ class MainActivity: AppCompatActivity() {
         loadData()//데이터 불러오기
 
         weekView_layout.setOnClickListener {
-            val scheduleIntent = Intent(this, CreateSchedule::class.java)
-            scheduleIntent.flags = (Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            startActivityForResult(scheduleIntent, 100)
+
+            val scheduleData = realm.where(DataModel::class.java).findFirst()
+
+            if (scheduleData == null) {
+                val scheduleIntent = Intent(this, CreateSchedule::class.java)
+                scheduleIntent.flags = (Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivityForResult(scheduleIntent, 100)
+            }
 
         }
 
@@ -412,6 +417,7 @@ class MainActivity: AppCompatActivity() {
     }
 
     private fun checkPermissions(permission: String,result: ()->Unit){
+        
         //거절되었거나 아직 수락하지 않은 권한(퍼미션)을 저장할 문자열 배열 리스트
         //필요한 퍼미션들을 하나씩 끄집어내서 현재 권한을 받았는지 체크
         var rejectedPermissionList = ArrayList<String>()
