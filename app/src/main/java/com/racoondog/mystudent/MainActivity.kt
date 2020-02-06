@@ -11,6 +11,7 @@ import android.graphics.Matrix
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.provider.MediaStore
 import android.view.ContextThemeWrapper
 import android.view.Menu
 import android.view.MenuItem
@@ -289,16 +290,40 @@ class MainActivity: AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean { //Menu 목록 부분
         when (item.itemId) {
-            R.id.deleteSchedule -> {
-                deleteSchedule()
-                return true
-            }
-
             R.id.home -> {
                 //onBackPressed()
                 return true
             }
+            R.id.deleteSchedule -> {
+                deleteSchedule()
+                return true
+            }
+            R.id.shareSchedule -> {
+
+                if(weekView_layout.childCount == 2){
+                    Toast.makeText(this,"시간표를 먼저 추가해 주세요.",Toast.LENGTH_SHORT).show()
+                } else{
+
+                    val bitmap1 = getBitmapFromView(scheduleView, scheduleView.height, scheduleView.width)
+                    val bitmap2 = getBitmapFromView(dayLine, dayLine.height, dayLine.width)
+                    val bitmap3 = getBitmapFromView(main_toolbar, main_toolbar.height, main_toolbar.width)
+                    val bitmap = combineImages(bitmap1, bitmap2, bitmap3)
+
+                    val bitmapPath = MediaStore.Images.Media.insertImage(contentResolver,bitmap,"MySchedule",null)
+                    val bitmapUri = Uri.parse(bitmapPath)
+
+                    val intent = Intent(Intent.ACTION_SEND)
+                    intent.setType("image/*")
+                    intent.putExtra(Intent.EXTRA_STREAM, bitmapUri)
+                    startActivity(Intent.createChooser(intent,"시간표 공유"))
+
+                }
+
+                return true
+
+            }
             R.id.saveImage -> {
+
                 if(weekView_layout.childCount == 2){
                     Toast.makeText(this,"시간표를 먼저 추가해 주세요.",Toast.LENGTH_SHORT).show()
                 }
@@ -311,10 +336,10 @@ class MainActivity: AppCompatActivity() {
                         val bitmap = combineImages(bitmap1, bitmap2, bitmap3)
                         saveBitmap(bitmap) }
 
-
                 }
 
                 return true
+
             }
             R.id.license -> {
                 val licenseIntent = Intent(this, License::class.java)
@@ -420,7 +445,7 @@ class MainActivity: AppCompatActivity() {
 
                             val dialog = AlertDialog.Builder(ContextThemeWrapper(this, R.style.Theme_AppCompat_Light_Dialog))
                                 .setCancelable(false)
-                                .setMessage("이 기능을 사용하기 위해서는 $permission 권한이 필요합니다. 계속 하시겠습니까?")
+                                .setMessage("다음 기능을 사용하기 위해서는 $permission 권한이 필요합니다. 계속 하시겠습니까?")
                                 .setPositiveButton("확인") { _, _ ->
                                     ActivityCompat.requestPermissions(this, permissions,100) }
 

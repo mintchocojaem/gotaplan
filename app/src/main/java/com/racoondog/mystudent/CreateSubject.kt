@@ -55,21 +55,25 @@ class CreateSubject :AppCompatActivity() {
                     (start_hour.value == end_hour.value && ((end_minute.value - start_minute.value) >= 6))) {
                     if(title_text.text.toString() !="") {
 
-                        intent.putExtra("StartHour",start_hour.value )
-                        intent.putExtra("EndHour", end_hour.value)
-                        intent.putExtra("DayFlag", dayFlag)
-                        intent.putExtra("SubjectTitle", title_text.text.toString())
-                        intent.putExtra("LessonOnOff",lesson_mode.isChecked)
-                        intent.putExtra("StartTimeText", arrayOf(startText_AMPM.text.toString()
-                            ,startText_hour.text.toString(), startText_minute.text.toString()))
+                        if(checkTime(dayFlag)){
+                            Toast.makeText(this,"해당 시간에 다른 과목이 존재합니다.",Toast.LENGTH_SHORT).show()
+                        } else {
+                            intent.putExtra("StartHour",start_hour.value )
+                            intent.putExtra("EndHour", end_hour.value)
+                            intent.putExtra("DayFlag", dayFlag)
+                            intent.putExtra("SubjectTitle", title_text.text.toString())
+                            intent.putExtra("LessonOnOff",lesson_mode.isChecked)
+                            intent.putExtra("StartTimeText", arrayOf(startText_AMPM.text.toString()
+                                ,startText_hour.text.toString(), startText_minute.text.toString()))
 
-                        intent.putExtra("EndTimeText", arrayOf(endText_AMPM.text.toString()
-                            ,endText_hour.text.toString(), endText_minute.text.toString()))
+                            intent.putExtra("EndTimeText", arrayOf(endText_AMPM.text.toString()
+                                ,endText_hour.text.toString(), endText_minute.text.toString()))
 
-                        intent.putExtra("ContentText",Content_text.text?.toString())
-                        intent.putExtra("colorCode", this.colorCode)
-                        setResult(Activity.RESULT_OK, intent)
-                        finish()
+                            intent.putExtra("ContentText",Content_text.text?.toString())
+                            intent.putExtra("colorCode", this.colorCode)
+                            setResult(Activity.RESULT_OK, intent)
+                            finish()
+                        }
                     }
                     else{
                         Toast.makeText(this, "제목을 입력해 주세요.", Toast.LENGTH_SHORT).show()
@@ -92,59 +96,15 @@ class CreateSubject :AppCompatActivity() {
 
         monday_button.setOnClickListener {
             dayFlag = 1
-
         }
         tuesday_button.setOnClickListener {
             dayFlag = 2
-
         }
         wednesday_button.setOnClickListener {
             dayFlag = 3
-
         }
         thursday_button.setOnClickListener {
-
             dayFlag = 4
-
-            var subjectData: RealmResults<SubjectBox> =
-                realm.where<SubjectBox>(SubjectBox::class.java)
-                    .equalTo("dayFlag", dayFlag.toString())
-                    .findAll()
-            val data = subjectData.sort("startHour",Sort.ASCENDING)
-
-            val pickerTime = arrayListOf<Double>()
-
-            pickerTime.add(start_hour.value.toDouble() + (start_minute.displayedValues[start_minute.value].toDouble() / 100))
-            pickerTime.add(end_hour.value.toDouble() + (end_minute.displayedValues[end_minute.value].toDouble() / 100))
-
-            val checkTime = arrayListOf<Boolean>()
-
-            if(data.size != 0){
-
-                for ( i in data.indices){
-
-                    val subjectTime = arrayListOf<Double>()
-
-                    subjectTime.add(data[i]!!.startHour.toDouble()+ (data[i]!!.startMinute.toDouble() / 100))
-                    subjectTime.add(data[i]!!.endHour.toDouble()+ (data[i]!!.endMinute.toDouble() / 100))
-
-                    var checkFlag = when{
-
-                        pickerTime[0] >= subjectTime[1] -> true
-                        pickerTime[0] < subjectTime[0] -> pickerTime[1] <= subjectTime[0]
-                        else -> false
-
-                    }
-
-                    checkTime.add(checkFlag)
-
-                }
-
-            }else  checkTime.add(true)
-
-            if(checkTime.contains(element = false)) Toast.makeText(this,"no",Toast.LENGTH_SHORT).show()
-            else Toast.makeText(this,"ok",Toast.LENGTH_SHORT).show()
-
         }
         friday_button.setOnClickListener {
             dayFlag = 5
@@ -190,13 +150,46 @@ class CreateSubject :AppCompatActivity() {
         }
 
     }
-    private fun checkNull(array: Array<Any>,int: Int):Boolean{
-        try {
-            array[int]
-        } catch (e: IndexOutOfBoundsException) {
-            return false
-        }
-        return true
+    private fun checkTime(dayFlag:Int):Boolean{
+
+        var subjectData: RealmResults<SubjectBox> =
+            realm.where<SubjectBox>(SubjectBox::class.java)
+                .equalTo("dayFlag", dayFlag.toString())
+                .findAll()
+        val data = subjectData.sort("startHour",Sort.ASCENDING)
+
+        val pickerTime = arrayListOf<Double>()
+
+        pickerTime.add(start_hour.value.toDouble() + (start_minute.displayedValues[start_minute.value].toDouble() / 100))
+        pickerTime.add(end_hour.value.toDouble() + (end_minute.displayedValues[end_minute.value].toDouble() / 100))
+
+        val checkTime = arrayListOf<Boolean>()
+
+        if(data.size != 0){
+
+            for ( i in data.indices){
+
+                val subjectTime = arrayListOf<Double>()
+
+                subjectTime.add(data[i]!!.startHour.toDouble()+ (data[i]!!.startMinute.toDouble() / 100))
+                subjectTime.add(data[i]!!.endHour.toDouble()+ (data[i]!!.endMinute.toDouble() / 100))
+
+                var checkFlag = when{
+
+                    pickerTime[0] >= subjectTime[1] -> true
+                    pickerTime[0] < subjectTime[0] -> pickerTime[1] <= subjectTime[0]
+                    else -> false
+
+                }
+
+                checkTime.add(checkFlag)
+
+            }
+
+        }else  checkTime.add(true)
+
+        return checkTime.contains(element = false) // checkTime = true -> 시간표 겹침
+
     }
 
 

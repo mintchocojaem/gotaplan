@@ -7,9 +7,14 @@
             android:title="시간표 삭제">
     </item>
     <item
+            android:id="@+id/shareSchedule"
+            app:showAsAction="never"
+            android:title="시간표 공유">
+    </item>
+    <item
             android:id="@+id/saveImage"
             app:showAsAction="never"
-            android:title="시간표 캡쳐">
+            android:title="시간표 저장">
     </item>
 
     <item
