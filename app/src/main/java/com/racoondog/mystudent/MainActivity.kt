@@ -238,45 +238,46 @@ class MainActivity: AppCompatActivity() {
     }
     fun deleteSchedule(){
 
-        if(weekView_layout.childCount != 2) {
 
-            val builder = AlertDialog.Builder(this)
+        val builder = AlertDialog.Builder(this)
 
-                .setTitle("삭제")
-                .setMessage("시간표를 삭제하시겠습니까? \n\n(모든 시간표와 과목의 데이터가 삭제됩니다.)")
+            .setTitle("초기화")
+            .setMessage("시간표를 초기화하시겠습니까? \n\n(모든 시간표와 과목의 데이터가 삭제됩니다.)")
 
-                .setPositiveButton("확인") { _, _ ->
+            .setPositiveButton("확인") { _, _ ->
 
-                    weekView_layout.removeView(weekView)
+                weekView_layout.removeView(weekView)
 
-                    addSubjectButton.visibility = View.GONE
-                    schedule_add.visibility = View.VISIBLE
-                    toolbar_title.text = "시간표"
+                addSubjectButton.visibility = View.GONE
+                schedule_add.visibility = View.VISIBLE
+                toolbar_title.text = "시간표"
 
-                    var scheduleData: RealmResults<DataModel> =
-                        realm.where<DataModel>(DataModel::class.java)
-                            .findAll()
-                    val data = scheduleData[0]!!
-                    realm.beginTransaction()
-                    data.deleteFromRealm()
-                    realm.commitTransaction()
-                    Toast.makeText(this,"시간표가 삭제되었습니다.",Toast.LENGTH_SHORT).show()
+                var scheduleData: RealmResults<DataModel> =
+                    realm.where<DataModel>(DataModel::class.java)
+                        .findAll()
+                val data = scheduleData[0]!!
+                realm.beginTransaction()
+                data.deleteFromRealm()
+                realm.commitTransaction()
 
-                 }
+                finishAffinity()
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                System.exit(0)
 
-                .setNegativeButton("취소") { _, _ ->
-
-                }
-
-                .show()
-                builder.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(resources.getColor(R.color.colorCancel))
-                builder.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(resources.getColor(R.color.defaultAccentColor))
+                Toast.makeText(this,"시간표가 삭제되었습니다.",Toast.LENGTH_SHORT).show()
 
 
-        }
-        else{
-            Toast.makeText(this,"시간표를 먼저 추가해 주세요.",Toast.LENGTH_SHORT).show()
-        }
+             }
+
+            .setNegativeButton("취소") { _, _ ->
+
+            }
+
+            .show()
+            builder.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(resources.getColor(R.color.colorCancel))
+            builder.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(resources.getColor(R.color.defaultAccentColor))
+
 
     }
 
