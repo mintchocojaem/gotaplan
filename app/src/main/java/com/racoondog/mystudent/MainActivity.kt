@@ -12,10 +12,11 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.view.ContextThemeWrapper
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -235,18 +236,18 @@ class MainActivity: AppCompatActivity() {
 
 
     }
-    private  fun deleteSchedule(){
+    fun deleteSchedule(){
 
         if(weekView_layout.childCount != 2) {
 
-            val builder = AlertDialog.Builder(ContextThemeWrapper(this, R.style.Theme_AppCompat_Light_Dialog))
+            val builder = AlertDialog.Builder(this)
 
                 .setTitle("삭제")
                 .setMessage("시간표를 삭제하시겠습니까? \n\n(모든 시간표와 과목의 데이터가 삭제됩니다.)")
 
                 .setPositiveButton("확인") { _, _ ->
 
-                    weekView.removeAllViews()
+                    weekView_layout.removeView(weekView)
 
                     addSubjectButton.visibility = View.GONE
                     schedule_add.visibility = View.VISIBLE
@@ -255,11 +256,10 @@ class MainActivity: AppCompatActivity() {
                     var scheduleData: RealmResults<DataModel> =
                         realm.where<DataModel>(DataModel::class.java)
                             .findAll()
-                    val data = scheduleData[0]
+                    val data = scheduleData[0]!!
                     realm.beginTransaction()
-                    data?.deleteFromRealm()
+                    data.deleteFromRealm()
                     realm.commitTransaction()
-
                     Toast.makeText(this,"시간표가 삭제되었습니다.",Toast.LENGTH_SHORT).show()
 
                  }
@@ -280,6 +280,7 @@ class MainActivity: AppCompatActivity() {
 
     }
 
+
     private fun changeTheme() {
         window.statusBarColor = resources.getColor(R.color.whiteColor)
         addSubjectButton.backgroundTintList = resources.getColorStateList(R.color.darkColor)
@@ -299,53 +300,17 @@ class MainActivity: AppCompatActivity() {
                 //onBackPressed()
                 return true
             }
-            R.id.deleteSchedule -> {
-                deleteSchedule()
-                return true
-            }
-            R.id.shareSchedule -> {
-
+            R.id.scheduleSetting -> {
                 if(weekView_layout.childCount == 2){
                     Toast.makeText(this,"시간표를 먼저 추가해 주세요.",Toast.LENGTH_SHORT).show()
-                } else{
-
-                    val bitmap1 = getBitmapFromView(scheduleView, scheduleView.height, scheduleView.width)
-                    val bitmap2 = getBitmapFromView(dayLine, dayLine.height, dayLine.width)
-                    val bitmap3 = getBitmapFromView(main_toolbar, main_toolbar.height, main_toolbar.width)
-                    val bitmap = combineImages(bitmap1, bitmap2, bitmap3)
-
-                    val bitmapPath = MediaStore.Images.Media.insertImage(contentResolver,bitmap,"MySchedule",null)
-                    val bitmapUri = Uri.parse(bitmapPath)
-
-                    val intent = Intent(Intent.ACTION_SEND)
-                    intent.setType("image/*")
-                    intent.putExtra(Intent.EXTRA_STREAM, bitmapUri)
-                    startActivity(Intent.createChooser(intent,"시간표 공유"))
-
+                }else{
+                    val dialog = ScheduleDialog(this)
+                    dialog.cnxt = this
+                    dialog.show()
                 }
-
                 return true
-
             }
-            R.id.saveImage -> {
 
-                if(weekView_layout.childCount == 2){
-                    Toast.makeText(this,"시간표를 먼저 추가해 주세요.",Toast.LENGTH_SHORT).show()
-                }
-                else{
-
-                    checkPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE){
-                        val bitmap1 = getBitmapFromView(scheduleView, scheduleView.height, scheduleView.width)
-                        val bitmap2 = getBitmapFromView(dayLine, dayLine.height, dayLine.width)
-                        val bitmap3 = getBitmapFromView(main_toolbar, main_toolbar.height, main_toolbar.width)
-                        val bitmap = combineImages(bitmap1, bitmap2, bitmap3)
-                        saveBitmap(bitmap) }
-
-                }
-
-                return true
-
-            }
             R.id.license -> {
                 val licenseIntent = Intent(this, License::class.java)
                 startActivity(licenseIntent)
@@ -366,58 +331,8 @@ class MainActivity: AppCompatActivity() {
 
     }
 
-    private fun getBitmapFromView(view: View, height:Int, width:Int):Bitmap {
+    fun checkPermissions(permission: String,result: ()->Unit){
 
-
-        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(bitmap)
-        view.draw(canvas)
-        return bitmap
-    }
-
-    private fun combineImages(first:Bitmap, second:Bitmap,third:Bitmap ):Bitmap {
-
-        val bitmap = Bitmap.createBitmap(first.width, first.height+second.height+third.height, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(bitmap)
-        canvas.drawBitmap(third, Matrix(), null)
-        canvas.drawBitmap(second,0.toFloat(), third.height.toFloat(), null)
-        canvas.drawBitmap(first, 0.toFloat(), third.height.toFloat()+second.height.toFloat(), null)
-
-        return bitmap
-    }
-
-    private fun saveBitmap(bitmap:Bitmap) { // 버튼 onClick 리스너
-        // WRITE_EXTERNAL_STORAGE 외부 공간 사용 권한 허용
-
-        val fos:FileOutputStream // FileOutputStream 이용 파일 쓰기 한다
-        val strFolderPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/myStudent"
-        val folder = File(strFolderPath)
-        if (!folder.exists())
-        { // 해당 폴더 없으면 만들어라
-            folder.mkdirs()
-        }
-        val strFilePath = strFolderPath + "/" + System.currentTimeMillis() + ".png"
-        val fileCacheItem = File(strFilePath)
-        try
-        {
-            fos = FileOutputStream(fileCacheItem)
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)
-            fos.flush()
-            fos.close()
-        }
-        catch (e:FileNotFoundException) {
-            e.printStackTrace()
-        }
-        finally
-        {
-            Toast.makeText(this, "시간표가 갤러리에 저장되었습니다.", Toast.LENGTH_SHORT).show()
-            sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(File(strFilePath))))
-        }
-
-    }
-
-    private fun checkPermissions(permission: String,result: ()->Unit){
-        
         //거절되었거나 아직 수락하지 않은 권한(퍼미션)을 저장할 문자열 배열 리스트
         //필요한 퍼미션들을 하나씩 끄집어내서 현재 권한을 받았는지 체크
         var rejectedPermissionList = ArrayList<String>()
@@ -449,7 +364,7 @@ class MainActivity: AppCompatActivity() {
 
                             //권한 획득 실패
 
-                            val dialog = AlertDialog.Builder(ContextThemeWrapper(this, R.style.Theme_AppCompat_Light_Dialog))
+                            val dialog = AlertDialog.Builder(this)
                                 .setCancelable(false)
                                 .setMessage("다음 기능을 사용하기 위해서는 $permission 권한이 필요합니다. 계속 하시겠습니까?")
                                 .setPositiveButton("확인") { _, _ ->

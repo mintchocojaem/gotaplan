@@ -5,12 +5,12 @@ import io.realm.RealmObject
 
 open class DataModel: RealmObject() {
 
-    var scheduleTitle:String? = null
-    var scheduleDayFlag:Int? = null
-    var scheduleStartHour:Int? = null
-    var scheduleEndHour:Int? = null
+    var scheduleTitle:String = ""
+    var scheduleDayFlag:Int = 0
+    var scheduleStartHour:Int = 0
+    var scheduleEndHour:Int = 0
 
-    lateinit var subjectDB:RealmList<SubjectBox>
+    var subjectDB = RealmList<SubjectBox>()
 
 }
 
