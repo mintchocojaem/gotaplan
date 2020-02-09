@@ -1,22 +1,13 @@
 package com.racoondog.mystudent
 
-import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Matrix
-import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
-import android.provider.MediaStore
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -26,11 +17,6 @@ import androidx.core.content.ContextCompat
 import io.realm.Realm
 import io.realm.RealmResults
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.weekview.*
-import java.io.File
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
-
 
 
 class MainActivity: AppCompatActivity() {
@@ -38,7 +24,7 @@ class MainActivity: AppCompatActivity() {
     //Developer: Void
 
     private val realm = Realm.getDefaultInstance()
-    private val weekView by lazy { WeekView(this) }
+    val weekView by lazy { WeekView(this) }
 
     var intentStartTime: Int = 0
     var intentEndTime: Int = 0
@@ -236,50 +222,6 @@ class MainActivity: AppCompatActivity() {
 
 
     }
-    fun deleteSchedule(){
-
-
-        val builder = AlertDialog.Builder(this)
-
-            .setTitle("초기화")
-            .setMessage("시간표를 초기화하시겠습니까? \n\n(모든 시간표와 과목의 데이터가 삭제됩니다.)")
-
-            .setPositiveButton("확인") { _, _ ->
-
-                weekView_layout.removeView(weekView)
-
-                addSubjectButton.visibility = View.GONE
-                schedule_add.visibility = View.VISIBLE
-                toolbar_title.text = "시간표"
-
-                var scheduleData: RealmResults<DataModel> =
-                    realm.where<DataModel>(DataModel::class.java)
-                        .findAll()
-                val data = scheduleData[0]!!
-                realm.beginTransaction()
-                data.deleteFromRealm()
-                realm.commitTransaction()
-
-                finishAffinity()
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-                System.exit(0)
-
-                Toast.makeText(this,"시간표가 삭제되었습니다.",Toast.LENGTH_SHORT).show()
-
-
-             }
-
-            .setNegativeButton("취소") { _, _ ->
-
-            }
-
-            .show()
-            builder.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(resources.getColor(R.color.colorCancel))
-            builder.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(resources.getColor(R.color.defaultAccentColor))
-
-
-    }
 
 
     private fun changeTheme() {
@@ -306,6 +248,16 @@ class MainActivity: AppCompatActivity() {
                     Toast.makeText(this,"시간표를 먼저 추가해 주세요.",Toast.LENGTH_SHORT).show()
                 }else{
                     val dialog = ScheduleDialog(this)
+                    dialog.cnxt = this
+                    dialog.show()
+                }
+                return true
+            }
+            R.id.subjectSetting ->{
+                if(weekView_layout.childCount == 2){
+                    Toast.makeText(this,"시간표를 먼저 추가해 주세요.",Toast.LENGTH_SHORT).show()
+                }else{
+                    val dialog = SubjectDialog(this)
                     dialog.cnxt = this
                     dialog.show()
                 }
@@ -349,7 +301,7 @@ class MainActivity: AppCompatActivity() {
 
         //거절된 퍼미션이 있다면...
         if(permission in rejectedPermissionList){
-            //권한 요청!
+            //권한 요청
             val array = arrayOfNulls<String>(rejectedPermissionList.size)
             ActivityCompat.requestPermissions(this, rejectedPermissionList.toArray(array),100)
         }
@@ -370,7 +322,6 @@ class MainActivity: AppCompatActivity() {
                                 .setMessage("다음 기능을 사용하기 위해서는 $permission 권한이 필요합니다. 계속 하시겠습니까?")
                                 .setPositiveButton("확인") { _, _ ->
                                     ActivityCompat.requestPermissions(this, permissions,100) }
-
                                 .show()
                             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(resources.getColor(R.color.defaultAccentColor))
 

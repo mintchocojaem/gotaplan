@@ -1,23 +1,22 @@
 package com.racoondog.mystudent
 
 import android.Manifest
+import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Matrix
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.provider.MediaStore
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
+import io.realm.Realm
+import io.realm.RealmResults
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.schedule_dialog.*
 import kotlinx.android.synthetic.main.weekview.*
@@ -29,6 +28,7 @@ import java.io.OutputStream
 
 class ScheduleDialog:Dialog {
 
+    private val realm = Realm.getDefaultInstance()
     lateinit var cnxt:MainActivity
 
     constructor(context: Context) : super(context)
@@ -50,7 +50,7 @@ class ScheduleDialog:Dialog {
 
         setContentView(R.layout.schedule_dialog)
 
-        scheduleSave.setOnClickListener{
+        saveSchedule.setOnClickListener{
 
             cnxt.checkPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE){
                 val bitmap1 = getBitmapFromView(cnxt.scheduleView, cnxt.scheduleView.height, cnxt.scheduleView.width)
@@ -61,7 +61,7 @@ class ScheduleDialog:Dialog {
                 dismiss()}
 
         }
-        scheduleShare.setOnClickListener {
+        shareSchedule.setOnClickListener {
 
             cnxt.checkPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE){
 
@@ -91,8 +91,8 @@ class ScheduleDialog:Dialog {
             }
 
         }
-        scheduleDelete.setOnClickListener {
-            cnxt.deleteSchedule()
+        deleteSchedule.setOnClickListener {
+            deleteSchedule()
             dismiss()
         }
 
@@ -147,5 +147,59 @@ class ScheduleDialog:Dialog {
         }
 
     }
+    private fun deleteSchedule(){
+
+
+        val builder = AlertDialog.Builder(context)
+
+            .setTitle("초기화")
+            .setMessage("시간표를 초기화하시겠습니까? \n\n(모든 시간표와 과목의 데이터가 삭제됩니다.)")
+
+            .setPositiveButton("확인") { _, _ ->
+
+                cnxt.weekView_layout.removeView(cnxt.weekView)
+
+                cnxt.addSubjectButton.visibility = View.GONE
+                cnxt.schedule_add.visibility = View.VISIBLE
+                cnxt.toolbar_title.text = "시간표"
+
+                var subjectData: RealmResults<SubjectBox> = realm.where<SubjectBox>(SubjectBox::class.java)
+                    .findAll()
+
+                for(i in subjectData.indices){
+                    realm.beginTransaction()
+                    subjectData[0]!!.deleteFromRealm()
+                    realm.commitTransaction()
+                }
+
+                var scheduleData: RealmResults<DataModel> =
+                    realm.where<DataModel>(DataModel::class.java)
+                        .findAll()
+                val data = scheduleData[0]!!
+                realm.beginTransaction()
+                data.deleteFromRealm()
+                realm.commitTransaction()
+
+                cnxt.finishAffinity()
+                val intent = Intent(cnxt, MainActivity::class.java)
+                cnxt.startActivity(intent)
+                System.exit(0)
+
+                Toast.makeText(context,"시간표가 초기화되었습니다.",Toast.LENGTH_SHORT).show()
+
+
+            }
+
+            .setNegativeButton("취소") { _, _ ->
+
+            }
+
+            .show()
+        builder.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(cnxt.resources.getColor(R.color.colorCancel))
+        builder.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(cnxt.resources.getColor(R.color.defaultAccentColor))
+
+
+    }
+
 
 }

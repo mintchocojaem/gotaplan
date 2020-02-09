@@ -8,6 +8,12 @@
     </item>
 
     <item
+            android:id="@+id/subjectSetting"
+            app:showAsAction="never"
+            android:title="과목 설정">
+    </item>
+
+    <item
             android:id="@+id/directFeedback"
             app:showAsAction="never"
             android:title="다이렉트 피드백">
