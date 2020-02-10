@@ -42,6 +42,10 @@ class SubjectDetailDialog:Dialog {
             .findAll()
         val data = subjectData[0]!!
 
+        changeSubjectTime.setOnClickListener {
+            //from here
+        }
+
         changeSubjectColor.setOnClickListener {
 
             val dialog = ColorPickerDialog(context, object :
@@ -52,6 +56,7 @@ class SubjectDetailDialog:Dialog {
                     data.subjectColor = colorcode
                     realm.commitTransaction()
                     cnxt.refresh(cnxt.cnxt.weekView)
+                    Toast.makeText(context,"색상이 변경되었습니다.", Toast.LENGTH_SHORT).show()
                     dismiss()
                 }
             })
