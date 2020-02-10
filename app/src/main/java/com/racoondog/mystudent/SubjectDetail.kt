@@ -25,7 +25,7 @@ class SubjectDetail : AppCompatActivity() {
         var saveEditFlag = false
 
         var subjectData: RealmResults<SubjectBox> = realm.where<SubjectBox>(SubjectBox::class.java)
-            .equalTo("id",WeekViewData.ID)
+            .equalTo("id",WeekView.ID)
             .findAll()
         val data = subjectData[0]!!
         subject_time.text = data.time.toString()

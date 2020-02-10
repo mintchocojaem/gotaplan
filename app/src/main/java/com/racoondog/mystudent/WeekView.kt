@@ -16,6 +16,10 @@ import me.grantland.widget.AutofitTextView
 
 class WeekView : ConstraintLayout{
 
+    companion object {
+        var ID: Int = 0 //weekview subject 클릭시 id 값을 가리키는 포인터
+    }
+
     private val realm = Realm.getDefaultInstance()
 
     var dayFlag = 0
@@ -284,7 +288,7 @@ class WeekView : ConstraintLayout{
             subject.id = ID
 
             subject.setOnClickListener{
-                WeekViewData.ID = ID
+                WeekView.ID = ID
                 dayFlag = DayFlag
 
                 val intentSubjectDetail = Intent (cnxt, SubjectDetail::class.java)
@@ -293,7 +297,7 @@ class WeekView : ConstraintLayout{
             }
 
             subject.setOnLongClickListener {
-                WeekViewData.ID = ID
+                WeekView.ID = ID
                 dayFlag = DayFlag
                 val dialog = SubjectDetailDialog(context)
                 dialog.cnxt = this@WeekView

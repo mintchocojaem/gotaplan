@@ -155,7 +155,7 @@ class MainActivity: AppCompatActivity() {
                 103 -> {
                     var dataBase: RealmResults<SubjectBox> =
                         realm.where<SubjectBox>(SubjectBox::class.java)
-                            .equalTo("id",WeekViewData.ID)
+                            .equalTo("id",WeekView.ID)
                             .findAll()
                     val title = weekView.findViewWithTag<TextView>("title${dataBase.get(0)!!.id}")
                     title.text = dataBase.get(0)!!.title.toString()
@@ -168,7 +168,7 @@ class MainActivity: AppCompatActivity() {
             when (requestCode) {
 
                 103 -> {
-                    weekView.deleteSubject(WeekViewData.ID.toInt())
+                    weekView.deleteSubject(WeekView.ID.toInt())
                 }
 
             }

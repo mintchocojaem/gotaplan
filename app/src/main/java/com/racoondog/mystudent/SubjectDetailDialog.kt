@@ -39,7 +39,7 @@ class SubjectDetailDialog:Dialog {
 
 
         var subjectData: RealmResults<SubjectBox> = realm.where<SubjectBox>(SubjectBox::class.java)
-            .equalTo("id",WeekViewData.ID)
+            .equalTo("id",WeekView.ID)
             .findAll()
         val data = subjectData[0]!!
 
