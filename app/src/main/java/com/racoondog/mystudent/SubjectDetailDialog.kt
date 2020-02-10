@@ -29,10 +29,10 @@ class SubjectDetailDialog:Dialog {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val layoutparams = WindowManager.LayoutParams()
-        layoutparams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
-        layoutparams.dimAmount = 0.8f
-        window.attributes = layoutparams
+        val layoutParams = WindowManager.LayoutParams()
+        layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
+        layoutParams.dimAmount = 0.8f
+        window.attributes = layoutParams
 
         setContentView(R.layout.subject_detail_dialog)
 
