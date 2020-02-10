@@ -155,7 +155,7 @@ class MainActivity: AppCompatActivity() {
                 103 -> {
                     var dataBase: RealmResults<SubjectBox> =
                         realm.where<SubjectBox>(SubjectBox::class.java)
-                            .equalTo("id", WeekViewData.ID)
+                            .equalTo("id",WeekViewData.ID)
                             .findAll()
                     val title = weekView.findViewWithTag<TextView>("title${dataBase.get(0)!!.id}")
                     title.text = dataBase.get(0)!!.title.toString()

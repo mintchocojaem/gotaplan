@@ -282,6 +282,7 @@ class WeekView : ConstraintLayout{
             subject.setBackgroundColor(colorCode)
             subject.setPadding(5,7,5,7)
             subject.id = ID
+
             subject.setOnClickListener{
                 WeekViewData.ID = ID
                 dayFlag = DayFlag
@@ -289,6 +290,15 @@ class WeekView : ConstraintLayout{
                 val intentSubjectDetail = Intent (cnxt, SubjectDetail::class.java)
                 intentSubjectDetail.flags = (Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 cnxt.startActivityForResult(intentSubjectDetail,103)
+            }
+
+            subject.setOnLongClickListener {
+                WeekViewData.ID = ID
+                dayFlag = DayFlag
+                val dialog = SubjectDetailDialog(context)
+                dialog.cnxt = this@WeekView
+                dialog.show()
+                true
             }
 
         }
