@@ -6,7 +6,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="300dp"
-            android:layout_height="120dp"
+            android:layout_height="200dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -49,6 +49,19 @@
                     android:paddingRight="20dp"
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp">
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="색상 변경"
+                        android:gravity="center_vertical"
+                        android:textSize="16dp"
+                        android:textColor="@color/defaultAccentColor"
+                        android:layout_weight="1"
+                        android:id="@+id/changeSubjectColor"
+                        >
+
+                </TextView>
 
                 <TextView
                         android:layout_width="match_parent"

@@ -10,6 +10,7 @@ import android.view.WindowManager
 import android.widget.Toast
 import io.realm.Realm
 import io.realm.RealmResults
+import kotlinx.android.synthetic.main.schedule_image_layout.view.*
 import kotlinx.android.synthetic.main.subject_detail_dialog.*
 
 class SubjectDetailDialog:Dialog {
@@ -41,6 +42,23 @@ class SubjectDetailDialog:Dialog {
             .findAll()
         val data = subjectData[0]!!
 
+        changeSubjectColor.setOnClickListener {
+
+            val dialog = ColorPickerDialog(context, object :
+                ColorPickerDialog.ICustomDialogEventListener {
+                override fun customDialogEvent(colorcode: Int) {
+                    // Do something with the value here, e.g. set a variable in the calling activity
+                    realm.beginTransaction()
+                    data.subjectColor = colorcode
+                    realm.commitTransaction()
+                    cnxt.refresh(cnxt.cnxt.weekView)
+                    dismiss()
+                }
+            })
+            dialog.show()
+
+        }
+
         deleteSubject.setOnClickListener {
             val builder = AlertDialog.Builder(context)
                 .setTitle("삭제")
@@ -65,4 +83,6 @@ class SubjectDetailDialog:Dialog {
             builder.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(context.resources.getColor(R.color.defaultAccentColor))
         }
     }
+
+
 }

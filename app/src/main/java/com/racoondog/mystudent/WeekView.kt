@@ -24,7 +24,7 @@ class WeekView : ConstraintLayout{
 
     var dayFlag = 0
 
-    private val cnxt = context as MainActivity
+    val cnxt = context as MainActivity
     private val dm:DisplayMetrics = context.resources.displayMetrics
     private val dmWidth:Int = dm.widthPixels
     private  var cellHeight = 0
@@ -313,6 +313,35 @@ class WeekView : ConstraintLayout{
 
     fun deleteSubject(id:Int){
         findViewWithTag<ConstraintLayout>(dayFlag).removeView(findViewById(id))
+    }
+    fun refresh(view: WeekView){
+
+        val scheduleData = realm.where(DataModel::class.java).findFirst()
+
+        if (scheduleData != null) {
+
+            for(i in 1 .. scheduleData!!.scheduleDayFlag){
+                view.findViewWithTag<ConstraintLayout>(i).removeAllViews()
+            }
+
+            val subjectData: RealmResults<SubjectBox> =
+                realm.where<SubjectBox>(SubjectBox::class.java).findAll()
+            for (data in subjectData) {
+                view.createSubject(
+                    data.startHour.toInt(),
+                    data.startMinute.toInt()
+                    ,
+                    data.endHour.toInt(),
+                    data.endMinute.toInt(),
+                    data.dayFlag.toInt(),
+                    scheduleData.scheduleStartHour!!.toInt(),
+                    data.id.toInt(),
+                    data.subjectColor
+                )
+            }
+
+        }
+
     }
     fun createID(Min:Int, Max:Int):Int{
         var result = 0
