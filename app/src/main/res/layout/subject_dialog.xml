@@ -58,7 +58,7 @@
                         android:textSize="16dp"
                         android:textColor="@color/defaultAccentColor"
                         android:layout_weight="1"
-                        android:id="@+id/deleteSubject"
+                        android:id="@+id/initSubject"
                         >
 
                 </TextView>

@@ -95,34 +95,6 @@ class SubjectDetail : AppCompatActivity() {
             }
         }
 
-        subject_delete.setOnClickListener{
-
-            val builder = AlertDialog.Builder(ContextThemeWrapper(this, R.style.Theme_AppCompat_Light_Dialog))
-                .setTitle("삭제")
-                .setMessage("해당 과목을 삭제하시겠습니까?")
-
-                .setPositiveButton("확인") { _, _ ->
-
-                    realm.beginTransaction()
-                    data.deleteFromRealm()
-                    realm.commitTransaction()
-                    Toast.makeText(this,"해당 과목이 삭제되었습니다.",Toast.LENGTH_SHORT).show()
-                    setResult(104,intent)
-                    finish()
-
-                }
-
-               .setNegativeButton("취소") { _, _ ->
-
-                }
-                .show()
-            builder.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(resources.getColor(R.color.colorCancel))
-            builder.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(resources.getColor(R.color.defaultAccentColor))
-
-        }
-
-
-
     }
 
     private fun themeChange(colorCode:Int){

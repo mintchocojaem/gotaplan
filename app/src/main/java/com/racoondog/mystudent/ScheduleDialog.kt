@@ -91,7 +91,7 @@ class ScheduleDialog:Dialog {
             }
 
         }
-        deleteSchedule.setOnClickListener {
+        initSchedule.setOnClickListener {
             deleteSchedule()
             dismiss()
         }

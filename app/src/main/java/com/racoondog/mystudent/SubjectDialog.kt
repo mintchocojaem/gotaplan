@@ -5,13 +5,11 @@ import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
-import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import io.realm.Realm
 import io.realm.RealmResults
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.subject_dialog.*
 
 class SubjectDialog: Dialog {
@@ -37,7 +35,7 @@ class SubjectDialog: Dialog {
 
         setContentView(R.layout.subject_dialog)
 
-        deleteSubject.setOnClickListener {
+        initSubject.setOnClickListener {
             deleteSubject()
             dismiss()
         }

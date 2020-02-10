@@ -1,15 +1,13 @@
 package com.racoondog.mystudent
 
-import android.app.Activity
+
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
-
 import android.view.WindowManager
 import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
 import io.realm.Realm
 import io.realm.RealmResults
 import kotlinx.android.synthetic.main.subject_detail_dialog.*
@@ -43,7 +41,7 @@ class SubjectDetailDialog:Dialog {
             .findAll()
         val data = subjectData[0]!!
 
-        deleteSubjectDetail.setOnClickListener {
+        deleteSubject.setOnClickListener {
             val builder = AlertDialog.Builder(context)
                 .setTitle("삭제")
                 .setMessage("해당 과목을 삭제하시겠습니까?")
