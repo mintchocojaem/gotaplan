@@ -144,6 +144,7 @@ class TimeDialog:Dialog {
         var subjectData: RealmResults<SubjectBox> =
             realm.where<SubjectBox>(SubjectBox::class.java)
                 .equalTo("dayFlag", dayFlag)
+                .notEqualTo("id",WeekView.ID)
                 .findAll()
         val data = subjectData.sort("startHour", Sort.ASCENDING)
 
