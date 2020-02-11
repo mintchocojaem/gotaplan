@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -191,7 +192,6 @@ class CreateSubject :AppCompatActivity() {
         return checkTime.contains(element = false) // checkTime = true -> 시간표 겹침
 
     }
-
 
     private fun changeTheme(colorList:Int){
         window.statusBarColor = colorList

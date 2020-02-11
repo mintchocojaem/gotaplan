@@ -3,6 +3,7 @@ package com.racoondog.mystudent
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.app.TimePickerDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
@@ -43,7 +44,10 @@ class SubjectDetailDialog:Dialog {
         val data = subjectData[0]!!
 
         changeSubjectTime.setOnClickListener {
-            //from here
+            val dialog = TimeDialog(context)
+            dialog.cnxt = cnxt
+            dialog.show()
+            dismiss()
         }
 
         changeSubjectColor.setOnClickListener {

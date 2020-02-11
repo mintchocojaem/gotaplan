@@ -1,9 +1,11 @@
 package com.racoondog.mystudent
 
 import android.content.Context
-import android.content.res.TypedArray
 import android.util.AttributeSet
-import android.view.*
+import android.view.LayoutInflater
+import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.NumberPicker
 import android.widget.TextView
@@ -57,8 +59,7 @@ class TimePicker:ConstraintLayout {
             displayedValues = displayValue.toTypedArray()
 
         }
-
-        startText_AMPM.text = "${displayValue[0]} "
+        startText_AMPM.text = "${displayValue[0]}"
         displayValue.removeAll(displayValue)
 
         end_AMPM.apply {
@@ -74,7 +75,7 @@ class TimePicker:ConstraintLayout {
 
         }
 
-        endText_AMPM.text ="${displayValue[1]} "
+        endText_AMPM.text = "${displayValue[1]}"
         displayValue.removeAll(displayValue)
 
         start_hour.apply {
@@ -85,8 +86,8 @@ class TimePicker:ConstraintLayout {
 
             for (i in minValue .. maxValue) {
                 when{
-                    i > 12-> displayValue.add("${i-12}")
-                    else -> displayValue.add("$i")
+                    i > 12-> displayValue.add(" ${i-12}")
+                    else -> displayValue.add(" $i")
                 }
             }
 
@@ -95,7 +96,7 @@ class TimePicker:ConstraintLayout {
             descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
 
         }
-        startText_hour.text = "8"
+        startText_hour.text = " 8"
         displayValue.removeAll(displayValue)
 
         end_hour.apply {
@@ -105,8 +106,8 @@ class TimePicker:ConstraintLayout {
             value = 18
             for (i in minValue .. maxValue) {
                 when{
-                    i > 12-> displayValue.add("${i-12}")
-                    else -> displayValue.add("$i")
+                    i > 12-> displayValue.add(" ${i-12}")
+                    else -> displayValue.add(" $i")
                 }
             }
 
@@ -116,7 +117,7 @@ class TimePicker:ConstraintLayout {
 
 
         }
-        endText_hour.text = "6"
+        endText_hour.text = " 6"
         displayValue.removeAll(displayValue)
 
         start_AMPM.setOnTouchListener { _: View, event: MotionEvent ->
@@ -133,10 +134,10 @@ class TimePicker:ConstraintLayout {
             startText_hour.text = start_hour.displayedValues[start_hour.value - start_hour.minValue]
             if(i2 < 12 || i2 == 24) {
                 start_AMPM.value = 0
-                startText_AMPM.text = start_AMPM.displayedValues[start_AMPM.value]+" "
+                startText_AMPM.text = start_AMPM.displayedValues[start_AMPM.value]
             }else {
                 start_AMPM.value = 1
-                startText_AMPM.text = start_AMPM.displayedValues[start_AMPM.value]+" "
+                startText_AMPM.text = start_AMPM.displayedValues[start_AMPM.value]
             }
 
 
@@ -148,10 +149,10 @@ class TimePicker:ConstraintLayout {
             endText_hour.text = end_hour.displayedValues[end_hour.value - end_hour.minValue]
             if(i2 < 12 || i2 == 24) {
                 end_AMPM.value = 0
-                endText_AMPM.text = end_AMPM.displayedValues[end_AMPM.value]+" "
+                endText_AMPM.text = end_AMPM.displayedValues[end_AMPM.value]
             }else {
                 end_AMPM.value = 1
-                endText_AMPM.text = end_AMPM.displayedValues[end_AMPM.value]+" "
+                endText_AMPM.text = end_AMPM.displayedValues[end_AMPM.value]
             }
 
 
@@ -203,11 +204,11 @@ class TimePicker:ConstraintLayout {
 
         if(intentStartHour < 12) {
             start_AMPM.value = 0
-            startText_AMPM.text ="${displayValue[0]} "
+            startText_AMPM.text ="${displayValue[0]}"
         }
         else {
             start_AMPM.value = 1
-            startText_AMPM.text ="${displayValue[1]} "
+            startText_AMPM.text ="${displayValue[1]}"
         }
         displayValue.removeAll(displayValue)
 
@@ -227,12 +228,12 @@ class TimePicker:ConstraintLayout {
 
         if(intentStartHour < 12) {
             end_AMPM.value = 0
-            endText_AMPM.text ="${displayValue[0]} "
+            endText_AMPM.text ="${displayValue[0]}"
 
         }
         else {
             end_AMPM.value = 1
-            endText_AMPM.text ="${displayValue[1]} "
+            endText_AMPM.text ="${displayValue[1]}"
         }
         displayValue.removeAll(displayValue)
 
@@ -247,8 +248,8 @@ class TimePicker:ConstraintLayout {
 
             for(i in intentStartHour..initEndHour){
                 when{
-                    i > 12 -> displayValue.add("${i - 12}")
-                    else -> displayValue.add("$i")
+                    i > 12 -> displayValue.add(" ${i-12}")
+                    else -> displayValue.add(" $i")
                 }
             }
             displayedValues = displayValue.toTypedArray()
@@ -266,8 +267,8 @@ class TimePicker:ConstraintLayout {
 
             for(i in intentStartHour..intentEndHour){
                 when{
-                    i > 12-> displayValue.add("${i-12}")
-                    else -> displayValue.add("$i")
+                    i > 12-> displayValue.add(" ${i-12}")
+                    else -> displayValue.add(" $i")
                 }
             }
             displayedValues = displayValue.toTypedArray()
@@ -319,10 +320,10 @@ class TimePicker:ConstraintLayout {
             startText_hour.text = start_hour.displayedValues[start_hour.value - intentStartHour]
             if(i2 < 12 || i2 == 24) {
                 start_AMPM.value = 0
-                startText_AMPM.text = start_AMPM.displayedValues[start_AMPM.value]+" "
+                startText_AMPM.text = start_AMPM.displayedValues[start_AMPM.value]
             }else {
                 start_AMPM.value = 1
-                startText_AMPM.text = start_AMPM.displayedValues[start_AMPM.value]+" "
+                startText_AMPM.text = start_AMPM.displayedValues[start_AMPM.value]
             }
 
 
@@ -343,10 +344,10 @@ class TimePicker:ConstraintLayout {
             endText_hour.text = end_hour.displayedValues[end_hour.value - intentStartHour]
             if(i2 < 12 || i2 == 24) {
                 end_AMPM.value = 0
-                endText_AMPM.text = end_AMPM.displayedValues[end_AMPM.value]+" "
+                endText_AMPM.text = end_AMPM.displayedValues[end_AMPM.value]
             }else {
                 end_AMPM.value = 1
-                endText_AMPM.text = end_AMPM.displayedValues[end_AMPM.value]+" "
+                endText_AMPM.text = end_AMPM.displayedValues[end_AMPM.value]
             }
 
             if (end_hour.value == end_hour.maxValue){
@@ -376,6 +377,27 @@ class TimePicker:ConstraintLayout {
         }
     }
 
+    fun displayTime(startHour:Int,startMinute:Int,endHour:Int,endMinute:Int){
+
+        if(startHour >= 12 && startHour < 24){
+            start_AMPM.value = 1
+        }else start_AMPM.value = 0
+        startText_AMPM.text ="${start_AMPM.displayedValues[start_AMPM.value]}"
+        start_hour.value = startHour
+        startText_hour.text = "${start_hour.displayedValues[start_hour.value - start_hour.minValue]}"
+        start_minute.value = (startMinute / 5)
+        startText_minute.text = start_minute.displayedValues[start_minute.value]
+
+        if(endHour >= 12 && endHour < 24){
+            end_AMPM.value = 1
+        }else end_AMPM.value = 0
+        endText_AMPM.text ="${end_AMPM.displayedValues[end_AMPM.value]}"
+        end_hour.value = endHour
+        endText_hour.text = "${end_hour.displayedValues[end_hour.value - end_hour.minValue]}"
+        end_minute.value = (endMinute / 5)
+        endText_minute.text = end_minute.displayedValues[end_minute.value]
+
+    }
 
     fun changedTextColor(viewGroup: ViewGroup, focused:Boolean){
 

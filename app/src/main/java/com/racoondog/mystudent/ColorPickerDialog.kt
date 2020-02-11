@@ -4,14 +4,13 @@ package com.racoondog.mystudent
 import android.app.Dialog
 import android.content.Context
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Bundle
+import android.view.Gravity
 import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
-import kotlinx.android.synthetic.main.subject_color_dialog.*
-import java.util.*
+import kotlinx.android.synthetic.main.color_dialog.*
 
 
 class ColorPickerDialog(context: Context?, private var onCustomDialogEventListener: ICustomDialogEventListener) : Dialog(context) {
@@ -30,7 +29,7 @@ class ColorPickerDialog(context: Context?, private var onCustomDialogEventListen
         layoutParams.dimAmount = 0.8f
         window.attributes = layoutParams
 
-        setContentView(R.layout.subject_color_dialog)
+        setContentView(R.layout.color_dialog)
 
         val colorList = context.resources.getIntArray(R.array.subject_color)
         colorList(colorList,this)
@@ -52,11 +51,10 @@ class ColorPickerDialog(context: Context?, private var onCustomDialogEventListen
 
             val pickerLine = LinearLayout(context)
             pickerLine.layoutParams =
-                LinearLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
-                    .apply {
-
-                    }
+                LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT).apply {
+                }
             pickerLine.tag = i
+            pickerLine.gravity = Gravity.LEFT
             color_picker_main.addView(pickerLine)
         }
 
@@ -68,7 +66,6 @@ class ColorPickerDialog(context: Context?, private var onCustomDialogEventListen
                 ConstraintLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             ).apply {
-
                 rightMargin = 16
                 leftMargin = 16
                 topMargin = 16
