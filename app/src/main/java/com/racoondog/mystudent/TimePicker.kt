@@ -86,8 +86,8 @@ class TimePicker:ConstraintLayout {
 
             for (i in minValue .. maxValue) {
                 when{
-                    i > 12-> displayValue.add(" ${i-12}")
-                    else -> displayValue.add(" $i")
+                    i > 12-> displayValue.add("${i-12} ")
+                    else -> displayValue.add("$i ")
                 }
             }
 
@@ -96,7 +96,7 @@ class TimePicker:ConstraintLayout {
             descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
 
         }
-        startText_hour.text = " 8"
+        startText_hour.text = "8 "
         displayValue.removeAll(displayValue)
 
         end_hour.apply {
@@ -106,8 +106,8 @@ class TimePicker:ConstraintLayout {
             value = 18
             for (i in minValue .. maxValue) {
                 when{
-                    i > 12-> displayValue.add(" ${i-12}")
-                    else -> displayValue.add(" $i")
+                    i > 12-> displayValue.add("${i-12} ")
+                    else -> displayValue.add("$i ")
                 }
             }
 
@@ -117,7 +117,7 @@ class TimePicker:ConstraintLayout {
 
 
         }
-        endText_hour.text = " 6"
+        endText_hour.text = "6 "
         displayValue.removeAll(displayValue)
 
         start_AMPM.setOnTouchListener { _: View, event: MotionEvent ->
@@ -248,8 +248,8 @@ class TimePicker:ConstraintLayout {
 
             for(i in intentStartHour..initEndHour){
                 when{
-                    i > 12 -> displayValue.add(" ${i-12}")
-                    else -> displayValue.add(" $i")
+                    i > 12 -> displayValue.add("${i-12} ")
+                    else -> displayValue.add("$i ")
                 }
             }
             displayedValues = displayValue.toTypedArray()
@@ -267,8 +267,8 @@ class TimePicker:ConstraintLayout {
 
             for(i in intentStartHour..intentEndHour){
                 when{
-                    i > 12-> displayValue.add(" ${i-12}")
-                    else -> displayValue.add(" $i")
+                    i > 12-> displayValue.add("${i-12} ")
+                    else -> displayValue.add("$i ")
                 }
             }
             displayedValues = displayValue.toTypedArray()
