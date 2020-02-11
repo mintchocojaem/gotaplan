@@ -264,6 +264,11 @@ class MainActivity: AppCompatActivity() {
                 return true
             }
 
+            R.id.themeSetting -> {
+
+                return true
+            }
+
             R.id.license -> {
                 val licenseIntent = Intent(this, License::class.java)
                 startActivity(licenseIntent)

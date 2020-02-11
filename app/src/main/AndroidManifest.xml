@@ -17,6 +17,9 @@
         <activity android:name=".DirectFeedback"
                 android:screenOrientation="portrait" />
 
+        <activity android:name=".ThemeSetting"
+                android:screenOrientation="portrait" />
+
         <activity android:name=".CreateSchedule"
                 android:screenOrientation="portrait" />
 
