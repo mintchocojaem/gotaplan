@@ -155,7 +155,7 @@ class CreateSubject :AppCompatActivity() {
 
         var subjectData: RealmResults<SubjectBox> =
             realm.where<SubjectBox>(SubjectBox::class.java)
-                .equalTo("dayFlag", dayFlag.toString())
+                .equalTo("dayFlag", dayFlag)
                 .findAll()
         val data = subjectData.sort("startHour",Sort.ASCENDING)
 

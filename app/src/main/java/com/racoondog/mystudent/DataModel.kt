@@ -19,7 +19,7 @@ open class SubjectBox: RealmObject(){
     var id = 0
     var lessonOnOff : Boolean = false
 
-    lateinit var dayFlag: String
+    var dayFlag = 0
 
     var startHour = 0
 

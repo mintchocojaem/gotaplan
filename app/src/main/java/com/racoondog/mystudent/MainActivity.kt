@@ -133,7 +133,7 @@ class MainActivity: AppCompatActivity() {
                     val subjectInfo: SubjectBox = realm.createObject(SubjectBox::class.java)
                     subjectInfo.apply {
                         this.id = ID.toInt()
-                        this.dayFlag = dayFlag.toString()
+                        this.dayFlag = dayFlag
                         this.startHour = startHour.toInt()
                         this.startMinute = startTimeText[2]
                         this.endHour = endHour.toInt()
