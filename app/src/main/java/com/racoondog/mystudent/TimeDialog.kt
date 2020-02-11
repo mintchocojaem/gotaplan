@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.WindowManager
+import android.widget.Toast
 import io.realm.Realm
 import io.realm.RealmResults
 import kotlinx.android.synthetic.main.time_dialog.*
@@ -13,7 +14,7 @@ import kotlinx.android.synthetic.main.time_picker.*
 class TimeDialog:Dialog {
 
     private val realm = Realm.getDefaultInstance()
-    lateinit var cnxt:WeekView
+    lateinit var cnxt:SubjectDetailDialog
 
     constructor(context: Context) : super(context)
     constructor(context: Context, themeResId: Int) : super(context, themeResId)
@@ -64,8 +65,11 @@ class TimeDialog:Dialog {
             data.endMinute = endTimeText[2]
             data.time = timeText
             realm.commitTransaction()
-            cnxt.refresh(cnxt.cnxt.weekView)
+            cnxt.cnxt.refresh(cnxt.cnxt.cnxt.weekView)
             dismiss()
+            cnxt.dismiss()
+            Toast.makeText(context,"시간이 변경되었습니다.", Toast.LENGTH_SHORT).show()
+
 
         }
 

@@ -45,9 +45,8 @@ class SubjectDetailDialog:Dialog {
 
         changeSubjectTime.setOnClickListener {
             val dialog = TimeDialog(context)
-            dialog.cnxt = cnxt
+            dialog.cnxt = this
             dialog.show()
-            dismiss()
         }
 
         changeSubjectColor.setOnClickListener {
