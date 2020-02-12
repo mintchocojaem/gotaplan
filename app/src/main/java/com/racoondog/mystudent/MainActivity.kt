@@ -265,7 +265,8 @@ class MainActivity: AppCompatActivity() {
             }
 
             R.id.themeSetting -> {
-
+                val themeIntent = Intent(this, ThemeSetting::class.java)
+                startActivity(themeIntent)
                 return true
             }
 
