@@ -50,6 +50,13 @@ class ScheduleDialog:Dialog {
 
         setContentView(R.layout.schedule_dialog)
 
+        editScheduleTitle.setOnClickListener {
+            val dialog = EditScheduleTitleDialog(context)
+            dialog.cnxt = this
+            dialog.show()
+
+        }
+
         saveSchedule.setOnClickListener{
 
             cnxt.checkPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE){

@@ -185,7 +185,7 @@ class MainActivity: AppCompatActivity() {
 
     }
 
-    private fun loadData() {
+    fun loadData() {
 
         val scheduleData = realm.where(ScheduleData::class.java).findFirst()
         if (scheduleData != null) {
