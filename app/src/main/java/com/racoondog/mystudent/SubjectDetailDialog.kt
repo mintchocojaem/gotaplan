@@ -3,7 +3,6 @@ package com.racoondog.mystudent
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.app.TimePickerDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
@@ -11,7 +10,6 @@ import android.view.WindowManager
 import android.widget.Toast
 import io.realm.Realm
 import io.realm.RealmResults
-import kotlinx.android.synthetic.main.schedule_image_layout.view.*
 import kotlinx.android.synthetic.main.subject_detail_dialog.*
 
 class SubjectDetailDialog:Dialog {
@@ -38,7 +36,7 @@ class SubjectDetailDialog:Dialog {
         setContentView(R.layout.subject_detail_dialog)
 
 
-        var subjectData: RealmResults<SubjectBox> = realm.where<SubjectBox>(SubjectBox::class.java)
+        var subjectData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
             .equalTo("id",WeekView.ID)
             .findAll()
         val data = subjectData[0]!!

@@ -51,9 +51,9 @@ class SubjectDialog: Dialog {
 
             .setPositiveButton("확인") { _, _ ->
 
-                val scheduleData = realm.where(DataModel::class.java).findFirst()
+                val scheduleData = realm.where(ScheduleData::class.java).findFirst()
 
-                var subjectData: RealmResults<SubjectBox> = realm.where<SubjectBox>(SubjectBox::class.java)
+                var subjectData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
                     .findAll()
 
                 for(i in subjectData.indices){

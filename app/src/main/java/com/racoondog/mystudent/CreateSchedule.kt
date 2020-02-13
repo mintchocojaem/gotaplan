@@ -28,8 +28,6 @@ class CreateSchedule : AppCompatActivity(){
 
 
         var dayFlag = 0
-        val intent = Intent()
-
 
         createSchedule_Button.setOnClickListener{
 

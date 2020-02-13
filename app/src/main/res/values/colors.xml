@@ -8,6 +8,8 @@
     <color name="defaultAccentColor">#494949</color>
     <color name="defaultContemptColor">#a8a8a8</color>
     <color name="weekViewBackGroundColor">#fafafa</color>
+    <color name="statusBarColor">#ffffff</color>
+    <color name="mainButtonColor">#494949</color>
 
     <color name="whiteGrayColor">#ededed</color>
     <color name="grayColor">#979797</color>

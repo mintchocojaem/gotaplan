@@ -163,7 +163,7 @@ class ScheduleDialog:Dialog {
                 cnxt.schedule_add.visibility = View.VISIBLE
                 cnxt.toolbar_title.text = "시간표"
 
-                var subjectData: RealmResults<SubjectBox> = realm.where<SubjectBox>(SubjectBox::class.java)
+                var subjectData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
                     .findAll()
 
                 for(i in subjectData.indices){
@@ -172,8 +172,8 @@ class ScheduleDialog:Dialog {
                     realm.commitTransaction()
                 }
 
-                var scheduleData: RealmResults<DataModel> =
-                    realm.where<DataModel>(DataModel::class.java)
+                var scheduleData: RealmResults<ScheduleData> =
+                    realm.where<ScheduleData>(ScheduleData::class.java)
                         .findAll()
                 val data = scheduleData[0]!!
                 realm.beginTransaction()

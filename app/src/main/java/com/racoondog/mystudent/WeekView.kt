@@ -241,7 +241,7 @@ class WeekView : ConstraintLayout{
         titleText.tag = "title$ID"
 
         var smallTitle = ""
-        var data:RealmResults<SubjectBox> = realm.where<SubjectBox>(SubjectBox::class.java)
+        var data:RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
             .equalTo("id",ID)
             .findAll()
 
@@ -316,7 +316,7 @@ class WeekView : ConstraintLayout{
     }
     fun refresh(view: WeekView){
 
-        val scheduleData = realm.where(DataModel::class.java).findFirst()
+        val scheduleData = realm.where(ScheduleData::class.java).findFirst()
 
         if (scheduleData != null) {
 
@@ -324,8 +324,8 @@ class WeekView : ConstraintLayout{
                 view.findViewWithTag<ConstraintLayout>(i).removeAllViews()
             }
 
-            val subjectData: RealmResults<SubjectBox> =
-                realm.where<SubjectBox>(SubjectBox::class.java).findAll()
+            val subjectData: RealmResults<SubjectData> =
+                realm.where<SubjectData>(SubjectData::class.java).findAll()
             for (data in subjectData) {
                 view.createSubject(
                     data.startHour.toInt(),
@@ -347,7 +347,7 @@ class WeekView : ConstraintLayout{
         var result = 0
         out@ for(ID in Min .. Max){
 
-            val data = realm.where<SubjectBox>(SubjectBox::class.java).equalTo("id",ID).findFirst()
+            val data = realm.where<SubjectData>(SubjectData::class.java).equalTo("id",ID).findFirst()
 
             if ( data == null ){
                 result = ID

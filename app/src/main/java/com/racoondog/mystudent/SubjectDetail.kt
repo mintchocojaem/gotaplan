@@ -1,12 +1,8 @@
 package com.racoondog.mystudent
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.os.Bundle
-import android.view.ContextThemeWrapper
-import android.view.KeyEvent
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import io.realm.Realm
 import io.realm.RealmResults
@@ -24,7 +20,7 @@ class SubjectDetail : AppCompatActivity() {
 
         var saveEditFlag = false
 
-        var subjectData: RealmResults<SubjectBox> = realm.where<SubjectBox>(SubjectBox::class.java)
+        var subjectData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
             .equalTo("id",WeekView.ID)
             .findAll()
         val data = subjectData[0]!!

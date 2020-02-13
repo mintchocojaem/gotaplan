@@ -5,12 +5,10 @@ import android.app.Activity
 import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.common.util.CollectionUtils
 import com.racoondog.mystudent.ColorPickerDialog.ICustomDialogEventListener
 import io.realm.Realm
 import io.realm.RealmResults
@@ -147,14 +145,15 @@ class CreateSubject :AppCompatActivity() {
         }
 
         subjectQuit_Button.setOnClickListener {
+            setResult(Activity.RESULT_CANCELED,intent)
             finish()
         }
 
     }
     private fun checkTime(dayFlag:Int):Boolean{
 
-        var subjectData: RealmResults<SubjectBox> =
-            realm.where<SubjectBox>(SubjectBox::class.java)
+        var subjectData: RealmResults<SubjectData> =
+            realm.where<SubjectData>(SubjectData::class.java)
                 .equalTo("dayFlag", dayFlag)
                 .findAll()
         val data = subjectData.sort("startHour",Sort.ASCENDING)

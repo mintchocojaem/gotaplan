@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -38,13 +39,13 @@ class MainActivity: AppCompatActivity() {
         setSupportActionBar(main_toolbar)  //Actionbar 부분
         supportActionBar?.setDisplayUseLogoEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        changeTheme()
 
         loadData()//데이터 불러오기
+        changeTheme()// 테마 변경
 
         weekView_layout.setOnClickListener {
 
-            val scheduleData = realm.where(DataModel::class.java).findFirst()
+            val scheduleData = realm.where(ScheduleData::class.java).findFirst()
 
             if (scheduleData == null) {
                 val scheduleIntent = Intent(this, CreateSchedule::class.java)
@@ -89,7 +90,7 @@ class MainActivity: AppCompatActivity() {
                     intentflag = scheduleDayFlag
 
                     realm.beginTransaction()
-                    val dataBase: DataModel = realm.createObject(DataModel::class.java)
+                    val dataBase: ScheduleData = realm.createObject(ScheduleData::class.java)
 
                     dataBase.apply {
                         this.scheduleDayFlag = scheduleDayFlag
@@ -130,7 +131,7 @@ class MainActivity: AppCompatActivity() {
                     val ID = weekView.createID(0, 128)//다음으로 만들어질 weekview의 id 값을 결정하는 변수
 
                     realm.beginTransaction()
-                    val subjectInfo: SubjectBox = realm.createObject(SubjectBox::class.java)
+                    val subjectInfo: SubjectData = realm.createObject(SubjectData::class.java)
                     subjectInfo.apply {
                         this.id = ID.toInt()
                         this.dayFlag = dayFlag
@@ -153,12 +154,24 @@ class MainActivity: AppCompatActivity() {
                     )
                 }
                 103 -> {
-                    var dataBase: RealmResults<SubjectBox> =
-                        realm.where<SubjectBox>(SubjectBox::class.java)
+                    val dataBase: RealmResults<SubjectData> =
+                        realm.where<SubjectData>(SubjectData::class.java)
                             .equalTo("id",WeekView.ID)
                             .findAll()
                     val title = weekView.findViewWithTag<TextView>("title${dataBase.get(0)!!.id}")
                     title.text = dataBase.get(0)!!.title.toString()
+                }
+                105 ->{
+                    val statusBarColor = data!!.getIntExtra("statusBarColor",0)
+                    val mainButtonBarColor = data.getIntExtra("mainButtonColor",0)
+
+                    val themeData = realm.where(ThemeData::class.java).findFirst()!!
+                    realm.beginTransaction()
+                    themeData.statusBarColor = statusBarColor
+                    themeData.mainButtonColor = mainButtonBarColor
+                    realm.commitTransaction()
+
+                    changeTheme()// 테마 변경
                 }
 
             }
@@ -179,8 +192,10 @@ class MainActivity: AppCompatActivity() {
 
     private fun loadData() {
 
-        val scheduleData = realm.where(DataModel::class.java).findFirst()
+        val scheduleData = realm.where(ScheduleData::class.java).findFirst()
         if (scheduleData != null) {
+
+
 
             schedule_add.visibility = View.INVISIBLE
             addSubjectButton.visibility = View.VISIBLE
@@ -201,8 +216,8 @@ class MainActivity: AppCompatActivity() {
             weekView_layout.addView(weekView)
 
 
-            val subjectData: RealmResults<SubjectBox> =
-                realm.where<SubjectBox>(SubjectBox::class.java).findAll()
+            val subjectData: RealmResults<SubjectData> =
+                realm.where<SubjectData>(SubjectData::class.java).findAll()
             for (data in subjectData) {
                 weekView.createSubject(
                     data.startHour.toInt(),
@@ -225,8 +240,14 @@ class MainActivity: AppCompatActivity() {
 
 
     private fun changeTheme() {
-        window.statusBarColor = resources.getColor(R.color.whiteColor)
-        addSubjectButton.backgroundTintList = resources.getColorStateList(R.color.darkColor)
+
+        realm.beginTransaction()
+        val Data = realm.createObject(ThemeData::class.java)
+        realm.commitTransaction()
+
+        val themeData = realm.where(ThemeData::class.java).findFirst()!!
+        window.statusBarColor = themeData.statusBarColor
+        addSubjectButton.backgroundTintList = ColorStateList.valueOf(themeData.mainButtonColor)
 
     }
 
@@ -265,8 +286,9 @@ class MainActivity: AppCompatActivity() {
             }
 
             R.id.themeSetting -> {
+
                 val themeIntent = Intent(this, ThemeSetting::class.java)
-                startActivity(themeIntent)
+                startActivityForResult(themeIntent,105)
                 return true
             }
 

@@ -1,20 +1,18 @@
 package com.racoondog.mystudent
 
-import io.realm.RealmList
+import android.graphics.Color
 import io.realm.RealmObject
 
-open class DataModel: RealmObject() {
+open class ScheduleData: RealmObject() {
 
     var scheduleTitle:String = ""
     var scheduleDayFlag:Int = 0
     var scheduleStartHour:Int = 0
     var scheduleEndHour:Int = 0
-
-    var subjectDB = RealmList<SubjectBox>()
-
+    
 }
 
-open class SubjectBox: RealmObject(){
+open class SubjectData: RealmObject(){
 
     var id = 0
     var lessonOnOff : Boolean = false
@@ -40,4 +38,9 @@ open class SubjectBox: RealmObject(){
     lateinit var lessonCost : String
     lateinit var lessonCycle : String
 
+}
+
+open class ThemeData: RealmObject(){
+    var statusBarColor = Color.parseColor("#ffffff")
+    var mainButtonColor = Color.parseColor("#494949")
 }

@@ -36,9 +36,9 @@ class TimeDialog:Dialog {
 
         setContentView(R.layout.time_dialog)
 
-        val scheduleData = realm.where(DataModel::class.java).findFirst()!!
+        val scheduleData = realm.where(ScheduleData::class.java).findFirst()!!
 
-        var subjectData: RealmResults<SubjectBox> = realm.where<SubjectBox>(SubjectBox::class.java)
+        var subjectData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
             .equalTo("id",WeekView.ID)
             .findAll()
         val data = subjectData[0]!!
@@ -141,8 +141,8 @@ class TimeDialog:Dialog {
 
     private fun checkTime(dayFlag:Int):Boolean{
 
-        var subjectData: RealmResults<SubjectBox> =
-            realm.where<SubjectBox>(SubjectBox::class.java)
+        var subjectData: RealmResults<SubjectData> =
+            realm.where<SubjectData>(SubjectData::class.java)
                 .equalTo("dayFlag", dayFlag)
                 .notEqualTo("id",WeekView.ID)
                 .findAll()
