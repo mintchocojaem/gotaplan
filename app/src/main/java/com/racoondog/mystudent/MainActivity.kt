@@ -154,12 +154,7 @@ class MainActivity: AppCompatActivity() {
                     )
                 }
                 103 -> {
-                    val dataBase: RealmResults<SubjectData> =
-                        realm.where<SubjectData>(SubjectData::class.java)
-                            .equalTo("id",WeekView.ID)
-                            .findAll()
-                    val title = weekView.findViewWithTag<TextView>("title${dataBase.get(0)!!.id}")
-                    title.text = dataBase.get(0)!!.title.toString()
+                  weekView.refresh(weekView)
                 }
                 105 ->{
                     val statusBarColor = data!!.getIntExtra("statusBarColor",0)

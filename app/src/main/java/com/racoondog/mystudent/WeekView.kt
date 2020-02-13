@@ -236,39 +236,14 @@ class WeekView : ConstraintLayout{
         val subjectMargin = (StartHour - intentStartTime) * cellHeight + StartMinute * cellHeight/60
         val subject = ConstraintLayout(cnxt)
         val titleText = TextView(cnxt)
-        val ID = id
+        val id = id
 
-        titleText.tag = "title$ID"
+        titleText.tag = "title$id"
 
-        var smallTitle = ""
         var data:RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
-            .equalTo("id",ID)
+            .equalTo("id",id)
             .findAll()
-
-        if(data.get(0)!!.title.length > 10){
-
-            smallTitle = data.get(0)!!.title.toString().substring(0,10)+".."
-
-        }
-        else{
-            smallTitle = data.get(0)!!.title.toString()
-        }
-
-        titleText.layoutParams = ConstraintLayout.LayoutParams(
-            ConstraintLayout.LayoutParams.MATCH_PARENT,
-            ConstraintLayout.LayoutParams.WRAP_CONTENT
-        )
-        if( EndHour - StartHour > 1 ){
-            titleText.apply {
-                maxLines = 2
-                textSize = 14f
-                text = smallTitle}
-        } else{
-            titleText.apply {
-                maxLines = 1
-                textSize = 14f
-                text = smallTitle}
-        }
+        titleText.text = data.get(0)!!.title
 
 
         subject.layoutParams = ConstraintLayout.LayoutParams(
@@ -284,20 +259,19 @@ class WeekView : ConstraintLayout{
             verticalBias = 0f
             topMargin = subjectMargin.toInt()
             subject.setBackgroundColor(colorCode)
-            subject.setPadding(5,7,5,7)
-            subject.id = ID
+            subject.setPadding(10,10,10,10)
+            subject.id = id
 
             subject.setOnClickListener{
-                WeekView.ID = ID
+                ID = id
                 dayFlag = DayFlag
-
                 val intentSubjectDetail = Intent (cnxt, SubjectDetail::class.java)
                 intentSubjectDetail.flags = (Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 cnxt.startActivityForResult(intentSubjectDetail,103)
             }
 
             subject.setOnLongClickListener {
-                WeekView.ID = ID
+                ID = id
                 dayFlag = DayFlag
                 val dialog = SubjectDetailDialog(context)
                 dialog.cnxt = this@WeekView
