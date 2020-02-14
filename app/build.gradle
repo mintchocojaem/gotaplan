@@ -12,8 +12,8 @@ android {
         applicationId "com.racoondog.mystudent"
         minSdkVersion 23
         targetSdkVersion 28
-        versionCode 7
-        versionName "0.1.5"
+        versionCode 1
+        versionName "0.0.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
