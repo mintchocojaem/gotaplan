@@ -2,6 +2,7 @@ package com.racoondog.mystudent
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.util.AttributeSet
 import android.util.DisplayMetrics
 import android.view.Gravity
@@ -258,7 +259,8 @@ class WeekView : ConstraintLayout{
             leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID
             verticalBias = 0f
             topMargin = subjectMargin.toInt()
-            subject.setBackgroundColor(colorCode)
+            subject.backgroundTintList = ColorStateList.valueOf(colorCode)
+            subject.setBackgroundResource(R.drawable.round_subject_bg_layout)
             subject.setPadding(10,10,10,10)
             subject.id = id
 
