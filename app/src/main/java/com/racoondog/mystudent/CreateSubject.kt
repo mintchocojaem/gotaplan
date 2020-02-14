@@ -63,10 +63,12 @@ class CreateSubject :AppCompatActivity() {
                             intent.putExtra("SubjectTitle", title_text.text.toString())
                             intent.putExtra("LessonOnOff",lesson_mode.isChecked)
                             intent.putExtra("StartTimeText", arrayOf(startText_AMPM.text.toString()
-                                ,startText_hour.text.toString(), startText_minute.text.toString()))
+                                ," ${startText_hour.text.toString().substring(0,startText_hour.text.toString().length-1)}",
+                                startText_minute.text.toString()))
 
                             intent.putExtra("EndTimeText", arrayOf(endText_AMPM.text.toString()
-                                ,endText_hour.text.toString(), endText_minute.text.toString()))
+                                ," ${endText_hour.text.toString().substring(0,endText_hour.text.toString().length-1)}",
+                                endText_minute.text.toString()))
 
                             intent.putExtra("ContentText",Content_text.text?.toString())
                             intent.putExtra("colorCode", this.colorCode)
