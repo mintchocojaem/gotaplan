@@ -12,7 +12,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:id="@+id/time_dialog_main">
+            android:id="@+id/time_dialog_main"
+            android:background="@drawable/round_bg_layout">
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -170,8 +171,7 @@
                 android:layout_height="60dp"
                 app:layout_constraintBottom_toBottomOf="@id/time_dialog_main"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:background="@drawable/text_box_layout">
+                app:layout_constraintLeft_toLeftOf="parent">
 
             <Button
                     android:layout_width="wrap_content"

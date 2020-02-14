@@ -15,5 +15,9 @@
         <item name="android:textColorPrimary">#757575</item>
     </style>
 
+    <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:background">@drawable/round_bg_dialog</item>
+    </style>
+
 
 </resources>

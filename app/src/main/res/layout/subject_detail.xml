@@ -183,7 +183,7 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     android:id="@+id/lesson_bar"
-                    android:background="@drawable/layout_shape"
+                    android:background="@drawable/underline_bg_layout"
                     android:paddingEnd="20dp"
                     android:paddingStart="20dp">
                 <TextView

@@ -4,6 +4,8 @@ package com.racoondog.mystudent
 import android.app.Dialog
 import android.content.Context
 import android.content.res.ColorStateList
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.Gravity
 import android.view.WindowManager
@@ -28,7 +30,7 @@ class ColorPickerDialog(context: Context?, private var onCustomDialogEventListen
         layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
         layoutParams.dimAmount = 0.8f
         window.attributes = layoutParams
-
+        window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         setContentView(R.layout.color_dialog)
 
         val colorList = context.resources.getIntArray(R.array.subject_color)

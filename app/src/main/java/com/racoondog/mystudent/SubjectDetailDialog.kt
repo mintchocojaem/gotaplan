@@ -5,6 +5,8 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.WindowManager
 import android.widget.Toast
@@ -32,7 +34,7 @@ class SubjectDetailDialog:Dialog {
         layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
         layoutParams.dimAmount = 0.8f
         window.attributes = layoutParams
-
+        window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         setContentView(R.layout.subject_detail_dialog)
 
 
@@ -66,10 +68,9 @@ class SubjectDetailDialog:Dialog {
         }
 
         deleteSubject.setOnClickListener {
-            val builder = AlertDialog.Builder(context)
+            val builder = AlertDialog.Builder(context,R.style.MyDialogTheme)
                 .setTitle("삭제")
                 .setMessage("해당 과목을 삭제하시겠습니까?")
-
                 .setPositiveButton("확인") { _, _ ->
 
                     cnxt.deleteSubject(data.id)
@@ -85,6 +86,8 @@ class SubjectDetailDialog:Dialog {
 
                 }
                 .show()
+            builder.window.setLayout(800,400)
+            builder.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             builder.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(context.resources.getColor(R.color.colorCancel))
             builder.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(context.resources.getColor(R.color.defaultAccentColor))
         }

@@ -3,7 +3,10 @@ package com.racoondog.mystudent
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.view.WindowManager
 import android.widget.Toast
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_main.*
@@ -24,6 +27,11 @@ class EditScheduleTitleDialog:Dialog {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val layoutParams = WindowManager.LayoutParams()
+        layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
+        layoutParams.dimAmount = 0.8f
+        window.attributes = layoutParams
+        window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         setContentView(R.layout.edit_schedule_title_dialog)
 
         val scheduleData = realm.where(ScheduleData::class.java).findFirst()!!

@@ -197,7 +197,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             android:visibility="gone"
-            android:background="@drawable/layout_shape">
+            android:background="@drawable/underline_bg_layout">
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"

@@ -3,6 +3,8 @@ package com.racoondog.mystudent
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
@@ -33,7 +35,7 @@ class TimeDialog:Dialog {
         layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
         layoutParams.dimAmount = 0.8f
         window.attributes = layoutParams
-
+        window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         setContentView(R.layout.time_dialog)
 
         val scheduleData = realm.where(ScheduleData::class.java).findFirst()!!
