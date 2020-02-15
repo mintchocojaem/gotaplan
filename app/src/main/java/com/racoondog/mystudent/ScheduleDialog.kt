@@ -1,6 +1,7 @@
 package com.racoondog.mystudent
 
 import android.Manifest
+import android.app.ActionBar
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
@@ -185,6 +186,7 @@ class ScheduleDialog:Dialog {
                     realm.where<ScheduleData>(ScheduleData::class.java)
                         .findAll()
                 val data = scheduleData[0]!!
+
                 realm.beginTransaction()
                 data.deleteFromRealm()
                 realm.commitTransaction()
@@ -192,9 +194,9 @@ class ScheduleDialog:Dialog {
                 cnxt.finishAffinity()
                 val intent = Intent(cnxt, MainActivity::class.java)
                 cnxt.startActivity(intent)
-                System.exit(0)
+                Toast.makeText(cnxt,"시간표가 초기화되었습니다.",Toast.LENGTH_SHORT).show()
 
-                Toast.makeText(context,"시간표가 초기화되었습니다.",Toast.LENGTH_SHORT).show()
+                System.exit(0)
 
 
             }
@@ -204,7 +206,11 @@ class ScheduleDialog:Dialog {
             }
 
             .show()
-        builder.window.setLayout(800,520)
+
+        builder.window.attributes.apply {
+            width = WindowManager.LayoutParams.WRAP_CONTENT
+            height = WindowManager.LayoutParams.WRAP_CONTENT}
+
         builder.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         builder.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(cnxt.resources.getColor(R.color.colorCancel))
         builder.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(cnxt.resources.getColor(R.color.defaultAccentColor))

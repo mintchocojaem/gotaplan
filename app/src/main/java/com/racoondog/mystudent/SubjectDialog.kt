@@ -77,7 +77,9 @@ class SubjectDialog: Dialog {
             }
 
             .show()
-        builder.window.setLayout(800,460)
+        builder.window.attributes.apply {
+            width = WindowManager.LayoutParams.WRAP_CONTENT
+            height = WindowManager.LayoutParams.WRAP_CONTENT}
         builder.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         builder.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(cnxt.resources.getColor(R.color.colorCancel))
         builder.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(cnxt.resources.getColor(R.color.defaultAccentColor))
