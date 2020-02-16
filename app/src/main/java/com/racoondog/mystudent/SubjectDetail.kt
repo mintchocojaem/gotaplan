@@ -78,19 +78,23 @@ class SubjectDetail : AppCompatActivity() {
                 realm.beginTransaction()
                 data.title = subject_title.text.toString()
                 data.content = subject_content.text.toString()
-
                 data.studentName = studentName_text.text.toString()
                 data.studentBirth = studentBirth_text.text.toString()
                 data.studentPhoneNumber = studentPhone_text.text.toString()
                 data.lessonCost = lessonCost_text.text.toString()
                 data.lessonCycle = lessonCycle_text.text.toString()
-
                 realm.commitTransaction()
 
                 saveEditFlag = false
             }
         }
 
+    }
+
+    override fun onBackPressed() {
+        setResult(Activity.RESULT_OK, intent)
+        finish()
+        super.onBackPressed()
     }
 
     private fun themeChange(colorCode:Int){

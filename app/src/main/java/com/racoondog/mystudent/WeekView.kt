@@ -13,6 +13,7 @@ import io.realm.Realm
 import io.realm.RealmResults
 import kotlinx.android.synthetic.main.weekview.view.*
 import me.grantland.widget.AutofitTextView
+import kotlin.math.max
 
 
 class WeekView : ConstraintLayout{
@@ -188,7 +189,7 @@ class WeekView : ConstraintLayout{
                 timeText.setBackgroundResource(R.drawable.cell_shape)
                 timeText.setMinTextSize(10)
 
-                cellHeight = (dmWidth - 30)/day_flag
+                cellHeight = (dmWidth - 30)/5
 
                 // timeText lyaout 설정부분
                 timeText.layoutParams = TableRow.LayoutParams(
@@ -239,13 +240,25 @@ class WeekView : ConstraintLayout{
         val titleText = TextView(cnxt)
         val id = id
 
-        titleText.tag = "title$id"
-
-        var data:RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
+        val subjectData:RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
             .equalTo("id",id)
             .findAll()
-        titleText.text = data.get(0)!!.title
 
+
+        titleText.apply {
+            text = subjectData[0]!!.title.replace(" ", "\u00A0")
+            tag = "title$id"
+            textSize = 14f
+            maxLines = 1
+        }
+
+        var emCount = EndMinute
+        var smCount = StartMinute
+        for (i in 0 until (EndHour-StartHour)) {
+            emCount+=60}
+        for(i in 1 until ((emCount/20)-(smCount/20))){
+            titleText.maxLines++
+        }
 
         subject.layoutParams = ConstraintLayout.LayoutParams(
             ConstraintLayout.LayoutParams.WRAP_CONTENT,
@@ -260,10 +273,9 @@ class WeekView : ConstraintLayout{
             verticalBias = 0f
             topMargin = subjectMargin.toInt()
             subject.backgroundTintList = ColorStateList.valueOf(colorCode)
+            subject.setPadding(5,5,5,5)
             subject.setBackgroundResource(R.drawable.round_subject_bg_layout)
-            subject.setPadding(10,10,10,10)
             subject.id = id
-
             subject.setOnClickListener{
                 ID = id
                 dayFlag = DayFlag
@@ -271,7 +283,6 @@ class WeekView : ConstraintLayout{
                 intentSubjectDetail.flags = (Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 cnxt.startActivityForResult(intentSubjectDetail,103)
             }
-
             subject.setOnLongClickListener {
                 ID = id
                 dayFlag = DayFlag
