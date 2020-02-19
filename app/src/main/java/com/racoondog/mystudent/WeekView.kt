@@ -3,14 +3,13 @@ package com.racoondog.mystudent
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
-import android.content.res.Resources
-import android.graphics.Color
+
 import android.graphics.Point
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.WindowManager
-import android.widget.LinearLayout
+
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
@@ -18,8 +17,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import io.realm.Realm
 import io.realm.RealmResults
 import kotlinx.android.synthetic.main.weekview.view.*
-import me.grantland.widget.AutofitTextView
-import java.util.*
+
 
 
 class WeekView : ConstraintLayout{
@@ -198,7 +196,7 @@ class WeekView : ConstraintLayout{
 
             for (j in 0 until day.size) {
 
-                val timeText = AutofitTextView(cnxt) // 각 시간표 일정이 들어가는 공백 부분
+                val timeText = TextView(cnxt) // 각 시간표 일정이 들어가는 공백 부분
                 val tag: String = day[j] + i
                 timeText.tag = tag
                 /*
@@ -210,7 +208,7 @@ class WeekView : ConstraintLayout{
                  */
 
                 timeText.setBackgroundResource(R.drawable.cell_shape)
-                timeText.setMinTextSize(10)
+                timeText.textSize = 10f
 
                 // timeText lyaout 설정부분
                 timeText.layoutParams = TableRow.LayoutParams(
@@ -248,7 +246,6 @@ class WeekView : ConstraintLayout{
             canvas.addView(subjectLine)
 
         }
-
          */
 
     }
