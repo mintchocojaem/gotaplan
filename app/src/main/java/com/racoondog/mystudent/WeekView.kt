@@ -3,17 +3,23 @@ package com.racoondog.mystudent
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.content.res.Resources
+import android.graphics.Color
+import android.graphics.Point
 import android.util.AttributeSet
-import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.LayoutInflater
-import android.widget.*
+import android.view.WindowManager
+import android.widget.LinearLayout
+import android.widget.TableLayout
+import android.widget.TableRow
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import io.realm.Realm
 import io.realm.RealmResults
 import kotlinx.android.synthetic.main.weekview.view.*
 import me.grantland.widget.AutofitTextView
-import kotlin.math.max
+import java.util.*
 
 
 class WeekView : ConstraintLayout{
@@ -27,9 +33,9 @@ class WeekView : ConstraintLayout{
     var dayFlag = 0
 
     val cnxt = context as MainActivity
-    private val dm:DisplayMetrics = context.resources.displayMetrics
-    private val dmWidth:Int = dm.widthPixels
-    private  var cellHeight = 0
+
+    private var cellHeight= 0
+    private var cellWidth = 0
 
     constructor(context: Context) : super(context, null) {
         initView()
@@ -57,6 +63,15 @@ class WeekView : ConstraintLayout{
     }
 
     fun drawSchedule(day_flag: Int, start_time: Int, end_time: Int) {
+
+        var wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val disPlay = wm.defaultDisplay
+        val size = Point()
+        disPlay.getSize(size)
+        val w = size.x
+
+        cellWidth = (w-75)/day_flag
+        cellHeight = (w-75)/day_flag
 
         var day = mutableListOf<String>()
         val dayList = listOf("월","화","수","목","금","토","일")
@@ -101,8 +116,8 @@ class WeekView : ConstraintLayout{
         dayRow.layoutParams = TableLayout.LayoutParams(
             TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT
         )
-
         dayLine.setBackgroundResource(R.color.whiteColor)// 가이드 라인 색
+        dayLine.setPadding((w-(cellWidth*day_flag)),0,0,0)
 
         for (i in 0 until  day.size) {
 
@@ -118,8 +133,7 @@ class WeekView : ConstraintLayout{
                 TableRow.LayoutParams.WRAP_CONTENT,
                 TableRow.LayoutParams.WRAP_CONTENT
             ).apply {
-
-                weight = 3f
+                width = cellWidth
             }
             dayRow.addView(dayText)
 
@@ -132,18 +146,19 @@ class WeekView : ConstraintLayout{
 
             val timeRow = TableRow(cnxt) // const_init을 담기위한 TableRow
             timeRow.layoutParams = TableLayout.LayoutParams(
-                TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT
+                LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT
             ).apply {
-                weight = 1f
+
             }
             timeRow.setBackgroundResource(R.drawable.cell_shape) //시간 라인 background color
 
             val constInit = ConstraintLayout(cnxt) //initperiod를 담기위한 Constraintlayout 부분
             constInit.layoutParams = TableRow.LayoutParams(
-                TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT
+                TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.MATCH_PARENT
             ).apply {
-                weight - 1f
+                width = (w-(cellWidth*day_flag))
             }
+
 
             val initPeriod = TextView(cnxt) // 원래는 교시였으나 기획자의 변경사항에 따라 시간으로 치환된 부분 ex-> 1 2 3 4
             initPeriod.gravity = Gravity.CENTER
@@ -186,30 +201,34 @@ class WeekView : ConstraintLayout{
                 val timeText = AutofitTextView(cnxt) // 각 시간표 일정이 들어가는 공백 부분
                 val tag: String = day[j] + i
                 timeText.tag = tag
+                /*
+                val random = Random()
+                val ColorList:IntArray = context.resources.getIntArray(R.array.subject_color)
+                val number = random.nextInt(ColorList.size -1)
+                val colorCode = ColorList[number]
+
+                 */
+
                 timeText.setBackgroundResource(R.drawable.cell_shape)
                 timeText.setMinTextSize(10)
-
-                cellHeight = (dmWidth - 30)/5
 
                 // timeText lyaout 설정부분
                 timeText.layoutParams = TableRow.LayoutParams(
                     TableRow.LayoutParams.WRAP_CONTENT,
                     TableRow.LayoutParams.WRAP_CONTENT
                 ).apply {
-                    width = 0
+                    width = cellWidth
                     height = cellHeight
-                    weight = 3f
 
                 }
                 timeRow.addView(timeText)
             }
             layout.addView(timeRow)
         }
-
         scheduleView.addView(layout) //activity_main 의 스크롤 뷰에 추가
 
         //시간표위 레이아웃을 그리는 함수
-        for (i in 0 until day.size) {
+        /*for (i in 0 until day.size) {
 
             val tag: Int = i + 1
 
@@ -229,6 +248,8 @@ class WeekView : ConstraintLayout{
             canvas.addView(subjectLine)
 
         }
+
+         */
 
     }
 
@@ -294,7 +315,7 @@ class WeekView : ConstraintLayout{
 
         }
         subject.addView(titleText)
-        findViewWithTag<ConstraintLayout>(DayFlag).addView(subject)
+        //findViewWithTag<ConstraintLayout>(DayFlag).addView(subject)
 
     }
 
