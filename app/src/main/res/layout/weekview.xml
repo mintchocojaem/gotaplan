@@ -15,14 +15,6 @@
             android:id="@+id/dayLine"
             android:background="@color/whiteColor">
 
-        <androidx.constraintlayout.widget.Guideline
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintGuide_begin="30dp"
-                android:orientation="vertical"
-                android:id="@+id/day_guideline">
-
-        </androidx.constraintlayout.widget.Guideline>
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/day_line"

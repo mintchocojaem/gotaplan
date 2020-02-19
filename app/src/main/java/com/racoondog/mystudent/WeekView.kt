@@ -1,19 +1,16 @@
 package com.racoondog.mystudent
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
-
 import android.graphics.Point
 import android.util.AttributeSet
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import android.view.WindowManager
-
+import android.view.*
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import io.realm.Realm
 import io.realm.RealmResults
@@ -35,6 +32,8 @@ class WeekView : ConstraintLayout{
 
     private var cellHeight= 0
     private var cellWidth = 0
+
+    private var screen = 0
 
     constructor(context: Context) : super(context, null) {
         initView()
@@ -68,6 +67,9 @@ class WeekView : ConstraintLayout{
         val size = Point()
         disPlay.getSize(size)
         val w = size.x
+        val h = size.y
+
+        screen = h
 
         cellWidth = (w-75)/day_flag
         cellHeight = (w-75)/day_flag
@@ -240,13 +242,13 @@ class WeekView : ConstraintLayout{
         canvas.tag = "canvas"
         scheduleView.bringToFront()
         scheduleView.addView(canvas)
+
     }
 
     fun createSubject(StartHour:Int,StartMinute:Int,EndHour:Int,EndMinute:Int,DayFlag:Int,intentStartTime:Int,id:Int,colorCode:Int) {
 
         val subjectWidth = cellWidth
-        val subjectHeight =
-            (EndHour - StartHour) * cellHeight + (EndMinute - StartMinute) * cellHeight / 60
+        val subjectHeight = (EndHour - StartHour) * cellHeight + (EndMinute - StartMinute) * cellHeight / 60
         val subjectMargin =
             (StartHour - intentStartTime) * cellHeight + StartMinute * cellHeight / 60
         val subject = ConstraintLayout(cnxt)
@@ -306,6 +308,7 @@ class WeekView : ConstraintLayout{
 
         subject.setPadding(1, 0, 1, 0)//5,5,5,5
         subject.id = id
+
         subject.setOnClickListener {
             ID = id
             dayFlag = DayFlag
@@ -314,14 +317,90 @@ class WeekView : ConstraintLayout{
                 (Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
             cnxt.startActivityForResult(intentSubjectDetail, 103)
         }
+
         subject.setOnLongClickListener {
+
             ID = id
             dayFlag = DayFlag
+            /*
             val dialog = SubjectDetailDialog(context)
             dialog.cnxt = this@WeekView
             dialog.show()
+
+             */
+
+            subject.setOnTouchListener { v, event ->
+
+                v.parent.requestDisallowInterceptTouchEvent(true)
+                when (event.action and MotionEvent.ACTION_MASK) {
+                    MotionEvent.ACTION_UP -> v.parent.requestDisallowInterceptTouchEvent(false)
+                }
+
+                val parentWidth = (v.parent as ViewGroup).width // 부모 View 의 Width
+                val parentHeight = (v.parent as ViewGroup).height // 부모 View 의 Height
+
+                if (event.action === MotionEvent.ACTION_DOWN) { // 뷰 누름
+
+                    val oldXvalue = event.x
+                    val oldYvalue = event.y
+
+
+
+                } else if (event.action === MotionEvent.ACTION_MOVE) { // 뷰 이동 중
+
+                    v.x = v.x + event.x - v.width / 2
+                    v.y = v.y + event.y - v.height / 2
+
+                    if (v.x <= 0) v.x = 0f else if(v.x > parentWidth) v.x =  (parentWidth - v.width).toFloat()
+                    if (v.y <= 0) v.y = 0f else if(v.y + v.height > parentHeight) v.y =  (parentHeight- v.height).toFloat()
+
+                    val scheduleData = realm.where(ScheduleData::class.java).findFirst()!!
+                    for(i in 0 until scheduleData.scheduleDayFlag){
+                        if (v.x > (cellWidth * i) && v.x <= (cellWidth * (i+1))) v.x = (cellWidth * i).toFloat()
+                    }
+
+                    val h = IntArray(2)
+                    v.getLocationOnScreen(h)
+                    when(h[1]){
+                        in 0..(screen/3) -> {
+
+                            scrollView.scrollTo(0,scrollView.scrollY-30)
+
+                        }
+                        in ((screen/3)*2)..screen -> {
+
+
+                            scrollView.scrollTo(0,scrollView.scrollY+30)
+
+                        }
+                    }
+                        //scrollView.smoothScrollTo(v.x.toInt(),100)
+
+                } else if (event.action === MotionEvent.ACTION_UP) { // 뷰에서 손을 뗌
+
+
+                    if (v.x < 0) {
+                        v.x = 0f
+                    }
+                    else if (v.x + v.width > parentWidth) {
+                        v.x = (parentWidth - v.width).toFloat()
+                    }
+                    if (v.y < 0) {
+                        v.y = 0f
+                    } else if (v.y + v.height > parentHeight) {
+                        v.y = (parentHeight - v.height).toFloat()
+                    }
+                    subject.setOnTouchListener(null)
+
+                }
+
+                true
+            }
             true
+
         }
+
+
         colorImage.addView(titleText)
         subject.addView(colorImage)
         findViewWithTag<ConstraintLayout>("canvas").addView(subject)
