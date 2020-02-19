@@ -3,7 +3,6 @@ package com.racoondog.mystudent
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
-import android.graphics.Color
 
 import android.graphics.Point
 import android.util.AttributeSet
@@ -11,7 +10,6 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.ImageView
 
 import android.widget.TableLayout
 import android.widget.TableRow
@@ -230,11 +228,18 @@ class WeekView : ConstraintLayout{
 
         //시간표위 레이아웃을 그리는 함수
 
-        val mainCV = ConstraintLayout(context)
-        mainCV.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT)
-        mainCV.tag = "mainCV"
-        canvas.bringToFront()
-        canvas.addView(mainCV)
+        val canvas = ConstraintLayout(context)
+        canvas.layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.MATCH_CONSTRAINT).apply{
+            width = w - (w-(cellWidth*day_flag))
+            topToTop = LayoutParams.PARENT_ID
+            bottomToBottom = LayoutParams.PARENT_ID
+            leftToLeft = LayoutParams.PARENT_ID
+            rightToRight = LayoutParams.PARENT_ID
+            horizontalBias = 1f
+        }
+        canvas.tag = "canvas"
+        scheduleView.bringToFront()
+        scheduleView.addView(canvas)
     }
 
     fun createSubject(StartHour:Int,StartMinute:Int,EndHour:Int,EndMinute:Int,DayFlag:Int,intentStartTime:Int,id:Int,colorCode:Int) {
@@ -319,11 +324,11 @@ class WeekView : ConstraintLayout{
         }
         colorImage.addView(titleText)
         subject.addView(colorImage)
-        findViewWithTag<ConstraintLayout>("mainCV").addView(subject)
+        findViewWithTag<ConstraintLayout>("canvas").addView(subject)
     }
 
     fun deleteSubject(id:Int){
-        findViewWithTag<ConstraintLayout>("mainCV").removeView(findViewById(id))
+        findViewWithTag<ConstraintLayout>("canvas").removeView(findViewById(id))
     }
     fun refresh(view: WeekView){
 
@@ -331,7 +336,7 @@ class WeekView : ConstraintLayout{
 
         if (scheduleData != null) {
 
-            view.findViewWithTag<ConstraintLayout>("mainCV").removeAllViews()
+            view.findViewWithTag<ConstraintLayout>("canvas").removeAllViews()
 
 
             val subjectData: RealmResults<SubjectData> =
