@@ -3,12 +3,15 @@ package com.racoondog.mystudent
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.graphics.Color
 
 import android.graphics.Point
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.LayoutInflater
+import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.ImageView
 
 import android.widget.TableLayout
 import android.widget.TableRow
@@ -226,41 +229,30 @@ class WeekView : ConstraintLayout{
         scheduleView.addView(layout) //activity_main 의 스크롤 뷰에 추가
 
         //시간표위 레이아웃을 그리는 함수
-        /*for (i in 0 until day.size) {
 
-            val tag: Int = i + 1
-
-            val subjectLine = ConstraintLayout(cnxt)
-
-            subjectLine.layoutParams = LinearLayout.LayoutParams(
-                ConstraintLayout.LayoutParams.MATCH_CONSTRAINT,
-                ConstraintLayout.LayoutParams.MATCH_PARENT
-            ).apply {
-                width = 0
-                weight = 1f
-                subjectLine.tag = tag
-                subjectLine.setPadding(1,0,1,1)
-            }
-
-            canvas.bringToFront()
-            canvas.addView(subjectLine)
-
-        }
-         */
-
+        val mainCV = ConstraintLayout(context)
+        mainCV.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT)
+        mainCV.tag = "mainCV"
+        canvas.bringToFront()
+        canvas.addView(mainCV)
     }
 
-    fun createSubject(StartHour:Int,StartMinute:Int,EndHour:Int,EndMinute:Int,DayFlag:Int,intentStartTime:Int,id:Int,colorCode:Int){
+    fun createSubject(StartHour:Int,StartMinute:Int,EndHour:Int,EndMinute:Int,DayFlag:Int,intentStartTime:Int,id:Int,colorCode:Int) {
 
-        val subjectHeight = (EndHour - StartHour) * cellHeight + (EndMinute - StartMinute) * cellHeight/60
-        val subjectMargin = (StartHour - intentStartTime) * cellHeight + StartMinute * cellHeight/60
+        val subjectWidth = cellWidth
+        val subjectHeight =
+            (EndHour - StartHour) * cellHeight + (EndMinute - StartMinute) * cellHeight / 60
+        val subjectMargin =
+            (StartHour - intentStartTime) * cellHeight + StartMinute * cellHeight / 60
         val subject = ConstraintLayout(cnxt)
         val titleText = TextView(cnxt)
+        val colorImage = ConstraintLayout(context)
         val id = id
 
-        val subjectData:RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
-            .equalTo("id",id)
-            .findAll()
+        val subjectData: RealmResults<SubjectData> =
+            realm.where<SubjectData>(SubjectData::class.java)
+                .equalTo("id", id)
+                .findAll()
 
 
         titleText.apply {
@@ -268,13 +260,15 @@ class WeekView : ConstraintLayout{
             tag = "title$id"
             textSize = 14f
             maxLines = 1
+
         }
 
         var emCount = EndMinute
         var smCount = StartMinute
-        for (i in 0 until (EndHour-StartHour)) {
-            emCount+=60}
-        for(i in 1 until ((emCount/20)-(smCount/20))){
+        for (i in 0 until (EndHour - StartHour)) {
+            emCount += 60
+        }
+        for (i in 1 until ((emCount / 20) - (smCount / 20))) {
             titleText.maxLines++
         }
 
@@ -282,42 +276,54 @@ class WeekView : ConstraintLayout{
             ConstraintLayout.LayoutParams.WRAP_CONTENT,
             ConstraintLayout.LayoutParams.WRAP_CONTENT
         ).apply {
-            width = ConstraintLayout.LayoutParams.PARENT_ID
+            width = subjectWidth
             height = subjectHeight.toInt()
             topToTop = ConstraintLayout.LayoutParams.PARENT_ID
             bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
             rightToRight = ConstraintLayout.LayoutParams.PARENT_ID
             leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID
+            leftMargin = ((DayFlag - 1) * subjectWidth)
+            horizontalBias = 0f
             verticalBias = 0f
             topMargin = subjectMargin.toInt()
-            subject.backgroundTintList = ColorStateList.valueOf(colorCode)
-            subject.setPadding(5,5,5,5)
-            subject.setBackgroundResource(R.drawable.round_subject_bg_layout)
-            subject.id = id
-            subject.setOnClickListener{
-                ID = id
-                dayFlag = DayFlag
-                val intentSubjectDetail = Intent (cnxt, SubjectDetail::class.java)
-                intentSubjectDetail.flags = (Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                cnxt.startActivityForResult(intentSubjectDetail,103)
-            }
-            subject.setOnLongClickListener {
-                ID = id
-                dayFlag = DayFlag
-                val dialog = SubjectDetailDialog(context)
-                dialog.cnxt = this@WeekView
-                dialog.show()
-                true
-            }
 
         }
-        subject.addView(titleText)
-        //findViewWithTag<ConstraintLayout>(DayFlag).addView(subject)
 
+        colorImage.layoutParams = LayoutParams(LayoutParams.MATCH_CONSTRAINT, LayoutParams.MATCH_CONSTRAINT).apply {
+            topToTop = ConstraintLayout.LayoutParams.PARENT_ID
+            bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
+            rightToRight = ConstraintLayout.LayoutParams.PARENT_ID
+            leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID
+        }
+        colorImage.setPadding(4,5,4,5)
+        colorImage.setBackgroundResource(R.drawable.round_subject_bg_layout)
+        colorImage.backgroundTintList = ColorStateList.valueOf(colorCode)
+
+        subject.setPadding(1, 0, 1, 0)//5,5,5,5
+        subject.id = id
+        subject.setOnClickListener {
+            ID = id
+            dayFlag = DayFlag
+            val intentSubjectDetail = Intent(cnxt, SubjectDetail::class.java)
+            intentSubjectDetail.flags =
+                (Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            cnxt.startActivityForResult(intentSubjectDetail, 103)
+        }
+        subject.setOnLongClickListener {
+            ID = id
+            dayFlag = DayFlag
+            val dialog = SubjectDetailDialog(context)
+            dialog.cnxt = this@WeekView
+            dialog.show()
+            true
+        }
+        colorImage.addView(titleText)
+        subject.addView(colorImage)
+        findViewWithTag<ConstraintLayout>("mainCV").addView(subject)
     }
 
     fun deleteSubject(id:Int){
-        findViewWithTag<ConstraintLayout>(dayFlag).removeView(findViewById(id))
+        findViewWithTag<ConstraintLayout>("mainCV").removeView(findViewById(id))
     }
     fun refresh(view: WeekView){
 
@@ -325,9 +331,8 @@ class WeekView : ConstraintLayout{
 
         if (scheduleData != null) {
 
-            for(i in 1 .. scheduleData!!.scheduleDayFlag){
-                view.findViewWithTag<ConstraintLayout>(i).removeAllViews()
-            }
+            view.findViewWithTag<ConstraintLayout>("mainCV").removeAllViews()
+
 
             val subjectData: RealmResults<SubjectData> =
                 realm.where<SubjectData>(SubjectData::class.java).findAll()

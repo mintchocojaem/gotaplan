@@ -97,6 +97,8 @@ class SubjectDetail : AppCompatActivity() {
         super.onBackPressed()
     }
 
+
+
     private fun themeChange(colorCode:Int){
 
         window.statusBarColor = colorCode
