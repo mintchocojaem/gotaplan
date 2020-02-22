@@ -29,13 +29,24 @@ class CreateSubject :AppCompatActivity() {
         super.setContentView(R.layout.create_subject)
 
         val colorList = resources.getIntArray(R.array.subject_color)
-
         val intentStartHour = intent.getIntExtra("start_time",0)
         val intentEndHour = intent.getIntExtra("end_time",0)
         subject_picker.subjectPicker(intentStartHour,intentEndHour)
 
         val intentFlag = intent.getIntExtra("day_flag",0)
-        var dayFlag = 0
+        //val subjectFlag = intent.getIntExtra("subject_day_flag",0)
+
+        var dayFlag = intent.getIntExtra("subject_day_flag",0)
+
+        when(dayFlag){
+            1 -> monday_button.isChecked = true
+            2 -> tuesday_button.isChecked = true
+            3 -> wednesday_button.isChecked = true
+            4 -> thursday_button.isChecked = true
+            5 -> friday_button.isChecked = true
+            6 -> saturday_button.isChecked = true
+            7 -> sunday_button.isChecked = true
+        }
 
         if (intentFlag == 6){
             saturday_button.visibility = View.VISIBLE

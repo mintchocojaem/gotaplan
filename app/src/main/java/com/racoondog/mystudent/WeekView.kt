@@ -1,9 +1,10 @@
 package com.racoondog.mystudent
 
-import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.graphics.Color
 import android.graphics.Point
 import android.util.AttributeSet
 import android.view.*
@@ -33,7 +34,7 @@ class WeekView : ConstraintLayout{
     private var cellHeight= 0
     private var cellWidth = 0
 
-    private var screen = 0
+    private var screenHeight = 0
 
     constructor(context: Context) : super(context, null) {
         initView()
@@ -69,10 +70,10 @@ class WeekView : ConstraintLayout{
         val w = size.x
         val h = size.y
 
-        screen = h
+        screenHeight = h
 
         cellWidth = (w-75)/day_flag
-        cellHeight = (w-75)/day_flag
+        cellHeight = (w-75)/5
 
         var day = mutableListOf<String>()
         val dayList = listOf("월","화","수","목","금","토","일")
@@ -197,22 +198,21 @@ class WeekView : ConstraintLayout{
             constInit.addView(initPeriod)
             timeRow.addView(constInit)
 
-            for (j in 0 until day.size) {
+            for (j in 1 .. day.size) {
 
                 val timeText = TextView(cnxt) // 각 시간표 일정이 들어가는 공백 부분
-                val tag: String = day[j] + i
+                val tag: String = "day$j$i"
                 timeText.tag = tag
-                /*
-                val random = Random()
-                val ColorList:IntArray = context.resources.getIntArray(R.array.subject_color)
-                val number = random.nextInt(ColorList.size -1)
-                val colorCode = ColorList[number]
-
-                 */
-
                 timeText.setBackgroundResource(R.drawable.cell_shape)
-                timeText.textSize = 10f
-
+                timeText.setOnLongClickListener {
+                    val subjectIntent = Intent(cnxt, CreateSubject::class.java)
+                    subjectIntent.flags = (Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    subjectIntent.putExtra("start_time", start_time+i)
+                    subjectIntent.putExtra("end_time", end_time)
+                    subjectIntent.putExtra("day_flag", day_flag)
+                    subjectIntent.putExtra("subject_day_flag", j)
+                    cnxt.startActivityForResult(subjectIntent, 102)
+                    true }
                 // timeText lyaout 설정부분
                 timeText.layoutParams = TableRow.LayoutParams(
                     TableRow.LayoutParams.WRAP_CONTENT,
@@ -245,7 +245,8 @@ class WeekView : ConstraintLayout{
 
     }
 
-    fun createSubject(StartHour:Int,StartMinute:Int,EndHour:Int,EndMinute:Int,DayFlag:Int,intentStartTime:Int,id:Int,colorCode:Int) {
+    @SuppressLint("ClickableViewAccessibility")
+    fun createSubject(StartHour:Int, StartMinute:Int, EndHour:Int, EndMinute:Int, DayFlag:Int, intentStartTime:Int, id:Int, colorCode:Int) {
 
         val subjectWidth = cellWidth
         val subjectHeight = (EndHour - StartHour) * cellHeight + (EndMinute - StartMinute) * cellHeight / 60
@@ -254,17 +255,17 @@ class WeekView : ConstraintLayout{
         val subject = ConstraintLayout(cnxt)
         val titleText = TextView(cnxt)
         val colorImage = ConstraintLayout(context)
-        val id = id
+        val SubjectID = id
 
         val subjectData: RealmResults<SubjectData> =
             realm.where<SubjectData>(SubjectData::class.java)
-                .equalTo("id", id)
+                .equalTo("id", SubjectID)
                 .findAll()
 
 
         titleText.apply {
             text = subjectData[0]!!.title.replace(" ", "\u00A0")
-            tag = "title$id"
+            tag = "title$SubjectID"
             textSize = 14f
             maxLines = 1
 
@@ -307,10 +308,10 @@ class WeekView : ConstraintLayout{
         colorImage.backgroundTintList = ColorStateList.valueOf(colorCode)
 
         subject.setPadding(1, 0, 1, 0)//5,5,5,5
-        subject.id = id
+        subject.id = SubjectID
 
         subject.setOnClickListener {
-            ID = id
+            ID = SubjectID
             dayFlag = DayFlag
             val intentSubjectDetail = Intent(cnxt, SubjectDetail::class.java)
             intentSubjectDetail.flags =
@@ -320,14 +321,17 @@ class WeekView : ConstraintLayout{
 
         subject.setOnLongClickListener {
 
-            ID = id
+            ID = SubjectID
             dayFlag = DayFlag
+
             /*
             val dialog = SubjectDetailDialog(context)
             dialog.cnxt = this@WeekView
             dialog.show()
 
              */
+
+            val scheduleData = realm.where(ScheduleData::class.java).findFirst()!!
 
             subject.setOnTouchListener { v, event ->
 
@@ -336,8 +340,10 @@ class WeekView : ConstraintLayout{
                     MotionEvent.ACTION_UP -> v.parent.requestDisallowInterceptTouchEvent(false)
                 }
 
+
                 val parentWidth = (v.parent as ViewGroup).width // 부모 View 의 Width
                 val parentHeight = (v.parent as ViewGroup).height // 부모 View 의 Height
+
 
                 if (event.action === MotionEvent.ACTION_DOWN) { // 뷰 누름
 
@@ -354,7 +360,6 @@ class WeekView : ConstraintLayout{
                     if (v.x <= 0) v.x = 0f else if(v.x > parentWidth) v.x =  (parentWidth - v.width).toFloat()
                     if (v.y <= 0) v.y = 0f else if(v.y + v.height > parentHeight) v.y =  (parentHeight- v.height).toFloat()
 
-                    val scheduleData = realm.where(ScheduleData::class.java).findFirst()!!
                     for(i in 0 until scheduleData.scheduleDayFlag){
                         if (v.x > (cellWidth * i) && v.x <= (cellWidth * (i+1))) v.x = (cellWidth * i).toFloat()
                     }
@@ -362,34 +367,55 @@ class WeekView : ConstraintLayout{
                     val h = IntArray(2)
                     v.getLocationOnScreen(h)
                     when(h[1]){
-                        in 0..(screen/3) -> {
+                        in 0..(screenHeight/3) -> {
 
                             scrollView.scrollTo(0,scrollView.scrollY-30)
 
                         }
-                        in ((screen/3)*2)..screen -> {
+                        in ((screenHeight/3)*2)..screenHeight -> {
 
 
                             scrollView.scrollTo(0,scrollView.scrollY+30)
 
                         }
                     }
+
+                    for(i in 0 until (scheduleData.scheduleEndHour - scheduleData.scheduleStartHour)){
+
+                        if (v.y >= (cellHeight*i) && v.y < cellHeight * (i+1)) {
+
+                            for (j in 1 .. scheduleData.scheduleDayFlag){
+                                findViewWithTag<TextView>("day$j$i").width = 500
+                            }
+
+                        }
+
+                    }
+
                         //scrollView.smoothScrollTo(v.x.toInt(),100)
 
                 } else if (event.action === MotionEvent.ACTION_UP) { // 뷰에서 손을 뗌
 
+                    if (v.x < 0) v.x = 0f else if (v.x + v.width > parentWidth) v.x = (parentWidth - v.width).toFloat()
+                    if (v.y < 0) v.y = 0f else if (v.y + v.height > parentHeight) v.y = (parentHeight - v.height).toFloat()
 
-                    if (v.x < 0) {
-                        v.x = 0f
+                    /*
+                    for(i in 0 until (scheduleData.scheduleEndHour - scheduleData.scheduleStartHour)){
+
+                        if (v.y >= (cellHeight*i) && v.y < (cellHeight*(i+1)) - (cellHeight/2)) v.y = (cellHeight * i).toFloat()
+                        else if (v.y >= (cellHeight*(i+1)) - (cellHeight/2) && v.y < cellHeight*(i+1)){
+                            v.y = (cellHeight*(i+1)) - (cellHeight/2).toFloat()
+                        }
                     }
-                    else if (v.x + v.width > parentWidth) {
-                        v.x = (parentWidth - v.width).toFloat()
-                    }
-                    if (v.y < 0) {
-                        v.y = 0f
-                    } else if (v.y + v.height > parentHeight) {
-                        v.y = (parentHeight - v.height).toFloat()
-                    }
+
+                     */
+
+                    //if(v.x == oldX && v.y == oldY) Toast.makeText(context,"변경된 시간이 같음",Toast.LENGTH_SHORT).show()
+
+                    //Toast.makeText(context,"${v.y},$cellHeight",Toast.LENGTH_SHORT).show()
+
+                    //checkTime(v,ID)
+
                     subject.setOnTouchListener(null)
 
                 }
@@ -404,6 +430,60 @@ class WeekView : ConstraintLayout{
         colorImage.addView(titleText)
         subject.addView(colorImage)
         findViewWithTag<ConstraintLayout>("canvas").addView(subject)
+    }
+
+    private fun checkTime(v:View,subjectID: Int){
+
+        val scheduleData = realm.where(ScheduleData::class.java).findFirst()!!
+
+        val subjectData: RealmResults<SubjectData> =
+            realm.where<SubjectData>(SubjectData::class.java)
+                .equalTo("id", subjectID)
+                .findAll()
+
+        val oldTime = subjectData[0]!!.startHour
+
+        for(i in 1 .. scheduleData.scheduleDayFlag){
+            if (v.x >= (cellWidth * (i-1)) && v.x < (cellWidth * i)){
+                realm.beginTransaction()
+                subjectData[0]!!.dayFlag = i
+                realm.commitTransaction()
+            }
+        }
+
+        for(i in 1 .. (scheduleData.scheduleEndHour - scheduleData.scheduleStartHour)){
+
+
+            if (v.y >= (cellHeight*(i-1)) && v.y < (cellHeight*i) - (cellHeight/2)){
+
+                realm.beginTransaction()
+                subjectData[0]!!.startHour = scheduleData.scheduleStartHour + (i-1)
+                realm.commitTransaction()
+                val deltaTime = subjectData[0]!!.startHour - oldTime
+
+                realm.beginTransaction()
+                subjectData[0]!!.endHour += deltaTime
+                realm.commitTransaction()
+            }
+            else if (v.y >= (cellHeight*i) - (cellHeight/2) && v.y < cellHeight*i){
+
+
+                realm.beginTransaction()
+                subjectData[0]!!.startHour = scheduleData.scheduleStartHour + (i-1)
+                realm.commitTransaction()
+                val deltaTime = subjectData[0]!!.startHour - oldTime
+
+                realm.beginTransaction()
+                subjectData[0]!!.endHour += deltaTime
+                realm.commitTransaction()
+                Toast.makeText(context,"${subjectData[0]!!.startMinute.toDouble() / 100}",Toast.LENGTH_SHORT).show()
+
+            }
+
+
+
+        }
+
     }
 
     fun deleteSubject(id:Int){
