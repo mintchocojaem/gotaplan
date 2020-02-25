@@ -15,7 +15,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import kotlinx.android.synthetic.main.color_dialog.*
 
 
-class ColorPickerDialog(context: Context?, private var onCustomDialogEventListener: ICustomDialogEventListener) : Dialog(context) {
+class ColorPickerDialog(context: Context, private var onCustomDialogEventListener: ICustomDialogEventListener) : Dialog(context) {
 
     // this is your interface for what you want to do on the calling activity
     interface ICustomDialogEventListener {
@@ -29,8 +29,8 @@ class ColorPickerDialog(context: Context?, private var onCustomDialogEventListen
         val layoutParams = WindowManager.LayoutParams()
         layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
         layoutParams.dimAmount = 0.8f
-        window.attributes = layoutParams
-        window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        window!!.attributes = layoutParams
+        window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         setContentView(R.layout.color_dialog)
 
         val colorList = context.resources.getIntArray(R.array.subject_color)

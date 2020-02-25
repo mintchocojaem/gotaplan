@@ -114,7 +114,7 @@ class CreateSubject :AppCompatActivity() {
             dayFlag = 7
         }
 
-        lesson_mode.setOnCheckedChangeListener{compoundButton,b ->
+        lesson_mode.setOnCheckedChangeListener{compoundButton,_ ->
             title_text.hideKeyboard()
             Content_text.hideKeyboard()
 
@@ -133,11 +133,11 @@ class CreateSubject :AppCompatActivity() {
         colorPickerButton_layout.setOnClickListener {
 
             val dialog = ColorPickerDialog(this, object : ICustomDialogEventListener {
-                override fun customDialogEvent(colorcode: Int) {
+                override fun customDialogEvent(colorCode: Int) {
                     // Do something with the value here, e.g. set a variable in the calling activity
-                    colorCode = colorcode
-                    colorPickerButton.backgroundTintList = ColorStateList.valueOf(colorCode)
-                    changeTheme(colorCode)
+                    this@CreateSubject.colorCode = colorCode
+                    colorPickerButton.backgroundTintList = ColorStateList.valueOf(this@CreateSubject.colorCode)
+                    changeTheme(this@CreateSubject.colorCode)
                 }
             })
             dialog.show()

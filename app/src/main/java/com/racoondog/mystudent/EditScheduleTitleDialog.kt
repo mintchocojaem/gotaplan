@@ -30,8 +30,8 @@ class EditScheduleTitleDialog:Dialog {
         val layoutParams = WindowManager.LayoutParams()
         layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
         layoutParams.dimAmount = 0.8f
-        window.attributes = layoutParams
-        window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        window!!.attributes = layoutParams
+        window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         setContentView(R.layout.edit_schedule_title_dialog)
 
         val scheduleData = realm.where(ScheduleData::class.java).findFirst()!!

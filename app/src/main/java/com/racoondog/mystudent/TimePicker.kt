@@ -10,6 +10,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.NumberPicker
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.time_picker.view.*
 
 class TimePicker:ConstraintLayout {
@@ -120,11 +121,11 @@ class TimePicker:ConstraintLayout {
         endText_hour.text = "6 "
         displayValue.removeAll(displayValue)
 
-        start_AMPM.setOnTouchListener { _: View, event: MotionEvent ->
+        start_AMPM.setOnTouchListener { _: View, _: MotionEvent ->
             //리턴값은 return 없이 아래와 같이
             true // or false
         }
-        end_AMPM.setOnTouchListener { _: View, event: MotionEvent ->
+        end_AMPM.setOnTouchListener { _: View, _: MotionEvent ->
             //리턴값은 return 없이 아래와 같이
             true // or false
         }
@@ -300,22 +301,22 @@ class TimePicker:ConstraintLayout {
         }
         endText_minute.text = end_minute.displayedValues[end_minute.value]
 
-        start_AMPM.setOnTouchListener { _: View, event:MotionEvent ->
+        start_AMPM.setOnTouchListener { _: View, _:MotionEvent ->
             //리턴값은 return 없이 아래와 같이
             true // or false
         }
-        end_AMPM.setOnTouchListener { _: View, event:MotionEvent ->
+        end_AMPM.setOnTouchListener { _: View, _:MotionEvent ->
             //리턴값은 return 없이 아래와 같이
             true // or false
         }
 
-        start_minute.setOnValueChangedListener{_,i1,i2 ->
+        start_minute.setOnValueChangedListener{_,_,_ ->
 
             startText_minute.text = start_minute.displayedValues[start_minute.value]
 
 
         }
-        start_hour.setOnValueChangedListener{_,i1,i2 ->
+        start_hour.setOnValueChangedListener{_,_,i2 ->
 
             startText_hour.text = start_hour.displayedValues[start_hour.value - intentStartHour]
             if(i2 < 12 || i2 == 24) {
@@ -329,7 +330,7 @@ class TimePicker:ConstraintLayout {
 
         }
 
-        end_minute.setOnValueChangedListener{_,i1,i2 ->
+        end_minute.setOnValueChangedListener{_,_,_ ->
 
             endText_minute.text = end_minute.displayedValues[end_minute.value]
 
@@ -339,7 +340,7 @@ class TimePicker:ConstraintLayout {
             }
 
         }
-        end_hour.setOnValueChangedListener{_,i1,i2 ->
+        end_hour.setOnValueChangedListener{_,_,i2 ->
 
             endText_hour.text = end_hour.displayedValues[end_hour.value - intentStartHour]
             if(i2 < 12 || i2 == 24) {
@@ -379,40 +380,37 @@ class TimePicker:ConstraintLayout {
 
     fun displayTime(startHour:Int,startMinute:Int,endHour:Int,endMinute:Int){
 
-        if(startHour >= 12 && startHour < 24){
+        if (startHour in 12..23) {
             start_AMPM.value = 1
-        }else start_AMPM.value = 0
-        startText_AMPM.text ="${start_AMPM.displayedValues[start_AMPM.value]}"
+        }
+        else start_AMPM.value = 0
+        startText_AMPM.text = start_AMPM.displayedValues[start_AMPM.value]
         start_hour.value = startHour
-        startText_hour.text = "${start_hour.displayedValues[start_hour.value - start_hour.minValue]}"
+        startText_hour.text = start_hour.displayedValues[start_hour.value - start_hour.minValue]
         start_minute.value = (startMinute / 5)
         startText_minute.text = start_minute.displayedValues[start_minute.value]
 
-        if(endHour >= 12 && endHour < 24){
+        if(endHour in 12..23){
             end_AMPM.value = 1
         }else end_AMPM.value = 0
-        endText_AMPM.text ="${end_AMPM.displayedValues[end_AMPM.value]}"
+        endText_AMPM.text = end_AMPM.displayedValues[end_AMPM.value]
         end_hour.value = endHour
-        endText_hour.text = "${end_hour.displayedValues[end_hour.value - end_hour.minValue]}"
+        endText_hour.text = end_hour.displayedValues[end_hour.value - end_hour.minValue]
         end_minute.value = (endMinute / 5)
         endText_minute.text = end_minute.displayedValues[end_minute.value]
 
     }
 
-    fun changedTextColor(viewGroup: ViewGroup, focused:Boolean){
-
-        if(focused){
-            for (index in 0 until (viewGroup as ViewGroup).childCount) {
-                val nextChild = (viewGroup as ViewGroup).getChildAt(index)
-                if(nextChild is TextView) nextChild.setTextColor(resources.getColor(R.color.defaultAccentColor))
-            }
-        }else{
-            for (index in 0 until (viewGroup as ViewGroup).childCount) {
-                val nextChild = (viewGroup as ViewGroup).getChildAt(index)
-                if(nextChild is TextView) nextChild.setTextColor(resources.getColor(R.color.defaultContemptColor))
-            }
+    fun changedTextColor(viewGroup: ViewGroup, focused:Boolean) = if(focused){
+        for (index in 0 until (viewGroup).childCount) {
+            val nextChild = (viewGroup).getChildAt(index)
+            if(nextChild is TextView) nextChild.setTextColor(ContextCompat.getColor(context,R.color.defaultAccentColor))
         }
-
+    }else{
+        for (index in 0 until (viewGroup).childCount) {
+            val nextChild = (viewGroup).getChildAt(index)
+            if(nextChild is TextView) nextChild.setTextColor(ContextCompat.getColor(context,R.color.defaultContemptColor))
+        }
     }
 
     private fun View.hideKeyboard() {

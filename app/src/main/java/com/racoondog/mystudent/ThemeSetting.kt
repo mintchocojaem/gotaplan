@@ -5,6 +5,8 @@ import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import com.racoondog.mystudent.ColorPickerDialog.ICustomDialogEventListener
 import io.realm.Realm
 import kotlinx.android.synthetic.main.theme_setting_layout.*
 
@@ -29,10 +31,10 @@ class ThemeSetting:AppCompatActivity() {
 
         status_bar_theme_picker_btn_layout.setOnClickListener {
             val dialog = ColorPickerDialog(this, object :
-                ColorPickerDialog.ICustomDialogEventListener {
-                override fun customDialogEvent(colorcode: Int) {
+                ICustomDialogEventListener {
+                override fun customDialogEvent(colorCode: Int) {
                     // Do something with the value here, e.g. set a variable in the calling activity
-                    statusBarColorCode = colorcode
+                    statusBarColorCode = colorCode
                     status_bar_theme_picker_btn.backgroundTintList = ColorStateList.valueOf(statusBarColorCode)
 
                 }
@@ -42,15 +44,15 @@ class ThemeSetting:AppCompatActivity() {
 
         status_bar_theme_init_btn.setOnClickListener {
             initColor(status_bar_theme_picker_btn,null)
-            statusBarColorCode = resources.getColor(R.color.statusBarColor)
+            statusBarColorCode = ContextCompat.getColor(applicationContext,R.color.statusBarColor)
         }
 
         mainButton_theme_picker_btn_layout.setOnClickListener {
             val dialog = ColorPickerDialog(this, object :
-                ColorPickerDialog.ICustomDialogEventListener {
-                override fun customDialogEvent(colorcode: Int) {
+                ICustomDialogEventListener {
+                override fun customDialogEvent(colorCode: Int) {
                     // Do something with the value here, e.g. set a variable in the calling activity
-                    mainButtonColorCode = colorcode
+                    mainButtonColorCode = colorCode
                     main_btn_theme_picker_btn.backgroundTintList = ColorStateList.valueOf(mainButtonColorCode)
 
                 }
@@ -59,8 +61,8 @@ class ThemeSetting:AppCompatActivity() {
         }
 
         mainButton_theme_init_btn.setOnClickListener {
-            initColor(main_btn_theme_picker_btn, resources.getColor(R.color.mainButtonColor))
-            mainButtonColorCode = resources.getColor(R.color.mainButtonColor)
+            initColor(main_btn_theme_picker_btn, ContextCompat.getColor(applicationContext,R.color.mainButtonColor))
+            mainButtonColorCode = ContextCompat.getColor(applicationContext,R.color.mainButtonColor)
         }
 
     }
@@ -79,7 +81,7 @@ class ThemeSetting:AppCompatActivity() {
         statusBarColorCode =  themeData.statusBarColor
         mainButtonColorCode = themeData.mainButtonColor
 
-        if(statusBarColorCode == resources.getColor(R.color.statusBarColor))status_bar_theme_picker_btn.backgroundTintList = null
+        if(statusBarColorCode == ContextCompat.getColor(applicationContext,R.color.statusBarColor))status_bar_theme_picker_btn.backgroundTintList = null
         else status_bar_theme_picker_btn.backgroundTintList = ColorStateList.valueOf(statusBarColorCode)
         main_btn_theme_picker_btn.backgroundTintList = ColorStateList.valueOf(mainButtonColorCode)
 

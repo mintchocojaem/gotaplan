@@ -1,7 +1,7 @@
 package com.racoondog.mystudent
 
 import android.app.Activity
-import android.app.AlertDialog
+import android.app.AlertDialog.*
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
@@ -26,9 +26,9 @@ class MainActivity: AppCompatActivity() {
     private val realm = Realm.getDefaultInstance()
     val weekView by lazy { WeekView(this) }
 
-    var intentStartTime: Int = 0
-    var intentEndTime: Int = 0
-    var intentflag: Int = 0
+    private var intentStartTime: Int = 0
+    private var intentEndTime: Int = 0
+    private var intentFlag: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -60,7 +60,7 @@ class MainActivity: AppCompatActivity() {
             subjectIntent.flags = (Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
             subjectIntent.putExtra("start_time", intentStartTime)
             subjectIntent.putExtra("end_time", intentEndTime)
-            subjectIntent.putExtra("day_flag", intentflag)
+            subjectIntent.putExtra("day_flag", intentFlag)
             startActivityForResult(subjectIntent, 102)
         }
 
@@ -86,7 +86,7 @@ class MainActivity: AppCompatActivity() {
 
                     intentStartTime = scheduleStartHour
                     intentEndTime = scheduleEndHour
-                    intentflag = scheduleDayFlag
+                    intentFlag = scheduleDayFlag
 
                     realm.beginTransaction()
                     val dataBase: ScheduleData = realm.createObject(ScheduleData::class.java)
@@ -125,16 +125,16 @@ class MainActivity: AppCompatActivity() {
                     val lessonOnOff = data.getBooleanExtra("LessonOnOff", false)
                     val colorCode = data.getIntExtra("colorCode", 0)
 
-                    val ID = weekView.createID(0, 128)//다음으로 만들어질 weekview의 id 값을 결정하는 변수
+                    val id = weekView.createID(0, 128)//다음으로 만들어질 weekView의 id 값을 결정하는 변수
 
                     realm.beginTransaction()
                     val subjectInfo: SubjectData = realm.createObject(SubjectData::class.java)
                     subjectInfo.apply {
-                        this.id = ID.toInt()
+                        this.id = id
                         this.dayFlag = dayFlag
-                        this.startHour = startHour.toInt()
+                        this.startHour = startHour
                         this.startMinute = startMinute
-                        this.endHour = endHour.toInt()
+                        this.endHour = endHour
                         this.endMinute = endMinute
                         this.title = subjectTitle
                         this.content = contentText
@@ -146,7 +146,7 @@ class MainActivity: AppCompatActivity() {
 
                     weekView.createSubject(
                         startHour, startMinute.toInt()
-                        , endHour, endMinute.toInt(), dayFlag, intentStartTime, ID, colorCode
+                        , endHour, endMinute.toInt(), dayFlag, intentStartTime, id, colorCode
                     )
                 }
                 103 -> {
@@ -172,7 +172,7 @@ class MainActivity: AppCompatActivity() {
             when (requestCode) {
 
                 103 -> {
-                    weekView.deleteSubject(WeekView.ID.toInt())
+                    weekView.deleteSubject(WeekView.ID)
                 }
 
             }
@@ -192,9 +192,9 @@ class MainActivity: AppCompatActivity() {
             addSubjectButton.visibility = View.VISIBLE
             toolbar_title.text = scheduleData.scheduleTitle
 
-            intentflag = scheduleData.scheduleDayFlag!!
-            intentStartTime = scheduleData.scheduleStartHour!!
-            intentEndTime = scheduleData.scheduleEndHour!!
+            intentFlag = scheduleData.scheduleDayFlag
+            intentStartTime = scheduleData.scheduleStartHour
+            intentEndTime = scheduleData.scheduleEndHour
 
             weekView.layoutParams = ConstraintLayout.LayoutParams(
                 ConstraintLayout.LayoutParams.MATCH_PARENT,
@@ -203,7 +203,7 @@ class MainActivity: AppCompatActivity() {
 
             }
 
-            weekView.drawSchedule(intentflag, intentStartTime, intentEndTime)
+            weekView.drawSchedule(intentFlag, intentStartTime, intentEndTime)
             weekView_layout.addView(weekView)
 
 
@@ -211,14 +211,13 @@ class MainActivity: AppCompatActivity() {
                 realm.where<SubjectData>(SubjectData::class.java).findAll()
             for (data in subjectData) {
                 weekView.createSubject(
-                    data.startHour.toInt(),
-                    data.startMinute.toInt()
-                    ,
-                    data.endHour.toInt(),
+                    data.startHour,
+                    data.startMinute.toInt(),
+                    data.endHour,
                     data.endMinute.toInt(),
-                    data.dayFlag.toInt(),
-                    scheduleData.scheduleStartHour!!.toInt(),
-                    data.id.toInt(),
+                    data.dayFlag,
+                    scheduleData.scheduleStartHour,
+                    data.id,
                     data.subjectColor
                 )
             }
@@ -233,7 +232,7 @@ class MainActivity: AppCompatActivity() {
     private fun changeTheme() {
 
         realm.beginTransaction()
-        val Data = realm.createObject(ThemeData::class.java)
+        realm.createObject(ThemeData::class.java)
         realm.commitTransaction()
 
         val themeData = realm.where(ThemeData::class.java).findFirst()!!
@@ -310,10 +309,10 @@ class MainActivity: AppCompatActivity() {
 
         //거절되었거나 아직 수락하지 않은 권한(퍼미션)을 저장할 문자열 배열 리스트
         //필요한 퍼미션들을 하나씩 끄집어내서 현재 권한을 받았는지 체크
-        var rejectedPermissionList = ArrayList<String>()
+        val rejectedPermissionList = ArrayList<String>()
 
         if(ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
-            //만약 권한이 없다면 rejectedPermissionList에 추가
+            //만약 권한이 없다면 rejectedPermissionList 로 추가
             rejectedPermissionList.add(permission)
 
         }
@@ -339,13 +338,13 @@ class MainActivity: AppCompatActivity() {
 
                             //권한 획득 실패
 
-                            val dialog = AlertDialog.Builder(this)
+                            val dialog = Builder(this)
                                 .setCancelable(false)
                                 .setMessage("다음 기능을 사용하기 위해서는 $permission 권한이 필요합니다. 계속 하시겠습니까?")
                                 .setPositiveButton("확인") { _, _ ->
                                     ActivityCompat.requestPermissions(this, permissions,100) }
                                 .show()
-                            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(resources.getColor(R.color.defaultAccentColor))
+                            dialog.getButton(BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(applicationContext,R.color.defaultAccentColor))
 
                         }
                     }

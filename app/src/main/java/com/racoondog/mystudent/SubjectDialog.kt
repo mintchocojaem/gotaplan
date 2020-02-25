@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import io.realm.Realm
 import io.realm.RealmResults
 import kotlinx.android.synthetic.main.subject_dialog.*
@@ -33,8 +34,8 @@ class SubjectDialog: Dialog {
         val layoutParams = WindowManager.LayoutParams()
         layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
         layoutParams.dimAmount = 0.8f
-        window.attributes = layoutParams
-        window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        window!!.attributes = layoutParams
+        window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         setContentView(R.layout.subject_dialog)
 
         initSubject.setOnClickListener {
@@ -77,12 +78,12 @@ class SubjectDialog: Dialog {
             }
 
             .show()
-        builder.window.attributes.apply {
+        builder.window!!.attributes.apply {
             width = WindowManager.LayoutParams.WRAP_CONTENT
             height = WindowManager.LayoutParams.WRAP_CONTENT}
-        builder.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        builder.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(cnxt.resources.getColor(R.color.colorCancel))
-        builder.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(cnxt.resources.getColor(R.color.defaultAccentColor))
+        builder.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        builder.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(cnxt.applicationContext,R.color.colorCancel))
+        builder.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(cnxt.applicationContext,R.color.defaultAccentColor))
 
     }
 

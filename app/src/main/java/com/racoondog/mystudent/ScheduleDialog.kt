@@ -1,8 +1,8 @@
 package com.racoondog.mystudent
 
 import android.Manifest
-import android.app.ActionBar
 import android.app.AlertDialog
+import android.app.AlertDialog.*
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
@@ -18,6 +18,7 @@ import android.os.Environment
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import io.realm.Realm
 import io.realm.RealmResults
 import kotlinx.android.synthetic.main.activity_main.*
@@ -27,6 +28,7 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.OutputStream
+import kotlin.system.exitProcess
 
 
 class ScheduleDialog:Dialog {
@@ -49,8 +51,8 @@ class ScheduleDialog:Dialog {
         val layoutParams = WindowManager.LayoutParams()
         layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
         layoutParams.dimAmount = 0.8f
-        window.attributes = layoutParams
-        window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        window!!.attributes = layoutParams
+        window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         setContentView(R.layout.schedule_dialog)
 
         editScheduleTitle.setOnClickListener {
@@ -82,7 +84,7 @@ class ScheduleDialog:Dialog {
 
                 val f3 = File(Environment.getExternalStorageDirectory().toString() + "/shared/")
                 if (!f3.exists()) f3.mkdirs()
-                var outStream: OutputStream? = null
+                val outStream: OutputStream?
                 val file = File(Environment.getExternalStorageDirectory().toString() + "/shared/" + "temp" + ".png")
                 try {
                     outStream = FileOutputStream(file)
@@ -160,7 +162,7 @@ class ScheduleDialog:Dialog {
     private fun deleteSchedule(){
 
 
-        val builder = AlertDialog.Builder(context,R.style.MyDialogTheme)
+        val builder = Builder(context,R.style.MyDialogTheme)
 
             .setTitle("초기화")
             .setMessage("시간표를 초기화하시겠습니까? \n\n(모든 시간표와 과목의 데이터가 삭제됩니다.)")
@@ -173,7 +175,7 @@ class ScheduleDialog:Dialog {
                 cnxt.schedule_add.visibility = View.VISIBLE
                 cnxt.toolbar_title.text = "시간표"
 
-                var subjectData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
+                val subjectData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
                     .findAll()
 
                 for(i in subjectData.indices){
@@ -182,7 +184,7 @@ class ScheduleDialog:Dialog {
                     realm.commitTransaction()
                 }
 
-                var scheduleData: RealmResults<ScheduleData> =
+                val scheduleData: RealmResults<ScheduleData> =
                     realm.where<ScheduleData>(ScheduleData::class.java)
                         .findAll()
                 val data = scheduleData[0]!!
@@ -196,7 +198,7 @@ class ScheduleDialog:Dialog {
                 cnxt.startActivity(intent)
                 Toast.makeText(cnxt,"시간표가 초기화되었습니다.",Toast.LENGTH_SHORT).show()
 
-                System.exit(0)
+                exitProcess(0)
 
 
             }
@@ -207,13 +209,13 @@ class ScheduleDialog:Dialog {
 
             .show()
 
-        builder.window.attributes.apply {
+        builder.window!!.attributes.apply {
             width = WindowManager.LayoutParams.WRAP_CONTENT
             height = WindowManager.LayoutParams.WRAP_CONTENT}
 
-        builder.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        builder.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(cnxt.resources.getColor(R.color.colorCancel))
-        builder.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(cnxt.resources.getColor(R.color.defaultAccentColor))
+        builder.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        builder.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(cnxt.applicationContext,R.color.colorCancel))
+        builder.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(cnxt.applicationContext,R.color.defaultAccentColor))
 
 
     }

@@ -20,15 +20,15 @@ class SubjectDetail : AppCompatActivity() {
 
         var saveEditFlag = false
 
-        var subjectData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
+        val subjectData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
             .equalTo("id",WeekView.ID)
             .findAll()
         val data = subjectData[0]!!
 
-        var startAmPm = ""
-        var startHour = subjectData[0]!!.startHour
-        var startMinute = (subjectData[0]!!.startMinute).toString()
-        var textStartHour = when (startHour) {
+        val startAmPm: String
+        val startHour = subjectData[0]!!.startHour
+        val startMinute = (subjectData[0]!!.startMinute)
+        val textStartHour = when (startHour) {
             in 13..23 -> startHour - 12
             else -> startHour
         }
@@ -37,10 +37,10 @@ class SubjectDetail : AppCompatActivity() {
             else -> "오전"
         }
 
-        var endAmPm = ""
-        var endHour = subjectData[0]!!.endHour
-        var endMinute = (subjectData[0]!!.endMinute).toString()
-        var textEndHour = when (endHour) {
+        val endAmPm: String
+        val endHour = subjectData[0]!!.endHour
+        val endMinute = (subjectData[0]!!.endMinute)
+        val textEndHour = when (endHour) {
             in 13..23 -> endHour - 12
             else -> endHour
         }
@@ -50,19 +50,19 @@ class SubjectDetail : AppCompatActivity() {
         }
 
         subject_time.text = "$startAmPm $textStartHour:${startMinute}" + " ~ " + "$endAmPm $textEndHour:${endMinute}"
-        subject_title.setText(data.title.toString())
-        subject_content.setText(data.content.toString())
+        subject_title.setText(data.title)
+        subject_content.setText(data.content)
         themeChange(data.subjectColor)
 
         if(subjectData[0]!!.lessonOnOff) lesson_bar.visibility = View.VISIBLE
         else lesson_bar.visibility = View.GONE
 
 
-        studentName_text.setText(data.studentName.toString())
-        studentBirth_text.setText(data.studentBirth.toString())
-        studentPhone_text.setText(data.studentPhoneNumber.toString())
-        lessonCost_text.setText(data.lessonCost.toString())
-        lessonCycle_text.setText(data.lessonCycle.toString())
+        studentName_text.setText(data.studentName)
+        studentBirth_text.setText(data.studentBirth)
+        studentPhone_text.setText(data.studentPhoneNumber)
+        lessonCost_text.setText(data.lessonCost)
+        lessonCycle_text.setText(data.lessonCycle)
 
 
         lessonQuit_Button.setOnClickListener {
