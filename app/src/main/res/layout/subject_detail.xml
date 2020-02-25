@@ -389,7 +389,7 @@
                             android:text="0"
                             android:singleLine="true"
                             android:gravity="center"
-                            android:inputType="numberDecimal"
+                            android:inputType="numberSigned"
                             android:selectAllOnFocus="true">
 
                     </EditText>
