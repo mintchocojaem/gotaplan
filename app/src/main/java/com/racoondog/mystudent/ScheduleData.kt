@@ -21,14 +21,13 @@ open class SubjectData: RealmObject(){
 
     var startHour = 0
 
-    lateinit var startMinute: String
+    var startMinute = ""
 
     var endHour = 0
-    lateinit var endMinute: String
+    var endMinute = ""
 
     lateinit var title: String
     lateinit var content: String
-    lateinit var time: String
 
     var subjectColor:Int = 0
 

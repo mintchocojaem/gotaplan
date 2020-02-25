@@ -82,23 +82,11 @@ class TimeDialog:Dialog {
                         Toast.makeText(context,"해당 시간에 다른 과목이 존재합니다.",Toast.LENGTH_SHORT).show()
                     } else {
 
-                        val startTimeText = arrayOf(startText_AMPM.text.toString()
-                            ," ${startText_hour.text.toString().substring(0,startText_hour.text.toString().length-1)}",
-                            startText_minute.text.toString())
-
-                        val endTimeText = arrayOf(endText_AMPM.text.toString()
-                            ," ${endText_hour.text.toString().substring(0,endText_hour.text.toString().length-1)}",
-                            endText_minute.text.toString())
-
-                        val timeText =
-                            "${startTimeText[0]}${startTimeText[1]}:${startTimeText[2]}" + " ~ " + "${endTimeText[0]}${endTimeText[1]}:${endTimeText[2]}" //StartTimeText[ ]은 오전/오후 변환시간
-
                         realm.beginTransaction()
                         data.startHour = start_hour.value
-                        data.startMinute = startTimeText[2]
+                        data.startMinute = start_minute.value.toString()
                         data.endHour = end_hour.value
-                        data.endMinute = endTimeText[2]
-                        data.time = timeText
+                        data.endMinute = end_minute.value.toString()
                         data.dayFlag = dayFlag
                         realm.commitTransaction()
                         cnxt.cnxt.refresh(cnxt.cnxt.cnxt.weekView)

@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -120,12 +119,10 @@ class MainActivity: AppCompatActivity() {
                     val endHour = data.getIntExtra("EndHour", 0)// 24시 형식 시간
                     val dayFlag = data.getIntExtra("DayFlag", 0)
                     val subjectTitle = data.getStringExtra("SubjectTitle")
-                    val startTimeText = data.getStringArrayExtra("StartTimeText") // 오전/오후 형식 시간
-                    val endTimeText = data.getStringArrayExtra("EndTimeText")
+                    val startMinute = data.getStringExtra("StartMinute") // 오전/오후 형식 시간
+                    val endMinute = data.getStringExtra("EndMinute")
                     val contentText = data.getStringExtra("ContentText")
                     val lessonOnOff = data.getBooleanExtra("LessonOnOff", false)
-                    val timeText =
-                        "${startTimeText[0]}${startTimeText[1]}:${startTimeText[2]}" + " ~ " + "${endTimeText[0]}${endTimeText[1]}:${endTimeText[2]}" //StartTimeText[ ]은 오전/오후 변환시간
                     val colorCode = data.getIntExtra("colorCode", 0)
 
                     val ID = weekView.createID(0, 128)//다음으로 만들어질 weekview의 id 값을 결정하는 변수
@@ -136,12 +133,11 @@ class MainActivity: AppCompatActivity() {
                         this.id = ID.toInt()
                         this.dayFlag = dayFlag
                         this.startHour = startHour.toInt()
-                        this.startMinute = startTimeText[2]
+                        this.startMinute = startMinute
                         this.endHour = endHour.toInt()
-                        this.endMinute = endTimeText[2]
+                        this.endMinute = endMinute
                         this.title = subjectTitle
                         this.content = contentText
-                        this.time = timeText
                         this.lessonOnOff = lessonOnOff
                         this.subjectColor = colorCode
 
@@ -149,8 +145,8 @@ class MainActivity: AppCompatActivity() {
                     realm.commitTransaction()
 
                     weekView.createSubject(
-                        startHour, startTimeText[2].toInt()
-                        , endHour, endTimeText[2].toInt(), dayFlag, intentStartTime, ID, colorCode
+                        startHour, startMinute.toInt()
+                        , endHour, endMinute.toInt(), dayFlag, intentStartTime, ID, colorCode
                     )
                 }
                 103 -> {

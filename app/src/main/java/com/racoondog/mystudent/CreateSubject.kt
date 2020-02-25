@@ -61,42 +61,29 @@ class CreateSubject :AppCompatActivity() {
 
         createSubject_Button.setOnClickListener{
             if(dayFlag != 0 ) {
-                if ((start_hour.value < end_hour.value)||
-                    (start_hour.value == end_hour.value && ((end_minute.value - start_minute.value) >= 6))) {
-                    if(title_text.text.toString() !="") {
+                if (end_hour.value == start_hour.value){
+                    if(end_minute.displayedValues[end_minute.value].toInt() < start_minute.displayedValues[start_minute.value].toInt()){
+                        Toast.makeText(this, "시작 시각이 종료 시각보다 클 수 없습니다.", Toast.LENGTH_SHORT).show()
+                    }else if(start_minute.value == end_minute.value){
+                        Toast.makeText(this, "시작 시각이 종료 시각과 같을 수 없습니다.", Toast.LENGTH_SHORT).show()
+                    } else if((end_minute.displayedValues[end_minute.value].toInt()  - start_minute.displayedValues[start_minute.value].toInt() < 30)) {
+                        Toast.makeText(this, "각 과목의 최소 시간은 30분입니다.", Toast.LENGTH_SHORT).show()
+                    }else createSubject(dayFlag)
 
-                        if(checkTime(dayFlag)){
-                            Toast.makeText(this,"해당 시간에 다른 과목이 존재합니다.",Toast.LENGTH_SHORT).show()
-                        } else {
-                            intent.putExtra("StartHour",start_hour.value )
-                            intent.putExtra("EndHour", end_hour.value)
-                            intent.putExtra("DayFlag", dayFlag)
-                            intent.putExtra("SubjectTitle", title_text.text.toString())
-                            intent.putExtra("LessonOnOff",lesson_mode.isChecked)
-                            intent.putExtra("StartTimeText", arrayOf(startText_AMPM.text.toString()
-                                ," ${startText_hour.text.toString().substring(0,startText_hour.text.toString().length-1)}",
-                                startText_minute.text.toString()))
+                } else if(end_hour.value - start_hour.value == 1){
 
-                            intent.putExtra("EndTimeText", arrayOf(endText_AMPM.text.toString()
-                                ," ${endText_hour.text.toString().substring(0,endText_hour.text.toString().length-1)}",
-                                endText_minute.text.toString()))
+                    if(end_minute.displayedValues[end_minute.value].toInt()+(60-start_minute.displayedValues[start_minute.value].toInt()) < 30) {
+                        Toast.makeText(this, "각 과목의 최소 시간은 30분입니다.", Toast.LENGTH_SHORT).show()
+                    } else createSubject(dayFlag)
 
-                            intent.putExtra("ContentText",Content_text.text?.toString())
-                            intent.putExtra("colorCode", this.colorCode)
-                            setResult(Activity.RESULT_OK, intent)
-                            finish()
-                        }
-                    }
-                    else{
-                        Toast.makeText(this, "제목을 입력해 주세요.", Toast.LENGTH_SHORT).show()
-                    }
-                } else if (start_hour.value == end_hour.value && start_minute.value == end_minute.value) {
-                    Toast.makeText(this, "시작 시각이 종료 시각과 같을 수 없습니다.", Toast.LENGTH_SHORT).show()
-                } else if ((start_hour.value == end_hour.value && ((end_minute.value - start_minute.value) < 6))){
-                    Toast.makeText(this, "각 과목의 최소 시간은 30분입니다.", Toast.LENGTH_SHORT).show()
+                }
+                else if (end_hour.value < start_hour.value){
+                    Toast.makeText(this, "시작 시각이 종료 시각보다 클 수 없습니다.", Toast.LENGTH_SHORT).show()
                 }
                 else {
-                    Toast.makeText(this, "시작 시각이 종료 시각보다 클 수 없습니다.", Toast.LENGTH_SHORT).show()
+
+                    createSubject(dayFlag)
+
                 }
 
             }
@@ -104,7 +91,6 @@ class CreateSubject :AppCompatActivity() {
                 Toast.makeText(this, "날짜를 선택해 주세요.", Toast.LENGTH_SHORT).show()
             }
         }
-
 
         monday_button.setOnClickListener {
             dayFlag = 1
@@ -163,6 +149,7 @@ class CreateSubject :AppCompatActivity() {
         }
 
     }
+
     private fun checkTime(dayFlag:Int):Boolean{
 
         var subjectData: RealmResults<SubjectData> =
@@ -203,6 +190,32 @@ class CreateSubject :AppCompatActivity() {
 
         return checkTime.contains(element = false) // checkTime = true -> 시간표 겹침
 
+    }
+
+    private fun createSubject(dayFlag: Int){
+        if(title_text.text.toString() !="") {
+
+            if(checkTime(dayFlag)){
+                Toast.makeText(this,"해당 시간에 다른 과목이 존재합니다.",Toast.LENGTH_SHORT).show()
+            } else {
+                intent.putExtra("StartHour",start_hour.value )
+                intent.putExtra("EndHour", end_hour.value)
+                intent.putExtra("DayFlag", dayFlag)
+                intent.putExtra("SubjectTitle", title_text.text.toString())
+                intent.putExtra("LessonOnOff",lesson_mode.isChecked)
+                intent.putExtra("StartMinute", startText_minute.text.toString())
+
+                intent.putExtra("EndMinute", endText_minute.text.toString())
+
+                intent.putExtra("ContentText",Content_text.text?.toString())
+                intent.putExtra("colorCode", this.colorCode)
+                setResult(Activity.RESULT_OK, intent)
+                finish()
+            }
+        }
+        else {
+            Toast.makeText(this, "제목을 입력해 주세요.", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun changeTheme(colorList:Int){

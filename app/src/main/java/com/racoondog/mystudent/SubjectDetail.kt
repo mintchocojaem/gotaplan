@@ -24,7 +24,32 @@ class SubjectDetail : AppCompatActivity() {
             .equalTo("id",WeekView.ID)
             .findAll()
         val data = subjectData[0]!!
-        subject_time.text = data.time.toString()
+
+        var startAMPM = ""
+        var startHour = subjectData[0]!!.startHour
+        var startMinute = (subjectData[0]!!.startMinute).toString()
+        var textStartHour = when (startHour) {
+            in 13..23 -> startHour - 12
+            else -> startHour
+        }
+        startAMPM = when (startHour) {
+            in 12..23 -> "오후"
+            else -> "오전"
+        }
+
+        var endAMPM = ""
+        var endHour = subjectData[0]!!.endHour
+        var endMinute = (subjectData[0]!!.endMinute).toString()
+        var textEndHour = when (endHour) {
+            in 13..23 -> endHour - 12
+            else -> endHour
+        }
+        endAMPM = when (endHour) {
+            in 12..23 -> "오후"
+            else -> "오전"
+        }
+
+        subject_time.text = "$startAMPM $textStartHour:${startMinute}" + " ~ " + "$endAMPM $textEndHour:${endMinute}"
         subject_title.setText(data.title.toString())
         subject_content.setText(data.content.toString())
         themeChange(data.subjectColor)
