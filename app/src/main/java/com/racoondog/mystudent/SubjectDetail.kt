@@ -85,6 +85,9 @@ class SubjectDetail : AppCompatActivity() {
                 lessonCost_text.isEnabled = true
                 lessonCycle_text.isEnabled = true
 
+                lesson_cycle_minus_btn.isEnabled = false
+                lesson_cycle_plus_btn.isEnabled = false
+
                 saveEditFlag = true
 
             } else {
@@ -99,6 +102,9 @@ class SubjectDetail : AppCompatActivity() {
                 lessonCost_text.isEnabled = false
                 lessonCycle_text.isEnabled = false
 
+                lesson_cycle_minus_btn.isEnabled = true
+                lesson_cycle_plus_btn.isEnabled = true
+
 
                 realm.beginTransaction()
                 data.title = subject_title.text.toString()
@@ -107,11 +113,29 @@ class SubjectDetail : AppCompatActivity() {
                 data.studentBirth = studentBirth_text.text.toString()
                 data.studentPhoneNumber = studentPhone_text.text.toString()
                 data.lessonCost = lessonCost_text.text.toString()
-                data.lessonCycle = lessonCycle_text.text.toString()
+                if(lessonCycle_text.text.toString() == ""){ data.lessonCycle = "0"
+                    lessonCycle_text.setText("0")
+                }
+                else data.lessonCycle = lessonCycle_text.text.toString()
                 realm.commitTransaction()
 
                 saveEditFlag = false
             }
+        }
+
+        lesson_cycle_plus_btn.setOnClickListener {
+            lessonCycle_text.setText((data.lessonCycle.toInt()+1).toString())
+            realm.beginTransaction()
+            data.lessonCycle = lessonCycle_text.text.toString()
+            realm.commitTransaction()
+        }
+        lesson_cycle_minus_btn.setOnClickListener {
+
+            if(data.lessonCycle.toInt() == 0) lessonCycle_text.setText((data.lessonCycle.toInt()).toString())
+            else lessonCycle_text.setText((data.lessonCycle.toInt()-1).toString())
+            realm.beginTransaction()
+            data.lessonCycle = lessonCycle_text.text.toString()
+            realm.commitTransaction()
         }
 
     }

@@ -29,13 +29,13 @@ open class SubjectData: RealmObject(){
     lateinit var title: String
     lateinit var content: String
 
-    var subjectColor:Int = 0
+    var subjectColor = 0
 
     lateinit var studentName : String
     lateinit var studentBirth : String
     lateinit var studentPhoneNumber : String
     lateinit var lessonCost : String
-    lateinit var lessonCycle : String
+    var lessonCycle : String = "0"
 
 }
 

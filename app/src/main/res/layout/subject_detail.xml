@@ -378,17 +378,49 @@
                     <EditText
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            app:layout_constraintLeft_toRightOf="@id/lesson_cycle"
-                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintLeft_toRightOf="@id/lesson_cycle_minus_btn"
+                            app:layout_constraintRight_toLeftOf="@id/lesson_cycle_plus_btn"
                             app:layout_constraintTop_toTopOf="@id/lesson_cycle"
                             app:layout_constraintBottom_toBottomOf="@id/lesson_cycle"
                             android:id="@+id/lessonCycle_text"
                             android:background="@null"
                             android:textColor="@color/grayColor"
                             android:enabled="false"
-                            android:singleLine="true">
+                            android:text="0"
+                            android:singleLine="true"
+                            android:gravity="center"
+                            android:inputType="numberDecimal"
+                            android:selectAllOnFocus="true">
 
                     </EditText>
+
+                    <ImageButton
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_add_black_24dp"
+                            android:id="@+id/lesson_cycle_plus_btn"
+                            android:background="@null"
+                            android:layout_marginEnd="40dp"
+                            app:layout_constraintLeft_toRightOf="@id/lessonCycle_text"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/lessonCycle_text"
+                            app:layout_constraintBottom_toBottomOf="@id/lessonCycle_text">
+
+                    </ImageButton>
+                    <ImageButton
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_remove_black_24dp"
+                            android:id="@+id/lesson_cycle_minus_btn"
+                            android:background="@null"
+                            android:layout_marginStart="40dp"
+                            app:layout_constraintLeft_toRightOf="@id/lesson_cycle"
+                            app:layout_constraintRight_toLeftOf="@id/lessonCycle_text"
+                            app:layout_constraintTop_toTopOf="@id/lessonCycle_text"
+                            app:layout_constraintBottom_toBottomOf="@id/lessonCycle_text">
+
+                    </ImageButton>
+
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

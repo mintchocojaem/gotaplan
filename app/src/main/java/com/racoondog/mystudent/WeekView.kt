@@ -7,12 +7,14 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Point
+import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
 import android.view.*
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import io.realm.Realm
 import io.realm.RealmResults
 import io.realm.Sort
@@ -273,6 +275,7 @@ class WeekView : ConstraintLayout{
             tag = "title$id"
             textSize = 14f
             maxLines = 1
+            typeface = ResourcesCompat.getFont(context,R.font.yd_child_fund_korea)
 
         }
         var mCount = EndMinute - StartMinute
@@ -501,7 +504,7 @@ class WeekView : ConstraintLayout{
             val builder = AlertDialog.Builder(context,R.style.MyDialogTheme)
 
                 .setTitle("시간 변경")
-                .setMessage("해당 과목의 시작시간을\n${dayFlagToText(data.dayFlag)} ${data.startHour}:${newStartMinute}" +
+                .setMessage("해당 과목의 시작시간을\n${dayFlagToText(data.dayFlag)} ${data.startHour}:${data.startMinute}" +
                         " -> ${dayFlagToText(subjectDayFlag)} $startHour:$newStartMinute 으로 바꾸시겠습니까?")
 
                 .setPositiveButton("확인") { _, _ ->
