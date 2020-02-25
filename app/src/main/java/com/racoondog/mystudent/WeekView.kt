@@ -1,11 +1,13 @@
 package com.racoondog.mystudent
 
 import android.annotation.SuppressLint
-import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.graphics.Color
 import android.graphics.Point
+import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
 import android.view.*
 import android.widget.*
@@ -21,7 +23,7 @@ import kotlin.math.roundToInt
 class WeekView : ConstraintLayout{
 
     companion object {
-        var ID: Int = 0 //weekview subject 클릭시 id 값을 가리키는 포인터
+        var ID: Int = 0 //weekView subject 클릭시 id 값을 가리키는 포인터
     }
 
     private val realm = Realm.getDefaultInstance()
@@ -348,6 +350,7 @@ class WeekView : ConstraintLayout{
 
              */
 
+            subject.bringToFront()
 
             for(i in 0 until (scheduleData.scheduleEndHour - scheduleData.scheduleStartHour)) {
 
@@ -371,8 +374,6 @@ class WeekView : ConstraintLayout{
                 when (event.action and MotionEvent.ACTION_MASK) {
                     MotionEvent.ACTION_UP -> v.parent.requestDisallowInterceptTouchEvent(false)
                 }
-
-                v.bringToFront()
 
                 val parentWidth = (v.parent as ViewGroup).width // 부모 View 의 Width
                 val parentHeight = (v.parent as ViewGroup).height // 부모 View 의 Height
@@ -483,6 +484,8 @@ class WeekView : ConstraintLayout{
                 .equalTo("id", subjectID)
                 .findAll()
 
+        val data = subjectData[0]!!
+
         var newStartMinute = startMinute.toString()
         if (startMinute == 0) newStartMinute ="00"
         if(newStartMinute.length <= 1) newStartMinute = "0$newStartMinute"
@@ -494,18 +497,58 @@ class WeekView : ConstraintLayout{
         if (checkTime(subjectDayFlag,startHour,startMinute,endHour,endMinute)){
             Toast.makeText(cnxt,"해당 시간에 다른 과목이 존재합니다.",Toast.LENGTH_SHORT).show()
         }else {
-            realm.beginTransaction()
-            subjectData[0]!!.dayFlag = subjectDayFlag
-            subjectData[0]!!.startHour = startHour
-            subjectData[0]!!.endHour = endHour
-            subjectData[0]!!.startMinute = newStartMinute
-            subjectData[0]!!.endMinute = newEndMinute
-            realm.commitTransaction()
+
+            val builder = AlertDialog.Builder(context,R.style.MyDialogTheme)
+
+                .setTitle("시간 변경")
+                .setMessage("해당 과목의 시작시간을\n${dayFlagToText(data.dayFlag)} ${data.startHour}:${newStartMinute}" +
+                        " -> ${dayFlagToText(subjectDayFlag)} $startHour:$newStartMinute 으로 바꾸시겠습니까?")
+
+                .setPositiveButton("확인") { _, _ ->
+
+                    realm.beginTransaction()
+                    data.dayFlag = subjectDayFlag
+                    data.startHour = startHour
+                    data.endHour = endHour
+                    data.startMinute = newStartMinute
+                    data.endMinute = newEndMinute
+                    realm.commitTransaction()
+                    refresh(cnxt.weekView)
+                }
+
+                .setNegativeButton("취소") { _, _ ->
+                    refresh(cnxt.weekView)
+                }
+
+                .show()
+
+            builder.window!!.attributes.apply {
+                width = LayoutParams.WRAP_CONTENT
+                height = LayoutParams.WRAP_CONTENT}
+
+            builder.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            builder.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(cnxt.applicationContext,R.color.colorCancel))
+            builder.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(cnxt.applicationContext,R.color.defaultAccentColor))
+
         }
 
-        refresh(cnxt.weekView)
 
+    }
 
+    private fun dayFlagToText(dayFlag:Int):String{
+
+        var dayFlagText =""
+
+        when(dayFlag){
+            1 -> dayFlagText = "월"
+            2 -> dayFlagText = "화"
+            3 -> dayFlagText = "수"
+            4 -> dayFlagText = "목"
+            5 -> dayFlagText = "금"
+            6 -> dayFlagText = "토"
+            7 -> dayFlagText = "알"
+        }
+        return dayFlagText
     }
 
     fun deleteSubject(id:Int){
