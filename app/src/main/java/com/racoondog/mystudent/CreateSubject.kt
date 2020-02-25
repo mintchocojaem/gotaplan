@@ -192,6 +192,7 @@ class CreateSubject :AppCompatActivity() {
 
     }
 
+
     private fun createSubject(dayFlag: Int){
         if(title_text.text.toString() !="") {
 

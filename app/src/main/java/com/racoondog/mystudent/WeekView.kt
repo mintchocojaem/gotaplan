@@ -1,6 +1,7 @@
 package com.racoondog.mystudent
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
@@ -11,6 +12,7 @@ import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import io.realm.Realm
 import io.realm.RealmResults
+import io.realm.Sort
 import kotlinx.android.synthetic.main.weekview.view.*
 import kotlin.math.roundToInt
 
@@ -445,7 +447,7 @@ class WeekView : ConstraintLayout{
 
                     //Toast.makeText(context,"${v.y},$cellHeight",Toast.LENGTH_SHORT).show()
 
-                    checkTime(v,ID,subjectDayFlag,subjectStartHour,subjectStartMinute,subjectEndHour,subjectEndMinute)
+                    checkTime(ID,subjectDayFlag,subjectStartHour,subjectStartMinute,subjectEndHour,subjectEndMinute)
 
 
                     for(i in 0 until (scheduleData.scheduleEndHour - scheduleData.scheduleStartHour)) {
@@ -471,9 +473,10 @@ class WeekView : ConstraintLayout{
         findViewWithTag<ConstraintLayout>("canvas").addView(subject)
     }
 
-    private fun checkTime(v:View,subjectID: Int,subjectDayFlag:Int,startHour:Int,startMinute:Int,endHour:Int,endMinute:Int){
+    private fun checkTime(subjectID: Int,subjectDayFlag:Int,startHour:Int,startMinute:Int,endHour:Int,endMinute:Int){
 
         val scheduleData = realm.where(ScheduleData::class.java).findFirst()!!
+
 
         val subjectData: RealmResults<SubjectData> =
             realm.where<SubjectData>(SubjectData::class.java)
@@ -488,15 +491,17 @@ class WeekView : ConstraintLayout{
         if (endMinute.toInt() == 0) newEndMinute ="00"
         if(newEndMinute.length <= 1) newEndMinute = "0$newEndMinute"
 
-
-        realm.beginTransaction()
-        subjectData[0]!!.dayFlag = subjectDayFlag
-        subjectData[0]!!.startHour = startHour
-        subjectData[0]!!.endHour = endHour
-        subjectData[0]!!.startMinute = newStartMinute
-        subjectData[0]!!.endMinute = newEndMinute
-        realm.commitTransaction()
-
+        if (checkTime(subjectDayFlag,startHour,startMinute,endHour,endMinute)){
+            Toast.makeText(cnxt,"해당 시간에 다른 과목이 존재합니다.",Toast.LENGTH_SHORT).show()
+        }else {
+            realm.beginTransaction()
+            subjectData[0]!!.dayFlag = subjectDayFlag
+            subjectData[0]!!.startHour = startHour
+            subjectData[0]!!.endHour = endHour
+            subjectData[0]!!.startMinute = newStartMinute
+            subjectData[0]!!.endMinute = newEndMinute
+            realm.commitTransaction()
+        }
 
         refresh(cnxt.weekView)
 
@@ -548,6 +553,48 @@ class WeekView : ConstraintLayout{
             else continue
         }
         return result
+    }
+    private fun checkTime(dayFlag:Int,startHour: Int,startMinute: Int,endHour: Int,endMinute: Int):Boolean{
+
+        var subjectData: RealmResults<SubjectData> =
+            realm.where<SubjectData>(SubjectData::class.java)
+                .equalTo("dayFlag", dayFlag)
+                .notEqualTo("id",ID)
+                .findAll()
+        val data = subjectData.sort("startHour",Sort.ASCENDING)
+
+        val pickerTime = arrayListOf<Double>()
+
+        pickerTime.add(startHour.toDouble() + (startMinute.toDouble() / 100))
+        pickerTime.add(endHour.toDouble() + (startMinute.toDouble() / 100))
+
+        val checkTime = arrayListOf<Boolean>()
+
+        if(data.size != 0){
+
+            for ( i in data.indices){
+
+                val subjectTime = arrayListOf<Double>()
+
+                subjectTime.add(data[i]!!.startHour.toDouble()+ (data[i]!!.startMinute.toDouble() / 100))
+                subjectTime.add(data[i]!!.endHour.toDouble()+ (data[i]!!.endMinute.toDouble() / 100))
+
+                var checkFlag = when{
+
+                    pickerTime[0] >= subjectTime[1] -> true
+                    pickerTime[0] < subjectTime[0] -> pickerTime[1] <= subjectTime[0]
+                    else -> false
+
+                }
+
+                checkTime.add(checkFlag)
+
+            }
+
+        }else  checkTime.add(true)
+
+        return checkTime.contains(element = false) // checkTime = true -> 시간표 겹침
+
     }
 
 

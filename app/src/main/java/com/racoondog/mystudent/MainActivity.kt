@@ -276,12 +276,15 @@ class MainActivity: AppCompatActivity() {
                 return true
             }
 
+            /*
             R.id.themeSetting -> {
 
                 val themeIntent = Intent(this, ThemeSetting::class.java)
                 startActivityForResult(themeIntent,105)
                 return true
             }
+
+             */
 
             R.id.license -> {
                 val licenseIntent = Intent(this, License::class.java)

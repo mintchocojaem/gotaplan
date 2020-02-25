@@ -25,31 +25,31 @@ class SubjectDetail : AppCompatActivity() {
             .findAll()
         val data = subjectData[0]!!
 
-        var startAMPM = ""
+        var startAmPm = ""
         var startHour = subjectData[0]!!.startHour
         var startMinute = (subjectData[0]!!.startMinute).toString()
         var textStartHour = when (startHour) {
             in 13..23 -> startHour - 12
             else -> startHour
         }
-        startAMPM = when (startHour) {
+        startAmPm = when (startHour) {
             in 12..23 -> "오후"
             else -> "오전"
         }
 
-        var endAMPM = ""
+        var endAmPm = ""
         var endHour = subjectData[0]!!.endHour
         var endMinute = (subjectData[0]!!.endMinute).toString()
         var textEndHour = when (endHour) {
             in 13..23 -> endHour - 12
             else -> endHour
         }
-        endAMPM = when (endHour) {
+        endAmPm = when (endHour) {
             in 12..23 -> "오후"
             else -> "오전"
         }
 
-        subject_time.text = "$startAMPM $textStartHour:${startMinute}" + " ~ " + "$endAMPM $textEndHour:${endMinute}"
+        subject_time.text = "$startAmPm $textStartHour:${startMinute}" + " ~ " + "$endAmPm $textEndHour:${endMinute}"
         subject_title.setText(data.title.toString())
         subject_content.setText(data.content.toString())
         themeChange(data.subjectColor)

@@ -13,11 +13,11 @@
             android:title="과목 설정">
     </item>
 
-    <item
+    <!--item
             android:id="@+id/themeSetting"
             app:showAsAction="never"
             android:title="테마 설정">
-    </item>
+    </item-->
 
     <item
             android:id="@+id/directFeedback"
