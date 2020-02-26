@@ -1,6 +1,7 @@
 package com.racoondog.mystudent
 
 import android.content.Context
+import android.content.res.TypedArray
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -15,20 +16,19 @@ import kotlinx.android.synthetic.main.time_picker.view.*
 
 class TimePicker:ConstraintLayout {
 
-    val displayValue = mutableListOf<String>()
+    private val displayValue = mutableListOf<String>()
 
     constructor(context: Context) : super(context){
         initView()
-
     }
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs){
         initView()
-
+        getAttrs(attrs)
 
     }
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr){
         initView()
-
+        getAttrs(attrs,0)
     }
 
 
@@ -37,6 +37,23 @@ class TimePicker:ConstraintLayout {
         val inflater: LayoutInflater = context.getSystemService(inflaterService) as LayoutInflater
         val view = inflater.inflate(R.layout.time_picker,this,false)
         addView(view)
+    }
+
+    private fun getAttrs(attrs : AttributeSet, defStyle: Int){
+        val typedArray : TypedArray = context.obtainStyledAttributes(attrs,R.styleable.TimePicker, defStyle,0)
+        setTypeArray(typedArray)
+    }
+
+    private fun getAttrs(attrs: AttributeSet){
+        val typedArray : TypedArray = context.obtainStyledAttributes(attrs,R.styleable.TimePicker)
+        setTypeArray(typedArray)
+    }
+
+    private fun setTypeArray(typedArray: TypedArray){
+        val backgroundResourceId = typedArray.getResourceId(R.styleable.TimePicker_bg, R.drawable.time_picker_layout)
+        time_bar.setBackgroundResource(backgroundResourceId)
+
+        typedArray.recycle()
     }
 
     fun schedulePicker(){

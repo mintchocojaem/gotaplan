@@ -3,10 +3,14 @@ package com.racoondog.mystudent
 import android.app.Activity
 import android.os.Bundle
 import android.view.View
+import android.view.View.OnTouchListener
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import io.realm.Realm
 import io.realm.RealmResults
 import kotlinx.android.synthetic.main.subject_detail.*
+import kotlinx.android.synthetic.main.time_picker.*
+import kotlinx.android.synthetic.main.time_picker.view.*
 
 
 class SubjectDetail : AppCompatActivity() {
@@ -24,6 +28,9 @@ class SubjectDetail : AppCompatActivity() {
             .equalTo("id",WeekView.ID)
             .findAll()
         val data = subjectData[0]!!
+
+        disableView(subject_detail_view)
+
 
         val startAmPm: String
         val startHour = subjectData[0]!!.startHour
@@ -65,16 +72,16 @@ class SubjectDetail : AppCompatActivity() {
         lessonCycle_text.setText(data.lessonCycle)
 
 
-        lessonQuit_Button.setOnClickListener {
+        subject_detail_quit_btn.setOnClickListener {
                setResult(Activity.RESULT_OK, intent)
                finish()
         }
 
-        lessonSave_Button.setOnClickListener {
+        subject_detail_save_btn.setOnClickListener {
 
             if (!saveEditFlag) {
 
-                lessonSave_Button.text = "저장"
+                subject_detail_save_btn.text = "저장"
 
                 subject_title.isEnabled = true
                 subject_content.isEnabled = true
@@ -85,13 +92,16 @@ class SubjectDetail : AppCompatActivity() {
                 lessonCost_text.isEnabled = true
                 lessonCycle_text.isEnabled = true
 
+                enableView(subject_detail_view)
+
+
                 lesson_cycle_minus_btn.isEnabled = false
                 lesson_cycle_plus_btn.isEnabled = false
 
                 saveEditFlag = true
 
             } else {
-                lessonSave_Button.text = "수정"
+                subject_detail_save_btn.text = "수정"
 
                 subject_title.isEnabled = false
                 subject_content.isEnabled = false
@@ -101,6 +111,9 @@ class SubjectDetail : AppCompatActivity() {
                 studentPhone_text.isEnabled = false
                 lessonCost_text.isEnabled = false
                 lessonCycle_text.isEnabled = false
+
+                disableView(subject_detail_view)
+                subject_detail_view.hidePicker()
 
                 lesson_cycle_minus_btn.isEnabled = true
                 lesson_cycle_plus_btn.isEnabled = true
@@ -140,12 +153,37 @@ class SubjectDetail : AppCompatActivity() {
 
     }
 
-    override fun onBackPressed() {
-        setResult(Activity.RESULT_OK, intent)
-        finish()
-        super.onBackPressed()
+    private fun disableView(v:View){
+        v.setOnTouchListener(OnTouchListener { _, _ -> true })
+        if (v is ViewGroup) {
+            for (i in 0 until v.childCount) {
+                val child: View = v.getChildAt(i)
+                if (child is ViewGroup) {
+                    disableView(child)
+                } else {
+                    child.isEnabled = false
+                }
+            }
+        }
     }
+    private fun enableView(v:View){
+        v.setOnTouchListener(OnTouchListener { _, _ -> false })
+        if (v is ViewGroup) {
+            for (i in 0 until v.childCount) {
+                val child: View = v.getChildAt(i)
+                if (child is ViewGroup) {
+                    enableView(child)
+                } else {
+                    child.isEnabled = true
+                }
+            }
+        }
+    }
+    override fun onBackPressed() {
 
+        if(time_picker.visibility == View.VISIBLE)subject_detail_view.hidePicker()
+        else super.onBackPressed()
+    }
 
 
     private fun themeChange(colorCode:Int){

@@ -40,7 +40,7 @@ class TimeDialog:Dialog {
 
         val scheduleData = realm.where(ScheduleData::class.java).findFirst()!!
 
-        var subjectData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
+        val subjectData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
             .equalTo("id",WeekView.ID)
             .findAll()
         val data = subjectData[0]!!
@@ -74,35 +74,27 @@ class TimeDialog:Dialog {
 
         time_dialog_apply.setOnClickListener {
 
+            if (end_hour.value == start_hour.value){
+                if(end_minute.displayedValues[end_minute.value].toInt() < start_minute.displayedValues[start_minute.value].toInt()){
+                    Toast.makeText(context, "시작 시각이 종료 시각보다 클 수 없습니다.", Toast.LENGTH_SHORT).show()
+                }else if(start_minute.value == end_minute.value){
+                    Toast.makeText(context, "시작 시각이 종료 시각과 같을 수 없습니다.", Toast.LENGTH_SHORT).show()
+                } else if((end_minute.displayedValues[end_minute.value].toInt()  - start_minute.displayedValues[start_minute.value].toInt() < 30)) {
+                    Toast.makeText(context, "각 과목의 최소 시간은 30분입니다.", Toast.LENGTH_SHORT).show()
+                }else createSubject(dayFlag)
 
-            if ((start_hour.value < end_hour.value)||
-                (start_hour.value == end_hour.value && ((end_minute.value - start_minute.value) >= 6))) {
+            } else if(end_hour.value - start_hour.value == 1){
 
-                    if(checkTime(dayFlag)){
-                        Toast.makeText(context,"해당 시간에 다른 과목이 존재합니다.",Toast.LENGTH_SHORT).show()
-                    } else {
+                if(end_minute.displayedValues[end_minute.value].toInt()+(60-start_minute.displayedValues[start_minute.value].toInt()) < 30) {
+                    Toast.makeText(context, "각 과목의 최소 시간은 30분입니다.", Toast.LENGTH_SHORT).show()
+                } else createSubject(dayFlag)
 
-                        realm.beginTransaction()
-                        data.startHour = start_hour.value
-                        data.startMinute = start_minute.value.toString()
-                        data.endHour = end_hour.value
-                        data.endMinute = end_minute.value.toString()
-                        data.dayFlag = dayFlag
-                        realm.commitTransaction()
-                        cnxt.cnxt.refresh(cnxt.cnxt.cnxt.weekView)
-                        dismiss()
-                        cnxt.dismiss()
-                        Toast.makeText(context,"시간이 변경되었습니다.", Toast.LENGTH_SHORT).show()
-
-                    }
-
-            } else if (start_hour.value == end_hour.value && start_minute.value == end_minute.value) {
-                Toast.makeText(context, "시작 시각이 종료 시각과 같을 수 없습니다.", Toast.LENGTH_SHORT).show()
-            } else if ((start_hour.value == end_hour.value && ((end_minute.value - start_minute.value) < 6))){
-                Toast.makeText(context, "각 과목의 최소 시간은 30분입니다.", Toast.LENGTH_SHORT).show()
+            }
+            else if (end_hour.value < start_hour.value){
+                Toast.makeText(context, "시작 시각이 종료 시각보다 클 수 없습니다.", Toast.LENGTH_SHORT).show()
             }
             else {
-                Toast.makeText(context, "시작 시각이 종료 시각보다 클 수 없습니다.", Toast.LENGTH_SHORT).show()
+                createSubject(dayFlag)
             }
 
         }
@@ -130,6 +122,31 @@ class TimeDialog:Dialog {
         }
 
     }
+
+    private fun createSubject(dayFlag: Int){
+
+        val subjectData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
+            .equalTo("id",WeekView.ID)
+            .findAll()
+        val data = subjectData[0]!!
+
+        if(checkTime(dayFlag)){
+            Toast.makeText(context,"해당 시간에 다른 과목이 존재합니다.",Toast.LENGTH_SHORT).show()
+        } else {
+            realm.beginTransaction()
+            data.startHour = start_hour.value
+            data.startMinute = start_minute.value.toString()
+            data.endHour = end_hour.value
+            data.endMinute = end_minute.value.toString()
+            data.dayFlag = dayFlag
+            realm.commitTransaction()
+            cnxt.cnxt.refresh(cnxt.cnxt.cnxt.weekView)
+            dismiss()
+            cnxt.dismiss()
+            Toast.makeText(context,"시간이 변경되었습니다.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
 
     private fun checkTime(dayFlag:Int):Boolean{
 

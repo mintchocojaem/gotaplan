@@ -15,23 +15,23 @@
             android:theme="@style/AppTheme">
 
         <activity android:name=".DirectFeedback"
-                android:screenOrientation="portrait" />
+                android:screenOrientation="fullSensor" />
 
         <activity android:name=".ThemeSetting"
-                android:screenOrientation="portrait" />
+                android:screenOrientation="fullSensor" />
 
         <activity android:name=".CreateSchedule"
-                android:screenOrientation="portrait" />
+                android:screenOrientation="fullSensor" />
 
         <activity android:name=".CreateSubject"
 
-                android:screenOrientation="portrait"/>
+                android:screenOrientation="fullSensor"/>
 
         <activity android:name=".SubjectDetail"
-                android:screenOrientation="portrait"/>
+                android:screenOrientation="fullSensor"/>
 
         <activity android:name=".License"
-                android:screenOrientation="portrait"></activity>
+                android:screenOrientation="fullSensor"></activity>
 
         <activity android:name=".MainActivity"
 

@@ -5,5 +5,11 @@
 
     </declare-styleable>
 
+    <declare-styleable name="TimePicker">
+        <attr name="bg" format="reference|integer" />
+
+    </declare-styleable>
+
+
 
 </resources>

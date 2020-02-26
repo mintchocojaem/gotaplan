@@ -1,7 +1,8 @@
 package com.racoondog.mystudent
 
 import android.app.Activity
-import android.app.AlertDialog.*
+import android.app.AlertDialog.BUTTON_POSITIVE
+import android.app.AlertDialog.Builder
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
@@ -9,6 +10,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.View.OnTouchListener
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -40,7 +42,7 @@ class MainActivity: AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
         loadData()//데이터 불러오기
-        changeTheme()// 테마 변경
+        //changeTheme()// 테마 변경
 
         weekView_layout.setOnClickListener {
 
@@ -186,8 +188,6 @@ class MainActivity: AppCompatActivity() {
         val scheduleData = realm.where(ScheduleData::class.java).findFirst()
         if (scheduleData != null) {
 
-
-
             schedule_add.visibility = View.INVISIBLE
             addSubjectButton.visibility = View.VISIBLE
             toolbar_title.text = scheduleData.scheduleTitle
@@ -202,7 +202,6 @@ class MainActivity: AppCompatActivity() {
             ).apply {
 
             }
-
             weekView.drawSchedule(intentFlag, intentStartTime, intentEndTime)
             weekView_layout.addView(weekView)
 
