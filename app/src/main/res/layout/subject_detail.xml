@@ -96,8 +96,7 @@
                     app:layout_constraintVertical_bias="0"
                     android:paddingEnd="20dp"
                     android:paddingStart="20dp"
-                    android:paddingTop="20dp"
-                    android:paddingBottom="20dp">
+                    android:paddingTop="20dp">
                 <EditText
                         android:id="@+id/subject_title"
                         android:layout_width="0dp"
@@ -106,7 +105,7 @@
                         android:textSize="18sp"
                         android:textStyle="bold"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toTopOf="@id/subject_time"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
                         android:background="@null"
@@ -114,20 +113,7 @@
                         android:textColor="@color/defaultColor">
 
                 </EditText>
-                <TextView
-                        android:id="@+id/subject_time"
-                        android:layout_width="0dp"
 
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/subject_title"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintVertical_bias="0"
-                        android:textSize="16sp"
-                        android:text="2019.xx.xx">
-
-                </TextView>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -138,11 +124,9 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     android:id="@+id/Content_bar"
-                    android:background="@drawable/time_picker_layout"
                     android:paddingEnd="20dp"
                     android:paddingStart="20dp"
-                    android:paddingTop="20dp"
-                    android:paddingBottom="20dp">
+                    android:paddingTop="20dp">
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -184,10 +168,8 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     android:id="@+id/lesson_bar"
-                    android:background="@drawable/underline_bg_layout"
                     android:paddingEnd="20dp"
                     android:paddingStart="20dp"
-                    android:paddingBottom="20dp"
                     android:paddingTop="20dp">
                 <TextView
                         android:layout_width="wrap_content"
@@ -433,15 +415,173 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent">
 
-                <com.racoondog.mystudent.SubjectDetailView
+                <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintTop_toBottomOf="parent"
-                        android:id="@+id/subject_detail_view">
-                </com.racoondog.mystudent.SubjectDetailView>
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:paddingTop="20dp">
+
+                    <com.racoondog.mystudent.TimePicker
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/subject_detail_time_picker"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:bg="@drawable/time_picker_layout">
+
+                    </com.racoondog.mystudent.TimePicker>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@id/subject_detail_time_picker"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            android:id="@+id/subject_detail_day_picker"
+                            android:paddingTop="20dp"
+                            android:paddingBottom="20dp"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp">
+
+                        <RadioGroup
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:id="@+id/subject_detail_day_group"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent">
+
+                            <RadioButton
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/monday_button"
+                                    android:button="@drawable/monday_btn"
+                                    android:layout_marginRight="8dp"
+                                    android:layout_marginLeft="8dp"
+                                    >
+
+                            </RadioButton>
+
+                            <RadioButton
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/tuesday_button"
+                                    android:button="@drawable/tuesday_btn"
+                                    android:layout_marginRight="8dp"
+                                    android:layout_marginLeft="8dp"
+                                    >
+
+                            </RadioButton>
+
+                            <RadioButton
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/wednesday_button"
+                                    android:button="@drawable/wednesday_btn"
+                                    android:layout_marginRight="8dp"
+                                    android:layout_marginLeft="8dp"
+                                    >
+
+                            </RadioButton>
+                            <RadioButton
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/thursday_button"
+                                    android:button="@drawable/thursday_btn"
+                                    android:layout_marginRight="8dp"
+                                    android:layout_marginLeft="8dp"
+                                    >
+
+                            </RadioButton>
+                            <RadioButton
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/friday_button"
+                                    android:button="@drawable/friday_btn"
+                                    android:layout_marginRight="8dp"
+                                    android:layout_marginLeft="8dp"
+                                    >
+
+                            </RadioButton>
+                            <RadioButton
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/saturday_button"
+                                    android:button="@drawable/saturday_btn"
+                                    android:layout_marginRight="8dp"
+                                    android:layout_marginLeft="8dp"
+                                    android:visibility="gone">
+
+                            </RadioButton>
+                            <RadioButton
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/sunday_button"
+                                    android:button="@drawable/sunday_btn"
+                                    android:layout_marginRight="8dp"
+                                    android:layout_marginLeft="8dp"
+                                    android:visibility="gone">
+
+                            </RadioButton>
+
+                        </RadioGroup>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="20dp"
+                            android:paddingBottom="20dp"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp"
+                            app:layout_constraintTop_toBottomOf="@id/subject_detail_day_picker">
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="색상"
+                                android:textColor="@color/defaultAccentColor"
+                                android:textSize="16sp"
+                                app:layout_constraintHorizontal_bias="0"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toLeftOf="@id/subject_detail_theme_picker_btn">
+                        </TextView>
+
+                        <ImageButton
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:id="@+id/subject_detail_theme_picker_btn"
+                                android:background="@drawable/color_picker_btn"
+                                app:layout_constraintTop_toTopOf="@id/subject_detail_theme_picker_btn_layout"
+                                app:layout_constraintBottom_toBottomOf="@id/subject_detail_theme_picker_btn_layout"
+                                app:layout_constraintLeft_toLeftOf="@id/subject_detail_theme_picker_btn_layout"
+                                app:layout_constraintRight_toRightOf="@id/subject_detail_theme_picker_btn_layout">
+
+                        </ImageButton>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent"
+                                android:id="@+id/subject_detail_theme_picker_btn_layout">
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
