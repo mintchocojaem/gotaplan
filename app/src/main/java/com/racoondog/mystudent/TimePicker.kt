@@ -437,6 +437,20 @@ class TimePicker:ConstraintLayout {
 
     }
 
+    fun ifPickerIsHidden():Boolean{
+        return if(time_picker.visibility == View.VISIBLE)  {
+            time_picker.visibility = View.GONE
+            true
+        }
+        else {
+            false
+        }
+    }
+
+    fun hidePicker(){
+        time_picker.visibility = View.GONE
+    }
+
     fun option(option:String) {
 
         if(option == "schedule"){

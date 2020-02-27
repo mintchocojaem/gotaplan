@@ -36,15 +36,14 @@ class SubjectDetail : AppCompatActivity() {
         subjectColorCode = data.subjectColor
         dayFlag = data.dayFlag
 
-        //disableView(subject_detail_view)
-
         subject_title.setText(data.title)
-        subject_content.setText(data.content)
+        subject_memo.setText(data.content)
         themeChange(data.subjectColor)
 
         if(subjectData[0]!!.lessonOnOff) lesson_bar.visibility = View.VISIBLE
         else lesson_bar.visibility = View.GONE
 
+        //disableView(subject_detail_time_picker)
 
         studentName_text.setText(data.studentName)
         studentBirth_text.setText(data.studentBirth)
@@ -65,7 +64,7 @@ class SubjectDetail : AppCompatActivity() {
                 subject_detail_save_btn.text = "저장"
 
                 subject_title.isEnabled = true
-                subject_content.isEnabled = true
+                subject_memo.isEnabled = true
 
                 studentName_text.isEnabled = true
                 studentBirth_text.isEnabled = true
@@ -73,7 +72,7 @@ class SubjectDetail : AppCompatActivity() {
                 lessonCost_text.isEnabled = true
                 lessonCycle_text.isEnabled = true
 
-                //enableView(subject_detail_view)
+                //enableView(subject_detail_time_picker)
 
 
                 lesson_cycle_minus_btn.isEnabled = false
@@ -85,7 +84,7 @@ class SubjectDetail : AppCompatActivity() {
                 subject_detail_save_btn.text = "수정"
 
                 subject_title.isEnabled = false
-                subject_content.isEnabled = false
+                subject_memo.isEnabled = false
 
                 studentName_text.isEnabled = false
                 studentBirth_text.isEnabled = false
@@ -93,10 +92,12 @@ class SubjectDetail : AppCompatActivity() {
                 lessonCost_text.isEnabled = false
                 lessonCycle_text.isEnabled = false
 
-                //disableView(subject_detail_view)
-                //subject_detail_view.hidePicker()
+                //disableView(subject_detail_time_picker)
+                //TimePicker(this).changedTextColor(start_picker_layout, true)
+                //TimePicker(this).changedTextColor(end_picker_layout, true)
+                //subject_detail_time_picker.hidePicker()
                 //subject_detail_view.subjectDetailSave()
-                themeChange(data.subjectColor)
+                //themeChange(data.subjectColor)
 
                 lesson_cycle_minus_btn.isEnabled = true
                 lesson_cycle_plus_btn.isEnabled = true
@@ -104,7 +105,7 @@ class SubjectDetail : AppCompatActivity() {
 
                 realm.beginTransaction()
                 data.title = subject_title.text.toString()
-                data.content = subject_content.text.toString()
+                data.content = subject_memo.text.toString()
                 data.studentName = studentName_text.text.toString()
                 data.studentBirth = studentBirth_text.text.toString()
                 data.studentPhoneNumber = studentPhone_text.text.toString()
@@ -176,20 +177,33 @@ class SubjectDetail : AppCompatActivity() {
             dayFlag = 7
         }
 
-        subject_detail_theme_picker_btn_layout.setOnClickListener {
+        subject_detail_color_picker_bar.setOnClickListener {
             val dialog = ColorPickerDialog(this, object :
                 ColorPickerDialog.ICustomDialogEventListener {
                 override fun customDialogEvent(colorCode: Int) {
                     // Do something with the value here, e.g. set a variable in the calling activity
                     subjectColorCode = colorCode
-                    subject_detail_theme_picker_btn.backgroundTintList = ColorStateList.valueOf(subjectColorCode)
+                    subject_detail_color_picker_btn.backgroundTintList = ColorStateList.valueOf(subjectColorCode)
+
+                }
+            })
+            dialog.show()
+        }
+        subject_detail_color_picker_btn.setOnClickListener {
+            val dialog = ColorPickerDialog(this, object :
+                ColorPickerDialog.ICustomDialogEventListener {
+                override fun customDialogEvent(colorCode: Int) {
+                    // Do something with the value here, e.g. set a variable in the calling activity
+                    subjectColorCode = colorCode
+                    subject_detail_color_picker_btn.backgroundTintList = ColorStateList.valueOf(subjectColorCode)
 
                 }
             })
             dialog.show()
         }
 
-        subject_detail_theme_picker_btn.backgroundTintList = ColorStateList.valueOf(subjectColorCode)
+
+        subject_detail_color_picker_btn.backgroundTintList = ColorStateList.valueOf(subjectColorCode)
 
         subject_detail_time_picker.subjectPicker(scheduleData.scheduleStartHour,scheduleData.scheduleEndHour)
         subject_detail_time_picker.displayTime(data.startHour,data.startMinute.toInt(),data.endHour,data.endMinute.toInt())
@@ -224,11 +238,9 @@ class SubjectDetail : AppCompatActivity() {
     }
     override fun onBackPressed() {
 
-        //if(time_picker.visibility == View.VISIBLE)//subject_detail_view.hidePicker()
-        //else
-        super.onBackPressed()
+        if(subject_detail_time_picker.ifPickerIsHidden())
+        else super.onBackPressed()
     }
-
 
     private fun themeChange(colorCode:Int){
 
@@ -285,9 +297,9 @@ class SubjectDetail : AppCompatActivity() {
         } else {
             realm.beginTransaction()
             data.startHour = start_hour.value
-            data.startMinute = start_minute.value.toString()
+            data.startMinute = start_minute.displayedValues[start_minute.value].toString()
             data.endHour = end_hour.value
-            data.endMinute = end_minute.value.toString()
+            data.endMinute = end_minute.displayedValues[end_minute.value].toString()
             data.dayFlag = dayFlag
             realm.commitTransaction()
             Toast.makeText(this,"시간이 변경되었습니다.", Toast.LENGTH_SHORT).show()
@@ -334,16 +346,6 @@ class SubjectDetail : AppCompatActivity() {
         }else  checkTime.add(true)
 
         return checkTime.contains(element = false) // checkTime = true -> 시간표 겹침
-
-    }
-
-    fun hidePicker() {
-
-        if(time_picker.visibility == View.VISIBLE) {
-            time_picker.visibility = View.GONE
-            TimePicker(this).changedTextColor(start_picker_layout, true)
-            TimePicker(this).changedTextColor(end_picker_layout, true)
-        }
 
     }
 

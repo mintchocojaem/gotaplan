@@ -129,13 +129,25 @@ class CreateSubject :AppCompatActivity() {
             Content_text.hideKeyboard()
         }
 
-        colorPickerButton_layout.setOnClickListener {
+        subject_color_picker_btn.setOnClickListener {
 
             val dialog = ColorPickerDialog(this, object : ICustomDialogEventListener {
                 override fun customDialogEvent(colorCode: Int) {
                     // Do something with the value here, e.g. set a variable in the calling activity
                     this@CreateSubject.colorCode = colorCode
-                    colorPickerButton.backgroundTintList = ColorStateList.valueOf(this@CreateSubject.colorCode)
+                    subject_color_picker_btn.backgroundTintList = ColorStateList.valueOf(this@CreateSubject.colorCode)
+                    changeTheme(this@CreateSubject.colorCode)
+                }
+            })
+            dialog.show()
+        }
+        subject_color_picker_bar.setOnClickListener {
+
+            val dialog = ColorPickerDialog(this, object : ICustomDialogEventListener {
+                override fun customDialogEvent(colorCode: Int) {
+                    // Do something with the value here, e.g. set a variable in the calling activity
+                    this@CreateSubject.colorCode = colorCode
+                    subject_color_picker_btn.backgroundTintList = ColorStateList.valueOf(this@CreateSubject.colorCode)
                     changeTheme(this@CreateSubject.colorCode)
                 }
             })
@@ -229,7 +241,7 @@ class CreateSubject :AppCompatActivity() {
         val number = random.nextInt(ColorList.size -1)
 
         colorCode = ColorList[number]
-        colorPickerButton.backgroundTintList = ColorStateList.valueOf(colorCode)
+        subject_color_picker_btn.backgroundTintList = ColorStateList.valueOf(colorCode)
         changeTheme(colorCode)
 
     }
