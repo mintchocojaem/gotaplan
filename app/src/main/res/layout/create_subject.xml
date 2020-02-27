@@ -141,149 +141,19 @@
 
             </com.racoondog.mystudent.TimePicker>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <com.racoondog.mystudent.DayPicker
                     android:layout_width="match_parent"
-                    android:layout_height="80dp"
-                    android:id="@+id/daySelect_bar">
+                    android:layout_height="wrap_content"
+                    android:id="@+id/create_subject_day_picker">
 
-                <RadioGroup
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:id="@+id/subject_day_group"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        android:paddingStart="20dp"
-                        android:paddingEnd="20dp">
+            </com.racoondog.mystudent.DayPicker>
 
-                    <RadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/monday_button"
-                            android:button="@drawable/monday_btn"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toLeftOf="@id/tuesday_button"
-                            android:paddingEnd="16dp">
-
-                    </RadioButton>
-
-                    <RadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/tuesday_button"
-                            android:button="@drawable/tuesday_btn"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintLeft_toRightOf="@id/monday_button"
-                            app:layout_constraintRight_toLeftOf="@id/wednesday_button"
-                            android:paddingEnd="16dp">
-
-                    </RadioButton>
-
-                    <RadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/wednesday_button"
-                            android:button="@drawable/wednesday_btn"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintLeft_toRightOf="@id/tuesday_button"
-                            app:layout_constraintRight_toLeftOf="@id/thursday_button"
-                            android:paddingEnd="16dp">
-
-                    </RadioButton>
-                    <RadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/thursday_button"
-                            android:button="@drawable/thursday_btn"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintLeft_toRightOf="@id/wednesday_button"
-                            app:layout_constraintRight_toLeftOf="@id/friday_button"
-                            android:paddingEnd="16dp">
-
-                    </RadioButton>
-                    <RadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/friday_button"
-                            android:button="@drawable/friday_btn"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintLeft_toRightOf="@id/thursday_button"
-                            app:layout_constraintRight_toLeftOf="@id/saturday_button"
-                            android:paddingEnd="16dp">
-
-                    </RadioButton>
-                    <RadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/saturday_button"
-                            android:button="@drawable/saturday_btn"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintLeft_toRightOf="@id/friday_button"
-                            app:layout_constraintRight_toLeftOf="@id/sunday_button"
-                            android:visibility="gone"
-                            android:paddingEnd="16dp">
-
-                    </RadioButton>
-                    <RadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/sunday_button"
-                            android:button="@drawable/sunday_btn"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintLeft_toRightOf="@id/saturday_button"
-                            android:visibility="gone"
-                            android:paddingEnd="16dp">
-
-                    </RadioButton>
-
-                </RadioGroup>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <com.racoondog.mystudent.ColorPicker
                     android:layout_width="match_parent"
-                    android:layout_height="80dp"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
-                    android:id="@+id/subject_color_picker_bar">
+                    android:layout_height="wrap_content"
+                    android:id="@+id/create_subject_color_picker">
 
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toLeftOf="@id/subject_color_picker_btn"
-                        android:id="@+id/schedule_color"
-                        android:text="색상"
-                        android:textSize="16sp"
-                        app:layout_constraintHorizontal_bias="0">
-                </TextView>
-
-                <ImageButton
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:id="@+id/subject_color_picker_btn"
-                        android:background="@drawable/color_picker_btn"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent">
-
-                </ImageButton>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.racoondog.mystudent.ColorPicker>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"

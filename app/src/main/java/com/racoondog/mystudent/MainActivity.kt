@@ -190,7 +190,7 @@ class MainActivity: AppCompatActivity() {
 
             schedule_add.visibility = View.INVISIBLE
             addSubjectButton.visibility = View.VISIBLE
-            toolbar_title.text = scheduleData.scheduleTitle
+            toolbar_title.setText(scheduleData.scheduleTitle)
 
             intentFlag = scheduleData.scheduleDayFlag
             intentStartTime = scheduleData.scheduleStartHour
@@ -220,7 +220,6 @@ class MainActivity: AppCompatActivity() {
                     data.subjectColor
                 )
             }
-
 
         }
 

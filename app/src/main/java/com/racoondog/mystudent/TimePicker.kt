@@ -14,7 +14,31 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.time_picker.view.*
 
+
 class TimePicker:ConstraintLayout {
+
+    /*
+    var mListener: OnCustomEventListener? = null
+
+    interface OnCustomEventListener {
+        fun onEvent()
+    }
+
+    fun setCustomEventListener(eventListener: OnCustomEventListener) {
+        mListener = eventListener
+    }
+
+     */
+
+    private var mListener: OnCustomEventListener? = null
+
+    interface OnCustomEventListener {
+        fun onEvent()
+    }
+
+    fun setCustomEventListener(eventListener: OnCustomEventListener) {
+        mListener = eventListener
+    }
 
     private val displayValue = mutableListOf<String>()
 
@@ -327,12 +351,6 @@ class TimePicker:ConstraintLayout {
             true // or false
         }
 
-        start_minute.setOnValueChangedListener{_,_,_ ->
-
-            startText_minute.text = start_minute.displayedValues[start_minute.value]
-
-
-        }
         start_hour.setOnValueChangedListener{_,_,i2 ->
 
             startText_hour.text = start_hour.displayedValues[start_hour.value - intentStartHour]
@@ -344,19 +362,16 @@ class TimePicker:ConstraintLayout {
                 startText_AMPM.text = start_AMPM.displayedValues[start_AMPM.value]
             }
 
+            mListener?.onEvent()
 
         }
 
-        end_minute.setOnValueChangedListener{_,_,_ ->
+        start_minute.setOnValueChangedListener{_,_,_ ->
 
-            endText_minute.text = end_minute.displayedValues[end_minute.value]
-
-            if (end_hour.value == end_hour.maxValue) {
-                end_minute.value = 0
-                endText_minute.text = end_minute.displayedValues[end_minute.value]
-            }
-
+            startText_minute.text = start_minute.displayedValues[start_minute.value]
+            mListener?.onEvent()
         }
+
         end_hour.setOnValueChangedListener{_,_,i2 ->
 
             endText_hour.text = end_hour.displayedValues[end_hour.value - intentStartHour]
@@ -372,8 +387,18 @@ class TimePicker:ConstraintLayout {
                 end_minute.value = 0
                 endText_minute.text = end_minute.displayedValues[end_minute.value]
             }
+            mListener?.onEvent()
+        }
 
+        end_minute.setOnValueChangedListener{_,_,_ ->
 
+            endText_minute.text = end_minute.displayedValues[end_minute.value]
+
+            if (end_hour.value == end_hour.maxValue) {
+                end_minute.value = 0
+                endText_minute.text = end_minute.displayedValues[end_minute.value]
+            }
+            mListener?.onEvent()
         }
 
         start_picker_layout.setOnClickListener{
@@ -394,6 +419,7 @@ class TimePicker:ConstraintLayout {
 
         }
     }
+
 
     fun displayTime(startHour:Int,startMinute:Int,endHour:Int,endMinute:Int){
 
@@ -450,16 +476,6 @@ class TimePicker:ConstraintLayout {
     fun hidePicker(){
         time_picker.visibility = View.GONE
     }
-
-    fun option(option:String) {
-
-        if(option == "schedule"){
-            schedulePicker()
-        }
-
-    }
-
-
 
 
 }

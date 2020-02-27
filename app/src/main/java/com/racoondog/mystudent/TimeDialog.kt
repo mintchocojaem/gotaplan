@@ -135,9 +135,9 @@ class TimeDialog:Dialog {
         } else {
             realm.beginTransaction()
             data.startHour = start_hour.value
-            data.startMinute = start_minute.value.toString()
+            data.startMinute = start_minute.displayedValues[start_minute.value].toString()
             data.endHour = end_hour.value
-            data.endMinute = end_minute.value.toString()
+            data.endMinute = end_minute.displayedValues[end_minute.value].toString()
             data.dayFlag = dayFlag
             realm.commitTransaction()
             cnxt.cnxt.refresh(cnxt.cnxt.cnxt.weekView)

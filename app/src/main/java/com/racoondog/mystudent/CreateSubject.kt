@@ -14,6 +14,7 @@ import io.realm.Realm
 import io.realm.RealmResults
 import io.realm.Sort
 import kotlinx.android.synthetic.main.create_subject.*
+import kotlinx.android.synthetic.main.subject_detail.*
 import kotlinx.android.synthetic.main.time_picker.*
 import java.util.*
 
@@ -21,7 +22,6 @@ import java.util.*
 class CreateSubject :AppCompatActivity() {
 
     private val realm = Realm.getDefaultInstance()
-    private var colorCode = -1 // init color White
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -34,33 +34,15 @@ class CreateSubject :AppCompatActivity() {
         subject_picker.subjectPicker(intentStartHour,intentEndHour)
 
         val intentFlag = intent.getIntExtra("day_flag",0)
-        //val subjectFlag = intent.getIntExtra("subject_day_flag",0)
 
-        var dayFlag = intent.getIntExtra("subject_day_flag",0)
-
-        when(dayFlag){
-            1 -> monday_button.isChecked = true
-            2 -> tuesday_button.isChecked = true
-            3 -> wednesday_button.isChecked = true
-            4 -> thursday_button.isChecked = true
-            5 -> friday_button.isChecked = true
-            6 -> saturday_button.isChecked = true
-            7 -> sunday_button.isChecked = true
-        }
-
-        if (intentFlag == 6){
-            saturday_button.visibility = View.VISIBLE
-        }
-        else if (intentFlag == 7){
-            saturday_button.visibility = View.VISIBLE
-            sunday_button.visibility = View.VISIBLE
-        }
+        create_subject_day_picker.dayPick(intentFlag,false)
 
         randomSubjectColor(colorList)// subject color
 
 
         createSubject_Button.setOnClickListener{
-            if(dayFlag != 0 ) {
+            
+            if(create_subject_day_picker.dayFlag != 0 ) {
                 if (end_hour.value == start_hour.value){
                     if(end_minute.displayedValues[end_minute.value].toInt() < start_minute.displayedValues[start_minute.value].toInt()){
                         Toast.makeText(this, "시작 시각이 종료 시각보다 클 수 없습니다.", Toast.LENGTH_SHORT).show()
@@ -68,13 +50,13 @@ class CreateSubject :AppCompatActivity() {
                         Toast.makeText(this, "시작 시각이 종료 시각과 같을 수 없습니다.", Toast.LENGTH_SHORT).show()
                     } else if((end_minute.displayedValues[end_minute.value].toInt()  - start_minute.displayedValues[start_minute.value].toInt() < 30)) {
                         Toast.makeText(this, "각 과목의 최소 시간은 30분입니다.", Toast.LENGTH_SHORT).show()
-                    }else createSubject(dayFlag)
+                    }else createSubject(create_subject_day_picker.dayFlag)
 
                 } else if(end_hour.value - start_hour.value == 1){
 
                     if(end_minute.displayedValues[end_minute.value].toInt()+(60-start_minute.displayedValues[start_minute.value].toInt()) < 30) {
                         Toast.makeText(this, "각 과목의 최소 시간은 30분입니다.", Toast.LENGTH_SHORT).show()
-                    } else createSubject(dayFlag)
+                    } else createSubject(create_subject_day_picker.dayFlag)
 
                 }
                 else if (end_hour.value < start_hour.value){
@@ -82,35 +64,13 @@ class CreateSubject :AppCompatActivity() {
                 }
                 else {
 
-                    createSubject(dayFlag)
+                    createSubject(create_subject_day_picker.dayFlag)
 
                 }
 
             } else{
                 Toast.makeText(this, "날짜를 선택해 주세요.", Toast.LENGTH_SHORT).show()
             }
-        }
-
-        monday_button.setOnClickListener {
-            dayFlag = 1
-        }
-        tuesday_button.setOnClickListener {
-            dayFlag = 2
-        }
-        wednesday_button.setOnClickListener {
-            dayFlag = 3
-        }
-        thursday_button.setOnClickListener {
-            dayFlag = 4
-        }
-        friday_button.setOnClickListener {
-            dayFlag = 5
-        }
-        saturday_button.setOnClickListener {
-            dayFlag = 6
-        }
-        sunday_button.setOnClickListener {
-            dayFlag = 7
         }
 
         lesson_mode.setOnCheckedChangeListener{compoundButton,_ ->
@@ -124,34 +84,14 @@ class CreateSubject :AppCompatActivity() {
             }
         }
 
-        subject_day_group.setOnCheckedChangeListener{_,_->
+        create_subject_day_picker.setOnTouchListener { v, event ->
             title_text.hideKeyboard()
             Content_text.hideKeyboard()
+            false
         }
 
-        subject_color_picker_btn.setOnClickListener {
-
-            val dialog = ColorPickerDialog(this, object : ICustomDialogEventListener {
-                override fun customDialogEvent(colorCode: Int) {
-                    // Do something with the value here, e.g. set a variable in the calling activity
-                    this@CreateSubject.colorCode = colorCode
-                    subject_color_picker_btn.backgroundTintList = ColorStateList.valueOf(this@CreateSubject.colorCode)
-                    changeTheme(this@CreateSubject.colorCode)
-                }
-            })
-            dialog.show()
-        }
-        subject_color_picker_bar.setOnClickListener {
-
-            val dialog = ColorPickerDialog(this, object : ICustomDialogEventListener {
-                override fun customDialogEvent(colorCode: Int) {
-                    // Do something with the value here, e.g. set a variable in the calling activity
-                    this@CreateSubject.colorCode = colorCode
-                    subject_color_picker_btn.backgroundTintList = ColorStateList.valueOf(this@CreateSubject.colorCode)
-                    changeTheme(this@CreateSubject.colorCode)
-                }
-            })
-            dialog.show()
+        create_subject_color_picker.setOnClickListener {
+            create_subject_color_picker.colorPick(this,createSubject_toolbar)
         }
 
         subjectQuit_Button.setOnClickListener {
@@ -220,7 +160,7 @@ class CreateSubject :AppCompatActivity() {
                 intent.putExtra("EndMinute", endText_minute.text.toString())
 
                 intent.putExtra("ContentText",Content_text.text?.toString())
-                intent.putExtra("colorCode", this.colorCode)
+                intent.putExtra("colorCode", create_subject_color_picker.colorCode)
                 setResult(Activity.RESULT_OK, intent)
                 finish()
             }
@@ -230,19 +170,15 @@ class CreateSubject :AppCompatActivity() {
         }
     }
 
-    private fun changeTheme(colorList:Int){
-        window.statusBarColor = colorList
-        createSubject_toolbar.setBackgroundColor(colorList)
-    }
 
     private fun randomSubjectColor(ColorList: IntArray){
 
         val random = Random()
         val number = random.nextInt(ColorList.size -1)
 
-        colorCode = ColorList[number]
-        subject_color_picker_btn.backgroundTintList = ColorStateList.valueOf(colorCode)
-        changeTheme(colorCode)
+        create_subject_color_picker.colorCode = ColorList[number]
+        create_subject_color_picker.initColor(create_subject_color_picker.colorCode)
+        create_subject_color_picker.changeTheme(this,createSubject_toolbar,create_subject_color_picker.colorCode)
 
     }
 
