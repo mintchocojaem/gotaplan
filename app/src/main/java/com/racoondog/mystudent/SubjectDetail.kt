@@ -1,13 +1,16 @@
 package com.racoondog.mystudent
 
 
+import android.app.Activity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import io.realm.Realm
 import io.realm.RealmResults
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.subject_detail.*
 
 
@@ -34,21 +37,46 @@ class SubjectDetail : AppCompatActivity() {
 
         subject_detail_save_btn.setOnClickListener {
 
+            val dayFlag = data.dayFlag
+            val pickerData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
+                .equalTo("dayFlag",subject_detail_day_picker.dayFlag)
+                .notEqualTo("id",WeekView.ID)
+                .findAll()
+            val nestedTime =  subject_detail_time_picker.nestedTime(pickerData)
+            if(!nestedTime) {
+                realm.beginTransaction()
+                data.dayFlag = subject_detail_day_picker.dayFlag
+                data.startHour = subject_detail_time_picker.startHour()
+                data.startMinute = subject_detail_time_picker.startMinute()
+                data.endHour = subject_detail_time_picker.endHour()
+                data.endMinute = subject_detail_time_picker.endMinute()
+                data.subjectColor = subject_detail_color_picker.colorCode
+                data.title = subject_title.text.toString()
+                data.content = subject_memo.text.toString()
+
+                data.studentName = studentName_text.text.toString()
+                data.studentBirth = studentBirth_text.text.toString()
+                data.studentPhoneNumber = studentPhone_text.text.toString()
+                data.lessonCost = lessonCost_text.text.toString()
+                data.lessonCycle = lessonCycle_text.text.toString()
+                realm.commitTransaction()
+
+                setResult(Activity.RESULT_OK)
+                finish()
+            }
+
         }
 
         lesson_cycle_plus_btn.setOnClickListener {
-            lessonCycle_text.setText((data.lessonCycle.toInt()+1).toString())
-            realm.beginTransaction()
-            data.lessonCycle = lessonCycle_text.text.toString()
-            realm.commitTransaction()
+           lessonCycle_text.setText((lessonCycle_text.text.toString()?.toInt()+1).toString())
         }
         lesson_cycle_minus_btn.setOnClickListener {
 
-            if(data.lessonCycle.toInt() == 0) lessonCycle_text.setText((data.lessonCycle.toInt()).toString())
-            else lessonCycle_text.setText((data.lessonCycle.toInt()-1).toString())
-            realm.beginTransaction()
-            data.lessonCycle = lessonCycle_text.text.toString()
-            realm.commitTransaction()
+            if(lessonCycle_text.text.toString() == "0") {
+                lessonCycle_text.setText("0")
+            }
+            else lessonCycle_text.setText((lessonCycle_text.text.toString()?.toInt()-1).toString())
+
         }
 
         subject_detail_color_picker.initColor(data.subjectColor)
@@ -62,7 +90,7 @@ class SubjectDetail : AppCompatActivity() {
             }
         })
 
-        subject_detail_day_picker.dayPick(data.dayFlag,true)
+        subject_detail_day_picker.dayPick(scheduleData.scheduleDayFlag,data.dayFlag)
         subject_detail_day_picker.setOnCustomEventListener(object : DayPicker.OnCustomEventListener {
             override fun onEvent() {
                 subject_detail_save_btn.visibility = View.VISIBLE
@@ -105,7 +133,9 @@ class SubjectDetail : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
+                if(start != before){
+                    subject_detail_save_btn.visibility = View.VISIBLE
+                }
             }
 
         }

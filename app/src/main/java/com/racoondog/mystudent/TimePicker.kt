@@ -10,8 +10,11 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.NumberPicker
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import io.realm.RealmResults
+import io.realm.Sort
 import kotlinx.android.synthetic.main.time_picker.view.*
 
 
@@ -477,5 +480,95 @@ class TimePicker:ConstraintLayout {
         time_picker.visibility = View.GONE
     }
 
+    fun nestedTime(realmResults: RealmResults<SubjectData>):Boolean{
+
+        when {
+            end_hour.value == start_hour.value -> {
+                return when {
+                    end_minute.displayedValues[end_minute.value].toInt() < start_minute.displayedValues[start_minute.value].toInt() -> {
+                        Toast.makeText(context, "시작 시각이 종료 시각보다 클 수 없습니다.", Toast.LENGTH_SHORT).show()
+                        true
+                    }
+                    start_minute.value == end_minute.value -> {
+                        Toast.makeText(context, "시작 시각이 종료 시각과 같을 수 없습니다.", Toast.LENGTH_SHORT).show()
+                        true
+                    }
+                    end_minute.displayedValues[end_minute.value].toInt()  - start_minute.displayedValues[start_minute.value].toInt() < 30 -> {
+                        Toast.makeText(context, "각 과목의 최소 시간은 30분입니다.", Toast.LENGTH_SHORT).show()
+                        true
+                    }
+                    else -> checkTime(realmResults)
+                }
+
+            }
+            end_hour.value - start_hour.value == 1 -> {
+
+                return if(end_minute.displayedValues[end_minute.value].toInt()+(60-start_minute.displayedValues[start_minute.value].toInt()) < 30) {
+                    Toast.makeText(context, "각 과목의 최소 시간은 30분입니다.", Toast.LENGTH_SHORT).show()
+                    true
+                } else checkTime(realmResults)
+
+            }
+            end_hour.value < start_hour.value -> {
+                Toast.makeText(context, "시작 시각이 종료 시각보다 클 수 없습니다.", Toast.LENGTH_SHORT).show()
+                return true
+            }
+            else -> {
+
+                return checkTime(realmResults)
+
+            }
+        }
+
+
+    }
+
+    private fun checkTime(realmResults: RealmResults<SubjectData>):Boolean{
+
+
+        val data = realmResults.sort("startHour", Sort.ASCENDING)
+
+        val pickerTime = arrayListOf<Double>()
+
+        pickerTime.add(start_hour.value.toDouble() + (start_minute.displayedValues[start_minute.value].toDouble() / 100))
+        pickerTime.add(end_hour.value.toDouble() + (end_minute.displayedValues[end_minute.value].toDouble() / 100))
+
+        val checkTime = arrayListOf<Boolean>()
+
+        if(data.size != 0){
+
+            for ( i in data.indices){
+
+                val subjectTime = arrayListOf<Double>()
+
+                subjectTime.add(data[i]!!.startHour.toDouble()+ (data[i]!!.startMinute.toDouble() / 100))
+                subjectTime.add(data[i]!!.endHour.toDouble()+ (data[i]!!.endMinute.toDouble() / 100))
+
+                var checkFlag = when{
+
+                    pickerTime[0] >= subjectTime[1] -> true
+                    pickerTime[0] < subjectTime[0] -> pickerTime[1] <= subjectTime[0]
+                    else -> false //false == nested subject
+
+                }
+                checkTime.add(checkFlag)
+
+            }
+
+        }else  checkTime.add(true)
+        return if (checkTime.contains(element = false)){
+            Toast.makeText(context,"해당 시간에 다른 과목이 존재합니다.", Toast.LENGTH_SHORT).show()
+            true
+        }else false
+    }
+
+    fun startHour():Int {return start_hour.value}
+    fun startMinute():String {
+        return start_minute.displayedValues[start_minute.value].toString()
+    }
+    fun endHour():Int {return end_hour.value}
+    fun endMinute():String {
+        return start_minute.displayedValues[end_minute.value].toString()
+    }
 
 }

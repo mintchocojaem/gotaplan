@@ -7,7 +7,6 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Point
-import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
 import android.view.*
@@ -453,7 +452,7 @@ class WeekView : ConstraintLayout{
 
                         //Toast.makeText(context,"${v.y},$cellHeight",Toast.LENGTH_SHORT).show()
 
-                        checkTime(ID,subjectDayFlag,subjectStartHour,subjectStartMinute,subjectEndHour,subjectEndMinute)
+                        applyTime(ID,subjectDayFlag,subjectStartHour,subjectStartMinute,subjectEndHour,subjectEndMinute)
 
 
                         for(i in 0 until (scheduleData.scheduleEndHour - scheduleData.scheduleStartHour)) {
@@ -480,7 +479,7 @@ class WeekView : ConstraintLayout{
         findViewWithTag<ConstraintLayout>("canvas").addView(subject)
     }
 
-    private fun checkTime(subjectID: Int,subjectDayFlag:Int,startHour:Int,startMinute:Int,endHour:Int,endMinute:Int){
+    private fun applyTime(subjectID: Int,subjectDayFlag:Int,startHour:Int,startMinute:Int,endHour:Int,endMinute:Int){
 
         val subjectData: RealmResults<SubjectData> =
             realm.where<SubjectData>(SubjectData::class.java)
@@ -599,7 +598,7 @@ class WeekView : ConstraintLayout{
         }
         return result
     }
-    private fun checkTime(dayFlag:Int,startHour: Int,startMinute: Int,endHour: Int,endMinute: Int):Boolean{
+    private fun checkTime(dayFlag:Int, startHour: Int, startMinute: Int, endHour: Int, endMinute: Int):Boolean{
 
         val subjectData: RealmResults<SubjectData> =
             realm.where<SubjectData>(SubjectData::class.java)

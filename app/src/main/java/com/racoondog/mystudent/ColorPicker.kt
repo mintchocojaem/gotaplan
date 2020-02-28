@@ -56,6 +56,7 @@ class ColorPicker:ConstraintLayout {
 
     fun initColor(colorCode:Int){
         color_picker_btn.backgroundTintList = ColorStateList.valueOf(colorCode)
+        this@ColorPicker.colorCode = colorCode
     }
 
     fun changeTheme(activity: Activity?,v:View?,colorList:Int){

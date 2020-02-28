@@ -36,26 +36,28 @@ class DayPicker:ConstraintLayout {
         addView(view)
     }
 
-    fun dayPick(flag:Int,showFlag:Boolean){
+    fun dayPick(initFlag:Int,day:Int=0){
 
-        if (flag == 6){
+        dayFlag = day
+
+        if (initFlag == 6){
             saturday_button.visibility = View.VISIBLE
         }
-        else if (flag == 7){
+        else if (initFlag == 7){
             saturday_button.visibility = View.VISIBLE
             sunday_button.visibility = View.VISIBLE
         }
-        if(showFlag){
-            when(flag){
-                1 -> monday_button.isChecked = true
-                2 -> tuesday_button.isChecked = true
-                3 -> wednesday_button.isChecked = true
-                4 -> thursday_button.isChecked = true
-                5 -> friday_button.isChecked = true
-                6 -> saturday_button.isChecked = true
-                7 -> sunday_button.isChecked = true
-            }
+
+        when(day){
+            1 -> monday_button.isChecked = true
+            2 -> tuesday_button.isChecked = true
+            3 -> wednesday_button.isChecked = true
+            4 -> thursday_button.isChecked = true
+            5 -> friday_button.isChecked = true
+            6 -> saturday_button.isChecked = true
+            7 -> sunday_button.isChecked = true
         }
+
 
         monday_button.setOnClickListener {
             dayFlag = 1
