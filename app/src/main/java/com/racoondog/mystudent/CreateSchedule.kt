@@ -2,22 +2,15 @@ package com.racoondog.mystudent
 
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.NumberPicker
-import android.widget.TextView
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.create_schedule.*
-import kotlinx.android.synthetic.main.create_schedule.title_text
-import kotlinx.android.synthetic.main.create_schedule.view.*
-import kotlinx.android.synthetic.main.create_subject.*
 import kotlinx.android.synthetic.main.time_picker.*
-
 
 class CreateSchedule : AppCompatActivity(){
 
@@ -33,13 +26,13 @@ class CreateSchedule : AppCompatActivity(){
 
         createSchedule_Button.setOnClickListener{
 
-            val titleName = title_text.text.toString()
+            val titleName = schedule_title_text.text.toString()
 
             if(titleName != "")
             {
                 if(dayFlag != 0) {
                     if (start_hour.value < end_hour.value) {
-                        intent.putExtra("title", title_text.text.toString())
+                        intent.putExtra("title", schedule_title_text.text.toString())
                         intent.putExtra("scheduleDayFlag", dayFlag)
                         intent.putExtra("scheduleStartHour",start_hour.value)
                         intent.putExtra("scheduleEndHour",end_hour.value)
@@ -78,10 +71,10 @@ class CreateSchedule : AppCompatActivity(){
             dayFlag = 7
         }
 
-
-        schedule_day_group.setOnCheckedChangeListener{_,_ ->
-            title_text.hideKeyboard()
+        schedule_title_text.setOnFocusChangeListener { v, hasFocus ->
+            //if(!hasFocus) hideKeyboard()
         }
+
         scheduleQuit_Button.setOnClickListener {
             finish()
         }
@@ -96,12 +89,30 @@ class CreateSchedule : AppCompatActivity(){
         else super.onBackPressed()
     }
 
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        val v: View? = currentFocus
+        if (v != null &&
+            (ev.action == MotionEvent.ACTION_UP || ev.action == MotionEvent.ACTION_MOVE) &&
+            v is EditText &&
+            !v.javaClass.name.startsWith("android.webkit.")
+        ) {
+            val scrcoords = IntArray(2)
+            v.getLocationOnScreen(scrcoords)
+            val x: Float = ev.rawX + v.getLeft() - scrcoords[0]
+            val y: Float = ev.rawY + v.getTop() - scrcoords[1]
+            if (x < v.getLeft() || x > v.getRight() || y < v.getTop() || y > v.getBottom()) hideKeyboard(
+                this
+            )
+        }
+        return super.dispatchTouchEvent(ev)
+    }
 
-    private fun View.hideKeyboard() {
-        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(windowToken, 0)
-
-
+    private fun hideKeyboard(activity: Activity?) {
+        if (!(activity == null || activity.window == null)) {
+            val imm =
+                activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(activity.window.decorView.windowToken, 0)
+        }
     }
 
 }

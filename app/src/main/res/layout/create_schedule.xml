@@ -74,7 +74,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="wrap_content"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/createSchedule_toolbar"
             app:layout_constraintBottom_toTopOf="@id/schedule_picker"
@@ -84,9 +84,11 @@
             app:layout_constraintVertical_bias="0"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
+            android:paddingBottom="20dp"
+            android:paddingTop="20dp"
             >
         <EditText
-                android:id="@+id/title_text"
+                android:id="@+id/schedule_title_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="제목을 입력하세요."

@@ -5,9 +5,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/whiteColor"
-        android:id="@+id/create_subject_main"
-        android:focusableInTouchMode="true">
+        android:background="@color/whiteColor">
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/createSubject_toolbar"

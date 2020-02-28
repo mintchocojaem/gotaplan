@@ -210,7 +210,7 @@ class TimePicker:ConstraintLayout {
 
             start_picker_layout.requestFocus()
         }
-        start_picker_layout.setOnFocusChangeListener { v, hasFocus ->
+        start_picker_layout.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus){
                 changedTextColor(start_picker_layout,true)
                 changedTextColor(end_picker_layout,false)
@@ -230,7 +230,7 @@ class TimePicker:ConstraintLayout {
 
             end_picker_layout.requestFocus()
         }
-        end_picker_layout.setOnFocusChangeListener { v, hasFocus ->
+        end_picker_layout.setOnFocusChangeListener { _, hasFocus ->
             if(hasFocus){
                 changedTextColor(start_picker_layout, false)
                 changedTextColor(end_picker_layout, true)
@@ -434,7 +434,7 @@ class TimePicker:ConstraintLayout {
 
             start_picker_layout.requestFocus()
         }
-        start_picker_layout.setOnFocusChangeListener { v, hasFocus ->
+        start_picker_layout.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus){
                 changedTextColor(start_picker_layout,true)
                 changedTextColor(end_picker_layout,false)
@@ -454,7 +454,7 @@ class TimePicker:ConstraintLayout {
 
             end_picker_layout.requestFocus()
         }
-        end_picker_layout.setOnFocusChangeListener { v, hasFocus ->
+        end_picker_layout.setOnFocusChangeListener { _, hasFocus ->
             if(hasFocus){
                 changedTextColor(start_picker_layout, false)
                 changedTextColor(end_picker_layout, true)
