@@ -1,16 +1,20 @@
 package com.racoondog.mystudent
 
 
+import android.animation.AnimatorSet
+import android.animation.ValueAnimator
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import io.realm.Realm
 import io.realm.RealmResults
 import kotlinx.android.synthetic.main.create_subject.*
+import kotlinx.android.synthetic.main.subject_detail.*
 import kotlinx.android.synthetic.main.time_picker.*
 import java.util.*
 
@@ -117,10 +121,8 @@ class CreateSubject :AppCompatActivity() {
 
     override fun onBackPressed() {
 
-        if(time_picker.visibility == View.VISIBLE) {
-            time_picker.visibility = View.GONE
-            TimePicker(this).changedTextColor(start_picker_layout, true)
-            TimePicker(this).changedTextColor(end_picker_layout, true)
+        if(subject_time_picker.isOpened()) {
+            subject_time_picker.clearFocus()
         }
         else super.onBackPressed()
     }

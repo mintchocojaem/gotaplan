@@ -1,5 +1,7 @@
 package com.racoondog.mystudent
 
+import android.animation.AnimatorSet
+import android.animation.ValueAnimator
 import android.content.Context
 import android.content.res.TypedArray
 import android.util.AttributeSet
@@ -7,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
 import android.widget.NumberPicker
 import android.widget.TextView
@@ -204,21 +207,44 @@ class TimePicker:ConstraintLayout {
 
         }
         start_picker_layout.setOnClickListener{
-            hideKeyboard()
-            time_picker.visibility = View.VISIBLE
-            start_picker.visibility = View.VISIBLE
-            end_picker.visibility = View.INVISIBLE
-            changedTextColor(start_picker_layout,true)
-            changedTextColor(end_picker_layout,false)
-        }
-        end_picker_layout.setOnClickListener {
-            hideKeyboard()
-            time_picker.visibility = View.VISIBLE
-            end_picker.visibility = View.VISIBLE
-            start_picker.visibility = View.INVISIBLE
-            changedTextColor(start_picker_layout, false)
-            changedTextColor(end_picker_layout, true)
 
+            start_picker_layout.requestFocus()
+        }
+        start_picker_layout.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus){
+                changedTextColor(start_picker_layout,true)
+                changedTextColor(end_picker_layout,false)
+
+                start_picker.visibility = View.VISIBLE
+                end_picker.visibility = View.INVISIBLE
+
+                if (!isOpened()) slideView(time_picker,0,time_bar.height)
+            }else {
+                changedTextColor(start_picker_layout,true)
+                changedTextColor(end_picker_layout,true)
+                if(!end_picker_layout.hasFocus())onBackPressed()
+            }
+        }
+
+        end_picker_layout.setOnClickListener {
+
+            end_picker_layout.requestFocus()
+        }
+        end_picker_layout.setOnFocusChangeListener { v, hasFocus ->
+            if(hasFocus){
+                changedTextColor(start_picker_layout, false)
+                changedTextColor(end_picker_layout, true)
+
+                end_picker.visibility = View.VISIBLE
+                start_picker.visibility = View.INVISIBLE
+
+                if (!isOpened()) slideView(time_picker,0,time_bar.height)
+
+            }else{
+                changedTextColor(start_picker_layout,true)
+                changedTextColor(end_picker_layout,true)
+                if(!start_picker_layout.hasFocus())onBackPressed()
+            }
         }
 
     }
@@ -405,24 +431,71 @@ class TimePicker:ConstraintLayout {
         }
 
         start_picker_layout.setOnClickListener{
-            hideKeyboard()
-            time_picker.visibility = View.VISIBLE
-            start_picker.visibility = View.VISIBLE
-            end_picker.visibility = View.INVISIBLE
-            changedTextColor(start_picker_layout,true)
-            changedTextColor(end_picker_layout,false)
-        }
-        end_picker_layout.setOnClickListener {
-            hideKeyboard()
-            time_picker.visibility = View.VISIBLE
-            end_picker.visibility = View.VISIBLE
-            start_picker.visibility = View.INVISIBLE
-            changedTextColor(start_picker_layout, false)
-            changedTextColor(end_picker_layout, true)
 
+            start_picker_layout.requestFocus()
+        }
+        start_picker_layout.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus){
+                changedTextColor(start_picker_layout,true)
+                changedTextColor(end_picker_layout,false)
+
+                start_picker.visibility = View.VISIBLE
+                end_picker.visibility = View.INVISIBLE
+
+                if (!isOpened()) slideView(time_picker,0,time_bar.height)
+            }else {
+                changedTextColor(start_picker_layout,true)
+                changedTextColor(end_picker_layout,true)
+                if(!end_picker_layout.hasFocus())onBackPressed()
+            }
+        }
+
+        end_picker_layout.setOnClickListener {
+
+            end_picker_layout.requestFocus()
+        }
+        end_picker_layout.setOnFocusChangeListener { v, hasFocus ->
+            if(hasFocus){
+                changedTextColor(start_picker_layout, false)
+                changedTextColor(end_picker_layout, true)
+
+                end_picker.visibility = View.VISIBLE
+                start_picker.visibility = View.INVISIBLE
+
+                if (!isOpened()) slideView(time_picker,0,time_bar.height)
+
+            }else{
+                changedTextColor(start_picker_layout,true)
+                changedTextColor(end_picker_layout,true)
+                if(!start_picker_layout.hasFocus())onBackPressed()
+            }
         }
     }
 
+    private fun slideView(view:View, currentHeight:Int, newHeight:Int) {
+        val slideAnimator = ValueAnimator
+            .ofInt(currentHeight, newHeight)
+            .setDuration(500)
+        /* We use an update listener which listens to each tick
+       * and manually updates the height of the view */
+        slideAnimator.addUpdateListener { animation1->
+            val value = animation1.animatedValue as Int
+            view.layoutParams.height = value.toInt()
+            view.requestLayout() }
+        /* We use an animationSet to play the animation */
+        val animationSet = AnimatorSet()
+        animationSet.interpolator = AccelerateDecelerateInterpolator()
+        animationSet.play(slideAnimator)
+        animationSet.start()
+    }
+
+    fun isOpened():Boolean{
+        return time_picker.height != 0
+    }
+
+    fun onBackPressed(){
+        slideView(time_picker,time_bar.height,0)
+    }
 
     fun displayTime(startHour:Int,startMinute:Int,endHour:Int,endMinute:Int){
 
@@ -447,7 +520,7 @@ class TimePicker:ConstraintLayout {
 
     }
 
-    fun changedTextColor(viewGroup: ViewGroup, focused:Boolean) = if(focused){
+    private fun changedTextColor(viewGroup: ViewGroup, focused:Boolean) = if(focused){
         for (index in 0 until (viewGroup).childCount) {
             val nextChild = (viewGroup).getChildAt(index)
             if(nextChild is TextView) nextChild.setTextColor(ContextCompat.getColor(context,R.color.defaultAccentColor))
@@ -457,27 +530,6 @@ class TimePicker:ConstraintLayout {
             val nextChild = (viewGroup).getChildAt(index)
             if(nextChild is TextView) nextChild.setTextColor(ContextCompat.getColor(context,R.color.defaultContemptColor))
         }
-    }
-
-    private fun View.hideKeyboard() {
-        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(windowToken, 0)
-
-
-    }
-
-    fun ifPickerIsHidden():Boolean{
-        return if(time_picker.visibility == View.VISIBLE)  {
-            time_picker.visibility = View.GONE
-            true
-        }
-        else {
-            false
-        }
-    }
-
-    fun hidePicker(){
-        time_picker.visibility = View.GONE
     }
 
     fun nestedTime(realmResults: RealmResults<SubjectData>):Boolean{

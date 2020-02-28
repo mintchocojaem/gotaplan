@@ -13,7 +13,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.create_schedule.*
+import kotlinx.android.synthetic.main.create_schedule.title_text
 import kotlinx.android.synthetic.main.create_schedule.view.*
+import kotlinx.android.synthetic.main.create_subject.*
 import kotlinx.android.synthetic.main.time_picker.*
 
 
@@ -84,17 +86,13 @@ class CreateSchedule : AppCompatActivity(){
             finish()
         }
 
-
     }
 
     override fun onBackPressed() {
 
-        if(time_picker.visibility == View.VISIBLE){
-            time_picker.visibility = View.GONE
-            TimePicker(this).changedTextColor(start_picker_layout,true)
-            TimePicker(this).changedTextColor(end_picker_layout,true)
-            }
-
+        if(schedule_picker.isOpened()) {
+            schedule_picker.clearFocus()
+        }
         else super.onBackPressed()
     }
 
