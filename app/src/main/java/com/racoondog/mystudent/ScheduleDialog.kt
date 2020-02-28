@@ -2,7 +2,7 @@ package com.racoondog.mystudent
 
 import android.Manifest
 import android.app.AlertDialog
-import android.app.AlertDialog.*
+import android.app.AlertDialog.Builder
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
@@ -19,6 +19,8 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
+import androidx.core.content.FileProvider
 import io.realm.Realm
 import io.realm.RealmResults
 import kotlinx.android.synthetic.main.activity_main.*
@@ -27,7 +29,7 @@ import kotlinx.android.synthetic.main.weekview.*
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
-import java.io.OutputStream
+import java.io.IOException
 import kotlin.system.exitProcess
 
 
@@ -82,23 +84,32 @@ class ScheduleDialog:Dialog {
                 val bitmap3 = getBitmapFromView(cnxt.main_toolbar, cnxt.main_toolbar.height, cnxt.main_toolbar.width)
                 val bitmap = combineImages(bitmap1, bitmap2, bitmap3)
 
-                val f3 = File(Environment.getExternalStorageDirectory().toString() + "/shared/")
-                if (!f3.exists()) f3.mkdirs()
-                val outStream: OutputStream?
-                val file = File(Environment.getExternalStorageDirectory().toString() + "/shared/" + "temp" + ".png")
-                try {
-                    outStream = FileOutputStream(file)
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream)
-                    outStream.close()
-                } catch (e: Exception) {
+                try
+                {
+                    val cachePath = File(context.cacheDir, "images")
+                    cachePath.mkdirs() // don't forget to make the directory
+                    val stream = FileOutputStream("$cachePath/image.png") // overwrites this image every time
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+                    stream.close()
+                }
+                catch (e: IOException) {
                     e.printStackTrace()
                 }
 
-                val intent = Intent(Intent.ACTION_SEND)
-                intent.setType("image/*")
-                intent.putExtra(Intent.EXTRA_STREAM, file)
-                cnxt.startActivity(Intent.createChooser(intent,"시간표 공유"))
-                file.delete()
+                val imagePath = File(context.cacheDir, "images")
+                val newFile = File(imagePath, "image.png")
+                val contentUri =
+                    FileProvider.getUriForFile(context, "com.example.myapp.fileprovider", newFile)
+
+                if (contentUri != null) {
+                    val shareIntent = Intent()
+                    shareIntent.action = Intent.ACTION_SEND
+                    shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION) // temp permission for receiving app to read this file
+                    shareIntent.setDataAndType(contentUri, cnxt.contentResolver.getType(contentUri))
+                    shareIntent.putExtra(Intent.EXTRA_STREAM, contentUri)
+                    cnxt.startActivity(Intent.createChooser(shareIntent,"시간표 공유"))
+                }
+
                 dismiss()
             }
 
@@ -111,7 +122,6 @@ class ScheduleDialog:Dialog {
     }
 
     private fun getBitmapFromView(view: View, height:Int, width:Int): Bitmap {
-
 
         val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
