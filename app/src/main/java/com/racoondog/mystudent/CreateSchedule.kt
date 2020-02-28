@@ -9,6 +9,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.create_schedule.*
 import kotlinx.android.synthetic.main.time_picker.*
 
@@ -19,6 +20,8 @@ class CreateSchedule : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.create_schedule)
 
+        window!!.statusBarColor = ContextCompat.getColor(applicationContext,R.color.darkColor)
+        window.decorView.systemUiVisibility = 0
         schedule_picker.schedulePicker()
 
 
