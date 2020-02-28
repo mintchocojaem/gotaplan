@@ -1,4 +1,4 @@
-package com.racoondog.mystudent
+package com.racoondog.gotaplan
 
 import android.content.Context
 import android.util.AttributeSet

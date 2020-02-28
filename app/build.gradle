@@ -9,7 +9,7 @@ android {
     compileSdkVersion 28
     buildToolsVersion "29.0.2"
     defaultConfig {
-        applicationId "com.racoondog.mystudent"
+        applicationId "com.racoondog.gotaplan"
         minSdkVersion 23
         targetSdkVersion 28
         versionCode 1

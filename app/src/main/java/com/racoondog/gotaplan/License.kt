@@ -1,4 +1,4 @@
-package com.racoondog.mystudent
+package com.racoondog.gotaplan
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

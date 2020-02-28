@@ -1,4 +1,4 @@
-package com.racoondog.mystudent
+package com.racoondog.gotaplan
 
 import android.Manifest
 import android.app.AlertDialog
@@ -19,7 +19,6 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.FileProvider
 import io.realm.Realm
 import io.realm.RealmResults

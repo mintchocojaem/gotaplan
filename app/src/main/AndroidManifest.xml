@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-        package="com.racoondog.mystudent">
+        package="com.racoondog.gotaplan">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
-            android:name=".MyApplication"
+            android:name="com.racoondog.gotaplan.MyApplication"
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
@@ -22,26 +22,26 @@
                     android:name="android.support.FILE_PROVIDER_PATHS"
                     android:resource="@xml/temp" />
         </provider>
-        <activity android:name=".DirectFeedback"
+        <activity android:name="com.racoondog.gotaplan.DirectFeedback"
                 android:screenOrientation="fullSensor" />
 
-        <activity android:name=".ThemeSetting"
+        <activity android:name="com.racoondog.gotaplan.ThemeSetting"
                 android:screenOrientation="fullSensor" />
 
-        <activity android:name=".CreateSchedule"
+        <activity android:name="com.racoondog.gotaplan.CreateSchedule"
                 android:screenOrientation="fullSensor" />
 
-        <activity android:name=".CreateSubject"
+        <activity android:name="com.racoondog.gotaplan.CreateSubject"
 
                 android:screenOrientation="fullSensor"/>
 
-        <activity android:name=".SubjectDetail"
+        <activity android:name="com.racoondog.gotaplan.SubjectDetail"
                 android:screenOrientation="fullSensor"/>
 
-        <activity android:name=".License"
+        <activity android:name="com.racoondog.gotaplan.License"
                 android:screenOrientation="fullSensor"></activity>
 
-        <activity android:name=".MainActivity"
+        <activity android:name="com.racoondog.gotaplan.MainActivity"
 
                 android:launchMode="singleTop">
             <intent-filter>

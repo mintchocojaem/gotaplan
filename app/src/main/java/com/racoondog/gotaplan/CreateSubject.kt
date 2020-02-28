@@ -1,14 +1,11 @@
-package com.racoondog.mystudent
+package com.racoondog.gotaplan
 
 
-import android.animation.AnimatorSet
-import android.animation.ValueAnimator
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
-import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
@@ -16,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity
 import io.realm.Realm
 import io.realm.RealmResults
 import kotlinx.android.synthetic.main.create_subject.*
-import kotlinx.android.synthetic.main.subject_detail.*
 import kotlinx.android.synthetic.main.time_picker.*
 import java.util.*
 

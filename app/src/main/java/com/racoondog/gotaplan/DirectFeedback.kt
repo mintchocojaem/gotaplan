@@ -1,6 +1,5 @@
-package com.racoondog.mystudent
+package com.racoondog.gotaplan
 
-import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle

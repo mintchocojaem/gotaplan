@@ -1,4 +1,4 @@
-package com.racoondog.mystudent
+package com.racoondog.gotaplan
 
 import android.graphics.Color
 import io.realm.RealmObject

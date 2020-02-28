@@ -40,7 +40,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <com.racoondog.mystudent.TimePicker
+        <com.racoondog.gotaplan.TimePicker
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/time_dialog_picker"
@@ -48,7 +48,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent">
 
-        </com.racoondog.mystudent.TimePicker>
+        </com.racoondog.gotaplan.TimePicker>
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

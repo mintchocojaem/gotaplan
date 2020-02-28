@@ -1,4 +1,4 @@
-package com.racoondog.mystudent
+package com.racoondog.gotaplan
 
 import android.animation.AnimatorSet
 import android.animation.ValueAnimator
@@ -10,7 +10,6 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
-import android.view.inputmethod.InputMethodManager
 import android.widget.NumberPicker
 import android.widget.TextView
 import android.widget.Toast

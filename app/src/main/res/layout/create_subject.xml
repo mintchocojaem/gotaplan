@@ -130,7 +130,7 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <com.racoondog.mystudent.TimePicker
+            <com.racoondog.gotaplan.TimePicker
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@id/Content_bar"
@@ -139,21 +139,21 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     android:background="@drawable/time_picker_layout">
 
-            </com.racoondog.mystudent.TimePicker>
+            </com.racoondog.gotaplan.TimePicker>
 
-            <com.racoondog.mystudent.DayPicker
+            <com.racoondog.gotaplan.DayPicker
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/create_subject_day_picker">
 
-            </com.racoondog.mystudent.DayPicker>
+            </com.racoondog.gotaplan.DayPicker>
 
-            <com.racoondog.mystudent.ColorPicker
+            <com.racoondog.gotaplan.ColorPicker
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/create_subject_color_picker">
 
-            </com.racoondog.mystudent.ColorPicker>
+            </com.racoondog.gotaplan.ColorPicker>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"

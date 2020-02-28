@@ -1,4 +1,4 @@
-package com.racoondog.mystudent
+package com.racoondog.gotaplan
 
 import android.app.Activity
 import android.content.res.ColorStateList
@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.racoondog.mystudent.ColorPickerDialog.ICustomDialogEventListener
+import com.racoondog.gotaplan.ColorPickerDialog.ICustomDialogEventListener
 import io.realm.Realm
 import kotlinx.android.synthetic.main.theme_setting_layout.*
 
