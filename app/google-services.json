@@ -8,12 +8,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:12454723695:android:2c7ba41ffa5cf1d0",
+        "mobilesdk_app_id": "1:12454723695:android:f743f4468e370ebf83cd9a",
         "android_client_info": {
-          "package_name": "com.racoondog.mystudent"
+          "package_name": "com.racoondog.gotaplan"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "12454723695-m3k54v9m557mdevmcfjnim2q42vbj7hn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.racoondog.gotaplan",
+            "certificate_hash": "8f8008cb896633f85bf3dee23b0b4d9c6a44ebbb"
+          }
+        },
         {
           "client_id": "12454723695-455f8tl290fqkt7j1qf0aajkpnalc4ks.apps.googleusercontent.com",
           "client_type": 3

@@ -408,6 +408,32 @@
 
             </com.racoondog.gotaplan.ColorPicker>
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="80dp"
+                    android:paddingBottom="80dp"
+                    android:id="@+id/subject_detail_delete_bar">
+
+                <ImageButton
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:src="@drawable/icon_delete"
+                        android:paddingEnd="16dp"
+                        android:paddingStart="16dp"
+                        android:paddingBottom="16dp"
+                        android:paddingTop="16dp"
+                        android:background="@null"
+                        android:id="@+id/subject_detail_delete_btn">
+
+                </ImageButton>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
         </LinearLayout>
 
     </ScrollView>

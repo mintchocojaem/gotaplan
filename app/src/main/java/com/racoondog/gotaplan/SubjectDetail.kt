@@ -2,15 +2,22 @@ package com.racoondog.gotaplan
 
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.MotionEvent
 import android.view.View
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import io.realm.Realm
 import io.realm.RealmResults
 import kotlinx.android.synthetic.main.subject_detail.*
@@ -66,6 +73,36 @@ class SubjectDetail : AppCompatActivity() {
                 setResult(Activity.RESULT_OK)
                 finish()
             }
+
+        }
+
+        subject_detail_delete_btn.setOnClickListener {
+
+            val builder = AlertDialog.Builder(this,R.style.MyDialogTheme)
+                .setTitle("삭제")
+                .setMessage("해당 과목을 삭제하시겠습니까?")
+                .setPositiveButton("확인") { _, _ ->
+                    ((MainActivity.mContext) as MainActivity).weekView.deleteSubject(data.id)
+                    realm.beginTransaction()
+                    data.deleteFromRealm()
+                    realm.commitTransaction()
+                    Toast.makeText(this,"과목이 삭제되었습니다.", Toast.LENGTH_SHORT).show()
+                    setResult(Activity.RESULT_OK,intent)
+                    finish()
+                }
+
+                .setNegativeButton("취소") { _, _ ->
+
+                }
+                .show()
+
+            builder.window!!.attributes.apply {
+                width = WindowManager.LayoutParams.WRAP_CONTENT
+                height = WindowManager.LayoutParams.WRAP_CONTENT}
+
+            builder.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            builder.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(this,R.color.colorCancel))
+            builder.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(this,R.color.defaultAccentColor))
 
         }
 

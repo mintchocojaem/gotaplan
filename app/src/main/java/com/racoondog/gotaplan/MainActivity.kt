@@ -3,6 +3,7 @@ package com.racoondog.gotaplan
 import android.app.Activity
 import android.app.AlertDialog.BUTTON_POSITIVE
 import android.app.AlertDialog.Builder
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
@@ -25,6 +26,10 @@ class MainActivity: AppCompatActivity() {
     //Developer: Void
 
     private val realm = Realm.getDefaultInstance()
+
+    companion object{
+        var mContext:Context? = null
+    }
     val weekView by lazy { WeekView(this) }
 
     private var intentStartTime: Int = 0
@@ -35,7 +40,7 @@ class MainActivity: AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        mContext = this
         setSupportActionBar(main_toolbar)  //Actionbar 부분
         supportActionBar?.setDisplayUseLogoEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
@@ -189,7 +194,7 @@ class MainActivity: AppCompatActivity() {
 
             schedule_add.visibility = View.INVISIBLE
             addSubjectButton.visibility = View.VISIBLE
-            toolbar_title.setText(scheduleData.scheduleTitle)
+            if(scheduleData.scheduleTitle != "") toolbar_title.text = scheduleData.scheduleTitle
 
             intentFlag = scheduleData.scheduleDayFlag
             intentStartTime = scheduleData.scheduleStartHour
