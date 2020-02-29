@@ -92,7 +92,7 @@
                 android:id="@+id/schedule_title_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="제목을 입력하세요."
+                android:hint="시간표 제목을 입력하세요."
                 android:singleLine="true"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"

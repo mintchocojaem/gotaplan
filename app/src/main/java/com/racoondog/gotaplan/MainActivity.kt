@@ -60,7 +60,6 @@ class MainActivity: AppCompatActivity() {
 
         }
 
-
         addSubjectButton.setOnClickListener {
             val subjectIntent = Intent(this, CreateSubject::class.java)
             subjectIntent.flags = (Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
@@ -194,7 +193,9 @@ class MainActivity: AppCompatActivity() {
 
             schedule_add.visibility = View.INVISIBLE
             addSubjectButton.visibility = View.VISIBLE
-            if(scheduleData.scheduleTitle != "") toolbar_title.text = scheduleData.scheduleTitle
+            if(scheduleData?.scheduleTitle != "") {
+                toolbar_title?.text = scheduleData?.scheduleTitle
+            }
 
             intentFlag = scheduleData.scheduleDayFlag
             intentStartTime = scheduleData.scheduleStartHour
