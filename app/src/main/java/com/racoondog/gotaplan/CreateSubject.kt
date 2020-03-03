@@ -85,7 +85,7 @@ class CreateSubject :AppCompatActivity() {
                 intent.putExtra("LessonOnOff",lesson_mode.isChecked)
                 intent.putExtra("StartMinute", startText_minute.text.toString())
                 intent.putExtra("EndMinute", endText_minute.text.toString())
-                intent.putExtra("ContentText",Content_text.text?.toString())
+                intent.putExtra("ContentText",create_subject_memo.text?.toString())
                 intent.putExtra("colorCode", create_subject_color_picker.colorCode)
                 setResult(Activity.RESULT_OK, intent)
                 finish()

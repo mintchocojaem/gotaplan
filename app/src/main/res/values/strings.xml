@@ -1,4 +1,42 @@
 <resources>
     <string name="app_name">Got a plan?</string>
-    <string name="schedule_title">Got a plan?</string>
+    <string name="schedule_toolbar_title">Got a plan?</string>
+    <string name="schedule_add_title">Please add your timetable</string>
+    <string name="create_schedule_toolbar_title">Add Timetable</string>
+    <string name="create_schedule_title">Please enter a time table title.</string>
+    <string name="create_schedule_last_day">The last day of the week</string>
+    <string name="create_subject_toolbar_title">Add Subject</string>
+    <string name="create_subject_title">Please enter a title.</string>
+    <string name="create_subject_memo_text">Memo</string>
+    <string name="create_subject_memo">There is no content.</string>
+    <string name="create_subject_lesson">A private lesson:</string>
+    <string name="direct_feedback_toolbar_title">Direct Feedback</string>
+    <string name="direct_feedback_title">Title (up to 20 characters)</string>
+    <string name="direct_feedback_content">If you have any development, modifications, or questions, please write them down. (Up to 200 characters)</string>
+    <string name="direct_feedback_g_mail">Feedback is sent via the G-mail app.</string>
+    <string name="license_toolbar_title">License</string>
+    <string name="subject_detail_toolbar_title">Subject Information</string>
+    <string name="subject_detail_title">Title</string>
+    <string name="subject_detail_memo_text">Memo</string>
+    <string name="subject_detail_memo">There is no content.</string>
+    <string name="subject_detail_student_text">Student Information</string>
+    <string name="subject_detail_student_name">Name:</string>
+    <string name="subject_detail_student_birth">Birth:</string>
+    <string name="subject_detail_student_phone_number">Phone number:</string>
+    <string name="subject_detail_lesson_title">Lesson Information</string>
+    <string name="subject_detail_lesson_cost">Lesson cost</string>
+    <string name="subject_detail_lesson_cycle">Number of lessons:</string>
+    <string name="color_dialog_toolbar_title">Color</string>
+    <string name="color_picker_toolbar_title">Color</string>
+    <string name="edit_schedule_title_dialog_toolbar_title">Change the title of the timetable</string>
+    <string name="dialog_cancel">cancel</string>
+    <string name="dialog_apply">apply</string>
+    <string name="schedule_dialog_toolbar_title">Timetable Settings</string>
+    <string name="schedule_dialog_edit_schedule_title">Change the title of a timetable</string>
+    <string name="schedule_dialog_share_schedule">Share a timetable</string>
+    <string name="schedule_dialog_save_schedule">Save a timetable</string>
+    <string name="schedule_dialog_init_schedule">Initialize a timetable</string>
+    <string name="subject_dialog_toolbar_title">Subject Settings</string>
+    <string name="subject_dialog_init_subject">Initialize subjects</string>
+
 </resources>

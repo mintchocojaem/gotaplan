@@ -2,6 +2,7 @@ package com.racoondog.gotaplan
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
@@ -39,6 +40,7 @@ class CreateSchedule : AppCompatActivity(){
                         intent.putExtra("scheduleDayFlag", dayFlag)
                         intent.putExtra("scheduleStartHour",start_hour.value)
                         intent.putExtra("scheduleEndHour",end_hour.value)
+                        intent.flags = (Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
                         setResult(Activity.RESULT_OK, intent)
                         finish()
                     }
