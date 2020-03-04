@@ -7,6 +7,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
+import android.graphics.ColorFilter
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -48,7 +50,7 @@ class MainActivity: AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
         loadData()//데이터 불러오기
-        //changeTheme()// 테마 변경
+        changeTheme()// 테마 변경
 
         weekView_layout.setOnClickListener {
 
@@ -238,14 +240,16 @@ class MainActivity: AppCompatActivity() {
 
     private fun changeTheme() {
 
-        realm.beginTransaction()
-        realm.createObject(ThemeData::class.java)
-        realm.commitTransaction()
+        //realm.beginTransaction()
+        //realm.createObject(ThemeData::class.java)
+        //realm.commitTransaction()
 
-        val themeData = realm.where(ThemeData::class.java).findFirst()!!
-        window.statusBarColor = themeData.statusBarColor
-        addSubjectButton.backgroundTintList = ColorStateList.valueOf(themeData.mainButtonColor)
-        schedule_add.backgroundTintList = ColorStateList.valueOf(themeData.mainButtonColor)
+        //val themeData = realm.where(ThemeData::class.java).findFirst()!!
+        //window.statusBarColor = themeData.statusBarColor
+        //addSubjectButton.backgroundTintList = ColorStateList.valueOf(themeData.mainButtonColor)
+        //schedule_add.backgroundTintList = ColorStateList.valueOf(themeData.mainButtonColor)
+
+
     }
 
 

@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">계획이 다 있구나</string>
     <string name="schedule_toolbar_title">계획이 다 있구나</string>
-    <string name="schedule_add_title">당신의 시간표를 추가해 주세요</string>
+    <string name="schedule_add_title">당신의 시간표를 추가해 주세요.</string>
     <string name="create_schedule_toolbar_title">시간표 만들기</string>
     <string name="create_schedule_title">시간표 제목을 입력하세요.</string>
     <string name="create_schedule_last_day">마지막 요일</string>

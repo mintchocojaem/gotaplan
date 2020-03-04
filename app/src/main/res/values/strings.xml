@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Got a plan?</string>
     <string name="schedule_toolbar_title">Got a plan?</string>
-    <string name="schedule_add_title">Please add your timetable</string>
+    <string name="schedule_add_title">Please add your timetable.</string>
     <string name="create_schedule_toolbar_title">Add Timetable</string>
     <string name="create_schedule_title">Please enter a time table title.</string>
     <string name="create_schedule_last_day">The last day of the week</string>
