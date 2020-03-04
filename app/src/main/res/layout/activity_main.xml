@@ -40,36 +40,42 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/main_toolbar"
             app:layout_constraintVertical_bias="0.0"
-            android:background="@drawable/text_box_layout">
+            android:background="@color/whiteColor">
 
-        <ImageView
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/schedule_add"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:src="@drawable/icon_add"
+                android:tint="@color/whiteColor"
+                app:layout_constraintVertical_bias="0.96"
+                app:layout_constraintHorizontal_bias="0.94"
                 >
-        </ImageView>
-
-        <TextView
-                android:id="@+id/main_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/schedule_add_title"
-                android:gravity="center"
-                app:layout_constraintTop_toBottomOf="@id/schedule_add"
-                android:paddingEnd="20dp"
-                android:paddingStart="20dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintVertical_bias="0.5">
-
-        </TextView>
+        </com.google.android.material.floatingactionbutton.FloatingActionButton>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+            android:id="@+id/main_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/schedule_add_title"
+            android:gravity="center"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:paddingEnd="20dp"
+            android:paddingStart="20dp"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.5">
+
+    </TextView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/addSubjectButton"

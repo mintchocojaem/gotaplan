@@ -245,7 +245,7 @@ class MainActivity: AppCompatActivity() {
         val themeData = realm.where(ThemeData::class.java).findFirst()!!
         window.statusBarColor = themeData.statusBarColor
         addSubjectButton.backgroundTintList = ColorStateList.valueOf(themeData.mainButtonColor)
-
+        schedule_add.backgroundTintList = ColorStateList.valueOf(themeData.mainButtonColor)
     }
 
 
@@ -256,13 +256,14 @@ class MainActivity: AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean { //Menu 목록 부분
+        val scheduleData = realm.where(ScheduleData::class.java).findFirst()
         when (item.itemId) {
             R.id.home -> {
                 //onBackPressed()
                 return true
             }
             R.id.scheduleSetting -> {
-                if(weekView_layout.childCount == 2){
+                if (scheduleData == null) {
                     Toast.makeText(this,resources.getString(R.string.add_schedule_first),Toast.LENGTH_SHORT).show()
                 }else{
                     val dialog = ScheduleDialog(this)
@@ -272,7 +273,7 @@ class MainActivity: AppCompatActivity() {
                 return true
             }
             R.id.subjectSetting ->{
-                if(weekView_layout.childCount == 2){
+                if (scheduleData == null) {
                     Toast.makeText(this,resources.getString(R.string.add_schedule_first),Toast.LENGTH_SHORT).show()
                 }else{
                     val dialog = SubjectDialog(this)
