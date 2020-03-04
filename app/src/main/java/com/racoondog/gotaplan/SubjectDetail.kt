@@ -79,19 +79,19 @@ class SubjectDetail : AppCompatActivity() {
         subject_detail_delete_btn.setOnClickListener {
 
             val builder = AlertDialog.Builder(this,R.style.MyDialogTheme)
-                .setTitle("삭제")
-                .setMessage("해당 과목을 삭제하시겠습니까?")
-                .setPositiveButton("확인") { _, _ ->
+                .setTitle(resources.getString(R.string.delete))
+                .setMessage(resources.getString(R.string.delete_subject))
+                .setPositiveButton(resources.getString(R.string.dialog_apply)) { _, _ ->
                     ((MainActivity.mContext) as MainActivity).weekView.deleteSubject(data.id)
                     realm.beginTransaction()
                     data.deleteFromRealm()
                     realm.commitTransaction()
-                    Toast.makeText(this,"과목이 삭제되었습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this,resources.getString(R.string.subject_deleted), Toast.LENGTH_SHORT).show()
                     setResult(Activity.RESULT_OK,intent)
                     finish()
                 }
 
-                .setNegativeButton("취소") { _, _ ->
+                .setNegativeButton(resources.getString(R.string.dialog_cancel)) { _, _ ->
 
                 }
                 .show()

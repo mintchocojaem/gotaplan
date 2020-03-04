@@ -45,7 +45,7 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@id/startText_AMPM"
                     android:id="@+id/Start"
-                    android:text="시작"
+                    android:text="@string/start"
                     android:textSize="14sp"
                     >
             </TextView>
@@ -55,7 +55,7 @@
                     android:layout_width="38dp"
                     android:layout_height="30dp"
                     android:gravity="center"
-                    android:text="오전"
+                    android:text="@string/am"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -125,7 +125,7 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@id/endText_AMPM"
                     android:id="@+id/End"
-                    android:text="종료"
+                    android:text="@string/end"
                     android:textSize="14sp"
                     >
 
@@ -137,7 +137,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="오후"
+                    android:text="@string/pm"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"

@@ -10,7 +10,10 @@ import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
 import android.view.*
-import android.widget.*
+import android.widget.TableLayout
+import android.widget.TableRow
+import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
@@ -18,6 +21,7 @@ import io.realm.Realm
 import io.realm.RealmResults
 import io.realm.Sort
 import kotlinx.android.synthetic.main.weekview.view.*
+import java.util.*
 import kotlin.math.roundToInt
 
 
@@ -78,7 +82,9 @@ class WeekView : ConstraintLayout{
         cellHeight = (w-(w/7))/5
 
         val day = mutableListOf<String>()
-        val dayList = listOf("월","화","수","목","금","토","일")
+        val dayList = listOf(resources.getString(R.string.monday),resources.getString(R.string.tuesday),
+            resources.getString(R.string.wednesday),resources.getString(R.string.thursday),
+            resources.getString(R.string.friday),resources.getString(R.string.saturday),resources.getString(R.string.sunday))
         // 마지막 요일의 선택에 따라 배열이 추가됨
 
         val period =
@@ -93,14 +99,14 @@ class WeekView : ConstraintLayout{
 
         for (i in start_time until end_time) {  // 24시 형식을 오전과 오후를 구분 하기위한 논리연산
             if (i == start_time && i < 10) {
-                period.add("$i\n 오전 ")
+                period.add("$i\n ${resources.getString(R.string.am)} ")
             } else if (i == start_time && i < 12 && i >= 10) {
-                period.add("$i\n 오전 ")
+                period.add("$i\n ${resources.getString(R.string.am)} ")
             } else if (i == start_time && i > 12) {
-                period.add("${i - 12}\n 오후 ")
+                period.add("${i - 12}\n ${resources.getString(R.string.pm)} ")
                 timeFlag = 1
             } else if (i == 13) {
-                period.add("${i - 12}\n 오후 ")
+                period.add("${i - 12}\n ${resources.getString(R.string.pm)} ")
                 timeFlag = 1
             } else if (timeFlag == 1) {
                 period.add("${i - 12}")
@@ -497,16 +503,25 @@ class WeekView : ConstraintLayout{
         if(newEndMinute.length <= 1) newEndMinute = "0$newEndMinute"
 
         if (checkTime(subjectDayFlag,startHour,startMinute,endHour,endMinute)){
-            Toast.makeText(cnxt,"해당 시간에 다른 과목이 존재합니다.",Toast.LENGTH_SHORT).show()
+            Toast.makeText(cnxt,resources.getString(R.string.subject_exist_already),Toast.LENGTH_SHORT).show()
         }else {
 
-            val builder = AlertDialog.Builder(context,R.style.MyDialogTheme)
+            val builder = AlertDialog.Builder(context,R.style.MyDialogTheme).apply {
 
-                .setTitle("시간 변경")
-                .setMessage("해당 과목의 시작시간을\n${dayFlagToText(data.dayFlag)} ${data.startHour}:${data.startMinute}" +
-                        " -> ${dayFlagToText(subjectDayFlag)} $startHour:$newStartMinute 으로 바꾸시겠습니까?")
+                val n: String = Locale.getDefault().displayLanguage
+                if (n.compareTo("한국어") == 0){
+                    this.setMessage("해당 과목의 시작시간을 \n${dayFlagToText(data.dayFlag)} ${data.startHour}:${data.startMinute}" +
+                            " -> ${dayFlagToText(subjectDayFlag)} $startHour:$newStartMinute 으로 바꾸시겠습니까?")
+                }
+                else {
+                    this.setMessage("Would you like to change the start time for the subject from ${dayFlagToText(data.dayFlag)} ${data.startHour}:${data.startMinute}" +
+                            " to ${dayFlagToText(subjectDayFlag)} $startHour:$newStartMinute ?")
+                }
+            }
 
-                .setPositiveButton("확인") { _, _ ->
+                .setTitle(resources.getString(R.string.change_time))
+
+                .setPositiveButton(resources.getString(R.string.dialog_apply)) { _, _ ->
 
                     realm.beginTransaction()
                     data.dayFlag = subjectDayFlag
@@ -518,16 +533,14 @@ class WeekView : ConstraintLayout{
                     refresh(cnxt.weekView)
                 }
 
-                .setNegativeButton("취소") { _, _ ->
+                .setNegativeButton(resources.getString(R.string.dialog_cancel)) { _, _ ->
                     refresh(cnxt.weekView)
                 }
 
                 .show()
-
             builder.window!!.attributes.apply {
                 width = LayoutParams.WRAP_CONTENT
                 height = LayoutParams.WRAP_CONTENT}
-
             builder.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             builder.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(cnxt.applicationContext,R.color.colorCancel))
             builder.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(cnxt.applicationContext,R.color.defaultAccentColor))
@@ -542,13 +555,13 @@ class WeekView : ConstraintLayout{
         var dayFlagText =""
 
         when(dayFlag){
-            1 -> dayFlagText = "월"
-            2 -> dayFlagText = "화"
-            3 -> dayFlagText = "수"
-            4 -> dayFlagText = "목"
-            5 -> dayFlagText = "금"
-            6 -> dayFlagText = "토"
-            7 -> dayFlagText = "알"
+            1 -> dayFlagText = resources.getString(R.string.monday)
+            2 -> dayFlagText = resources.getString(R.string.tuesday)
+            3 -> dayFlagText = resources.getString(R.string.wednesday)
+            4 -> dayFlagText = resources.getString(R.string.thursday)
+            5 -> dayFlagText =resources.getString(R.string.friday)
+            6 -> dayFlagText = resources.getString(R.string.saturday)
+            7 -> dayFlagText = resources.getString(R.string.sunday)
         }
         return dayFlagText
     }

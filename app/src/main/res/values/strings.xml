@@ -38,5 +38,35 @@
     <string name="schedule_dialog_init_schedule">Initialize a timetable</string>
     <string name="subject_dialog_toolbar_title">Subject Settings</string>
     <string name="subject_dialog_init_subject">Initialize subjects</string>
-
+    <string name="am">Am</string>
+    <string name="pm">Pm</string>
+    <string name="start">Start</string>
+    <string name="end">End</string>
+    <string name="startTime_big">Start time cannot be greater than end time.</string>
+    <string name="startTime_equal">Start time cannot be the same as end time.</string>
+    <string name="startMinute_minimum">The minimum time for each subject is 30 minutes.</string>
+    <string name="subject_exist_already">There is other subject at that time.</string>
+    <string name="choose_last_day">Please select the last day of the week.</string>
+    <string name="choose_subject_day">Please select a day.</string>
+    <string name="enter_timetable_name">Please enter a timetable name.</string>
+    <string name="monday">Mon</string>
+    <string name="tuesday">Tue</string>
+    <string name="wednesday">Wed</string>
+    <string name="thursday">Thu</string>
+    <string name="friday">Fri</string>
+    <string name="saturday">Sat</string>
+    <string name="sunday">Sun</string>
+    <string name="change_time">Change the time</string>
+    <string name="lesson">A private lesson</string>
+    <string name="create_subject_toast_enter_title">Please enter a title.</string>
+    <string name="cannot_find_g_mail_app">Failed to find G-mail app.</string>
+    <string name="edit_schedule_title_applied">The timetable title has been changed.</string>
+    <string name="save_timetable_gallery">The timetable has been saved to the gallery.</string>
+    <string name="initialization">Initialization</string>
+    <string name="schedule_initialized">Timetable initialized.</string>
+    <string name="subject_initialized">Subjects have been initialized.</string>
+    <string name="delete">Delete</string>
+    <string name="delete_subject">Are you sure you want to delete the subject?</string>
+    <string name="subject_deleted">The subject has been deleted.</string>
+    <string name="add_schedule_first">Please add the timetable first.</string>
 </resources>

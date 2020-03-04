@@ -29,6 +29,7 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
+import java.util.*
 import kotlin.system.exitProcess
 
 
@@ -106,7 +107,8 @@ class ScheduleDialog:Dialog {
                     shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION) // temp permission for receiving app to read this file
                     shareIntent.setDataAndType(contentUri, cnxt.contentResolver.getType(contentUri))
                     shareIntent.putExtra(Intent.EXTRA_STREAM, contentUri)
-                    cnxt.startActivity(Intent.createChooser(shareIntent,"시간표 공유"))
+                    cnxt.startActivity(Intent.createChooser(shareIntent,
+                        cnxt.applicationContext.resources.getString(R.string.schedule_dialog_share_schedule)))
                 }
 
                 dismiss()
@@ -163,7 +165,7 @@ class ScheduleDialog:Dialog {
         }
         finally
         {
-            Toast.makeText(context, "시간표가 갤러리에 저장되었습니다.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context,cnxt.applicationContext.resources.getString(R.string.save_timetable_gallery) , Toast.LENGTH_SHORT).show()
             context.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(File(strFilePath))))
         }
 
@@ -171,18 +173,25 @@ class ScheduleDialog:Dialog {
     private fun deleteSchedule(){
 
 
-        val builder = Builder(context,R.style.MyDialogTheme)
+        val builder = Builder(context,R.style.MyDialogTheme).apply {
+            val n: String = Locale.getDefault().displayLanguage
+            if (n.compareTo("한국어") == 0){
+                this.setMessage("시간표를 초기화하시겠습니까? \n\n(모든 시간표와 과목의 데이터가 삭제됩니다.)")
+            }
+            else {
+                this.setMessage("Are you sure you want to initialize the timetable? \n\n(Data for all timetable and subjects will be deleted.)")
+            }
+        }
 
-            .setTitle("초기화")
-            .setMessage("시간표를 초기화하시겠습니까? \n\n(모든 시간표와 과목의 데이터가 삭제됩니다.)")
+            .setTitle(cnxt.applicationContext.resources.getString(R.string.initialization))
 
-            .setPositiveButton("확인") { _, _ ->
+            .setPositiveButton(cnxt.applicationContext.resources.getString(R.string.dialog_apply)) { _, _ ->
 
                 cnxt.weekView_layout.removeView(cnxt.weekView)
 
                 cnxt.addSubjectButton.visibility = View.GONE
                 cnxt.schedule_add.visibility = View.VISIBLE
-                cnxt.toolbar_title.text = "시간표"
+                cnxt.toolbar_title.text = cnxt.applicationContext.resources.getString(R.string.schedule_toolbar_title)
 
                 val subjectData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
                     .findAll()
@@ -205,14 +214,15 @@ class ScheduleDialog:Dialog {
                 cnxt.finishAffinity()
                 val intent = Intent(cnxt, MainActivity::class.java)
                 cnxt.startActivity(intent)
-                Toast.makeText(cnxt,"시간표가 초기화되었습니다.",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(cnxt,
+                        cnxt.applicationContext.resources.getString(R.string.schedule_initialized),Toast.LENGTH_SHORT).show()
 
                 exitProcess(0)
 
 
             }
 
-            .setNegativeButton("취소") { _, _ ->
+            .setNegativeButton(cnxt.applicationContext.resources.getString(R.string.dialog_cancel)) { _, _ ->
 
             }
 

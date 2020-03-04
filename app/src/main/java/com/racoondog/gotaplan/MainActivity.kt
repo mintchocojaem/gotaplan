@@ -19,6 +19,8 @@ import androidx.core.content.ContextCompat
 import io.realm.Realm
 import io.realm.RealmResults
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class MainActivity: AppCompatActivity() {
@@ -114,6 +116,7 @@ class MainActivity: AppCompatActivity() {
                     weekView.drawSchedule(scheduleDayFlag, scheduleStartHour, scheduleEndHour)
 
                     weekView_layout.addView(weekView)
+                    main_text.visibility = View.INVISIBLE
                 }
                 101 -> {
 
@@ -191,6 +194,7 @@ class MainActivity: AppCompatActivity() {
         val scheduleData = realm.where(ScheduleData::class.java).findFirst()
         if (scheduleData != null) {
 
+            main_text.visibility = View.INVISIBLE
             schedule_add.visibility = View.INVISIBLE
             addSubjectButton.visibility = View.VISIBLE
             if(scheduleData?.scheduleTitle != "") {
@@ -259,7 +263,7 @@ class MainActivity: AppCompatActivity() {
             }
             R.id.scheduleSetting -> {
                 if(weekView_layout.childCount == 2){
-                    Toast.makeText(this,"시간표를 먼저 추가해 주세요.",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this,resources.getString(R.string.add_schedule_first),Toast.LENGTH_SHORT).show()
                 }else{
                     val dialog = ScheduleDialog(this)
                     dialog.cnxt = this
@@ -269,7 +273,7 @@ class MainActivity: AppCompatActivity() {
             }
             R.id.subjectSetting ->{
                 if(weekView_layout.childCount == 2){
-                    Toast.makeText(this,"시간표를 먼저 추가해 주세요.",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this,resources.getString(R.string.add_schedule_first),Toast.LENGTH_SHORT).show()
                 }else{
                     val dialog = SubjectDialog(this)
                     dialog.cnxt = this
@@ -341,10 +345,17 @@ class MainActivity: AppCompatActivity() {
 
                             //권한 획득 실패
 
-                            val dialog = Builder(this)
+                            val dialog = Builder(this).apply {
+                                val n: String = Locale.getDefault().displayLanguage
+                                if (n.compareTo("한국어") == 0){
+                                    this.setMessage("다음 기능을 사용하기 위해서는 $permission 권한이 필요합니다. 계속 하시겠습니까?")
+                                }
+                                else {
+                                    this.setMessage("$permission permission is required to use the following features: Would you like to go on?")
+                                }
+                            }
                                 .setCancelable(false)
-                                .setMessage("다음 기능을 사용하기 위해서는 $permission 권한이 필요합니다. 계속 하시겠습니까?")
-                                .setPositiveButton("확인") { _, _ ->
+                                .setPositiveButton(resources.getString(R.string.dialog_apply)) { _, _ ->
                                     ActivityCompat.requestPermissions(this, permissions,100) }
                                 .show()
                             dialog.getButton(BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(applicationContext,R.color.defaultAccentColor))

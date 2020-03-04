@@ -45,18 +45,18 @@ class CreateSchedule : AppCompatActivity(){
                         finish()
                     }
                     else if(start_hour.value == end_hour.value){
-                        Toast.makeText(this, "시작 시각이 종료 시각과 같을 수 없습니다.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, resources.getString(R.string.startTime_equal), Toast.LENGTH_SHORT).show()
                     }
                     else{
-                        Toast.makeText(this,"시작 시각이 종료 시각보다 클 수 없습니다.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this,resources.getString(R.string.startTime_big), Toast.LENGTH_SHORT).show()
                     }
                 }
                 else{
-                    Toast.makeText(this,"마지막 요일을 선택해주세요.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this,resources.getString(R.string.choose_last_day), Toast.LENGTH_SHORT).show()
                 }
             }
             else{
-                Toast.makeText(this,"시간표명을 입력하세요.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,resources.getString(R.string.enter_timetable_name), Toast.LENGTH_SHORT).show()
             }
 
         }

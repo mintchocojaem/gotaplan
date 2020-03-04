@@ -55,6 +55,7 @@
         </ImageView>
 
         <TextView
+                android:id="@+id/main_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/schedule_add_title"

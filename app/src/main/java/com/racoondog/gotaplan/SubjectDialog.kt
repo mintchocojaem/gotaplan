@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import io.realm.Realm
 import io.realm.RealmResults
 import kotlinx.android.synthetic.main.subject_dialog.*
+import java.util.*
 
 class SubjectDialog: Dialog {
 
@@ -47,12 +48,19 @@ class SubjectDialog: Dialog {
 
     private fun deleteSubject(){
 
-        val builder = AlertDialog.Builder(context,R.style.MyDialogTheme)
+        val builder = AlertDialog.Builder(context,R.style.MyDialogTheme).apply {
+            val n: String = Locale.getDefault().displayLanguage
+            if (n.compareTo("한국어") == 0){
+                this.setMessage("과목을 초기화하시겠습니까? \n\n(모든 과목의 데이터가 삭제됩니다.)")
+            }
+            else {
+                this.setMessage("Are you sure you want to initialize the subject? \n\n(Data for all subjects will be deleted.)")
+            }
+        }
 
-            .setTitle("초기화")
-            .setMessage("과목을 초기화하시겠습니까? \n\n(모든 과목의 데이터가 삭제됩니다.)")
+            .setTitle(cnxt.applicationContext.getString(R.string.initialization))
 
-            .setPositiveButton("확인") { _, _ ->
+            .setPositiveButton(cnxt.applicationContext.resources.getString(R.string.dialog_apply)) { _, _ ->
 
                 val scheduleData = realm.where(ScheduleData::class.java).findFirst()
 
@@ -69,11 +77,11 @@ class SubjectDialog: Dialog {
                     cnxt.weekView.findViewWithTag<ConstraintLayout>(i).removeAllViews()
                 }
 
-                Toast.makeText(context,"과목이 초기화되었습니다.",Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,cnxt.applicationContext.getString(R.string.subject_initialized),Toast.LENGTH_SHORT).show()
 
             }
 
-            .setNegativeButton("취소") { _, _ ->
+            .setNegativeButton(cnxt.applicationContext.resources.getString(R.string.dialog_cancel)) { _, _ ->
 
             }
 

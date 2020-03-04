@@ -44,7 +44,7 @@ class DirectFeedback:AppCompatActivity() {
 
                         }
                         catch (e:ActivityNotFoundException) {
-                            Toast.makeText(this, "Gmail 앱을 찾는데 실패했습니다.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, resources.getString(R.string.cannot_find_g_mail_app), Toast.LENGTH_SHORT).show()
                         }
                     }
                 }

@@ -38,22 +38,25 @@ class CreateSubject :AppCompatActivity() {
 
 
         createSubject_Button.setOnClickListener{
+            if(title_text.text.toString() !="") {
+                if(create_subject_day_picker.dayFlag != 0 ) {
 
-            if(create_subject_day_picker.dayFlag != 0 ) {
+                    createSubject(create_subject_day_picker.dayFlag)
 
-                createSubject(create_subject_day_picker.dayFlag)
-
-            } else{
-                Toast.makeText(this, "날짜를 선택해 주세요.", Toast.LENGTH_SHORT).show()
+                } else{
+                    Toast.makeText(this, resources.getString(R.string.choose_subject_day), Toast.LENGTH_SHORT).show()
+                }
+            }else {
+                Toast.makeText(this, resources.getString(R.string.create_subject_toast_enter_title), Toast.LENGTH_SHORT).show()
             }
         }
 
         lesson_mode.setOnCheckedChangeListener{compoundButton,_ ->
 
             if (compoundButton.isChecked){
-                Toast.makeText(this, "개인 레슨: On", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "${resources.getString(R.string.lesson)}: On", Toast.LENGTH_SHORT).show()
             } else{
-                Toast.makeText(this, "개인 레슨: Off", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "${resources.getString(R.string.lesson)}: Off", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -75,8 +78,6 @@ class CreateSubject :AppCompatActivity() {
                 .equalTo("dayFlag", dayFlag)
                 .findAll()
 
-        if(title_text.text.toString() !="") {
-
             if(!subject_time_picker.nestedTime(subjectData)){
                 intent.putExtra("StartHour",start_hour.value )
                 intent.putExtra("EndHour", end_hour.value)
@@ -90,10 +91,7 @@ class CreateSubject :AppCompatActivity() {
                 setResult(Activity.RESULT_OK, intent)
                 finish()
             }
-        }
-        else {
-            Toast.makeText(this, "제목을 입력해 주세요.", Toast.LENGTH_SHORT).show()
-        }
+
     }
 
 

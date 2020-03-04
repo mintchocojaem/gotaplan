@@ -42,7 +42,7 @@ class EditScheduleTitleDialog:Dialog {
             realm.beginTransaction()
             scheduleData.scheduleTitle = scheduleTitle.text.toString()
             realm.commitTransaction()
-            Toast.makeText(context,"시간표 제목이 변경되었습니다.",Toast.LENGTH_SHORT).show()
+            Toast.makeText(context,cnxt.context.resources.getString(R.string.edit_schedule_title_applied),Toast.LENGTH_SHORT).show()
             dismiss()
             cnxt.dismiss()
             cnxt.cnxt.toolbar_title.text = scheduleTitle.text.toString()

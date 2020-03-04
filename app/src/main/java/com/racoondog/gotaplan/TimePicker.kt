@@ -96,8 +96,8 @@ class TimePicker:ConstraintLayout {
 
         start_AMPM.apply {
 
-            displayValue.add("오전")
-            displayValue.add("오후")
+            displayValue.add(resources.getString(R.string.am))
+            displayValue.add(resources.getString(R.string.pm))
             minValue = 0
             maxValue = 1
             value = 0
@@ -111,8 +111,8 @@ class TimePicker:ConstraintLayout {
 
         end_AMPM.apply {
 
-            displayValue.add("오전")
-            displayValue.add("오후")
+            displayValue.add(resources.getString(R.string.am))
+            displayValue.add(resources.getString(R.string.pm))
             minValue = 0
             maxValue = 1
             value = 1
@@ -260,8 +260,8 @@ class TimePicker:ConstraintLayout {
 
         start_AMPM.apply {
 
-            displayValue.add("오전")
-            displayValue.add("오후")
+            displayValue.add(resources.getString(R.string.am))
+            displayValue.add(resources.getString(R.string.pm))
             minValue = 0
             maxValue = 1
             value = 0
@@ -284,8 +284,8 @@ class TimePicker:ConstraintLayout {
 
         end_AMPM.apply {
 
-            displayValue.add("오전")
-            displayValue.add("오후")
+            displayValue.add(resources.getString(R.string.am))
+            displayValue.add(resources.getString(R.string.pm))
             minValue = 0
             maxValue = 1
             value = 0
@@ -537,15 +537,15 @@ class TimePicker:ConstraintLayout {
             end_hour.value == start_hour.value -> {
                 return when {
                     end_minute.displayedValues[end_minute.value].toInt() < start_minute.displayedValues[start_minute.value].toInt() -> {
-                        Toast.makeText(context, "시작 시각이 종료 시각보다 클 수 없습니다.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, resources.getString(R.string.startTime_big), Toast.LENGTH_SHORT).show()
                         true
                     }
                     start_minute.value == end_minute.value -> {
-                        Toast.makeText(context, "시작 시각이 종료 시각과 같을 수 없습니다.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, resources.getString(R.string.startTime_equal), Toast.LENGTH_SHORT).show()
                         true
                     }
                     end_minute.displayedValues[end_minute.value].toInt()  - start_minute.displayedValues[start_minute.value].toInt() < 30 -> {
-                        Toast.makeText(context, "각 과목의 최소 시간은 30분입니다.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, resources.getString(R.string.startMinute_minimum), Toast.LENGTH_SHORT).show()
                         true
                     }
                     else -> checkTime(realmResults)
@@ -555,13 +555,13 @@ class TimePicker:ConstraintLayout {
             end_hour.value - start_hour.value == 1 -> {
 
                 return if(end_minute.displayedValues[end_minute.value].toInt()+(60-start_minute.displayedValues[start_minute.value].toInt()) < 30) {
-                    Toast.makeText(context, "각 과목의 최소 시간은 30분입니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, resources.getString(R.string.startMinute_minimum), Toast.LENGTH_SHORT).show()
                     true
                 } else checkTime(realmResults)
 
             }
             end_hour.value < start_hour.value -> {
-                Toast.makeText(context, "시작 시각이 종료 시각보다 클 수 없습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, resources.getString(R.string.startTime_big), Toast.LENGTH_SHORT).show()
                 return true
             }
             else -> {
@@ -608,7 +608,7 @@ class TimePicker:ConstraintLayout {
 
         }else  checkTime.add(true)
         return if (checkTime.contains(element = false)){
-            Toast.makeText(context,"해당 시간에 다른 과목이 존재합니다.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context,resources.getString(R.string.subject_exist_already), Toast.LENGTH_SHORT).show()
             true
         }else false
     }

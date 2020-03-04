@@ -4,13 +4,13 @@
     <item
             android:id="@+id/scheduleSetting"
             app:showAsAction="never"
-            android:title="시간표 설정">
+            android:title="@string/schedule_dialog_toolbar_title">
     </item>
 
     <item
             android:id="@+id/subjectSetting"
             app:showAsAction="never"
-            android:title="과목 설정">
+            android:title="@string/subject_dialog_toolbar_title">
     </item>
 
     <!--item
@@ -22,13 +22,13 @@
     <item
             android:id="@+id/directFeedback"
             app:showAsAction="never"
-            android:title="다이렉트 피드백">
+            android:title="@string/direct_feedback_toolbar_title">
     </item>
 
     <item
             android:id="@+id/license"
             app:showAsAction="never"
-            android:title="라이선스">
+            android:title="@string/license_toolbar_title">
     </item>
 
 </menu>
