@@ -46,7 +46,6 @@ class SubjectDetail : AppCompatActivity() {
 
         subject_detail_save_btn.setOnClickListener {
 
-            val dayFlag = data.dayFlag
             val pickerData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
                 .equalTo("dayFlag",subject_detail_day_picker.dayFlag)
                 .notEqualTo("id",WeekView.ID)
