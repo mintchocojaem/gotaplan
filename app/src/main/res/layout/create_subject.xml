@@ -3,8 +3,10 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:orientation="vertical" android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/create_subject_main"
         android:background="@color/whiteColor">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -78,12 +80,15 @@
             android:layout_height="match_parent"
             app:layout_constraintTop_toBottomOf="@id/createSubject_toolbar"
             app:layout_constraintBottom_toBottomOf="parent">
-        <LinearLayout
+
+        <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/scroll_view_main">
 
             <LinearLayout
+                    app:layout_constraintTop_toTopOf="parent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/title_bar"
@@ -91,6 +96,7 @@
                     android:paddingTop="20dp"
                     android:paddingRight="20dp"
                     android:paddingLeft="20dp">
+
                 <EditText
                         android:id="@+id/title_text"
                         android:layout_width="match_parent"
@@ -109,6 +115,7 @@
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/title_bar"
                     android:id="@+id/create_subject_memo_bar"
                     android:paddingTop="20dp"
                     android:paddingBottom="20dp"
@@ -149,17 +156,19 @@
             <com.racoondog.gotaplan.TimePicker
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/Content_bar"
+                    app:layout_constraintTop_toBottomOf="@id/create_subject_memo_bar"
                     android:id="@+id/subject_time_picker"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    android:background="@drawable/time_picker_layout">
+                    app:bg="@drawable/time_picker_layout">
 
             </com.racoondog.gotaplan.TimePicker>
+
 
             <com.racoondog.gotaplan.DayPicker
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/subject_time_picker"
                     android:id="@+id/create_subject_day_picker">
 
             </com.racoondog.gotaplan.DayPicker>
@@ -167,6 +176,7 @@
             <com.racoondog.gotaplan.ColorPicker
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/create_subject_day_picker"
                     android:id="@+id/create_subject_color_picker">
 
             </com.racoondog.gotaplan.ColorPicker>
@@ -176,6 +186,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/lessonMode_bar"
+                    app:layout_constraintTop_toBottomOf="@id/create_subject_color_picker"
                     android:paddingStart="20dp"
                     android:paddingTop="20dp"
                     android:paddingBottom="20dp"
@@ -209,7 +220,7 @@
 
             </LinearLayout>
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 

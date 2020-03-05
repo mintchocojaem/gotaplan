@@ -6,7 +6,8 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/whiteColor">
+        android:background="@color/whiteColor"
+        android:id="@+id/create_schedule_main">
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/createSchedule_toolbar"

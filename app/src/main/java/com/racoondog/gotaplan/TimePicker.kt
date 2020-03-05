@@ -1,15 +1,15 @@
 package com.racoondog.gotaplan
 
-import android.animation.AnimatorSet
-import android.animation.ValueAnimator
 import android.content.Context
 import android.content.res.TypedArray
+import android.transition.ChangeBounds
+import android.transition.Transition
+import android.transition.TransitionManager
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.NumberPicker
 import android.widget.TextView
 import android.widget.Toast
@@ -85,7 +85,7 @@ class TimePicker:ConstraintLayout {
         typedArray.recycle()
     }
 
-    fun schedulePicker(){
+    fun schedulePicker(viewGroup: ViewGroup){
 
         start_minute.visibility = View.GONE
         end_minute.visibility = View.GONE
@@ -217,11 +217,16 @@ class TimePicker:ConstraintLayout {
                 start_picker.visibility = View.VISIBLE
                 end_picker.visibility = View.INVISIBLE
 
-                if (!isOpened()) slideView(time_picker,0,time_bar.height)
+                if (!isOpened()){
+                    val changeBounds: Transition = ChangeBounds()
+                    changeBounds.duration = 300
+                    TransitionManager.beginDelayedTransition(viewGroup, changeBounds)
+                    time_picker.visibility = View.VISIBLE
+                }
             }else {
                 changedTextColor(start_picker_layout,true)
                 changedTextColor(end_picker_layout,true)
-                if(!end_picker_layout.hasFocus())onBackPressed()
+                if(!end_picker_layout.hasFocus())onBackPressed(viewGroup)
             }
         }
 
@@ -237,18 +242,23 @@ class TimePicker:ConstraintLayout {
                 end_picker.visibility = View.VISIBLE
                 start_picker.visibility = View.INVISIBLE
 
-                if (!isOpened()) slideView(time_picker,0,time_bar.height)
+                if (!isOpened()) {
+                    val changeBounds: Transition = ChangeBounds()
+                    changeBounds.duration = 300
+                    TransitionManager.beginDelayedTransition(viewGroup, changeBounds)
+                    time_picker.visibility = View.VISIBLE
+                }
 
             }else{
                 changedTextColor(start_picker_layout,true)
                 changedTextColor(end_picker_layout,true)
-                if(!start_picker_layout.hasFocus())onBackPressed()
+                if(!start_picker_layout.hasFocus())onBackPressed(viewGroup)
             }
         }
 
     }
 
-    fun subjectPicker(intentStartHour:Int,intentEndHour:Int){
+    fun subjectPicker(intentStartHour:Int,intentEndHour:Int,viewGroup: ViewGroup){
 
         val initEndHour = intentEndHour -1
 
@@ -441,11 +451,16 @@ class TimePicker:ConstraintLayout {
                 start_picker.visibility = View.VISIBLE
                 end_picker.visibility = View.INVISIBLE
 
-                if (!isOpened()) slideView(time_picker,0,time_bar.height)
+                if (!isOpened()) {
+                    val changeBounds: Transition = ChangeBounds()
+                    changeBounds.duration = 300
+                    TransitionManager.beginDelayedTransition(viewGroup,changeBounds)
+                    time_picker.visibility = View.VISIBLE
+                }
             }else {
                 changedTextColor(start_picker_layout,true)
                 changedTextColor(end_picker_layout,true)
-                if(!end_picker_layout.hasFocus())onBackPressed()
+                if(!end_picker_layout.hasFocus())onBackPressed(viewGroup)
             }
         }
 
@@ -461,39 +476,31 @@ class TimePicker:ConstraintLayout {
                 end_picker.visibility = View.VISIBLE
                 start_picker.visibility = View.INVISIBLE
 
-                if (!isOpened()) slideView(time_picker,0,time_bar.height)
+                if (!isOpened()) {
+                    val changeBounds: Transition = ChangeBounds()
+                    changeBounds.duration = 300
+                    TransitionManager.beginDelayedTransition(viewGroup,changeBounds)
+                    time_picker.visibility = View.VISIBLE
+                }
 
             }else{
                 changedTextColor(start_picker_layout,true)
                 changedTextColor(end_picker_layout,true)
-                if(!start_picker_layout.hasFocus())onBackPressed()
+                if(!start_picker_layout.hasFocus())onBackPressed(viewGroup)
             }
         }
     }
 
-    private fun slideView(view:View, currentHeight:Int, newHeight:Int) {
-        val slideAnimator = ValueAnimator
-            .ofInt(currentHeight, newHeight)
-            .setDuration(100)
-        /* We use an update listener which listens to each tick
-       * and manually updates the height of the view */
-        slideAnimator.addUpdateListener { animation1->
-            val value = animation1.animatedValue as Int
-            view.layoutParams.height = value.toInt()
-            view.requestLayout() }
-        /* We use an animationSet to play the animation */
-        val animationSet = AnimatorSet()
-        animationSet.interpolator = AccelerateDecelerateInterpolator()
-        animationSet.play(slideAnimator)
-        animationSet.start()
-    }
-
     fun isOpened():Boolean{
-        return time_picker.height != 0
+        return time_picker.visibility == View.VISIBLE
     }
 
-    private fun onBackPressed(){
-        slideView(time_picker,time_bar.height,0)
+    private fun onBackPressed(viewGroup: ViewGroup){
+
+        val changeBounds: Transition = ChangeBounds()
+        changeBounds.duration = 300
+        TransitionManager.beginDelayedTransition(viewGroup, changeBounds)
+
     }
 
     fun displayTime(startHour:Int,startMinute:Int,endHour:Int,endMinute:Int){

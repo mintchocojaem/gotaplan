@@ -65,8 +65,8 @@ class TimeDialog:Dialog {
             7 -> sunday_button.isChecked = true
         }
 
-        time_dialog_picker.subjectPicker(scheduleData.scheduleStartHour,scheduleData.scheduleEndHour)
-        time_dialog_picker.displayTime(data.startHour,data.startMinute.toInt(),data.endHour,data.endMinute.toInt())
+        //time_dialog_picker.subjectPicker(scheduleData.scheduleStartHour,scheduleData.scheduleEndHour)
+        //time_dialog_picker.displayTime(data.startHour,data.startMinute.toInt(),data.endHour,data.endMinute.toInt())
 
         time_dialog_cancel.setOnClickListener {
             dismiss()

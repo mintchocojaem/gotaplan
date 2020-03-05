@@ -23,8 +23,7 @@ class CreateSchedule : AppCompatActivity(){
 
         window!!.statusBarColor = ContextCompat.getColor(applicationContext,R.color.darkColor)
         window.decorView.systemUiVisibility = 0
-        schedule_picker.schedulePicker()
-
+        schedule_picker.schedulePicker(create_schedule_main)
 
         var dayFlag = 0
 

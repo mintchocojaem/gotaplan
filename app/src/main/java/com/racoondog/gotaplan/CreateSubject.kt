@@ -4,12 +4,15 @@ package com.racoondog.gotaplan
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
+import android.transition.ChangeBounds
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintSet
+import androidx.transition.TransitionManager
 import io.realm.Realm
 import io.realm.RealmResults
 import kotlinx.android.synthetic.main.create_subject.*
@@ -31,11 +34,10 @@ class CreateSubject :AppCompatActivity() {
         val intentEndHour = intent.getIntExtra("end_time",0)
         val intentFlag = intent.getIntExtra("day_flag",0)
 
-        subject_time_picker.subjectPicker(intentStartHour,intentEndHour)
+        subject_time_picker.subjectPicker(intentStartHour,intentEndHour,scroll_view_main)
         create_subject_day_picker.dayPick(intentFlag)
 
         randomSubjectColor(colorList)// subject color
-
 
         createSubject_Button.setOnClickListener{
             if(title_text.text.toString() !="") {
@@ -54,8 +56,10 @@ class CreateSubject :AppCompatActivity() {
         lesson_mode.setOnCheckedChangeListener{compoundButton,_ ->
 
             if (compoundButton.isChecked){
+
                 Toast.makeText(this, "${resources.getString(R.string.lesson)}: On", Toast.LENGTH_SHORT).show()
             } else{
+
                 Toast.makeText(this, "${resources.getString(R.string.lesson)}: Off", Toast.LENGTH_SHORT).show()
             }
         }
