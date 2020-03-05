@@ -29,6 +29,7 @@
                     android:layout_gravity="center"
                     android:textSize="18sp"
                     android:textStyle="bold"
+                    android:textColor="@color/darkColor"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"

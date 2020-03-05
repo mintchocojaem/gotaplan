@@ -38,7 +38,7 @@
     <string name="schedule_dialog_save_schedule">시간표 저장</string>
     <string name="schedule_dialog_init_schedule">시간표 초기화</string>
     <string name="subject_dialog_toolbar_title">과목 설정</string>
-    <string name="subject_dialog_init_subject">과목 초가화</string>
+    <string name="subject_dialog_init_subject">과목 초기화</string>
     <string name="am">오전</string>
     <string name="pm">오후</string>
     <string name="start">시작</string>
