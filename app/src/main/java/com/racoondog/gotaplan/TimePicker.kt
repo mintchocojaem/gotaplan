@@ -500,7 +500,7 @@ class TimePicker:ConstraintLayout {
         val changeBounds: Transition = ChangeBounds()
         changeBounds.duration = 300
         TransitionManager.beginDelayedTransition(viewGroup, changeBounds)
-
+        time_picker.visibility = View.GONE
     }
 
     fun displayTime(startHour:Int,startMinute:Int,endHour:Int,endMinute:Int){
