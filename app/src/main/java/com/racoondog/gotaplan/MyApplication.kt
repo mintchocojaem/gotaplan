@@ -9,7 +9,7 @@ class MyApplication: Application() {
         super.onCreate()
 
         Realm.init(this)
-        var config = RealmConfiguration.Builder()
+        val config = RealmConfiguration.Builder()
             .schemaVersion(0)// 초기 버전 0 (앱 업데이트 출시마다 버전 1 씩 올려야 함)
             //.deleteRealmIfMigrationNeeded() // 개발 중에는 활성화 (데이터 베이스 필드가 변하면 앱 깔릴 때 데이터 베이스가 초기화 됨)
 

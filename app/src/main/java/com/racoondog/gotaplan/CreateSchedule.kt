@@ -104,9 +104,7 @@ class CreateSchedule : AppCompatActivity(){
             v.getLocationOnScreen(scrcoords)
             val x: Float = ev.rawX + v.getLeft() - scrcoords[0]
             val y: Float = ev.rawY + v.getTop() - scrcoords[1]
-            if (x < v.getLeft() || x > v.getRight() || y < v.getTop() || y > v.getBottom()) hideKeyboard(
-                this
-            )
+            if (x < v.getLeft() || x > v.getRight() || y < v.getTop() || y > v.getBottom()) hideKeyboard(this)
         }
         return super.dispatchTouchEvent(ev)
     }
