@@ -176,10 +176,10 @@ class ScheduleDialog:Dialog {
         val builder = Builder(context,R.style.MyDialogTheme).apply {
             val n: String = Locale.getDefault().displayLanguage
             if (n.compareTo("한국어") == 0){
-                this.setMessage("시간표를 초기화하시겠습니까? \n\n(모든 시간표와 과목의 데이터가 삭제됩니다.)")
+                this.setMessage("시간표를 초기화하시겠습니까? \n\n(모든 시간표와 일정의 데이터가 삭제됩니다.)")
             }
             else {
-                this.setMessage("Are you sure you want to initialize the timetable? \n\n(Data for all timetable and subjects will be deleted.)")
+                this.setMessage("Are you sure you want to initialize the timetable? \n\n(Data for all timetable and schedules will be deleted.)")
             }
         }
 

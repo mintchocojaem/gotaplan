@@ -510,11 +510,11 @@ class WeekView : ConstraintLayout{
 
                 val n: String = Locale.getDefault().displayLanguage
                 if (n.compareTo("한국어") == 0){
-                    this.setMessage("해당 과목의 시작시간을 \n${dayFlagToText(data.dayFlag)} ${data.startHour}:${data.startMinute}" +
+                    this.setMessage("해당 일정의 시작시간을 \n${dayFlagToText(data.dayFlag)} ${data.startHour}:${data.startMinute}" +
                             " -> ${dayFlagToText(subjectDayFlag)} $startHour:$newStartMinute 으로 바꾸시겠습니까?")
                 }
                 else {
-                    this.setMessage("Would you like to change the start time for the subject from ${dayFlagToText(data.dayFlag)} ${data.startHour}:${data.startMinute}" +
+                    this.setMessage("Would you like to change the start time for the schedule from ${dayFlagToText(data.dayFlag)} ${data.startHour}:${data.startMinute}" +
                             " to ${dayFlagToText(subjectDayFlag)} $startHour:$newStartMinute ?")
                 }
             }

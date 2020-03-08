@@ -26,6 +26,12 @@
     </item>
 
     <item
+            android:id="@+id/purchasePro"
+            app:showAsAction="never"
+            android:title="@string/purchase_pro">
+    </item>
+
+    <item
             android:id="@+id/license"
             app:showAsAction="never"
             android:title="@string/license_toolbar_title">
