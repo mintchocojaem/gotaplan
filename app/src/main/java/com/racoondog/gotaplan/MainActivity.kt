@@ -67,7 +67,6 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
             mInterstitialAd = InterstitialAd(this)
             mInterstitialAd.adUnitId = getString(R.string.front_ad_unit_id)
             mInterstitialAd.loadAd(AdRequest.Builder().build())
-
             mInterstitialAd.adListener = object: AdListener() { //전면 광고의 상태를 확인하는 리스너 등록
                 override fun onAdLoaded() {
                     super.onAdLoaded()
@@ -284,10 +283,6 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
         val menuInflater = menuInflater
         menuInflater.inflate(R.menu.menu, menu)
 
-        if (storage.purchasedRemoveAds()) {
-            menu.findItem(R.id.purchasePro).isVisible = false
-        }
-
         return true
     }
 
@@ -332,6 +327,7 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
 
                 if (storage.purchasedRemoveAds()) {
                     // TODO: 이미 구매하셨습니다. 메세지 띄우기!
+                    Toast.makeText(this,getString(R.string.already_purchased),Toast.LENGTH_SHORT).show()
                 } else {
                     bp.purchase(this, getString(R.string.in_app_no_ads_sku))
                 }

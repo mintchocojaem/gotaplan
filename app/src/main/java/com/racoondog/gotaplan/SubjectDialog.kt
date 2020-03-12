@@ -69,12 +69,12 @@ class SubjectDialog: Dialog {
 
                 for(i in subjectData.indices){
                     realm.beginTransaction()
-                    subjectData[0]!!.deleteFromRealm()
+                    subjectData[0]?.deleteFromRealm()
                     realm.commitTransaction()
                 }
 
                 for(i in 1 .. scheduleData!!.scheduleDayFlag){
-                    cnxt.weekView.findViewWithTag<ConstraintLayout>(i).removeAllViews()
+                    cnxt.weekView.findViewWithTag<ConstraintLayout>(i)?.removeAllViews()
                 }
 
                 Toast.makeText(context,cnxt.applicationContext.getString(R.string.subject_initialized),Toast.LENGTH_SHORT).show()

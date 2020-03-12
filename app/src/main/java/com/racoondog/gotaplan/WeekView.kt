@@ -504,6 +504,7 @@ class WeekView : ConstraintLayout{
 
         if (checkTime(subjectDayFlag,startHour,startMinute,endHour,endMinute)){
             Toast.makeText(cnxt,resources.getString(R.string.subject_exist_already),Toast.LENGTH_SHORT).show()
+            refresh(cnxt.weekView)
         }else {
 
             val builder = AlertDialog.Builder(context,R.style.MyDialogTheme).apply {

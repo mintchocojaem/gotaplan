@@ -4,7 +4,6 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="com.android.vending.BILLING" />
 
     <application
@@ -17,8 +16,8 @@
             android:theme="@style/AppTheme">
 
         <meta-data
-                android:name="com.google.android.gms.ads.AD_MANAGER_APP"
-                android:value="true"/>
+                android:name="com.google.android.gms.ads.APPLICATION_ID"
+                android:value="@string/ad_mob_app_id"/>
 
         <provider
                 android:name="androidx.core.content.FileProvider"
@@ -46,8 +45,9 @@
         <activity android:name="com.racoondog.gotaplan.SubjectDetail"
                 android:screenOrientation="fullSensor"/>
 
-        <activity android:name="com.racoondog.gotaplan.License"
-                android:screenOrientation="fullSensor"></activity>
+        <activity
+                android:name="com.racoondog.gotaplan.License"
+                android:screenOrientation="fullSensor" />
 
         <activity android:name="com.racoondog.gotaplan.MainActivity"
 

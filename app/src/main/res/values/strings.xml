@@ -74,6 +74,7 @@
     <string name="in_app_no_ads_sku">no_ads</string>
     <string name="unknown_error">An unknown error occurred.</string>
     <string name="ad_mob_app_id">ca-app-pub-4742391180869310~3307919269</string>
-    <string name="front_ad_unit_id">ca-app-pub-4742391180869310/4237857558</string>
+    <string name="front_ad_unit_id">ca-app-pub-4742391180869310/6497915737</string>
     <string name="front_ad_test">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="already_purchased">"You've already purchased it."</string>
 </resources>
