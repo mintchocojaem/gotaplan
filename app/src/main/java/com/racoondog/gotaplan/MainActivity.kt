@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -95,6 +96,7 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
             startActivityForResult(subjectIntent, 102)
         }
 
+        Log.e("tag",realm.configuration.toString())
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -213,8 +215,6 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
 
             }
         }
-
-
 
     }
 
