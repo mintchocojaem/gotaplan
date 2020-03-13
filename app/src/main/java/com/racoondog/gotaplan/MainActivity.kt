@@ -97,6 +97,7 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
         }
 
         Log.e("tag",realm.configuration.toString())
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
