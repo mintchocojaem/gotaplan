@@ -478,7 +478,8 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
 
         val latestVersion = remoteConfig.getString("latest_version")
         val currentVersion = getAppVersion(this)
-
+        //Log.e("getCurrentVersion", currentVersion)
+        //Log.e("getLastVersion", latestVersion)
         if (!TextUtils.equals(currentVersion, latestVersion)) {
             showUpdateDialog()
         }
@@ -503,7 +504,7 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
         val dialog = AlertDialog.Builder(this)
             .setTitle(R.string.app_updated_title)
             .setMessage(R.string.app_updated)
-            .setPositiveButton(getString(R.string.app_updated_apply)) { dialog, _ ->
+            .setPositiveButton(getString(R.string.app_updated_apply)) { _, _ ->
                 val uri = "market://details?id=$packageName"
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
                 startActivity(intent)}

@@ -61,7 +61,7 @@ class MyApplication: Application() {
     private fun remoteConfigInit() {
         //  developer mode enable when debug
         val configSettings = FirebaseRemoteConfigSettings.Builder()
-            .setDeveloperModeEnabled(BuildConfig.DEBUG)
+            //.setDeveloperModeEnabled(BuildConfig.DEBUG)
             .build()
 
         // set in-app defaults
