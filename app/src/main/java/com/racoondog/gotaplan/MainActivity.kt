@@ -80,6 +80,7 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
                 override fun onAdLoaded() {
                     super.onAdLoaded()
                     mInterstitialAd.show()
+
                 }
             }
         }
@@ -477,27 +478,12 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
         val remoteConfig = FirebaseRemoteConfig.getInstance()
 
         val latestVersion = remoteConfig.getString("latest_version")
-        val currentVersion = getAppVersion(this)
-        //Log.e("getCurrentVersion", currentVersion)
-        //Log.e("getLastVersion", latestVersion)
+        val currentVersion = packageManager.getPackageInfo(packageName, 0).versionName
+        Log.e("getCurrentVersion", currentVersion)
+        Log.e("getLastVersion", latestVersion)
         if (!TextUtils.equals(currentVersion, latestVersion)) {
             showUpdateDialog()
         }
-    }
-
-    private fun getAppVersion(context: Context): String {
-        var result = ""
-
-        try {
-            result = context.packageManager
-                .getPackageInfo(context.packageName, 0)
-                .versionName
-            result = result.replace("[a-zA-Z]|-".toRegex(), "")
-        } catch (e: PackageManager.NameNotFoundException) {
-            Log.e("getAppVersion", e.message)
-        }
-
-        return result
     }
 
     private fun showUpdateDialog() {

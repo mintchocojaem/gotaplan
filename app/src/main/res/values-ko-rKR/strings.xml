@@ -79,7 +79,7 @@
     <string name="front_ad_test">ca-app-pub-3940256099942544/1033173712</string>
     <string name="already_purchased">"이미 구매하셨습니다."</string>
     <string name="app_updated_title">업데이트 안내</string>
-    <string name="app_updated">"새로운 버전이 출시되었습니다.\n 업데이트 하시겠습니까?"</string>
+    <string name="app_updated">"새로운 버전이 출시되었습니다.\n업데이트 하시겠습니까?"</string>
     <string name="app_updated_cancel">"아니요"</string>
     <string name="app_updated_apply">"업데이트"</string>
 

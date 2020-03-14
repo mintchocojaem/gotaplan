@@ -1,6 +1,8 @@
 package com.racoondog.gotaplan
 
 import android.app.Application
+import android.content.Context
+import android.content.pm.PackageManager
 import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -66,7 +68,7 @@ class MyApplication: Application() {
 
         // set in-app defaults
         val remoteConfigDefaults = HashMap<String, Any>()
-        remoteConfigDefaults["latest_version"] = "1.0.0"
+        remoteConfigDefaults["latest_version"] = packageManager.getPackageInfo(packageName, 0).versionName
 
         // FirebaseRemoteConfig init
         FirebaseRemoteConfig.getInstance().apply {
