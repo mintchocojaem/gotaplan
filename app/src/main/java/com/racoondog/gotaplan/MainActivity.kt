@@ -6,12 +6,15 @@ import android.app.AlertDialog.Builder
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
@@ -23,6 +26,9 @@ import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
 import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import io.realm.Realm
 import io.realm.RealmResults
 import kotlinx.android.synthetic.main.activity_main.*
@@ -62,6 +68,8 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
 
         loadData()//데이터 불러오기
         changeTheme()// 테마 변경
+        checkGooglePlayServices()// 구글 플레이스토어 존재 여부
+        checkVersion()// 업데이트 여부 확인
 
         if (!storage.purchasedRemoveAds()) {
             MobileAds.initialize(this, getString(R.string.ad_mob_app_id))
@@ -95,8 +103,6 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
             subjectIntent.putExtra("day_flag", intentFlag)
             startActivityForResult(subjectIntent, 102)
         }
-
-        Log.e("tag",realm.configuration.toString())
 
     }
 
@@ -453,6 +459,60 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
         }
 
     }
+
+    private fun checkGooglePlayServices() {
+        val googleApiAvailability = GoogleApiAvailability.getInstance()
+        val status = googleApiAvailability.isGooglePlayServicesAvailable(this)
+
+        if (status != ConnectionResult.SUCCESS) {
+            val dialog = googleApiAvailability.getErrorDialog(this, status, -1)
+            dialog.setOnDismissListener { _ -> finish() }
+            dialog.show()
+
+            googleApiAvailability.showErrorNotification(this, status)
+        }
+    }
+
+    private fun checkVersion() {
+        val remoteConfig = FirebaseRemoteConfig.getInstance()
+
+        val latestVersion = remoteConfig.getString("latest_version")
+        val currentVersion = getAppVersion(this)
+
+        if (!TextUtils.equals(currentVersion, latestVersion)) {
+            showUpdateDialog()
+        }
+    }
+
+    private fun getAppVersion(context: Context): String {
+        var result = ""
+
+        try {
+            result = context.packageManager
+                .getPackageInfo(context.packageName, 0)
+                .versionName
+            result = result.replace("[a-zA-Z]|-".toRegex(), "")
+        } catch (e: PackageManager.NameNotFoundException) {
+            Log.e("getAppVersion", e.message)
+        }
+
+        return result
+    }
+
+    private fun showUpdateDialog() {
+        val dialog = AlertDialog.Builder(this)
+            .setTitle(R.string.app_updated_title)
+            .setMessage(R.string.app_updated)
+            .setPositiveButton(getString(R.string.app_updated_apply)) { dialog, _ ->
+                val uri = "market://details?id=$packageName"
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+                startActivity(intent)}
+            .setNegativeButton(getString(R.string.app_updated_cancel)) { dialog, _ ->
+                dialog.dismiss() }
+            .create()
+        dialog.show()
+    }
+
 
 }
 

@@ -18,7 +18,6 @@ open class SubjectData: RealmObject(){
     var lessonOnOff : Boolean = false
 
     var dayFlag = 0
-
     var startHour = 0
 
     var startMinute = ""

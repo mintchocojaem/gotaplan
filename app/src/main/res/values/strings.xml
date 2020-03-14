@@ -77,4 +77,9 @@
     <string name="front_ad_unit_id">ca-app-pub-4742391180869310/6497915737</string>
     <string name="front_ad_test">ca-app-pub-3940256099942544/1033173712</string>
     <string name="already_purchased">"You've already purchased it."</string>
+    <string name="app_updated_title">"New version available"</string>
+    <string name="app_updated">"Please, update app to new version"</string>
+    <string name="app_updated_cancel">"No, thanks"</string>
+    <string name="app_updated_apply">"Update"</string>
+
 </resources>
