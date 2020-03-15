@@ -576,8 +576,10 @@ class WeekView : ConstraintLayout{
 
         if (scheduleData != null) {
 
-            view.findViewWithTag<ConstraintLayout>("canvas").removeAllViews()
+            view.findViewById<ConstraintLayout>(R.id.scheduleView).removeAllViews()
+            view.drawSchedule(scheduleData.scheduleDayFlag,scheduleData.scheduleStartHour,scheduleData.scheduleEndHour)
 
+            view.findViewWithTag<ConstraintLayout>("canvas").removeAllViews()
 
             val subjectData: RealmResults<SubjectData> =
                 realm.where<SubjectData>(SubjectData::class.java).findAll()

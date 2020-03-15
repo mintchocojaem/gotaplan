@@ -82,5 +82,14 @@
     <string name="app_updated">"새로운 버전이 출시되었습니다.\n업데이트 하시겠습니까?"</string>
     <string name="app_updated_cancel">"아니요"</string>
     <string name="app_updated_apply">"업데이트"</string>
-
+    <string name="schedule_dialog_edit_time">시간표 시간 변경</string>
+    <string name="schedule_time_dialog_title">시간 변경</string>
+    <string name="schedule_time_dialog_start_time">시작 시각</string>
+    <string name="schedule_time_dialog_end_time">종료 시각</string>
+    <string name="schedule_time_dialog_start_min">시작 시각이 6시보다 작을 수 없습니다.</string>
+    <string name="schedule_time_dialog_start_max">시작 시각이 24시보다 클 수 없습니다.</string>
+    <string name="schedule_time_dialog_end_min">종료 시각이 6시보다 작을 수 없습니다.</string>
+    <string name="schedule_time_dialog_end_max">종료 시각이 24시보다 클 수 없습니다.</string>
+    <string name="schedule_time_dialog_subject_exist_time">해당 시간에 일정이 존재합니다.</string>
+    <string name="schedule_time_dialog_subject_exist_day">해당 요일에 일정이 존재합니다.</string>
 </resources>

@@ -64,6 +64,12 @@ class ScheduleDialog:Dialog {
 
         }
 
+        editScheduleTime.setOnClickListener {
+            val dialog = ScheduleTimeDialog(context)
+            dialog.cnxt = this
+            dialog.show()
+        }
+
         saveSchedule.setOnClickListener{
 
             cnxt.checkPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE){
@@ -75,6 +81,7 @@ class ScheduleDialog:Dialog {
                 dismiss()}
 
         }
+
         shareSchedule.setOnClickListener {
 
             cnxt.checkPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE){
