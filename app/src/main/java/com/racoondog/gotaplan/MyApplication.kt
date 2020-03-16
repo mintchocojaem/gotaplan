@@ -1,12 +1,6 @@
 package com.racoondog.gotaplan
 
 import android.app.Application
-import android.content.Context
-import android.content.pm.PackageManager
-import android.util.Log
-import com.google.android.gms.tasks.Task
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import java.lang.Exception
@@ -53,36 +47,11 @@ class MyApplication: Application() {
             Realm.setDefaultConfiguration(config)
 
             Realm.getDefaultInstance()
-            remoteConfigInit()
         }catch (e:Exception){
             Realm.deleteRealm(Realm.getDefaultConfiguration())
         }
 
     }
 
-    private fun remoteConfigInit() {
-        //  developer mode enable when debug
-        val configSettings = FirebaseRemoteConfigSettings.Builder()
-            //.setDeveloperModeEnabled(BuildConfig.DEBUG)
-            .build()
-
-        // set in-app defaults
-        val remoteConfigDefaults = HashMap<String, Any>()
-        remoteConfigDefaults["latest_version"] = packageManager.getPackageInfo(packageName, 0).versionName
-
-        // FirebaseRemoteConfig init
-        FirebaseRemoteConfig.getInstance().apply {
-            setConfigSettings(configSettings)
-            setDefaults(remoteConfigDefaults)
-            // every 60 minutes refresh cache
-            // default value is 12 hours
-            fetch(60).addOnCompleteListener { task: Task<Void> ->
-                if (task.isSuccessful) {
-                    Log.d("RemoteConfig", "remote config is fetched.")
-                    activateFetched()
-                }
-            }
-        }
-    }
 
 }

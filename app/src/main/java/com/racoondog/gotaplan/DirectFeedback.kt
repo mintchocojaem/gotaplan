@@ -9,8 +9,6 @@ import kotlinx.android.synthetic.main.direct_feedback_layout.*
 
 class DirectFeedback:AppCompatActivity() {
 
-    private var mailClientOpened = false
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.direct_feedback_layout)

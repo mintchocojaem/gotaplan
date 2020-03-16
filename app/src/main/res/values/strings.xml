@@ -4,7 +4,7 @@
     <string name="schedule_add_title">Please add your timetable.</string>
     <string name="create_schedule_toolbar_title">Add Timetable</string>
     <string name="create_schedule_title">Please enter a time table title.</string>
-    <string name="create_schedule_last_day">Last day</string>
+    <string name="create_schedule_last_day">Last day of week</string>
     <string name="create_subject_toolbar_title">Add Schedule</string>
     <string name="create_subject_title">Please enter a title.</string>
     <string name="create_subject_memo_text">Memo</string>
@@ -77,10 +77,6 @@
     <string name="front_ad_unit_id">ca-app-pub-4742391180869310/6497915737</string>
     <string name="front_ad_test">ca-app-pub-3940256099942544/1033173712</string>
     <string name="already_purchased">"You've already purchased it."</string>
-    <string name="app_updated_title">"New version available"</string>
-    <string name="app_updated">"Please, update app to new version"</string>
-    <string name="app_updated_cancel">"No, thanks"</string>
-    <string name="app_updated_apply">"Update"</string>
     <string name="schedule_dialog_edit_time">Change the time of a timetable</string>
     <string name="schedule_time_dialog_title">Change the time</string>
     <string name="schedule_time_dialog_start_time">Start time</string>
@@ -91,4 +87,5 @@
     <string name="schedule_time_dialog_end_max">End time cannot be greater than 24.</string>
     <string name="schedule_time_dialog_subject_exist_time">The schedule exists at that time.</string>
     <string name="schedule_time_dialog_subject_exist_day">The schedule exists on that day of the week.</string>
+    <string name="schedule_time_dialog_input_correct_last_day">Please enter the last day of week between Fri, Sat, and Sun.</string>
 </resources>

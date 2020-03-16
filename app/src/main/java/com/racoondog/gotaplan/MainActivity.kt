@@ -6,15 +6,11 @@ import android.app.AlertDialog.Builder
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
-import android.text.TextUtils
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
@@ -26,9 +22,6 @@ import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
 import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.GoogleApiAvailability
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import io.realm.Realm
 import io.realm.RealmResults
 import kotlinx.android.synthetic.main.activity_main.*
@@ -68,8 +61,6 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
 
         loadData()//데이터 불러오기
         changeTheme()// 테마 변경
-        checkGooglePlayServices()// 구글 플레이스토어 존재 여부
-        checkVersion()// 업데이트 여부 확인
 
         if (!storage.purchasedRemoveAds()) {
             MobileAds.initialize(this, getString(R.string.ad_mob_app_id))
@@ -112,7 +103,7 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
         if(!bp.handleActivityResult(requestCode, resultCode, data)) {
 
             super.onActivityResult(requestCode, resultCode, data)
-            //MainActivity로 들어오는 onActivityResult 부분 -> Intent 후 값 반환
+            //MainActivity 로 들어오는 onActivityResult 부분 -> Intent 후 값 반환
             if (resultCode == Activity.RESULT_OK) {
                 when (requestCode) {
                     100 -> {
@@ -169,7 +160,7 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
                         val lessonOnOff = data.getBooleanExtra("LessonOnOff", false)
                         val colorCode = data.getIntExtra("colorCode", 0)
 
-                        val id = weekView.createID(0, 128)//다음으로 만들어질 weekView의 id 값을 결정하는 변수
+                        val id = weekView.createID(0, 128)//다음으로 만들어질 weekView 의 id 값을 결정하는 변수
 
                         realm.beginTransaction()
                         val subjectInfo: SubjectData = realm.createObject(SubjectData::class.java)
@@ -443,7 +434,7 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
             // TODO: 구매 해 주셔서 감사합니다! 메세지 보내기
             storage.setPurchasedRemoveAds(bp.isPurchased(getString(R.string.in_app_no_ads_sku)))
 
-            // * 광고 제거는 1번 구매하면 영구적으로 사용하는 것이므로 consume하지 않지만,
+            // * 광고 제거는 1번 구매하면 영구적으로 사용하는 것이므로 consume 하지 않지만,
             // 만약 게임 아이템 100개를 주는 것이라면 아래 메소드를 실행시켜 다음번에도 구매할 수 있도록 소비처리를 해줘야한다.
             // bp.consumePurchase(Config.Sku)
         }
@@ -459,45 +450,6 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
             Toast.makeText(this, R.string.unknown_error, Toast.LENGTH_SHORT).show()
         }
 
-    }
-
-    private fun checkGooglePlayServices() {
-        val googleApiAvailability = GoogleApiAvailability.getInstance()
-        val status = googleApiAvailability.isGooglePlayServicesAvailable(this)
-
-        if (status != ConnectionResult.SUCCESS) {
-            val dialog = googleApiAvailability.getErrorDialog(this, status, -1)
-            dialog.setOnDismissListener { _ -> finish() }
-            dialog.show()
-
-            googleApiAvailability.showErrorNotification(this, status)
-        }
-    }
-
-    private fun checkVersion() {
-        val remoteConfig = FirebaseRemoteConfig.getInstance()
-
-        val latestVersion = remoteConfig.getString("latest_version")
-        val currentVersion = packageManager.getPackageInfo(packageName, 0).versionName
-        Log.e("getCurrentVersion", currentVersion)
-        Log.e("getLastVersion", latestVersion)
-        if (!TextUtils.equals(currentVersion, latestVersion)) {
-            showUpdateDialog()
-        }
-    }
-
-    private fun showUpdateDialog() {
-        val dialog = AlertDialog.Builder(this)
-            .setTitle(R.string.app_updated_title)
-            .setMessage(R.string.app_updated)
-            .setPositiveButton(getString(R.string.app_updated_apply)) { _, _ ->
-                val uri = "market://details?id=$packageName"
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
-                startActivity(intent)}
-            .setNegativeButton(getString(R.string.app_updated_cancel)) { dialog, _ ->
-                dialog.dismiss() }
-            .create()
-        dialog.show()
     }
 
 

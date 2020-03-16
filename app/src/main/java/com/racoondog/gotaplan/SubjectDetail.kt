@@ -9,6 +9,9 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.transition.ChangeBounds
+import android.transition.Transition
+import android.transition.TransitionManager
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
@@ -16,7 +19,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import io.realm.Realm
 import io.realm.RealmResults
@@ -67,6 +69,7 @@ class SubjectDetail : AppCompatActivity() {
                 data.studentPhoneNumber = studentPhone_text.text.toString()
                 data.lessonCost = lessonCost_text.text.toString()
                 data.lessonCycle = lessonCycle_text.text.toString()
+                data.lessonOnOff = subject_detail_lesson_mode_switch.isChecked
                 realm.commitTransaction()
 
                 setResult(Activity.RESULT_OK)
@@ -106,14 +109,14 @@ class SubjectDetail : AppCompatActivity() {
         }
 
         lesson_cycle_plus_btn.setOnClickListener {
-           lessonCycle_text.setText((lessonCycle_text.text.toString()?.toInt()+1).toString())
+           lessonCycle_text.setText((lessonCycle_text.text.toString()?.toInt() +1).toString())
         }
         lesson_cycle_minus_btn.setOnClickListener {
 
             if(lessonCycle_text.text.toString() == "0") {
                 lessonCycle_text.setText("0")
             }
-            else lessonCycle_text.setText((lessonCycle_text.text.toString()?.toInt()-1).toString())
+            else lessonCycle_text.setText((lessonCycle_text.text.toString()?.toInt() -1).toString())
 
         }
 
@@ -143,6 +146,25 @@ class SubjectDetail : AppCompatActivity() {
 
         subject_detail_time_picker.subjectPicker(scheduleData.scheduleStartHour,scheduleData.scheduleEndHour,subject_detail_main)
         subject_detail_time_picker.displayTime(data.startHour,data.startMinute.toInt(),data.endHour,data.endMinute.toInt())
+
+        subject_detail_lesson_mode_switch.setOnCheckedChangeListener{compoundButton,_ ->
+
+            subject_detail_save_btn.visibility = View.VISIBLE
+
+            if (compoundButton.isChecked){
+                val changeBounds: Transition = ChangeBounds()
+                changeBounds.duration = 300
+                TransitionManager.beginDelayedTransition(subject_detail_main, changeBounds)
+                lesson_bar.visibility = View.VISIBLE
+                Toast.makeText(this, "${resources.getString(R.string.lesson)}: On", Toast.LENGTH_SHORT).show()
+            } else{
+                val changeBounds: Transition = ChangeBounds()
+                changeBounds.duration = 300
+                TransitionManager.beginDelayedTransition(subject_detail_main, changeBounds)
+                lesson_bar.visibility = View.GONE
+                Toast.makeText(this, "${resources.getString(R.string.lesson)}: Off", Toast.LENGTH_SHORT).show()
+            }
+        }
 
     }
 
@@ -198,8 +220,13 @@ class SubjectDetail : AppCompatActivity() {
 
         themeChange(data.subjectColor)
 
-        if(subjectData[0]!!.lessonOnOff) lesson_bar.visibility = View.VISIBLE
-        else lesson_bar.visibility = View.GONE
+        if(subjectData[0]!!.lessonOnOff) {
+            subject_detail_lesson_mode_switch.isChecked = true
+            lesson_bar.visibility = View.VISIBLE
+        } else {
+            subject_detail_lesson_mode_switch.isChecked = false
+            lesson_bar.visibility = View.GONE
+        }
         subject_detail_save_btn.visibility = View.INVISIBLE
     }
 

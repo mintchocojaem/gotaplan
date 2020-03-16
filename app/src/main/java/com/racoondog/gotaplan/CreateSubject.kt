@@ -4,15 +4,12 @@ package com.racoondog.gotaplan
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
-import android.transition.ChangeBounds
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintSet
-import androidx.transition.TransitionManager
 import io.realm.Realm
 import io.realm.RealmResults
 import kotlinx.android.synthetic.main.create_subject.*
@@ -77,7 +74,7 @@ class CreateSubject :AppCompatActivity() {
 
     private fun createSubject(dayFlag: Int){
 
-        var subjectData: RealmResults<SubjectData> =
+        val subjectData: RealmResults<SubjectData> =
             realm.where<SubjectData>(SubjectData::class.java)
                 .equalTo("dayFlag", dayFlag)
                 .findAll()

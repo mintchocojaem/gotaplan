@@ -6,15 +6,13 @@ import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.MotionEvent
-import android.view.View
 import android.view.WindowManager
-import android.widget.EditText
 import android.widget.Toast
 import io.realm.Realm
 import io.realm.RealmResults
 import io.realm.Sort
 import kotlinx.android.synthetic.main.schedule_time_dialog.*
+import java.util.*
 
 class ScheduleTimeDialog: Dialog {
 
@@ -43,22 +41,20 @@ class ScheduleTimeDialog: Dialog {
         val subjectData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java).findAll()
 
         var dayFlag = scheduleData.scheduleDayFlag
+
         when(dayFlag){
-                5 -> Friday.isChecked = true
-                6 -> Saturday.isChecked = true
-                7 -> Sunday.isChecked = true
+            5->{
+                schedule_time_dialog_last_day.setText(R.string.friday)
+                schedule_time_dialog_last_day.setHint(R.string.friday)
             }
-        Friday.setOnClickListener {
-            dayFlag = 5
-
-        }
-        Saturday.setOnClickListener {
-            dayFlag = 6
-
-        }
-        Sunday.setOnClickListener {
-            dayFlag = 7
-
+            6->{
+                schedule_time_dialog_last_day.setText(R.string.saturday)
+                schedule_time_dialog_last_day.setHint(R.string.saturday)
+            }
+            7->{
+                schedule_time_dialog_last_day.setText(R.string.sunday)
+                schedule_time_dialog_last_day.setHint(R.string.sunday)
+            }
         }
 
         schedule_time_dialog_start_time.setText(scheduleData.scheduleStartHour.toString())
@@ -105,19 +101,33 @@ class ScheduleTimeDialog: Dialog {
 
                                             val dayFlagData = subjectData.sort("dayFlag", Sort.DESCENDING)
 
-                                            if(dayFlag >= dayFlagData[0]!!.dayFlag){
+                                            when(schedule_time_dialog_last_day.text.toString().replace(" ","").toLowerCase()){
+                                                "fri" -> dayFlag = 5
+                                                "sat" -> dayFlag = 6
+                                                "sun" -> dayFlag = 7
+                                                "금" -> dayFlag = 5
+                                                "토" -> dayFlag = 6
+                                                "일" -> dayFlag = 7
+                                                else -> {
+                                                    dayFlag = 0
+                                                    Toast.makeText(context,R.string.schedule_time_dialog_input_correct_last_day,Toast.LENGTH_SHORT).show()
+                                                }
+                                            }
+                                            if(dayFlag != 0){
+                                                if(dayFlag >= dayFlagData[0]!!.dayFlag){
 
-                                                realm.beginTransaction()
-                                                scheduleData.scheduleStartHour = schedule_time_dialog_start_time.text.toString().toInt()
-                                                scheduleData.scheduleEndHour = schedule_time_dialog_end_time.text.toString().toInt()
-                                                scheduleData.scheduleDayFlag = dayFlag
-                                                realm.commitTransaction()
-                                                cnxt.cnxt.weekView.refresh(cnxt.cnxt.weekView)
-                                                dismiss()
-                                                cnxt.dismiss()
+                                                    realm.beginTransaction()
+                                                    scheduleData.scheduleStartHour = schedule_time_dialog_start_time.text.toString().toInt()
+                                                    scheduleData.scheduleEndHour = schedule_time_dialog_end_time.text.toString().toInt()
+                                                    scheduleData.scheduleDayFlag = dayFlag
+                                                    realm.commitTransaction()
+                                                    cnxt.cnxt.weekView.refresh(cnxt.cnxt.weekView)
+                                                    dismiss()
+                                                    cnxt.dismiss()
 
-                                            }else{
-                                                Toast.makeText(context, R.string.schedule_time_dialog_subject_exist_day, Toast.LENGTH_SHORT).show()
+                                                }else{
+                                                    Toast.makeText(context, R.string.schedule_time_dialog_subject_exist_day, Toast.LENGTH_SHORT).show()
+                                                }
                                             }
                                         }
                                         endTimeData[0]!!.endHour == schedule_time_dialog_end_time.text.toString().toInt() -> {
