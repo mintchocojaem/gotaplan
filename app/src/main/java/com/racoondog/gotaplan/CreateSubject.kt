@@ -27,12 +27,13 @@ class CreateSubject :AppCompatActivity() {
         super.setContentView(R.layout.create_subject)
 
         val colorList = resources.getIntArray(R.array.subject_color)
-        val intentStartHour = intent.getIntExtra("start_time",0)
-        val intentEndHour = intent.getIntExtra("end_time",0)
-        val intentFlag = intent.getIntExtra("day_flag",0)
+        val scheduleData = realm.where(ScheduleData::class.java).findFirst()!!
+        val scheduleStartHour = scheduleData.scheduleStartHour
+        val scheduleEndHour = scheduleData.scheduleEndHour
+        val scheduleDayFlag = scheduleData.scheduleDayFlag
 
-        subject_time_picker.subjectPicker(intentStartHour,intentEndHour,scroll_view_main)
-        create_subject_day_picker.dayPick(intentFlag)
+        subject_time_picker.subjectPicker(scheduleStartHour,scheduleEndHour,scroll_view_main)
+        create_subject_day_picker.dayPick(scheduleDayFlag)
 
         randomSubjectColor(colorList)// subject color
 

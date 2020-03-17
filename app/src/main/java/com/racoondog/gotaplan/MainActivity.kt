@@ -90,9 +90,6 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
         addSubjectButton.setOnClickListener {
             val subjectIntent = Intent(this, CreateSubject::class.java)
             subjectIntent.flags = (Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            subjectIntent.putExtra("start_time", intentStartTime)
-            subjectIntent.putExtra("end_time", intentEndTime)
-            subjectIntent.putExtra("day_flag", intentFlag)
             startActivityForResult(subjectIntent, 102)
         }
 

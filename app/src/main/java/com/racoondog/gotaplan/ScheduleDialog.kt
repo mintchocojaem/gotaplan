@@ -61,13 +61,14 @@ class ScheduleDialog:Dialog {
             val dialog = EditScheduleTitleDialog(context)
             dialog.cnxt = this
             dialog.show()
-
+            dismiss()
         }
 
         editScheduleTime.setOnClickListener {
             val dialog = ScheduleTimeDialog(context)
             dialog.cnxt = this
             dialog.show()
+            dismiss()
         }
 
         saveSchedule.setOnClickListener{

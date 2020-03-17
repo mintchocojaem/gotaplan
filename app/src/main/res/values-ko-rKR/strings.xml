@@ -79,7 +79,7 @@
     <string name="front_ad_test">ca-app-pub-3940256099942544/1033173712</string>
     <string name="already_purchased">"이미 구매하셨습니다."</string>
     <string name="schedule_dialog_edit_time">시간표 시간 변경</string>
-    <string name="schedule_time_dialog_title">시간 변경</string>
+    <string name="schedule_time_dialog_title">시간표 시간 변경</string>
     <string name="schedule_time_dialog_start_time">시작 시각</string>
     <string name="schedule_time_dialog_end_time">종료 시각</string>
     <string name="schedule_time_dialog_start_min">시작 시각이 6시보다 작을 수 없습니다.</string>
