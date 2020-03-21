@@ -147,41 +147,6 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
 
                     }
                     102 -> {
-                        /*
-                        val startHour = data!!.getIntExtra("StartHour", 0) // 24시 형식 시간
-                        val endHour = data.getIntExtra("EndHour", 0)// 24시 형식 시간
-                        val dayFlag = data.getIntExtra("DayFlag", 0)
-                        val subjectTitle = data.getStringExtra("SubjectTitle")
-                        val startMinute = data.getStringExtra("StartMinute") // 오전/오후 형식 시간
-                        val endMinute = data.getStringExtra("EndMinute")
-                        val contentText = data.getStringExtra("ContentText")
-                        val lessonOnOff = data.getBooleanExtra("LessonOnOff", false)
-                        val colorCode = data.getIntExtra("colorCode", 0)
-
-                        val id = weekView.createID(0, 128)//다음으로 만들어질 weekView 의 id 값을 결정하는 변수
-
-                        realm.beginTransaction()
-                        val subjectInfo: SubjectData = realm.createObject(SubjectData::class.java)
-                        subjectInfo.apply {
-                            this.id = id
-                            this.dayFlag = dayFlag
-                            this.startHour = startHour
-                            this.startMinute = startMinute
-                            this.endHour = endHour
-                            this.endMinute = endMinute
-                            this.title = subjectTitle
-                            this.content = contentText
-                            this.lessonOnOff = lessonOnOff
-                            this.subjectColor = colorCode
-
-                        }
-                        realm.commitTransaction()
-
-
-
-                        weekView.createSubject(startHour, startMinute.toInt(), endHour, endMinute.toInt(), dayFlag, intentStartTime, id, colorCode)
-
-                         */
                         weekView.refresh(weekView)
                     }
                     103 -> {

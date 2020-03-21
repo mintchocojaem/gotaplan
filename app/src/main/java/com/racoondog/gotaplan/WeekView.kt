@@ -219,8 +219,7 @@ class WeekView : ConstraintLayout{
                     subjectIntent.flags = (Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
                     subjectIntent.putExtra("start_time", start_time+i)
                     subjectIntent.putExtra("end_time", end_time)
-                    subjectIntent.putExtra("day_flag", day_flag)
-                    subjectIntent.putExtra("subject_day_flag", j)
+                    subjectIntent.putExtra("day_flag", j)
                     cnxt.startActivityForResult(subjectIntent, 102)
                     true }
                 // timeText layout 설정부분

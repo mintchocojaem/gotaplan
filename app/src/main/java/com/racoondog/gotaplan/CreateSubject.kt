@@ -28,11 +28,30 @@ class CreateSubject :AppCompatActivity() {
 
         val colorList = resources.getIntArray(R.array.subject_color)
         val scheduleData = realm.where(ScheduleData::class.java).findFirst()!!
-        val scheduleStartHour = scheduleData.scheduleStartHour
-        val scheduleEndHour = scheduleData.scheduleEndHour
+        val scheduleStartHour = intent?.getIntExtra("start_time",scheduleData.scheduleStartHour)?:scheduleData.scheduleStartHour
+        val scheduleEndHour = intent?.getIntExtra("end_time",scheduleData.scheduleEndHour)?:scheduleData.scheduleEndHour
         val scheduleDayFlag = scheduleData.scheduleDayFlag
+        val subjectDayFlag = intent.getIntExtra("day_flag",0)
 
-        var dayFlag = mutableListOf(false,false,false,false,false,false,false)
+        val dayFlag = mutableListOf(false,false,false,false,false,false,false)
+
+        when(subjectDayFlag){
+            1->monday_button.isChecked=true
+            2->tuesday_button.isChecked=true
+            3->wednesday_button.isChecked=true
+            4->thursday_button.isChecked=true
+            5->friday_button.isChecked=true
+            6->saturday_button.isChecked=true
+            7->sunday_button.isChecked=true
+        }
+
+        when(scheduleDayFlag){
+            6 -> saturday_button.visibility = View.VISIBLE
+            7 -> {
+                saturday_button.visibility = View.VISIBLE
+                sunday_button.visibility = View.VISIBLE
+            }
+        }
 
         subject_time_picker.subjectPicker(scheduleStartHour,scheduleEndHour,scroll_view_main)
 
@@ -189,18 +208,7 @@ class CreateSubject :AppCompatActivity() {
                 .findAll()
 
             if(!subject_time_picker.nestedTime(subjectData)){
-                /*
-                intent.putExtra("StartHour",start_hour.value )
-                intent.putExtra("EndHour", end_hour.value)
-                intent.putExtra("DayFlag", dayFlag)
-                intent.putExtra("SubjectTitle", title_text.text.toString())
-                intent.putExtra("LessonOnOff",lesson_mode.isChecked)
-                intent.putExtra("StartMinute", startText_minute.text.toString())
-                intent.putExtra("EndMinute", endText_minute.text.toString())
-                intent.putExtra("ContentText",create_subject_memo.text?.toString())
-                intent.putExtra("colorCode", create_subject_color_picker.colorCode)
 
-                 */
                 val context = MainActivity.mContext as MainActivity
                 val id = context.weekView.createID(0, 128)//다음으로 만들어질 weekView 의 id 값을 결정하는 변수
 

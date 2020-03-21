@@ -83,14 +83,29 @@ class ScheduleTimeDialog: Dialog {
                         val startTimeData = subjectData.sort("startHour", Sort.ASCENDING)
                         val endTimeData = subjectData.sort("endHour", Sort.DESCENDING)
                         if (subjectData.toString() == "[]"){
-                            realm.beginTransaction()
-                            scheduleData.scheduleStartHour = schedule_time_dialog_start_time.text.toString().toInt()
-                            scheduleData.scheduleEndHour = schedule_time_dialog_end_time.text.toString().toInt()
-                            scheduleData.scheduleDayFlag = dayFlag
-                            realm.commitTransaction()
-                            cnxt.cnxt.weekView.refresh(cnxt.cnxt.weekView)
-                            dismiss()
-                            cnxt.dismiss()
+                            when(schedule_time_dialog_last_day.text.toString().replace(" ","").toLowerCase()){
+                                "fri" -> dayFlag = 5
+                                "sat" -> dayFlag = 6
+                                "sun" -> dayFlag = 7
+                                "금" -> dayFlag = 5
+                                "토" -> dayFlag = 6
+                                "일" -> dayFlag = 7
+                                else -> {
+                                    dayFlag = 0
+                                    Toast.makeText(context,R.string.schedule_time_dialog_input_correct_last_day,Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                            if(dayFlag != 0){
+                                realm.beginTransaction()
+                                scheduleData.scheduleStartHour = schedule_time_dialog_start_time.text.toString().toInt()
+                                scheduleData.scheduleEndHour = schedule_time_dialog_end_time.text.toString().toInt()
+                                scheduleData.scheduleDayFlag = dayFlag
+                                realm.commitTransaction()
+                                cnxt.cnxt.weekView.refresh(cnxt.cnxt.weekView)
+                                dismiss()
+                                cnxt.dismiss()
+                            }
+
                         }else{
 
                             when {
