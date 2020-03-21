@@ -166,13 +166,116 @@
             </com.racoondog.gotaplan.TimePicker>
 
 
-            <com.racoondog.gotaplan.DayPicker
+            <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@id/subject_time_picker"
-                    android:id="@+id/create_subject_day_picker">
+                    android:id="@+id/create_subject_day_picker"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="20dp"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    >
 
-            </com.racoondog.gotaplan.DayPicker>
+                <RadioButton
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/tuesday_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/monday_button"
+                        android:button="@drawable/monday_btn"
+                        android:layout_marginEnd="16dp"
+                        app:layout_constraintHorizontal_chainStyle="packed"
+                        app:layout_constraintHorizontal_bias="0"
+                        >
+
+                </RadioButton>
+
+                <RadioButton
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toRightOf="@id/monday_button"
+                        app:layout_constraintRight_toLeftOf="@id/wednesday_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tuesday_button"
+                        android:button="@drawable/tuesday_btn"
+                        android:layout_marginEnd="16dp"
+                        >
+
+                </RadioButton>
+
+                <RadioButton
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toRightOf="@id/tuesday_button"
+                        app:layout_constraintRight_toLeftOf="@id/thursday_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/wednesday_button"
+                        android:button="@drawable/wednesday_btn"
+                        android:layout_marginEnd="16dp"
+                        >
+
+                </RadioButton>
+                <RadioButton
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toRightOf="@id/wednesday_button"
+                        app:layout_constraintRight_toLeftOf="@id/friday_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/thursday_button"
+                        android:button="@drawable/thursday_btn"
+                        android:layout_marginEnd="16dp"
+                        >
+
+                </RadioButton>
+                <RadioButton
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toRightOf="@id/thursday_button"
+                        app:layout_constraintRight_toLeftOf="@id/saturday_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/friday_button"
+                        android:button="@drawable/friday_btn"
+                        android:layout_marginEnd="16dp"
+                        >
+
+                </RadioButton>
+                <RadioButton
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toRightOf="@id/friday_button"
+                        app:layout_constraintRight_toLeftOf="@id/sunday_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/saturday_button"
+                        android:button="@drawable/saturday_btn"
+                        android:layout_marginEnd="16dp"
+                        android:visibility="gone"
+                        >
+
+                </RadioButton>
+                <RadioButton
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toRightOf="@id/saturday_button"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/sunday_button"
+                        android:button="@drawable/sunday_btn"
+                        android:layout_marginEnd="16dp"
+                        android:visibility="gone"
+                        >
+
+                </RadioButton>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.racoondog.gotaplan.ColorPicker
                     android:layout_width="match_parent"

@@ -37,6 +37,7 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
 
     companion object{
         var mContext:Context? = null
+
     }
     val weekView by lazy { WeekView(this) }
 
@@ -146,7 +147,7 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
 
                     }
                     102 -> {
-
+                        /*
                         val startHour = data!!.getIntExtra("StartHour", 0) // 24시 형식 시간
                         val endHour = data.getIntExtra("EndHour", 0)// 24시 형식 시간
                         val dayFlag = data.getIntExtra("DayFlag", 0)
@@ -176,10 +177,12 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
                         }
                         realm.commitTransaction()
 
-                        weekView.createSubject(
-                            startHour, startMinute.toInt()
-                            , endHour, endMinute.toInt(), dayFlag, intentStartTime, id, colorCode
-                        )
+
+
+                        weekView.createSubject(startHour, startMinute.toInt(), endHour, endMinute.toInt(), dayFlag, intentStartTime, id, colorCode)
+
+                         */
+                        weekView.refresh(weekView)
                     }
                     103 -> {
                         weekView.refresh(weekView)

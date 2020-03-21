@@ -32,16 +32,45 @@ class CreateSubject :AppCompatActivity() {
         val scheduleEndHour = scheduleData.scheduleEndHour
         val scheduleDayFlag = scheduleData.scheduleDayFlag
 
+        var dayFlag = mutableListOf(false,false,false,false,false,false,false)
+
         subject_time_picker.subjectPicker(scheduleStartHour,scheduleEndHour,scroll_view_main)
-        create_subject_day_picker.dayPick(scheduleDayFlag)
 
         randomSubjectColor(colorList)// subject color
 
         createSubject_Button.setOnClickListener{
             if(title_text.text.toString() !="") {
-                if(create_subject_day_picker.dayFlag != 0 ) {
+                if(dayFlag.contains(true)) {
 
-                    createSubject(create_subject_day_picker.dayFlag)
+                    val flag = mutableListOf<Boolean>()
+
+                    for (i in dayFlag.indices){
+
+                        if(dayFlag[i]){
+                            val subjectData: RealmResults<SubjectData> =
+                                realm.where<SubjectData>(SubjectData::class.java)
+                                    .equalTo("dayFlag", i+1)
+                                    .findAll()
+
+                            if(!subject_time_picker.nestedTime(subjectData)){
+                                flag.add(true)
+                            }else flag.add(false)
+
+                        }
+
+                    }
+                    for (i in dayFlag.indices){
+                        if(dayFlag[i]){
+                            if(!flag.contains(false)){
+                                if(dayFlag[i]) createSubject(i+1)
+                            }
+                        }
+                    }
+                    if(!flag.contains(false)){
+                        setResult(Activity.RESULT_OK, intent)
+                        finish()
+                    }
+
 
                 } else{
                     Toast.makeText(this, resources.getString(R.string.choose_subject_day), Toast.LENGTH_SHORT).show()
@@ -71,6 +100,85 @@ class CreateSubject :AppCompatActivity() {
             finish()
         }
 
+        monday_button.setOnClickListener {
+
+            if(!dayFlag[0]) {
+                dayFlag[0] = true
+                monday_button.isChecked = true
+            }
+            else {
+                dayFlag[0] = false
+                monday_button.isChecked = false
+            }
+        }
+        tuesday_button.setOnClickListener {
+
+            if(!dayFlag[1]) {
+                dayFlag[1] = true
+                tuesday_button.isChecked = true
+            }
+            else {
+                dayFlag[1]= false
+                tuesday_button.isChecked = false
+            }
+        }
+        wednesday_button.setOnClickListener {
+
+            if(!dayFlag[2]) {
+                dayFlag[2] = true
+                wednesday_button.isChecked = true
+            }
+            else {
+                dayFlag[2] = false
+                wednesday_button.isChecked = false
+            }
+        }
+        thursday_button.setOnClickListener {
+
+            if(!dayFlag[3]) {
+                dayFlag[3] = true
+                thursday_button.isChecked = true
+            }
+            else {
+                dayFlag[3] = false
+                thursday_button.isChecked = false
+            }
+        }
+        friday_button.setOnClickListener {
+
+            if(!dayFlag[4]) {
+                dayFlag[4] = true
+                friday_button.isChecked = true
+            }
+            else {
+                dayFlag[4] = false
+                friday_button.isChecked = false
+            }
+        }
+        saturday_button.setOnClickListener {
+
+            if(!dayFlag[5]) {
+                dayFlag[5] = true
+                saturday_button.isChecked = true
+            }
+            else {
+                dayFlag[5] = false
+                saturday_button.isChecked = false
+            }
+        }
+        sunday_button.setOnClickListener {
+
+            if(!dayFlag[6]) {
+                dayFlag[6] = true
+                sunday_button.isChecked = true
+            }
+            else {
+                dayFlag[6] = false
+                sunday_button.isChecked = false
+            }
+        }
+
+
     }
 
     private fun createSubject(dayFlag: Int){
@@ -81,6 +189,7 @@ class CreateSubject :AppCompatActivity() {
                 .findAll()
 
             if(!subject_time_picker.nestedTime(subjectData)){
+                /*
                 intent.putExtra("StartHour",start_hour.value )
                 intent.putExtra("EndHour", end_hour.value)
                 intent.putExtra("DayFlag", dayFlag)
@@ -90,8 +199,27 @@ class CreateSubject :AppCompatActivity() {
                 intent.putExtra("EndMinute", endText_minute.text.toString())
                 intent.putExtra("ContentText",create_subject_memo.text?.toString())
                 intent.putExtra("colorCode", create_subject_color_picker.colorCode)
-                setResult(Activity.RESULT_OK, intent)
-                finish()
+
+                 */
+                val context = MainActivity.mContext as MainActivity
+                val id = context.weekView.createID(0, 128)//다음으로 만들어질 weekView 의 id 값을 결정하는 변수
+
+                realm.beginTransaction()
+                val subjectInfo: SubjectData = realm.createObject(SubjectData::class.java)
+                subjectInfo.apply {
+                    this.id = id
+                    this.dayFlag = dayFlag
+                    this.startHour = start_hour.value
+                    this.startMinute = startText_minute.text.toString()
+                    this.endHour = end_hour.value
+                    this.endMinute = endText_minute.text.toString()
+                    this.title = title_text.text.toString()
+                    this.content = create_subject_memo.text?.toString()?:""
+                    this.lessonOnOff = lesson_mode.isChecked
+                    this.subjectColor = create_subject_color_picker.colorCode
+
+                }
+                realm.commitTransaction()
             }
 
     }
