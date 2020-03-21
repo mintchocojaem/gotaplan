@@ -21,12 +21,13 @@
 
         <provider
                 android:name="androidx.core.content.FileProvider"
-                android:authorities="com.example.myapp.fileprovider"
+                android:authorities="com.racoondog.gotaplan.fileprovider"
                 android:grantUriPermissions="true"
                 android:exported="false">
             <meta-data
                     android:name="android.support.FILE_PROVIDER_PATHS"
                     android:resource="@xml/temp" />
+
         </provider>
 
         <activity android:name="com.racoondog.gotaplan.DirectFeedback"

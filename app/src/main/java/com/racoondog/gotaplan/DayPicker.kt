@@ -58,7 +58,6 @@ class DayPicker:ConstraintLayout {
             7 -> sunday_button.isChecked = true
         }
 
-
         monday_button.setOnClickListener {
             dayFlag = 1
             mListener?.onEvent()

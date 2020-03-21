@@ -107,7 +107,7 @@ class ScheduleDialog:Dialog {
                 val imagePath = File(context.cacheDir, "images")
                 val newFile = File(imagePath, "image.png")
                 val contentUri =
-                    FileProvider.getUriForFile(context, "com.example.myapp.fileprovider", newFile)
+                    FileProvider.getUriForFile(context, "com.racoondog.gotaplan.fileprovider", newFile)
 
                 if (contentUri != null) {
                     val shareIntent = Intent()
@@ -153,7 +153,7 @@ class ScheduleDialog:Dialog {
         // WRITE_EXTERNAL_STORAGE 외부 공간 사용 권한 허용
 
         val fos: FileOutputStream // FileOutputStream 이용 파일 쓰기 한다
-        val strFolderPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/myStudent"
+        val strFolderPath = Environment.getExternalStorageDirectory().absolutePath + "/Public"
         val folder = File(strFolderPath)
         if (!folder.exists())
         { // 해당 폴더 없으면 만들어라

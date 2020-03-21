@@ -11,8 +11,8 @@
         android:id="@+id/subject_detail_day_picker_bar"
         android:paddingTop="20dp"
         android:paddingBottom="20dp"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp">
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp">
 
     <RadioGroup
             android:layout_width="match_parent"
@@ -29,8 +29,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/monday_button"
                 android:button="@drawable/monday_btn"
-                android:layout_marginRight="8dp"
-                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="16dp"
                 >
 
         </RadioButton>
@@ -40,8 +39,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/tuesday_button"
                 android:button="@drawable/tuesday_btn"
-                android:layout_marginRight="8dp"
-                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="16dp"
                 >
 
         </RadioButton>
@@ -51,8 +49,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/wednesday_button"
                 android:button="@drawable/wednesday_btn"
-                android:layout_marginRight="8dp"
-                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="16dp"
                 >
 
         </RadioButton>
@@ -61,8 +58,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/thursday_button"
                 android:button="@drawable/thursday_btn"
-                android:layout_marginRight="8dp"
-                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="16dp"
                 >
 
         </RadioButton>
@@ -71,8 +67,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/friday_button"
                 android:button="@drawable/friday_btn"
-                android:layout_marginRight="8dp"
-                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="16dp"
                 >
 
         </RadioButton>
@@ -81,8 +76,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/saturday_button"
                 android:button="@drawable/saturday_btn"
-                android:layout_marginRight="8dp"
-                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="16dp"
                 android:visibility="gone">
 
         </RadioButton>
@@ -91,8 +85,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/sunday_button"
                 android:button="@drawable/sunday_btn"
-                android:layout_marginRight="8dp"
-                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="16dp"
                 android:visibility="gone">
 
         </RadioButton>

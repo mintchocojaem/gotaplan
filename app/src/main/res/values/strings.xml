@@ -28,7 +28,7 @@
     <string name="subject_detail_lesson_cycle">Number of lessons:</string>
     <string name="color_dialog_toolbar_title">Color</string>
     <string name="color_picker_toolbar_title">Color</string>
-    <string name="edit_schedule_title_dialog_toolbar_title">Change the title of the timetable</string>
+    <string name="edit_schedule_title_dialog_toolbar_title">Change the title</string>
     <string name="dialog_cancel">Cancel</string>
     <string name="dialog_apply">Apply</string>
     <string name="schedule_dialog_toolbar_title">Timetable Settings</string>
@@ -78,7 +78,7 @@
     <string name="front_ad_test">ca-app-pub-3940256099942544/1033173712</string>
     <string name="already_purchased">"You've already purchased it."</string>
     <string name="schedule_dialog_edit_time">Change the time of a timetable</string>
-    <string name="schedule_time_dialog_title">Change the time of a timetable</string>
+    <string name="schedule_time_dialog_title">Change the time</string>
     <string name="schedule_time_dialog_start_time">Start time</string>
     <string name="schedule_time_dialog_end_time">End time</string>
     <string name="schedule_time_dialog_start_min">Start time cannot be less than 6.</string>
