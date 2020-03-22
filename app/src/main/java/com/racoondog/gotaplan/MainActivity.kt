@@ -51,6 +51,8 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
+        //[v.1.0.4]
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         mContext = this
