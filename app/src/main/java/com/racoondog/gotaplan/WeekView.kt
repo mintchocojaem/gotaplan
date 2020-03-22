@@ -35,7 +35,7 @@ class WeekView : ConstraintLayout{
 
     var dayFlag = 0
 
-    val cnxt = context as MainActivity
+    private val cnxt = context as MainActivity
 
     private var cellHeight= 0
     private var cellWidth = 0
@@ -253,7 +253,25 @@ class WeekView : ConstraintLayout{
         scheduleView.bringToFront()
         scheduleView.addView(canvas)
 
+        /*
+        val scheduleData = realm.where(ScheduleData::class.java).findFirst()!!
 
+        for(i in 0 until (scheduleData.scheduleEndHour - scheduleData.scheduleStartHour)) {
+
+            val halfLine = ConstraintLayout(context)
+            halfLine.layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT).apply {
+                leftToLeft = LayoutParams.PARENT_ID
+                rightToRight = LayoutParams.PARENT_ID
+                height = (cellHeight)/2
+            }
+            halfLine.setBackgroundResource(R.drawable.half_line_shape)
+            halfLine.y = (cellHeight*i).toFloat()
+            halfLine.visibility = View.GONE
+            halfLine.tag = "halfLine$i"
+            findViewWithTag<ConstraintLayout>("canvas").addView(halfLine)
+        }
+
+         */
 
     }
 
@@ -273,6 +291,8 @@ class WeekView : ConstraintLayout{
                 .equalTo("id", id)
                 .findAll()
 
+        val scheduleData = realm.where(ScheduleData::class.java).findFirst()!!
+
 
         titleText.apply {
             text = subjectData[0]!!.title.replace(" ", "\u00A0")
@@ -288,23 +308,6 @@ class WeekView : ConstraintLayout{
         }
         for (i in 1 until ((mCount)/ 20)) {
             titleText.maxLines++
-        }
-
-        val scheduleData = realm.where(ScheduleData::class.java).findFirst()!!
-        for(i in 0 until (scheduleData.scheduleEndHour - scheduleData.scheduleStartHour)) {
-
-            val halfLine = ConstraintLayout(context)
-            halfLine.layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT).apply {
-                leftToLeft = LayoutParams.PARENT_ID
-                rightToRight = LayoutParams.PARENT_ID
-                height = (cellHeight)/2
-            }
-            halfLine.setBackgroundResource(R.drawable.half_line_shape)
-            halfLine.y = (cellHeight*i).toFloat()
-            findViewWithTag<ConstraintLayout>("canvas").addView(halfLine)
-            halfLine.visibility = View.INVISIBLE
-            halfLine.tag = "halfLine$i"
-
         }
 
         subject.layoutParams = LayoutParams(
@@ -359,11 +362,13 @@ class WeekView : ConstraintLayout{
 
             subject.bringToFront()
 
+            /*
             for(i in 0 until (scheduleData.scheduleEndHour - scheduleData.scheduleStartHour)) {
 
-                findViewWithTag<ConstraintLayout>("halfLine$i").visibility = View.VISIBLE
+                findViewWithTag<ConstraintLayout>("halfLine$i")?.visibility = View.VISIBLE
 
             }
+             */
 
             var subjectDayFlag = subjectData[0]!!.dayFlag
 
@@ -459,12 +464,14 @@ class WeekView : ConstraintLayout{
 
                         applyTime(ID,subjectDayFlag,subjectStartHour,subjectStartMinute,subjectEndHour,subjectEndMinute)
 
-
+                        /*
                         for(i in 0 until (scheduleData.scheduleEndHour - scheduleData.scheduleStartHour)) {
 
-                            findViewWithTag<ConstraintLayout>("halfLine$i").visibility = View.INVISIBLE
+                            findViewWithTag<ConstraintLayout>("halfLine$i")?.visibility = View.GONE
 
                         }
+
+                         */
 
                         //refresh(cnxt.weekView)//checkTime 임시기능?
                         subject.setOnTouchListener(null)
