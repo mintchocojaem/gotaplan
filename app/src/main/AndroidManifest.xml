@@ -30,10 +30,9 @@
 
         </provider>
 
-        <activity android:name="com.racoondog.gotaplan.DirectFeedback"
-                android:screenOrientation="fullSensor" />
+        <activity android:name="com.racoondog.gotaplan.IntroActivity" />
 
-        <activity android:name="com.racoondog.gotaplan.ThemeSetting"
+        <activity android:name="com.racoondog.gotaplan.DirectFeedback"
                 android:screenOrientation="fullSensor" />
 
         <activity android:name="com.racoondog.gotaplan.CreateSchedule"
@@ -45,10 +44,6 @@
 
         <activity android:name="com.racoondog.gotaplan.SubjectDetail"
                 android:screenOrientation="fullSensor"/>
-
-        <activity
-                android:name="com.racoondog.gotaplan.License"
-                android:screenOrientation="fullSensor" />
 
         <activity android:name="com.racoondog.gotaplan.MainActivity"
 

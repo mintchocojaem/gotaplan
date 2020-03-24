@@ -14,7 +14,7 @@
     <string name="direct_feedback_title">Title (up to 20 characters)</string>
     <string name="direct_feedback_content">If you have any development, modifications, or questions, please write them down. (Up to 200 characters)</string>
     <string name="direct_feedback_g_mail">Feedback is sent via the G-mail app.</string>
-    <string name="license_toolbar_title">License</string>
+    <string name="help_toolbar_title">Help view</string>
     <string name="subject_detail_toolbar_title">Schedule Information</string>
     <string name="subject_detail_title">Title</string>
     <string name="subject_detail_memo_text">Memo</string>
@@ -88,4 +88,19 @@
     <string name="schedule_time_dialog_subject_exist_time">The schedule exists at that time.</string>
     <string name="schedule_time_dialog_subject_exist_day">The schedule exists on that day of the week.</string>
     <string name="schedule_time_dialog_input_correct_last_day">Please enter the last day of week between Fri, Sat, and Sun.</string>
+    <string name="app_intro_title">Got a plan? Help</string>
+    <string name="app_intro_content">Thank you for downloading our app.\n\n I\'d like to give you a basic set of\n instructions for better use.</string>
+    <string name="app_intro_content_add">(You can always see Help again\n via the Help view in the menu)</string>
+    <string name="app_intro_first_title">1. Beginning screen</string>
+    <string name="app_intro_first_content">Before adding a schedule, you should add \na timetable first. Press the button below \nto go to the Add Timetable screen.</string>
+    <string name="app_intro_second_title">2. Add Timetable</string>
+    <string name="app_intro_second_content">Here is the Add Timetable screen.\n Please set the title and time of the timetable\n as appropriate and select Last day of week.</string>
+    <string name="app_intro_second_ex_title">2.5 Example of a timetable</string>
+    <string name="app_intro_second_ex_content">Examples are prepared to help you understand.</string>
+    <string name="app_intro_third_title">3. Time table complete!</string>
+    <string name="app_intro_third_content">You have now laid the foundation.\n Use the Add Schedule button at the bottom right\n to add a schedule or the menu at the top right to use the add-on function.</string>
+    <string name="app_intro_last_content">Thank you for using the Help.</string>
+    <string name="app_intro_last_content_add">(Help may be added or changed\n depending on future updates)</string>
+
+
 </resources>

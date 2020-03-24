@@ -13,16 +13,16 @@
             android:title="@string/subject_dialog_toolbar_title">
     </item>
 
-    <!--item
-            android:id="@+id/themeSetting"
-            app:showAsAction="never"
-            android:title="테마 설정">
-    </item-->
-
     <item
             android:id="@+id/directFeedback"
             app:showAsAction="never"
             android:title="@string/direct_feedback_toolbar_title">
+    </item>
+
+    <item
+            android:id="@+id/help"
+            app:showAsAction="never"
+            android:title="@string/help_toolbar_title">
     </item>
 
     <item
@@ -31,10 +31,5 @@
             android:title="@string/purchase_pro">
     </item>
 
-    <item
-            android:id="@+id/license"
-            app:showAsAction="never"
-            android:title="@string/license_toolbar_title">
-    </item>
 
 </menu>

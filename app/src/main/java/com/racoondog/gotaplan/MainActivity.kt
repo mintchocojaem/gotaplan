@@ -63,7 +63,6 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
         bp.initialize()
 
         loadData()//데이터 불러오기
-        changeTheme()// 테마 변경
 
         if (!storage.purchasedRemoveAds()) {
             MobileAds.initialize(this, getString(R.string.ad_mob_app_id))
@@ -95,6 +94,8 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
             subjectIntent.flags = (Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivityForResult(subjectIntent, 102)
         }
+
+        showHelpView()// 앱 가이드 보여줌
 
     }
 
@@ -164,7 +165,6 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
                         themeData.mainButtonColor = mainButtonBarColor
                         realm.commitTransaction()
 
-                        changeTheme()// 테마 변경
                     }
 
                 }
@@ -182,6 +182,14 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
             }
         }
 
+    }
+
+    private fun showHelpView(){
+        if(storage.showHelpView()){
+            val introIntent = Intent(this, IntroActivity::class.java)
+            startActivity(introIntent)
+            storage.setHelpView(false)
+        }
     }
 
     private fun loadData() {
@@ -230,21 +238,6 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
     }
 
 
-    private fun changeTheme() {
-
-        //realm.beginTransaction()
-        //realm.createObject(ThemeData::class.java)
-        //realm.commitTransaction()
-
-        //val themeData = realm.where(ThemeData::class.java).findFirst()!!
-        //window.statusBarColor = themeData.statusBarColor
-        //addSubjectButton.backgroundTintList = ColorStateList.valueOf(themeData.mainButtonColor)
-        //schedule_add.backgroundTintList = ColorStateList.valueOf(themeData.mainButtonColor)
-
-
-    }
-
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean { //Menu 추가 부분
         val menuInflater = menuInflater
         menuInflater.inflate(R.menu.menu, menu)
@@ -279,16 +272,6 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
                 }
                 return true
             }
-
-            /*
-            R.id.themeSetting -> {
-
-                val themeIntent = Intent(this, ThemeSetting::class.java)
-                startActivityForResult(themeIntent,105)
-                return true
-            }
-
-             */
             R.id.purchasePro -> {
 
                 if (storage.purchasedRemoveAds()) {
@@ -300,9 +283,9 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
                 return true
             }
 
-            R.id.license -> {
-                val licenseIntent = Intent(this, License::class.java)
-                startActivity(licenseIntent)
+            R.id.help -> {
+                val introIntent = Intent(this, IntroActivity::class.java)
+                startActivity(introIntent)
                 return true
             }
             R.id.directFeedback -> {
