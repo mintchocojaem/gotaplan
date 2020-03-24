@@ -64,6 +64,8 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
 
         loadData()//데이터 불러오기
 
+        showHelpView()// 앱 가이드 보여줌
+
         if (!storage.purchasedRemoveAds()) {
             MobileAds.initialize(this, getString(R.string.ad_mob_app_id))
             mInterstitialAd = InterstitialAd(this)
@@ -94,8 +96,6 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
             subjectIntent.flags = (Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivityForResult(subjectIntent, 102)
         }
-
-        showHelpView()// 앱 가이드 보여줌
 
     }
 

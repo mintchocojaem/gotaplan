@@ -1,6 +1,7 @@
 package com.racoondog.gotaplan
 
 import android.os.Bundle
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.github.paolorotolo.appintro.AppIntro
 
@@ -8,6 +9,9 @@ import com.github.paolorotolo.appintro.AppIntro
 class IntroActivity : AppIntro() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        window!!.statusBarColor = ContextCompat.getColor(applicationContext,R.color.darkColor)
+        window.decorView.systemUiVisibility = 0
 
         addSlide(AppIntroCustomLayoutSlide.newInstance(R.layout.app_intro))
         addSlide(AppIntroCustomLayoutSlide.newInstance(R.layout.app_intro_first))

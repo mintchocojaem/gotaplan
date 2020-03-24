@@ -96,9 +96,9 @@
     <string name="app_intro_second_title">2. Add Timetable</string>
     <string name="app_intro_second_content">Here is the Add Timetable screen.\n Please set the title and time of the timetable\n as appropriate and select Last day of week.</string>
     <string name="app_intro_second_ex_title">2.5 Example of a timetable</string>
-    <string name="app_intro_second_ex_content">Examples are prepared to help you understand.</string>
+    <string name="app_intro_second_ex_content">Examples are prepared to\n help you understand.</string>
     <string name="app_intro_third_title">3. Time table complete!</string>
-    <string name="app_intro_third_content">You have now laid the foundation.\n Use the Add Schedule button at the bottom right\n to add a schedule or the menu at the top right to use the add-on function.</string>
+    <string name="app_intro_third_content">You have now laid the foundation.\n\n Use the Add Schedule button at the bottom\n right to add a schedule or the menu at the\n top right to use the add-on function.</string>
     <string name="app_intro_last_content">Thank you for using the Help.</string>
     <string name="app_intro_last_content_add">(Help may be added or changed\n depending on future updates)</string>
 
