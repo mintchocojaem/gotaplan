@@ -51,10 +51,10 @@ class SubjectDialog: Dialog {
         val builder = AlertDialog.Builder(context,R.style.MyDialogTheme).apply {
             val n: String = Locale.getDefault().displayLanguage
             if (n.compareTo("한국어") == 0){
-                this.setMessage("일정을 초기화하시겠습니까? \n\n(모든 일정의 데이터가 삭제됩니다.)")
+                this.setMessage("일정을 초기화하시겠습니까? \n\n(모든 일정의 데이터가 삭제됩니다)")
             }
             else {
-                this.setMessage("Are you sure you want to initialize schedules? \n\n(Data for all schedules will be deleted.)")
+                this.setMessage("Are you sure you want to initialize schedules? \n\n(Data for all schedules will be deleted)")
             }
         }
 
@@ -68,6 +68,7 @@ class SubjectDialog: Dialog {
                     .findAll()
 
                 for(i in subjectData.indices){
+                    Notification(context).deleteAlarm(subjectData[0]!!.id)
                     realm.beginTransaction()
                     subjectData[0]?.deleteFromRealm()
                     realm.commitTransaction()
@@ -76,7 +77,7 @@ class SubjectDialog: Dialog {
                 for(i in 1 .. scheduleData!!.scheduleDayFlag){
                     cnxt.weekView.findViewWithTag<ConstraintLayout>(i)?.removeAllViews()
                 }
-
+                cnxt.weekView.refresh(cnxt.weekView)
                 Toast.makeText(context,cnxt.applicationContext.getString(R.string.subject_initialized),Toast.LENGTH_SHORT).show()
 
             }

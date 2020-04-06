@@ -108,8 +108,9 @@ class CreateSubject :AppCompatActivity() {
                             }
                         }
                     }
-                    if(!flag.contains(false)){
 
+                    if(!flag.contains(false)){
+                        Notification.notificationFlag = -1
                         setResult(Activity.RESULT_OK, intent)
                         finish()
                     }
@@ -257,6 +258,7 @@ class CreateSubject :AppCompatActivity() {
 
                notification.setAlarm(subject_time_picker.startHour(),
                    subject_time_picker.startMinute().toInt(), dayFlag,id)
+
 
             }
 

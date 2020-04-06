@@ -101,9 +101,11 @@ class Notification:ConstraintLayout {
 
 
             //  Preference에 설정한 값 저장
+
             val editor = context.getSharedPreferences("alarm", Context.MODE_PRIVATE).edit()
             editor.putLong("$id", calendar.timeInMillis)
             editor.apply()
+
 
             val pm = context.packageManager
             val receiver = ComponentName(context, DeviceBootReceiver::class.java)
@@ -132,7 +134,7 @@ class Notification:ConstraintLayout {
             pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                 PackageManager.DONT_KILL_APP
             )
-            notificationFlag = -1
+
         }
 
     }

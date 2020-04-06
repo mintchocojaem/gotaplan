@@ -111,22 +111,6 @@
                 </TextView>
 
 
-                <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/schedule_dialog_init_schedule"
-                        android:textSize="14sp"
-                        android:gravity="center_vertical"
-                        android:textColor="@color/defaultAccentColor"
-                        android:layout_weight="1"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp"
-                        android:id="@+id/initSchedule">
-
-
-                </TextView>
-
-
             </LinearLayout>
 
 

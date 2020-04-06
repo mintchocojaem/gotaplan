@@ -123,10 +123,7 @@ class ScheduleDialog:Dialog {
             }
 
         }
-        initSchedule.setOnClickListener {
-            deleteSchedule()
-            dismiss()
-        }
+
 
     }
 
@@ -176,74 +173,6 @@ class ScheduleDialog:Dialog {
             Toast.makeText(context,cnxt.applicationContext.resources.getString(R.string.save_timetable_gallery) , Toast.LENGTH_SHORT).show()
             context.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(File(strFilePath))))
         }
-
-    }
-    private fun deleteSchedule(){
-
-
-        val builder = Builder(context,R.style.MyDialogTheme).apply {
-            val n: String = Locale.getDefault().displayLanguage
-            if (n.compareTo("한국어") == 0){
-                this.setMessage("시간표를 초기화하시겠습니까? \n\n(모든 시간표와 일정의 데이터가 삭제됩니다.)")
-            }
-            else {
-                this.setMessage("Are you sure you want to initialize the timetable? \n\n(Data for all timetable and schedules will be deleted.)")
-            }
-        }
-
-            .setTitle(cnxt.applicationContext.resources.getString(R.string.initialization))
-
-            .setPositiveButton(cnxt.applicationContext.resources.getString(R.string.dialog_apply)) { _, _ ->
-
-                cnxt.weekView_layout.removeView(cnxt.weekView)
-
-                cnxt.addSubjectButton.visibility = View.GONE
-                cnxt.schedule_add.visibility = View.VISIBLE
-                cnxt.toolbar_title.text = cnxt.applicationContext.resources.getString(R.string.schedule_toolbar_title)
-
-                val subjectData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
-                    .findAll()
-
-                for(i in subjectData.indices){
-                    realm.beginTransaction()
-                    subjectData[0]!!.deleteFromRealm()
-                    realm.commitTransaction()
-                }
-
-                val scheduleData: RealmResults<ScheduleData> =
-                    realm.where<ScheduleData>(ScheduleData::class.java)
-                        .findAll()
-                val data = scheduleData[0]!!
-
-                realm.beginTransaction()
-                data.deleteFromRealm()
-                realm.commitTransaction()
-
-                cnxt.finishAffinity()
-                val intent = Intent(cnxt, MainActivity::class.java)
-                cnxt.startActivity(intent)
-                    Toast.makeText(cnxt,
-                        cnxt.applicationContext.resources.getString(R.string.schedule_initialized),Toast.LENGTH_SHORT).show()
-
-                exitProcess(0)
-
-
-            }
-
-            .setNegativeButton(cnxt.applicationContext.resources.getString(R.string.dialog_cancel)) { _, _ ->
-
-            }
-
-            .show()
-
-        builder.window!!.attributes.apply {
-            width = WindowManager.LayoutParams.WRAP_CONTENT
-            height = WindowManager.LayoutParams.WRAP_CONTENT}
-
-        builder.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        builder.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(cnxt.applicationContext,R.color.colorCancel))
-        builder.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(cnxt.applicationContext,R.color.defaultAccentColor))
-
 
     }
 

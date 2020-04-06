@@ -542,6 +542,7 @@ class WeekView : ConstraintLayout{
                     Notification.notificationFlag = data.notification
                     Notification(context).deleteAlarm(data.id)
                     Notification(context).setAlarm(data.startHour,data.startMinute.toInt(),data.dayFlag,data.id)
+                    Notification.notificationFlag = -1
                 }
 
                 .setNegativeButton(resources.getString(R.string.dialog_cancel)) { _, _ ->
