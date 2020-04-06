@@ -47,6 +47,7 @@ class MyApplication: Application() {
                     {
                         schema.get("SubjectData")
                             ?.addField("notification",Int::class.java) // 바뀐 데이터 베이스 필드
+                        schema["SubjectData"]!!.transform { obj -> obj.setInt("notification", -1)}
                         oldVer++ // 다음 업데이트를 이어서 적용( 사용자가 2,3단 업데이트 가능 ) / 없으면 여러 업데이트 한번에 적용 불가
 
                     }
