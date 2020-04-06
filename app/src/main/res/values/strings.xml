@@ -101,6 +101,15 @@
     <string name="app_intro_third_content">You have now laid the foundation.\n\n Use the Add Schedule button at the bottom\n right to add a schedule or the menu at the\n top right to use the add-on function.</string>
     <string name="app_intro_last_content">Thank you for using the Help.</string>
     <string name="app_intro_last_content_add">(Help may be added or changed\n depending on future updates)</string>
-
-
+    <string name="notification">Schedule Notification</string>
+    <string name="notification_on">Notification turned on.</string>
+    <string name="notification_title">Notification</string>
+    <string name="none">None</string>
+    <string name="notification_dialog_title">Notification Settings</string>
+    <string name="fixed_time">Fixed time</string>
+    <string name="before_5m">5 Minutes ago</string>
+    <string name="before_10m">10 Minutes ago</string>
+    <string name="before_30m">30 Minutes ago</string>
+    <string name="before_1h">1 Hour ago</string>
+    <string name="before_12h">12 Hours ago</string>
 </resources>

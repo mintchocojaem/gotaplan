@@ -22,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import io.realm.Realm
 import io.realm.RealmResults
+
 import kotlinx.android.synthetic.main.subject_detail.*
 
 
@@ -70,7 +71,11 @@ class SubjectDetail : AppCompatActivity() {
                 data.lessonCost = lessonCost_text.text.toString()
                 data.lessonCycle = lessonCycle_text.text.toString()
                 data.lessonOnOff = subject_detail_lesson_mode_switch.isChecked
+                data.notification = Notification.notificationFlag
                 realm.commitTransaction()
+
+                subject_detail_notification.deleteAlarm(data.id)
+                subject_detail_notification.setAlarm(data.startHour,data.startMinute.toInt(),data.dayFlag,data.id)
 
                 setResult(Activity.RESULT_OK)
                 finish()
@@ -84,6 +89,7 @@ class SubjectDetail : AppCompatActivity() {
                 .setTitle(resources.getString(R.string.delete))
                 .setMessage(resources.getString(R.string.delete_subject))
                 .setPositiveButton(resources.getString(R.string.dialog_apply)) { _, _ ->
+                    subject_detail_notification.deleteAlarm(data.id)
                     ((MainActivity.mContext) as MainActivity).weekView.deleteSubject(data.id)
                     realm.beginTransaction()
                     data.deleteFromRealm()
@@ -165,7 +171,14 @@ class SubjectDetail : AppCompatActivity() {
                 Toast.makeText(this, "${resources.getString(R.string.lesson)}: Off", Toast.LENGTH_SHORT).show()
             }
         }
-
+        subject_detail_notification.setOnClickListener {
+            subject_detail_notification.showDialog(this)
+        }
+        subject_detail_notification.setOnCustomEventListener(object : Notification.OnCustomEventListener {
+            override fun onEvent() {
+                subject_detail_save_btn.visibility = View.VISIBLE
+            }
+        })
     }
 
     private fun themeChange(colorCode:Int){
@@ -228,6 +241,8 @@ class SubjectDetail : AppCompatActivity() {
             lesson_bar.visibility = View.GONE
         }
         subject_detail_save_btn.visibility = View.INVISIBLE
+        subject_detail_notification.setText(data.notification)
+        Notification.notificationFlag = data.notification
     }
 
     override fun onBackPressed() {

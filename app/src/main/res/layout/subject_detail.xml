@@ -426,12 +426,21 @@
 
             </com.racoondog.gotaplan.ColorPicker>
 
+            <com.racoondog.gotaplan.Notification
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/subject_detail_notification"
+                    app:layout_constraintTop_toBottomOf="@id/subject_detail_color_picker"
+                    >
+
+            </com.racoondog.gotaplan.Notification>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/subject_detail_lesson_mode_bar"
-                    app:layout_constraintTop_toBottomOf="@id/subject_detail_color_picker"
+                    app:layout_constraintTop_toBottomOf="@id/subject_detail_notification"
                     android:paddingStart="20dp"
                     android:paddingTop="20dp"
                     android:paddingBottom="20dp"

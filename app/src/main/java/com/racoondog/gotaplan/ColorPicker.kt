@@ -39,14 +39,13 @@ class ColorPicker:ConstraintLayout {
 
     fun colorPick(activity:Activity?,themeView:View?){
 
-        mListener?.onEvent()
-
         val dialog = ColorPickerDialog(context, object : ColorPickerDialog.ICustomDialogEventListener {
             override fun customDialogEvent(colorCode: Int) {
                 // Do something with the value here, e.g. set a variable in the calling activity
                 this@ColorPicker.colorCode = colorCode
                 color_picker_btn.backgroundTintList = ColorStateList.valueOf(this@ColorPicker.colorCode)
                 changeTheme(activity,themeView,colorCode)
+                mListener?.onEvent()
             }
         })
         dialog.show()

@@ -36,13 +36,28 @@ class CreateSubject :AppCompatActivity() {
         val dayFlag = mutableListOf(false,false,false,false,false,false,false)
 
         when(subjectDayFlag){
-            1->monday_button.isChecked=true
-            2->tuesday_button.isChecked=true
-            3->wednesday_button.isChecked=true
-            4->thursday_button.isChecked=true
-            5->friday_button.isChecked=true
-            6->saturday_button.isChecked=true
-            7->sunday_button.isChecked=true
+            1->{
+                monday_button.isChecked=true
+                dayFlag[0] = true
+            }
+            2->{tuesday_button.isChecked=true
+                dayFlag[1] = true
+            }
+            3->{wednesday_button.isChecked=true
+                dayFlag[2] = true
+            }
+            4->{thursday_button.isChecked=true
+                dayFlag[3] = true
+            }
+            5->{friday_button.isChecked=true
+                dayFlag[4] = true
+            }
+            6->{saturday_button.isChecked=true
+                dayFlag[5] = true
+            }
+            7->{sunday_button.isChecked=true
+                dayFlag[6] = true
+            }
         }
 
         when(scheduleDayFlag){
@@ -56,6 +71,10 @@ class CreateSubject :AppCompatActivity() {
         subject_time_picker.subjectPicker(scheduleStartHour,scheduleEndHour,scroll_view_main)
 
         randomSubjectColor(colorList)// subject color
+
+        notification.setOnClickListener {
+            notification.showDialog(this)
+        }
 
         createSubject_Button.setOnClickListener{
             if(title_text.text.toString() !="") {
@@ -81,11 +100,16 @@ class CreateSubject :AppCompatActivity() {
                     for (i in dayFlag.indices){
                         if(dayFlag[i]){
                             if(!flag.contains(false)){
-                                if(dayFlag[i]) createSubject(i+1)
+                                if(dayFlag[i]) {
+
+                                    createSubject(i+1)
+
+                                }
                             }
                         }
                     }
                     if(!flag.contains(false)){
+
                         setResult(Activity.RESULT_OK, intent)
                         finish()
                     }
@@ -225,9 +249,15 @@ class CreateSubject :AppCompatActivity() {
                     this.content = create_subject_memo.text?.toString()?:""
                     this.lessonOnOff = lesson_mode.isChecked
                     this.subjectColor = create_subject_color_picker.colorCode
-
+                    this.notification = Notification.notificationFlag
                 }
                 realm.commitTransaction()
+
+                // 현재 지정된 시간으로 알람 시간 설정
+
+               notification.setAlarm(subject_time_picker.startHour(),
+                   subject_time_picker.startMinute().toInt(), dayFlag,id)
+
             }
 
     }

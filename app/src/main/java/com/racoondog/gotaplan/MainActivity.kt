@@ -5,6 +5,7 @@ import android.app.AlertDialog.BUTTON_POSITIVE
 import android.app.AlertDialog.Builder
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.Menu
@@ -24,7 +25,9 @@ import com.google.android.gms.ads.InterstitialAd
 import com.google.android.gms.ads.MobileAds
 import io.realm.Realm
 import io.realm.RealmResults
+import io.realm.Sort
 import kotlinx.android.synthetic.main.activity_main.*
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -51,7 +54,7 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        //[v.1.0.4]
+        //[v.1.0.5]
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

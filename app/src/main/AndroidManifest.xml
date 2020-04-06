@@ -5,6 +5,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="com.android.vending.BILLING" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
             android:name="com.racoondog.gotaplan.MyApplication"
@@ -14,6 +17,14 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+
+        <receiver android:name=".DeviceBootReceiver"
+                android:enabled="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".AlarmReceiver" />
 
         <meta-data
                 android:name="com.google.android.gms.ads.APPLICATION_ID"
@@ -33,7 +44,7 @@
         <activity android:name="com.racoondog.gotaplan.IntroActivity" />
 
         <activity android:name="com.racoondog.gotaplan.DirectFeedback"
-                android:screenOrientation="fullSensor" />
+            android:screenOrientation="fullSensor" />
 
         <activity android:name="com.racoondog.gotaplan.CreateSchedule"
                 android:screenOrientation="fullSensor" />
