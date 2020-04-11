@@ -43,6 +43,9 @@
 
         <activity android:name="com.racoondog.gotaplan.IntroActivity" />
 
+        <activity android:name="com.racoondog.gotaplan.ScheduleLinkage"
+                android:screenOrientation="fullSensor" />
+
         <activity android:name="com.racoondog.gotaplan.DirectFeedback"
             android:screenOrientation="fullSensor" />
 

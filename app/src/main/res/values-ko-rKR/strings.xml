@@ -25,8 +25,8 @@
     <string name="subject_detail_student_birth">생년월일:</string>
     <string name="subject_detail_student_phone_number">전화번호:</string>
     <string name="subject_detail_lesson_title">수업 정보</string>
-    <string name="subject_detail_lesson_cost">수업 비용:</string>
-    <string name="subject_detail_lesson_cycle">수업 횟수:</string>
+    <string name="subject_detail_lesson_cost">비용:</string>
+
     <string name="color_dialog_toolbar_title">색상</string>
     <string name="color_picker_toolbar_title">색상</string>
     <string name="edit_schedule_title_dialog_toolbar_title">제목 변경</string>

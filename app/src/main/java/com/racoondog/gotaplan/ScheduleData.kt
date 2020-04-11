@@ -36,7 +36,8 @@ open class SubjectData: RealmObject(){
     lateinit var studentBirth : String
     lateinit var studentPhoneNumber : String
     lateinit var lessonCost : String
-    var lessonCycle : String = "0"
+    var currentCycle : Int = 0
+    var maxCycle : Int = 0
 
 }
 

@@ -24,8 +24,8 @@
     <string name="subject_detail_student_birth">Birth:</string>
     <string name="subject_detail_student_phone_number">Phone number:</string>
     <string name="subject_detail_lesson_title">Lesson Information</string>
-    <string name="subject_detail_lesson_cost">Lesson cost</string>
-    <string name="subject_detail_lesson_cycle">Number of lessons:</string>
+    <string name="subject_detail_lesson_cost">Cost:</string>
+
     <string name="color_dialog_toolbar_title">Color</string>
     <string name="color_picker_toolbar_title">Color</string>
     <string name="edit_schedule_title_dialog_toolbar_title">Change the title</string>

@@ -4,6 +4,7 @@ package com.racoondog.gotaplan
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -55,30 +56,36 @@ class SubjectDetail : AppCompatActivity() {
                 .findAll()
             val nestedTime =  subject_detail_time_picker.nestedTime(pickerData)
             if(!nestedTime) {
-                realm.beginTransaction()
-                data.dayFlag = subject_detail_day_picker.dayFlag
-                data.startHour = subject_detail_time_picker.startHour()
-                data.startMinute = subject_detail_time_picker.startMinute()
-                data.endHour = subject_detail_time_picker.endHour()
-                data.endMinute = subject_detail_time_picker.endMinute()
-                data.subjectColor = subject_detail_color_picker.colorCode
-                data.title = subject_title.text.toString()
-                data.content = subject_memo.text.toString()
+                if(currentCycle_text.text.toString().toInt() > maxCycle_text.text.toString().toInt()){
+                    Toast.makeText(this,"레슨 사이클의 현재값은 최댓값보다 클 수 없습니다.",Toast.LENGTH_SHORT).show()
+                }
+                else{
+                    realm.beginTransaction()
+                    data.dayFlag = subject_detail_day_picker.dayFlag
+                    data.startHour = subject_detail_time_picker.startHour()
+                    data.startMinute = subject_detail_time_picker.startMinute()
+                    data.endHour = subject_detail_time_picker.endHour()
+                    data.endMinute = subject_detail_time_picker.endMinute()
+                    data.subjectColor = subject_detail_color_picker.colorCode
+                    data.title = subject_title.text.toString()
+                    data.content = subject_memo.text.toString()
 
-                data.studentName = studentName_text.text.toString()
-                data.studentBirth = studentBirth_text.text.toString()
-                data.studentPhoneNumber = studentPhone_text.text.toString()
-                data.lessonCost = lessonCost_text.text.toString()
-                data.lessonCycle = lessonCycle_text.text.toString()
-                data.lessonOnOff = subject_detail_lesson_mode_switch.isChecked
-                data.notification = Notification.notificationFlag
-                realm.commitTransaction()
+                    data.studentName = studentName_text.text.toString()
+                    data.studentBirth = studentBirth_text.text.toString()
+                    data.studentPhoneNumber = studentPhone_text.text.toString()
+                    data.lessonCost = lessonCost_text.text.toString()
+                    data.lessonOnOff = subject_detail_lesson_mode_switch.isChecked
+                    data.notification = Notification.notificationFlag
+                    data.currentCycle = currentCycle_text.text.toString().toInt()
+                    data.maxCycle = maxCycle_text.text.toString().toInt()
+                    realm.commitTransaction()
 
-                subject_detail_notification.deleteAlarm(data.id)
-                subject_detail_notification.setAlarm(data.startHour,data.startMinute.toInt(),data.dayFlag,data.id)
+                    subject_detail_notification.deleteAlarm(data.id)
+                    subject_detail_notification.setAlarm(data.startHour,data.startMinute.toInt(),data.dayFlag,data.id)
 
-                setResult(Activity.RESULT_OK)
-                finish()
+                    setResult(Activity.RESULT_OK)
+                    finish()
+                }
             }
 
         }
@@ -111,18 +118,6 @@ class SubjectDetail : AppCompatActivity() {
             builder.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             builder.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(this,R.color.colorCancel))
             builder.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(this,R.color.defaultAccentColor))
-
-        }
-
-        lesson_cycle_plus_btn.setOnClickListener {
-           lessonCycle_text.setText((lessonCycle_text.text.toString()?.toInt() +1).toString())
-        }
-        lesson_cycle_minus_btn.setOnClickListener {
-
-            if(lessonCycle_text.text.toString() == "0") {
-                lessonCycle_text.setText("0")
-            }
-            else lessonCycle_text.setText((lessonCycle_text.text.toString()?.toInt() -1).toString())
 
         }
 
@@ -179,12 +174,36 @@ class SubjectDetail : AppCompatActivity() {
                 subject_detail_save_btn.visibility = View.VISIBLE
             }
         })
+
+        lesson_calculate.setOnClickListener {
+            val builder = AlertDialog.Builder(this,R.style.MyDialogTheme)
+                .setTitle("레슨비 정산")
+                .setMessage("이번달의 레슨비를 정산하시겠습니까?\n(현재 레슨 횟수가 초기화됩니다)")
+                .setPositiveButton(resources.getString(R.string.dialog_apply)) { _, _ ->
+                    realm.beginTransaction()
+                    data.currentCycle = 0
+                    realm.commitTransaction()
+                    currentCycle_text.setText("0")
+                    Toast.makeText(this,"레슨비가 정산되었습니다!",Toast.LENGTH_SHORT).show()
+                }
+
+                .setNegativeButton(resources.getString(R.string.dialog_cancel)) { _, _ ->
+
+                }
+                .show()
+        }
+
+        schedule_linkage.setOnClickListener {
+            val scheduleIntent = Intent(this, ScheduleLinkage::class.java)
+            scheduleIntent.flags = (Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            startActivityForResult(scheduleIntent, 100)
+        }
+
     }
 
     private fun themeChange(colorCode:Int){
         window.statusBarColor = colorCode
         subject_detail_toolbar.setBackgroundColor(colorCode)
-
     }
 
     private  fun init(){
@@ -223,13 +242,17 @@ class SubjectDetail : AppCompatActivity() {
         studentBirth_text.setText(data.studentBirth)
         studentPhone_text.setText(data.studentPhoneNumber)
         lessonCost_text.setText(data.lessonCost)
-        lessonCycle_text.setText(data.lessonCycle)
+        currentCycle_text.setText(data.currentCycle.toString())
+        maxCycle_text.setText(data.maxCycle.toString())
+
+
 
         studentName_text.addTextChangedListener(textWatcher)
         studentBirth_text.addTextChangedListener(textWatcher)
         studentPhone_text.addTextChangedListener(textWatcher)
         lessonCost_text.addTextChangedListener(textWatcher)
-        lessonCycle_text.addTextChangedListener(textWatcher)
+        currentCycle_text.addTextChangedListener(textWatcher)
+        maxCycle_text.addTextChangedListener(textWatcher)
 
         themeChange(data.subjectColor)
 
