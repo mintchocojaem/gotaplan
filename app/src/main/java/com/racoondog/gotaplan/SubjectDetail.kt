@@ -321,7 +321,6 @@ class SubjectDetail : AppCompatActivity() {
         subject_detail_notification.setText(data.notification)
         Notification.notificationFlag = data.notification
 
-        Toast.makeText(this,"${data.linkageID}",Toast.LENGTH_SHORT).show()
     }
 
     override fun onBackPressed() {

@@ -206,7 +206,7 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
 
                 if(subjectData[i]?.linkageID == 0){
 
-                    for (j in 1 until subjectData.size){
+                    for (j in  i+1 until subjectData.size){
 
                         if(subjectData[i]?.title == subjectData[j]?.title){
 
@@ -217,9 +217,6 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
                             subjectData[j]?.linkageID = id
                             realm.commitTransaction()
 
-
-                            Toast.makeText(this,"$id", Toast.LENGTH_LONG).show()
-
                         }
 
                     }
@@ -227,8 +224,7 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
                 }
 
             }
-
-            //storage.setLinkageID(false)
+            storage.setLinkageID(false)
         }
 
     }
