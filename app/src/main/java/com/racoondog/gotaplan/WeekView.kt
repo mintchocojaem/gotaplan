@@ -625,6 +625,21 @@ class WeekView : ConstraintLayout{
         }
         return result
     }
+    fun createLinkageID(Min:Int, Max:Int):Int{
+        var result = 0
+        out@ for(ID in Min .. Max){
+
+            val data = realm.where<SubjectData>(SubjectData::class.java).equalTo("linkageID",ID).findFirst()
+
+            if ( data == null ){
+                result = ID
+
+                break@out
+            }
+            else continue
+        }
+        return result
+    }
     private fun checkTime(dayFlag:Int, startHour: Int, startMinute: Int, endHour: Int, endMinute: Int):Boolean{
 
         val subjectData: RealmResults<SubjectData> =

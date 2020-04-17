@@ -81,6 +81,10 @@ class CreateSubject :AppCompatActivity() {
                 if(dayFlag.contains(true)) {
 
                     val flag = mutableListOf<Boolean>()
+                    var linkageFlag = 0
+
+                    val context = MainActivity.mContext as MainActivity
+                    val id = context.weekView.createLinkageID(1, 128)//다음으로 만들어질 weekView 의 id 값을 결정하는 변수
 
                     for (i in dayFlag.indices){
 
@@ -92,6 +96,7 @@ class CreateSubject :AppCompatActivity() {
 
                             if(!subject_time_picker.nestedTime(subjectData)){
                                 flag.add(true)
+                                linkageFlag++
                             }else flag.add(false)
 
                         }
@@ -100,14 +105,16 @@ class CreateSubject :AppCompatActivity() {
                     for (i in dayFlag.indices){
                         if(dayFlag[i]){
                             if(!flag.contains(false)){
-                                if(dayFlag[i]) {
 
-                                    createSubject(i+1)
+                                if(linkageFlag > 1) {
 
+                                    createSubject(i+1,id)
                                 }
+                                else createSubject(i+1,null)
                             }
                         }
                     }
+
 
                     if(!flag.contains(false)){
                         Notification.notificationFlag = -1
@@ -225,7 +232,7 @@ class CreateSubject :AppCompatActivity() {
 
     }
 
-    private fun createSubject(dayFlag: Int){
+    private fun createSubject(dayFlag: Int,linkageID:Int?){
 
         val subjectData: RealmResults<SubjectData> =
             realm.where<SubjectData>(SubjectData::class.java)
@@ -251,6 +258,7 @@ class CreateSubject :AppCompatActivity() {
                     this.lessonOnOff = lesson_mode.isChecked
                     this.subjectColor = create_subject_color_picker.colorCode
                     this.notification = Notification.notificationFlag
+                    this.linkageID = linkageID?:0
                 }
                 realm.commitTransaction()
 

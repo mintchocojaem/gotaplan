@@ -1,7 +1,6 @@
 package com.racoondog.gotaplan
 
 import android.app.AlarmManager
-import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -13,6 +12,7 @@ import android.media.AudioAttributes
 import android.net.Uri
 import android.os.Build
 import android.os.PowerManager
+import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import io.realm.Realm
 import io.realm.RealmResults
@@ -63,22 +63,61 @@ class AlarmReceiver : BroadcastReceiver() {
             notificationManager?.createNotificationChannel(channel)
 
         } else builder.setSmallIcon(R.mipmap.ic_launcher) // Oreo 이하에서 mipmap 사용하지 않으면 Couldn't create icon: StatusBarIcon 에러남
+
         val subjectData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
             .equalTo("id",id)
             .findAll()
         val data = subjectData[0]!!
-        builder.setAutoCancel(true)
-            //.setDefaults(NotificationCompat.DEFAULT_ALL)
-            .setWhen(System.currentTimeMillis())
-            .setContentTitle(context.resources.getString(R.string.notification))
-            .setContentText(data.title)
-            //.setContentInfo("INFO")
-            .setSound(soundUri)
-            .setContentIntent(pendingI)
-            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+
+        if(data.lessonOnOff && data.maxCycle != 0 ){
+
+            val applyIntent = Intent(context, LessonNotification::class.java).putExtra("id",id)
+            applyIntent.action = "apply"
+            val pi1 = PendingIntent.getBroadcast(context, id, applyIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+
+            val cancelIntent = Intent(context, LessonNotification::class.java).putExtra("id",id)
+            cancelIntent.action = "cancel"
+            val pi2 = PendingIntent.getBroadcast(context, id, cancelIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+
+            val contentView = RemoteViews(context.packageName,R.layout.lesson_notification)
+            contentView.setTextViewText(R.id.notification_title,"레슨 알림")
+            contentView.setTextViewText(R.id.notification_content,data.title)
+            contentView.setOnClickPendingIntent(R.id.lesson_notification_apply,pi1)
+            contentView.setOnClickPendingIntent(R.id.lesson_notification_cancel,pi2)
+
+            builder.setAutoCancel(false)
+
+                //.setDefaults(NotificationCompat.DEFAULT_ALL)
+                .setWhen(System.currentTimeMillis())
+                .setStyle(NotificationCompat.DecoratedCustomViewStyle())
+                .setCustomContentView(contentView)
+                .setOngoing(true)
+                //.setContentInfo("INFO")
+                .setContentIntent(pendingI)
+                .setSound(soundUri)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+
+        } else{
+
+            builder.setAutoCancel(true)
+
+                //.setDefaults(NotificationCompat.DEFAULT_ALL)
+                .setWhen(System.currentTimeMillis())
+                .setContentTitle("일정 알림")
+                .setContentText(data.title)
+                //.setOngoing(true)
+                //.setContentInfo("INFO")
+                .setContentIntent(pendingI)
+                .setSound(soundUri)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+
+        }
+
 
         // 노티피케이션 동작시킴
-        notificationManager.notify(1234, builder.build())
+
+        notificationManager.notify(id, builder.build())
+
         val nextNotifyTime = Calendar.getInstance()
 
         // 내일 같은 시간으로 알람시간 결정
@@ -98,23 +137,6 @@ class AlarmReceiver : BroadcastReceiver() {
                 .edit()
         editor.putLong("$id", nextNotifyTime.timeInMillis)
         editor.apply()
-
-        //delete alarm
-        /*
-        val sender =
-            PendingIntent.getBroadcast(context, id, intent, PendingIntent.FLAG_NO_CREATE)
-        if (sender != null) {
-            val am = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            val senderAm = PendingIntent.getBroadcast(context, id, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-            if (senderAm != null) {
-                am.cancel(senderAm)
-                senderAm.cancel()
-                editor.remove("$id")
-                editor.commit()
-            }
-        }
-
-         */
 
 
     }
