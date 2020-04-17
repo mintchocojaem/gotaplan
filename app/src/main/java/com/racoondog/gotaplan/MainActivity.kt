@@ -197,29 +197,28 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
     }
 
     private fun initLinkageID(){
-        if (BuildConfig.VERSION_CODE < 17){
-            if(storage.initLinkageID()){
 
-                val subjectData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
-                    .findAll()
-                val data = subjectData[0]!!
+        if(storage.initLinkageID()){
 
-                for (i in subjectData.indices){
+            val subjectData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
+                .findAll()
+            for (i in subjectData.indices){
 
-                    if(subjectData[i]?.linkageID == 0){
+                if(subjectData[i]?.linkageID == 0){
 
-                        for (j in subjectData.indices+1){
+                    for (j in 1 until subjectData.size){
 
-                            if(subjectData[i]?.title == subjectData[j]?.title){
+                        if(subjectData[i]?.title == subjectData[j]?.title){
 
-                                val id = weekView.createLinkageID(1, 128)//다음으로 만들어질 weekView 의 id 값을 결정하는 변수
+                            val id = weekView.createLinkageID(1, 128)//다음으로 만들어질 weekView 의 id 값을 결정하는 변수
 
-                                realm.beginTransaction()
-                                subjectData[i]?.linkageID = id
-                                subjectData[j]?.linkageID = id
-                                realm.commitTransaction()
+                            realm.beginTransaction()
+                            subjectData[i]?.linkageID = id
+                            subjectData[j]?.linkageID = id
+                            realm.commitTransaction()
 
-                            }
+
+                            Toast.makeText(this,"$id", Toast.LENGTH_LONG).show()
 
                         }
 
@@ -227,9 +226,11 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
 
                 }
 
-                storage.setLinkageID(false)
             }
+
+            //storage.setLinkageID(false)
         }
+
     }
 
     private fun loadData() {

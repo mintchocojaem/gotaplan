@@ -8,7 +8,7 @@ class AppStorage(context: Context) {
     private val pref: SharedPreferences = context.getSharedPreferences("app_storage", Context.MODE_PRIVATE)
     private val removeAds = "remove_ads"
     private val helpView = ""
-    private val linkageID = ""
+    private val linkageID = "linkageID"
 
     fun purchasedRemoveAds(): Boolean {
         return pref.getBoolean(removeAds, false)
