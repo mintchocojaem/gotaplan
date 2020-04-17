@@ -55,8 +55,6 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        //[v.1.0.5]
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         mContext = this
@@ -69,6 +67,8 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
         loadData()//데이터 불러오기
 
         showHelpView()// 앱 가이드 보여줌
+
+        initLinkageID() // v.1.0.7 이하 버전은 linkageID 생성
 
         if (!storage.purchasedRemoveAds()) {
             MobileAds.initialize(this, getString(R.string.ad_mob_app_id))
@@ -193,6 +193,42 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
             val introIntent = Intent(this, IntroActivity::class.java)
             startActivity(introIntent)
             storage.setHelpView(false)
+        }
+    }
+
+    private fun initLinkageID(){
+        if (BuildConfig.VERSION_CODE < 17){
+            if(storage.initLinkageID()){
+
+                val subjectData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
+                    .findAll()
+                val data = subjectData[0]!!
+
+                for (i in subjectData.indices){
+
+                    if(subjectData[i]?.linkageID == 0){
+
+                        for (j in subjectData.indices+1){
+
+                            if(subjectData[i]?.title == subjectData[j]?.title){
+
+                                val id = weekView.createLinkageID(1, 128)//다음으로 만들어질 weekView 의 id 값을 결정하는 변수
+
+                                realm.beginTransaction()
+                                subjectData[i]?.linkageID = id
+                                subjectData[j]?.linkageID = id
+                                realm.commitTransaction()
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+                storage.setLinkageID(false)
+            }
         }
     }
 
