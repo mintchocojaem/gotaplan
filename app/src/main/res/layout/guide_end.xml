@@ -14,25 +14,26 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:text="@string/app_intro_second_ex_title"
+            app:layout_constraintBottom_toTopOf="@id/content"
+            android:text="@string/guide_beginning_title"
             android:textColor="@color/whiteColor"
             android:textSize="24sp"
             android:fontFamily="@font/font"
             android:id="@+id/title"
-            app:layout_constraintVertical_bias="0"
+            android:layout_marginTop="60dp"
             >
 
     </TextView>
 
     <TextView
             android:layout_width="wrap_content"
-            android:layout_height="120dp"
+            android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/title"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/imageView"
+            app:layout_constraintBottom_toTopOf="@id/content_add"
             android:gravity="center"
-            android:text="@string/app_intro_second_ex_content"
+            android:text="@string/guide_end_content"
             android:textColor="@color/whiteColor"
             android:textSize="16sp"
             android:fontFamily="@font/font"
@@ -40,15 +41,23 @@
             >
 
     </TextView>
-
-    <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="210dp"
-            android:layout_height="380dp"
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:background="@drawable/round_bg_layout"
-            app:srcCompat="@drawable/app_intro_3" />
+            android:gravity="center"
+            android:text="@string/guide_end_content_add"
+            android:textColor="@color/whiteColor"
+            android:textSize="16sp"
+            android:fontFamily="@font/font"
+            android:id="@+id/content_add"
+            android:layout_marginBottom="60dp"
+            >
+
+    </TextView>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

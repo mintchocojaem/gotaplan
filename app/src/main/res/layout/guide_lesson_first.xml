@@ -14,7 +14,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:text="@string/app_intro_third_title"
+            android:text="1.수업 기능이란"
             android:textColor="@color/whiteColor"
             android:textSize="24sp"
             android:fontFamily="@font/font"
@@ -32,7 +32,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintBottom_toTopOf="@id/imageView"
             android:gravity="center"
-            android:text="@string/app_intro_third_content"
+            android:text="계.다.있의 최대 장점인 수업기능은\n선생님들이 보다 편리하게 수업을 관리할\n 수 있도록 특별한 서비스를 제공합니다 .\n\n 수업기능은 다음과 같이 활성화 할 수 있습니다. "
             android:textColor="@color/whiteColor"
             android:textSize="16sp"
             android:fontFamily="@font/font"
@@ -50,5 +50,5 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:background="@drawable/round_bg_layout"
-            app:srcCompat="@drawable/app_intro_4" />
+            app:srcCompat="@drawable/app_intro_1" />
 </androidx.constraintlayout.widget.ConstraintLayout>

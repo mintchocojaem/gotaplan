@@ -70,6 +70,22 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
 
         initLinkageID() // v.1.0.7 이하 버전은 linkageID 생성
 
+        val builder = Builder(this,R.style.MyDialogTheme)
+            .setTitle("[v.1.0.7] 변경사항 안내")
+            .setMessage("\n안녕하세요 개발자입니다.\n\n이번 업데이트로 기능 개선을 위하여 부득이하게 변경된 사항들을 안내해드리고자 합니다.\n" +
+                    "\n1.기존의 \"레슨 모드\"가 \"수업 기능\"으로 바뀌면서 \"레슨 횟수\" 항목을 삭제하고 새롭게 \"수업 사이클\" 항목을 추가하게 되었습니다.\n" +
+                    "\n2.이제부터 일정을 동시에 여러개 생성할 경우 해당 일정들을 하나로 묶어 처리하도록 하였습니다." +
+                    "\n(이전 버전 사용자들은 부득이하게 같은 제목을 가진 일정들을 하나로 묶게 되었습니다)\n" +
+                    "\n자세한 내용은 앱 우측 상단의 \"메뉴\" -> \"가이드 보기\" -> \"가이드(수업 기능)\"를 통해 확인가능합니다.\n"+
+                    "\n이용에 불편을 드려 대단히 죄송합니다." +
+                    "\n -개발자 올림- ")
+            .setPositiveButton(resources.getString(R.string.dialog_apply)) { _, _ ->
+
+            }
+            .setCancelable(false)
+            .show()
+
+
         if (!storage.purchasedRemoveAds()) {
             MobileAds.initialize(this, getString(R.string.ad_mob_app_id))
             mInterstitialAd = InterstitialAd(this)
@@ -321,8 +337,9 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
             }
 
             R.id.help -> {
-                val introIntent = Intent(this, IntroActivity::class.java)
-                startActivity(introIntent)
+                val dialog = GuideDialog(this)
+                dialog.cnxt = this
+                dialog.show()
                 return true
             }
             R.id.directFeedback -> {

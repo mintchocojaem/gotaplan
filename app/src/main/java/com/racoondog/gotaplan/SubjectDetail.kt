@@ -4,6 +4,7 @@ package com.racoondog.gotaplan
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface.BUTTON_NEGATIVE
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -201,14 +202,20 @@ class SubjectDetail : AppCompatActivity() {
                 changeBounds.duration = 300
                 TransitionManager.beginDelayedTransition(subject_detail_main, changeBounds)
                 lesson_bar.visibility = View.VISIBLE
-                Toast.makeText(this, "${resources.getString(R.string.lesson)}: On", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "${resources.getString(R.string.lesson)} On", Toast.LENGTH_SHORT).show()
+
             } else{
                 val changeBounds: Transition = ChangeBounds()
                 changeBounds.duration = 300
                 TransitionManager.beginDelayedTransition(subject_detail_main, changeBounds)
                 lesson_bar.visibility = View.GONE
-                Toast.makeText(this, "${resources.getString(R.string.lesson)}: Off", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "${resources.getString(R.string.lesson)} Off", Toast.LENGTH_SHORT).show()
             }
+        }
+        lesson_help.setOnClickListener {
+            val introIntent = Intent(this, IntroActivity::class.java)
+            introIntent.action = "LessonModeGuide"
+            this.startActivity(introIntent)
         }
         subject_detail_notification.setOnClickListener {
             subject_detail_notification.showDialog(this)
@@ -227,9 +234,9 @@ class SubjectDetail : AppCompatActivity() {
                 lessonCost = data.lessonCost
             }
 
-            val builder = AlertDialog.Builder(this,R.style.MyDialogTheme)
+            val builder = AlertDialog.Builder(this, R.style.MyDialogTheme)
                 .setTitle("수업비용 정산")
-                .setMessage("이번달의 수업비용을 정산하시겠습니까?\n비용: $lessonCost")
+                .setMessage("이번달의 수업비용을 정산하시겠습니까?\n비용: $lessonCost\n이번달 총 ${data.maxCycle}회 중 ${data.currentCycle}회 수업 하셨습니다.")
                 .setPositiveButton(resources.getString(R.string.dialog_apply)) { _, _ ->
                     if (data.linkageID != 0){
                         for (i in linkageID.indices){
@@ -245,7 +252,6 @@ class SubjectDetail : AppCompatActivity() {
                     currentCycle_text.setText("0")
                     Toast.makeText(this,"수업비용이 정산되었습니다!",Toast.LENGTH_SHORT).show()
                 }
-
                 .setNegativeButton(resources.getString(R.string.dialog_cancel)) { _, _ ->
 
                 }

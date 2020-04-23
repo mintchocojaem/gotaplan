@@ -13,12 +13,23 @@ class IntroActivity : AppIntro() {
         window!!.statusBarColor = ContextCompat.getColor(applicationContext,R.color.darkColor)
         window.decorView.systemUiVisibility = 0
 
-        addSlide(AppIntroCustomLayoutSlide.newInstance(R.layout.app_intro))
-        addSlide(AppIntroCustomLayoutSlide.newInstance(R.layout.app_intro_first))
-        addSlide(AppIntroCustomLayoutSlide.newInstance(R.layout.app_intro_second))
-        addSlide(AppIntroCustomLayoutSlide.newInstance(R.layout.app_intro_second_ex))
-        addSlide(AppIntroCustomLayoutSlide.newInstance(R.layout.app_intro_third))
-        addSlide(AppIntroCustomLayoutSlide.newInstance(R.layout.app_intro_last))
+        when(intent?.action){
+            "TimetableGuide"->{
+                addSlide(AppIntroCustomLayoutSlide.newInstance(R.layout.guide_beginning))
+                addSlide(AppIntroCustomLayoutSlide.newInstance(R.layout.guide_timetable_first))
+                addSlide(AppIntroCustomLayoutSlide.newInstance(R.layout.guide_timetable_second))
+                addSlide(AppIntroCustomLayoutSlide.newInstance(R.layout.guide_timetable_second_ex))
+                addSlide(AppIntroCustomLayoutSlide.newInstance(R.layout.guide_timetable_third))
+                addSlide(AppIntroCustomLayoutSlide.newInstance(R.layout.guide_end))
+            }
+            "LessonModeGuide"->{
+
+                addSlide(AppIntroCustomLayoutSlide.newInstance(R.layout.guide_beginning))
+
+                addSlide(AppIntroCustomLayoutSlide.newInstance(R.layout.guide_end))
+
+            }
+        }
 
     }
 
@@ -34,4 +45,5 @@ class IntroActivity : AppIntro() {
     override fun onSlideChanged(oldFragment: Fragment?, newFragment: Fragment?) {
         super.onSlideChanged(oldFragment, newFragment)
     }
+
 }

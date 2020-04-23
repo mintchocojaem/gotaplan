@@ -2,7 +2,9 @@ package com.racoondog.gotaplan
 
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
@@ -34,6 +36,9 @@ class CreateSubject :AppCompatActivity() {
         val subjectDayFlag = intent.getIntExtra("day_flag",0)
 
         val dayFlag = mutableListOf(false,false,false,false,false,false,false)
+
+        Notification.notificationFlag = 10
+        create_subject_notification.setText(10)
 
         when(subjectDayFlag){
             1->{
@@ -72,8 +77,8 @@ class CreateSubject :AppCompatActivity() {
 
         randomSubjectColor(colorList)// subject color
 
-        notification.setOnClickListener {
-            notification.showDialog(this)
+        create_subject_notification.setOnClickListener {
+            create_subject_notification.showDialog(this)
         }
 
         createSubject_Button.setOnClickListener{
@@ -136,14 +141,22 @@ class CreateSubject :AppCompatActivity() {
             if (compoundButton.isChecked){
 
                 Toast.makeText(this, "${resources.getString(R.string.lesson)}: On", Toast.LENGTH_SHORT).show()
+
             } else{
 
                 Toast.makeText(this, "${resources.getString(R.string.lesson)}: Off", Toast.LENGTH_SHORT).show()
+
             }
         }
 
         create_subject_color_picker.setOnClickListener {
             create_subject_color_picker.colorPick(this,createSubject_toolbar)
+        }
+
+        lesson_help.setOnClickListener {
+            val introIntent = Intent(this, IntroActivity::class.java)
+            introIntent.action = "LessonModeGuide"
+            this.startActivity(introIntent)
         }
 
         subjectQuit_Button.setOnClickListener {
@@ -264,7 +277,7 @@ class CreateSubject :AppCompatActivity() {
 
                 // 현재 지정된 시간으로 알람 시간 설정
 
-               notification.setAlarm(subject_time_picker.startHour(),
+               create_subject_notification.setAlarm(subject_time_picker.startHour(),
                    subject_time_picker.startMinute().toInt(), dayFlag,id)
 
 

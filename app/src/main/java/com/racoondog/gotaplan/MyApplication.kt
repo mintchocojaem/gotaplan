@@ -53,10 +53,12 @@ class MyApplication: Application() {
                     }
                     if (oldVer == 1L){
                         schema.get("SubjectData")
+                            ?.removeField("lessonCycle") // 바뀐 데이터 베이스 필드
                             ?.addField("currentCycle",Int::class.java) // 바뀐 데이터 베이스 필드
                             ?.addField("maxCycle",Int::class.java) // 바뀐 데이터 베이스 필드
                             ?.addField("linkageID",Int::class.java) // 바뀐 데이터 베이스 필드
-                            ?.removeField("lessonCycle") // 바뀐 데이터 베이스 필드
+                        schema["SubjectData"]!!.transform { obj -> obj.setString("lessonCost", "")}
+
                         oldVer++
                     }
 

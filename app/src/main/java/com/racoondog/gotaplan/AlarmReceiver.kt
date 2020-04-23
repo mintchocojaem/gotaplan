@@ -12,6 +12,7 @@ import android.media.AudioAttributes
 import android.net.Uri
 import android.os.Build
 import android.os.PowerManager
+import android.renderscript.RenderScript
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import io.realm.Realm
@@ -50,7 +51,7 @@ class AlarmReceiver : BroadcastReceiver() {
         //OREO API 26 이상에서는 채널 필요
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
-            builder.setSmallIcon(R.drawable.ic_launcher_app) //mipmap 사용시 Oreo 이상에서 시스템 UI 에러남
+            builder.setSmallIcon(R.drawable.ic_skylight_notification) //mipmap 사용시 Oreo 이상에서 시스템 UI 에러남
 
             val channelName = "매일 알람 채널"
             val description = "매일 정해진 시간에 알람합니다."
@@ -80,7 +81,7 @@ class AlarmReceiver : BroadcastReceiver() {
             val pi2 = PendingIntent.getBroadcast(context, id, cancelIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
             val contentView = RemoteViews(context.packageName,R.layout.lesson_notification)
-            contentView.setTextViewText(R.id.notification_title,"레슨 알림")
+            contentView.setTextViewText(R.id.notification_title,"수업 알림")
             contentView.setTextViewText(R.id.notification_content,data.title)
             contentView.setOnClickPendingIntent(R.id.lesson_notification_apply,pi1)
             contentView.setOnClickPendingIntent(R.id.lesson_notification_cancel,pi2)
@@ -90,8 +91,8 @@ class AlarmReceiver : BroadcastReceiver() {
                 //.setDefaults(NotificationCompat.DEFAULT_ALL)
                 .setWhen(System.currentTimeMillis())
                 .setStyle(NotificationCompat.DecoratedCustomViewStyle())
-                .setCustomContentView(contentView)
                 .setOngoing(true)
+                .setCustomContentView(contentView)
                 //.setContentInfo("INFO")
                 .setContentIntent(pendingI)
                 .setSound(soundUri)
@@ -115,7 +116,6 @@ class AlarmReceiver : BroadcastReceiver() {
 
 
         // 노티피케이션 동작시킴
-
         notificationManager.notify(id, builder.build())
 
         val nextNotifyTime = Calendar.getInstance()
