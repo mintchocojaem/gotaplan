@@ -1,12 +1,10 @@
 package com.racoondog.gotaplan
 
-import android.app.Activity
-import android.app.AlertDialog
 import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.google.android.material.internal.ContextUtils.getActivity
+import android.widget.Toast
 import io.realm.Realm
 import io.realm.RealmResults
 
@@ -29,49 +27,66 @@ class LessonNotification : BroadcastReceiver() {
 
         val notificationManager:NotificationManager = context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        when(intent?.action){
-           "apply"-> {
+        if(data.currentCycle >= data.maxCycle){
+            Toast.makeText(context,"정산 주기를 초과하여 정산할 수 없습니다.\n(수동으로 정산 후 이용해주세요)",Toast.LENGTH_SHORT).show()
+        }else{
+            when(intent?.action){
+                "apply"-> {
 
-               if (data.linkageID != 0) {
-                   for (i in linkageData.indices) {
+                    if (data.linkageID != 0) {
 
-                       realm.beginTransaction()
-                       linkageData[i]!!.currentCycle +=1
-                       realm.commitTransaction()
+                        for (i in linkageData.indices) {
 
-                   }
+                            realm.beginTransaction()
+                            linkageData[i]!!.currentCycle +=1
+                            realm.commitTransaction()
 
-                   if (data.currentCycle >= data.maxCycle){
+                        }
 
-                       val i = Intent(context, LessonCalculateDialog::class.java)
-                       i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                       i.putExtra("id",data.id)
-                       context.startActivity(i)
+                        if (data.currentCycle == data.maxCycle) {
 
-                   }
+                            val i = Intent(context, LessonCalculateDialog::class.java)
+                            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            i.putExtra("id", data.id)
+                            i.action = "apply"
+                            context.startActivity(i)
+                            notificationManager.cancel(id)
 
-               }else{
+                        } else{
+                            notificationManager.cancel(id)
+                            val intent = Intent("refresh")
+                            context.sendBroadcast(intent)
+                        }
 
-                   realm.beginTransaction()
-                   data.currentCycle +=1
-                   realm.commitTransaction()
+                    }else{
 
-                   if (data.currentCycle >= data.maxCycle){
+                        realm.beginTransaction()
+                        data.currentCycle +=1
+                        realm.commitTransaction()
 
-                       val i = Intent(context, LessonCalculateDialog::class.java)
-                       i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                       i.putExtra("id",data.id)
-                       context.startActivity(i)
+                        if (data.currentCycle == data.maxCycle){
 
-                   }
+                            val i = Intent(context, LessonCalculateDialog::class.java)
+                            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            i.putExtra("id",data.id)
+                            i.action = "apply"
+                            context.startActivity(i)
+                            notificationManager.cancel(id)
 
-               }
+                        }else{
+                            notificationManager.cancel(id)
+                            val intent = Intent("refresh")
+                            context.sendBroadcast(intent)
+                        }
 
-               notificationManager.cancel(id)
-           }
-           "cancel"-> notificationManager.cancel(id)
+                    }
+
+                }
+                "cancel"-> notificationManager.cancel(id)
+            }
 
         }
+
     }
 
 

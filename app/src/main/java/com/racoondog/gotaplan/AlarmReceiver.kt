@@ -14,6 +14,7 @@ import android.os.Build
 import android.os.PowerManager
 import android.renderscript.RenderScript
 import android.widget.RemoteViews
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import io.realm.Realm
 import io.realm.RealmResults
@@ -83,6 +84,7 @@ class AlarmReceiver : BroadcastReceiver() {
             val contentView = RemoteViews(context.packageName,R.layout.lesson_notification)
             contentView.setTextViewText(R.id.notification_title,"수업 알림")
             contentView.setTextViewText(R.id.notification_content,data.title)
+
             contentView.setOnClickPendingIntent(R.id.lesson_notification_apply,pi1)
             contentView.setOnClickPendingIntent(R.id.lesson_notification_cancel,pi2)
 
@@ -97,6 +99,8 @@ class AlarmReceiver : BroadcastReceiver() {
                 .setContentIntent(pendingI)
                 .setSound(soundUri)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+
+
 
         } else{
 

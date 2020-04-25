@@ -3,9 +3,10 @@ package com.racoondog.gotaplan
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.BroadcastReceiver
 import android.content.Context
-import android.content.DialogInterface.BUTTON_NEGATIVE
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -24,7 +25,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import io.realm.Realm
 import io.realm.RealmResults
-
 import kotlinx.android.synthetic.main.subject_detail.*
 
 
@@ -36,6 +36,8 @@ class SubjectDetail : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.subject_detail)
+
+        registerReceiver(mMessageReceiver, IntentFilter("refresh"))
 
         val scheduleData = realm.where(ScheduleData::class.java).findFirst()!!
         val subjectData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
@@ -58,7 +60,7 @@ class SubjectDetail : AppCompatActivity() {
             val nestedTime =  subject_detail_time_picker.nestedTime(pickerData)
             if(!nestedTime) {
                 if(currentCycle_text.text.toString().toInt() > maxCycle_text.text.toString().toInt()){
-                    Toast.makeText(this,"레슨 사이클의 현재값은 최댓값보다 클 수 없습니다.",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this,"정산 주기의 현재값은 최댓값보다 클 수 없습니다.",Toast.LENGTH_SHORT).show()
                 }
                 else{
                     val linkageID = realm.where<SubjectData>(SubjectData::class.java).equalTo("linkageID",data.linkageID).findAll()
@@ -229,33 +231,51 @@ class SubjectDetail : AppCompatActivity() {
         lesson_calculate.setOnClickListener {
 
             val linkageID = realm.where<SubjectData>(SubjectData::class.java).equalTo("linkageID",data.linkageID).findAll()
-            var lessonCost = "정보 없음"
-            if (data.lessonCost != "" ){
-                lessonCost = data.lessonCost
-            }
 
-            val builder = AlertDialog.Builder(this, R.style.MyDialogTheme)
-                .setTitle("수업비용 정산")
-                .setMessage("이번달의 수업비용을 정산하시겠습니까?\n비용: $lessonCost\n이번달 총 ${data.maxCycle}회 중 ${data.currentCycle}회 수업 하셨습니다.")
-                .setPositiveButton(resources.getString(R.string.dialog_apply)) { _, _ ->
-                    if (data.linkageID != 0){
-                        for (i in linkageID.indices){
+            if(maxCycle_text.text.toString().toInt() == 0 || currentCycle_text.text.toString().toInt() == 0){
+                Toast.makeText(this,"정산 주기의 현재값 또는 최댓값은 0이 될 수 없습니다.",Toast.LENGTH_SHORT).show()
+            }else if(maxCycle_text.text.toString().toInt() < currentCycle_text.text.toString().toInt()){
+                Toast.makeText(this,"정산 주기의 현재값은 최댓값보다 클 수 없습니다.",Toast.LENGTH_SHORT).show()
+
+            }else{
+                val builder = AlertDialog.Builder(this, R.style.MyDialogTheme)
+                    .setTitle("수업비용 정산")
+                    .setPositiveButton(resources.getString(R.string.dialog_apply)) { _, _ ->
+                        if (data.linkageID != 0){
+                            for (i in linkageID.indices){
+                                realm.beginTransaction()
+                                linkageID[i]!!.currentCycle = 0
+                                realm.commitTransaction()
+                            }
+                        }else{
                             realm.beginTransaction()
-                            linkageID[i]!!.currentCycle = 0
+                            data.currentCycle = 0
                             realm.commitTransaction()
                         }
-                    }else{
-                        realm.beginTransaction()
-                        data.currentCycle = 0
-                        realm.commitTransaction()
+                        currentCycle_text.setText("0")
+                        Toast.makeText(this,"수업비용이 정산되었습니다!",Toast.LENGTH_SHORT).show()
                     }
-                    currentCycle_text.setText("0")
-                    Toast.makeText(this,"수업비용이 정산되었습니다!",Toast.LENGTH_SHORT).show()
-                }
-                .setNegativeButton(resources.getString(R.string.dialog_cancel)) { _, _ ->
+                    .setNegativeButton(resources.getString(R.string.dialog_cancel)) { _, _ ->
 
+                    }
+                if (lessonCost_text.text.toString() == ""){
+                    val lessonCost = "정보 없음"
+                    val maxCycle = maxCycle_text.text.toString().toInt()
+                    val currentCycle = currentCycle_text.text.toString().toInt()
+                    builder.setMessage("이번 달의 수업비용을 정산하시겠습니까?\n(이번 달 총 ${maxCycle}회 중 ${currentCycle}회 수업하셨습니다)\n\n" +
+                            "비용: $lessonCost")
                 }
-                .show()
+                else{
+                    val lessonCost = lessonCost_text.text.toString().toInt()
+                    val maxCycle = maxCycle_text.text.toString().toInt()
+                    val currentCycle = currentCycle_text.text.toString().toInt()
+
+                    builder.setMessage("이번 달의 수업비용을 정산하시겠습니까?\n(이번 달 총 ${maxCycle}회 중 ${currentCycle}회 수업하셨습니다)\n\n" +
+                            "비용: ${lessonCost} - (${(lessonCost.toFloat()/maxCycle)} * ${maxCycle - currentCycle})" +
+                            "\n= ${lessonCost - ((lessonCost.toFloat()/maxCycle)*(maxCycle - currentCycle))}")
+                }
+                builder.show()
+            }
 
         }
 
@@ -265,6 +285,7 @@ class SubjectDetail : AppCompatActivity() {
         window.statusBarColor = colorCode
         subject_detail_toolbar.setBackgroundColor(colorCode)
     }
+
 
     private  fun init(){
 
@@ -327,6 +348,17 @@ class SubjectDetail : AppCompatActivity() {
         subject_detail_notification.setText(data.notification)
         Notification.notificationFlag = data.notification
 
+    }
+
+    private val mMessageReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            finish()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(mMessageReceiver)
     }
 
     override fun onBackPressed() {
