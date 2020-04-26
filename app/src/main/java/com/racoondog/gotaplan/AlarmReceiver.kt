@@ -33,7 +33,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
         val pendingI = PendingIntent.getActivity(context, id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
-        val builder = NotificationCompat.Builder(context, "0")
+        val builder = NotificationCompat.Builder(context, "123")
         val audioAttributes = AudioAttributes.Builder()
             .setUsage(AudioAttributes.USAGE_NOTIFICATION)
             .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
@@ -58,7 +58,7 @@ class AlarmReceiver : BroadcastReceiver() {
             val description = "매일 정해진 시간에 알람합니다."
             val importance = NotificationManager.IMPORTANCE_HIGH //소리와 알림메시지를 같이 보여줌
             val channel =
-                NotificationChannel("0", channelName, importance)
+                NotificationChannel("123", channelName, importance)
             channel.lockscreenVisibility = NotificationCompat.VISIBILITY_PUBLIC
             channel.description = description
             channel.setSound(soundUri,audioAttributes)
@@ -123,13 +123,28 @@ class AlarmReceiver : BroadcastReceiver() {
         notificationManager.notify(id, builder.build())
 
         val nextNotifyTime = Calendar.getInstance()
-
+        var date = 0
+        when(data.dayFlag){
+            1 -> date = 2
+            2 -> date = 3
+            3 -> date = 4
+            4 -> date = 5
+            5 -> date = 6
+            6 -> date = 7
+            7 -> date = 1
+        }
         // 내일 같은 시간으로 알람시간 결정
+        nextNotifyTime.timeInMillis = System.currentTimeMillis()
+        nextNotifyTime[Calendar.HOUR_OF_DAY] = data.startHour
+        nextNotifyTime[Calendar.MINUTE] = data.startMinute.toInt() - data.notification
+        nextNotifyTime[Calendar.SECOND] = 0
+        nextNotifyTime[Calendar.DAY_OF_WEEK] = date
         nextNotifyTime.add(Calendar.DATE, 7)
+
         val alarmManager =
             context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val alarmIntent = Intent(context, AlarmReceiver::class.java)
-        val pendingIntent = PendingIntent.getBroadcast(context, id, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingIntent = PendingIntent.getBroadcast(context, id, alarmIntent, 0)
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
             alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,nextNotifyTime.timeInMillis,pendingIntent)
         }else{
@@ -141,6 +156,8 @@ class AlarmReceiver : BroadcastReceiver() {
                 .edit()
         editor.putLong("$id", nextNotifyTime.timeInMillis)
         editor.apply()
+
+
 
 
     }

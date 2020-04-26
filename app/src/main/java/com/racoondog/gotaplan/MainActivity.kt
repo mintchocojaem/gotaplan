@@ -1,12 +1,10 @@
 package com.racoondog.gotaplan
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.app.AlertDialog.BUTTON_POSITIVE
 import android.app.AlertDialog.Builder
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.Menu
@@ -26,9 +24,7 @@ import com.google.android.gms.ads.InterstitialAd
 import com.google.android.gms.ads.MobileAds
 import io.realm.Realm
 import io.realm.RealmResults
-import io.realm.Sort
 import kotlinx.android.synthetic.main.activity_main.*
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -70,7 +66,7 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
 
         initLinkageID() // v.1.0.7 이하 버전은 linkageID 생성
 
-        val builder = Builder(this,R.style.MyDialogTheme)
+        /*val builder = Builder(this,R.style.MyDialogTheme)
             .setTitle("[v.1.0.7] 변경사항 안내")
             .setMessage("\n안녕하세요 개발자입니다.\n\n이번 업데이트로 기능 개선을 위하여 부득이하게 변경된 사항들을 안내해드리고자 합니다.\n" +
                     "\n1.기존의 \"레슨 모드\"가 \"수업 기능\"으로 바뀌면서 \"레슨 횟수\" 항목을 삭제하고 새롭게 \"정산 주기\" 항목을 추가하게 되었습니다.\n" +
@@ -85,6 +81,7 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
             .setCancelable(false)
             .show()
 
+         */
 
         if (!storage.purchasedRemoveAds()) {
             MobileAds.initialize(this, getString(R.string.ad_mob_app_id))
