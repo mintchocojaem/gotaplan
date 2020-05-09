@@ -3,10 +3,7 @@ package com.racoondog.gotaplan
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.content.*
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -26,17 +23,22 @@ import androidx.core.content.ContextCompat
 import io.realm.Realm
 import io.realm.RealmResults
 import kotlinx.android.synthetic.main.subject_detail.*
+import java.util.*
 
 
 class SubjectDetail : AppCompatActivity() {
 
     private val realm = Realm.getDefaultInstance()
+    companion object{
+        var mContext:Context? = null
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.subject_detail)
-
+        mContext = this
         registerReceiver(mMessageReceiver, IntentFilter("refresh"))
 
         val scheduleData = realm.where(ScheduleData::class.java).findFirst()!!
@@ -59,63 +61,48 @@ class SubjectDetail : AppCompatActivity() {
                 .findAll()
             val nestedTime =  subject_detail_time_picker.nestedTime(pickerData)
             if(!nestedTime) {
-                if(currentCycle_text.text.toString().toInt() > maxCycle_text.text.toString().toInt()){
-                    Toast.makeText(this,"정산 주기의 현재값은 최댓값보다 클 수 없습니다.",Toast.LENGTH_SHORT).show()
-                }
-                else{
-                    val linkageID = realm.where<SubjectData>(SubjectData::class.java).equalTo("linkageID",data.linkageID).findAll()
-                    if (data.linkageID != 0){
-                        for (i in linkageID.indices){
-                            realm.beginTransaction()
 
-                            linkageID[i]!!.subjectColor = subject_detail_color_picker.colorCode
-                            linkageID[i]!!.title = subject_title.text.toString()
-                            linkageID[i]!!.content = subject_memo.text.toString()
+                if(Notification.notificationFlag ==-1){
+                    if(cycle_switch.isChecked){
+                        val builder = AlertDialog.Builder(this,R.style.MyDialogTheme)
+                            .setTitle(resources.getString(R.string.guide_auto_help_title))
+                            .setMessage(resources.getString(R.string.subject_detail_cycle_no_notification))
+                            .setPositiveButton(resources.getString(R.string.dialog_apply)) { _, _ ->
+                                saveData()
+                                val linkageID = realm.where<SubjectData>(SubjectData::class.java).equalTo("linkageID",data.linkageID).findAll()
 
-                            linkageID[i]!!.studentName = studentName_text.text.toString()
-                            linkageID[i]!!.studentBirth = studentBirth_text.text.toString()
-                            linkageID[i]!!.studentPhoneNumber = studentPhone_text.text.toString()
-                            linkageID[i]!!.lessonCost = lessonCost_text.text.toString()
-                            linkageID[i]!!.lessonOnOff = subject_detail_lesson_mode_switch.isChecked
-                            linkageID[i]!!.notification = Notification.notificationFlag
-                            linkageID[i]!!.currentCycle = currentCycle_text.text.toString().toInt()
-                            linkageID[i]!!.maxCycle = maxCycle_text.text.toString().toInt()
+                                if (data.linkageID != 0){
+                                    for (i in linkageID.indices){
+                                        realm.beginTransaction()
+                                        linkageID[i]!!.calculation = false
+                                        realm.commitTransaction()
+                                    }
+                                }else{
+                                    realm.beginTransaction()
+                                    data.calculation = false
+                                    realm.commitTransaction()
+                                }
+                                setResult(Activity.RESULT_OK)
+                                finish()
+                            }
 
-                            realm.commitTransaction()
+                            .setNegativeButton(resources.getString(R.string.dialog_cancel)) { _, _ ->
 
-                            subject_detail_notification.deleteAlarm(linkageID[i]!!.id)
-                            subject_detail_notification.setAlarm(linkageID[i]!!.startHour,linkageID[i]!!.startMinute.toInt(),linkageID[i]!!.dayFlag,linkageID[i]!!.id)
-                        }
-                    }else{
-                        realm.beginTransaction()
-                        data.dayFlag = subject_detail_day_picker.dayFlag
-                        data.startHour = subject_detail_time_picker.startHour()
-                        data.startMinute = subject_detail_time_picker.startMinute()
-                        data.endHour = subject_detail_time_picker.endHour()
-                        data.endMinute = subject_detail_time_picker.endMinute()
-                        data.subjectColor = subject_detail_color_picker.colorCode
-                        data.title = subject_title.text.toString()
-                        data.content = subject_memo.text.toString()
-
-                        data.studentName = studentName_text.text.toString()
-                        data.studentBirth = studentBirth_text.text.toString()
-                        data.studentPhoneNumber = studentPhone_text.text.toString()
-                        data.lessonCost = lessonCost_text.text.toString()
-                        data.lessonOnOff = subject_detail_lesson_mode_switch.isChecked
-                        data.notification = Notification.notificationFlag
-                        data.currentCycle = currentCycle_text.text.toString().toInt()
-                        data.maxCycle = maxCycle_text.text.toString().toInt()
-                        realm.commitTransaction()
-
-                        subject_detail_notification.deleteAlarm(data.id)
-                        subject_detail_notification.setAlarm(data.startHour,data.startMinute.toInt(),data.dayFlag,data.id)
-
+                            }
+                            .setCancelable(false)
+                            .show()
                     }
-
+                    else{
+                        saveData()
+                        setResult(Activity.RESULT_OK)
+                        finish()
+                    }
+                }else {
+                    saveData()
                     setResult(Activity.RESULT_OK)
                     finish()
-
                 }
+
             }
 
         }
@@ -214,6 +201,67 @@ class SubjectDetail : AppCompatActivity() {
                 Toast.makeText(this, "${resources.getString(R.string.lesson)} Off", Toast.LENGTH_SHORT).show()
             }
         }
+        cycle_switch.setOnCheckedChangeListener{compoundButton,_ ->
+
+            if (compoundButton.isChecked){
+
+                if(Notification.notificationFlag == -1){
+                    Toast.makeText(this,resources.getString(R.string.cycle_dialog_no_notification),Toast.LENGTH_SHORT).show()
+                    compoundButton.isChecked = false
+                    val linkageID = realm.where<SubjectData>(SubjectData::class.java).equalTo("linkageID",data.linkageID).findAll()
+
+                    if (data.linkageID != 0){
+                        for (i in linkageID.indices){
+                            realm.beginTransaction()
+                            linkageID[i]!!.calculation = false
+                            realm.commitTransaction()
+                        }
+                    }else{
+                        realm.beginTransaction()
+                        data.calculation = false
+                        realm.commitTransaction()
+                    }
+
+                }else{
+                    val dialog = CalculationDialog(this, object : CalculationDialog.ICustomDialogEventListener {
+                        override fun customDialogEvent(flag: Int) {
+                            // Do something with the value here, e.g. set a variable in the calling activity
+                            val linkageID = realm.where<SubjectData>(SubjectData::class.java).equalTo("linkageID",data.linkageID).findAll()
+
+                            if (data.linkageID != 0){
+                                for (i in linkageID.indices){
+                                    compoundButton.isChecked = flag ==1
+                                    realm.beginTransaction()
+                                    linkageID[i]!!.calculation = compoundButton.isChecked
+                                    realm.commitTransaction()
+                                }
+                            }else{
+                                compoundButton.isChecked = flag ==1
+                                realm.beginTransaction()
+                                data.calculation = compoundButton.isChecked
+                                realm.commitTransaction()
+                            }
+                        }
+                    })
+                    dialog.show()
+                }
+
+            }else {
+                val linkageID = realm.where<SubjectData>(SubjectData::class.java).equalTo("linkageID",data.linkageID).findAll()
+
+                if (data.linkageID != 0){
+                    for (i in linkageID.indices){
+                        realm.beginTransaction()
+                        linkageID[i]!!.calculation = false
+                        realm.commitTransaction()
+                    }
+                }else{
+                    realm.beginTransaction()
+                    data.calculation = false
+                    realm.commitTransaction()
+                }
+            }
+        }
         lesson_help.setOnClickListener {
             val introIntent = Intent(this, IntroActivity::class.java)
             introIntent.action = "LessonModeGuide"
@@ -232,14 +280,14 @@ class SubjectDetail : AppCompatActivity() {
 
             val linkageID = realm.where<SubjectData>(SubjectData::class.java).equalTo("linkageID",data.linkageID).findAll()
 
-            if(maxCycle_text.text.toString().toInt() == 0 || currentCycle_text.text.toString().toInt() == 0){
-                Toast.makeText(this,"정산 주기의 현재값 또는 최댓값은 0이 될 수 없습니다.",Toast.LENGTH_SHORT).show()
-            }else if(maxCycle_text.text.toString().toInt() < currentCycle_text.text.toString().toInt()){
-                Toast.makeText(this,"정산 주기의 현재값은 최댓값보다 클 수 없습니다.",Toast.LENGTH_SHORT).show()
+            if(data.maxCycle == 0 || data.currentCycle == 0){
+                Toast.makeText(this,resources.getString(R.string.lesson_calculate_min),Toast.LENGTH_SHORT).show()
+            }else if(data.maxCycle < data.currentCycle){
+                Toast.makeText(this,resources.getString(R.string.lesson_calculate_max),Toast.LENGTH_SHORT).show()
 
             }else{
                 val builder = AlertDialog.Builder(this, R.style.MyDialogTheme)
-                    .setTitle("수업비용 정산")
+                    .setTitle(resources.getString(R.string.lesson_calculate))
                     .setPositiveButton(resources.getString(R.string.dialog_apply)) { _, _ ->
                         if (data.linkageID != 0){
                             for (i in linkageID.indices){
@@ -253,32 +301,204 @@ class SubjectDetail : AppCompatActivity() {
                             realm.commitTransaction()
                         }
                         currentCycle_text.setText("0")
-                        Toast.makeText(this,"수업비용이 정산되었습니다!",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this,resources.getString(R.string.lesson_calculated),Toast.LENGTH_SHORT).show()
                     }
                     .setNegativeButton(resources.getString(R.string.dialog_cancel)) { _, _ ->
 
                     }
-                if (lessonCost_text.text.toString() == ""){
-                    val lessonCost = "정보 없음"
-                    val maxCycle = maxCycle_text.text.toString().toInt()
-                    val currentCycle = currentCycle_text.text.toString().toInt()
-                    builder.setMessage("이번 달의 수업비용을 정산하시겠습니까?\n(이번 달 총 ${maxCycle}회 중 ${currentCycle}회 수업하셨습니다)\n\n" +
-                            "비용: $lessonCost")
+                if (data.lessonCost == ""){
+                    val lessonCost = resources.getString(R.string.lesson_unknown)
+                    val maxCycle = data.maxCycle
+                    val currentCycle = data.currentCycle
+
+                    val n: String = Locale.getDefault().displayLanguage
+                    if (n.compareTo("한국어") == 0){
+                        builder.setMessage("이번 달의 수업비용을 정산하시겠습니까?\n(이번 달 총 ${maxCycle}회 중 ${currentCycle}회 수업하셨습니다)\n\n" +
+                                "비용: $lessonCost")
+                    }
+                    else {
+                        builder.setMessage("Are you willing to calculate this month's tuition?\n(You have taken ${currentCycle} of the ${maxCycle} Lessons this month)\n\n" +
+                                "Cost: $lessonCost")
+                    }
+
                 }
                 else{
-                    val lessonCost = lessonCost_text.text.toString().toInt()
-                    val maxCycle = maxCycle_text.text.toString().toInt()
-                    val currentCycle = currentCycle_text.text.toString().toInt()
+                    val lessonCost = data.lessonCost.toInt()
+                    val maxCycle = data.maxCycle
+                    val currentCycle = data.currentCycle
+                    val rest = (lessonCost.toFloat()%maxCycle)/maxCycle
 
-                    builder.setMessage("이번 달의 수업비용을 정산하시겠습니까?\n(이번 달 총 ${maxCycle}회 중 ${currentCycle}회 수업하셨습니다)\n\n" +
-                            "비용: ${lessonCost} - (${(lessonCost.toFloat()/maxCycle)} * ${maxCycle - currentCycle})" +
-                            "\n= ${lessonCost - ((lessonCost.toFloat()/maxCycle)*(maxCycle - currentCycle))}")
+                    val n: String = Locale.getDefault().displayLanguage
+                    if (n.compareTo("한국어") == 0){
+                        if(rest == 0f){
+                            builder.setMessage("이번 달의 수업비용을 정산하시겠습니까?\n(이번 달 총 ${maxCycle}회 중 ${currentCycle}회 수업하셨습니다)\n\n" +
+                                    "비용: ${lessonCost} - (${(lessonCost/maxCycle)} * ${maxCycle - currentCycle})" +
+                                    "\n= ${lessonCost - ((lessonCost/maxCycle)*(maxCycle - currentCycle))}")
+                        }else{
+                            builder.setMessage("이번 달의 수업비용을 정산하시겠습니까?\n(이번 달 총 ${maxCycle}회 중 ${currentCycle}회 수업하셨습니다)\n\n" +
+                                    "비용: ${lessonCost} - (${(lessonCost.toFloat()/maxCycle)} * ${maxCycle - currentCycle})" +
+                                    "\n= ${lessonCost - ((lessonCost/maxCycle + rest)*(maxCycle - currentCycle))}")
+                        }
+                    }
+                    else {
+                        if(rest == 0f){
+                            builder.setMessage("Are you willing to calculate this month's tuition?\n(You have taken ${currentCycle} of the ${maxCycle} Lessons this month)\n\n" +
+                                    "Cost: ${lessonCost} - (${(lessonCost/maxCycle)} * ${maxCycle - currentCycle})" +
+                                    "\n= ${lessonCost - ((lessonCost/maxCycle)*(maxCycle - currentCycle))}")
+                        }else{
+                            builder.setMessage("Are you willing to calculate this month's tuition?\n(You have taken ${currentCycle} of the ${maxCycle} Lessons this month)\n\n" +
+                                    "Cost: ${lessonCost} - (${(lessonCost/maxCycle)} * ${maxCycle - currentCycle})" +
+                                    "\n= ${lessonCost - ((lessonCost/maxCycle + rest)*(maxCycle - currentCycle))}")
+
+                        }
+
+                    }
+
                 }
+
                 builder.show()
+
             }
 
         }
 
+        currentCycle_text.setOnClickListener {
+            val builder = CycleDialog(this)
+            builder.show()
+            builder.setTitle(resources.getString(R.string.cycle_dialog_title_current))
+            builder.setHint("${data.currentCycle}")
+            builder.setContent("${data.currentCycle}")
+            builder.setPositiveButton(View.OnClickListener {
+
+                if(builder.getText() > maxCycle_text.text.toString().toInt()){
+                    Toast.makeText(this,resources.getString(R.string.cycle_dialog_max),Toast.LENGTH_LONG).show()
+                }
+                else{
+                    val linkageID = realm.where<SubjectData>(SubjectData::class.java).equalTo("linkageID",data.linkageID).findAll()
+                    if (data.linkageID != 0) {
+                        for (i in linkageID.indices) {
+                            realm.beginTransaction()
+                            linkageID[i]!!.currentCycle = builder.getText()
+                            realm.commitTransaction()
+                            builder.dismiss()
+                            currentCycle_text.text = builder.getText().toString()
+                        }
+                    }else{
+                        realm.beginTransaction()
+                        data.currentCycle = builder.getText()
+                        realm.commitTransaction()
+                        builder.dismiss()
+                        currentCycle_text.text = builder.getText().toString()
+                    }
+                }
+                
+                window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+
+            })
+            builder.setNegativeButton(View.OnClickListener {
+
+                builder.dismiss()
+                window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+
+            })
+
+        }
+        maxCycle_text.setOnClickListener {
+
+            val builder = CycleDialog(this)
+            builder.show()
+            builder.setTitle(resources.getString(R.string.cycle_dialog_title_month))
+            builder.setHint("${data.maxCycle}")
+            builder.setContent("${data.maxCycle}")
+            builder.setPositiveButton(View.OnClickListener {
+                if(currentCycle_text.text.toString().toInt() > builder.getText()){
+                    Toast.makeText(this,resources.getString(R.string.cycle_dialog_min),Toast.LENGTH_LONG).show()
+                }else{
+                    val linkageID = realm.where<SubjectData>(SubjectData::class.java).equalTo("linkageID",data.linkageID).findAll()
+                    if (data.linkageID != 0) {
+                        for (i in linkageID.indices) {
+                            realm.beginTransaction()
+                            linkageID[i]!!.maxCycle = builder.getText()
+                            realm.commitTransaction()
+                            builder.dismiss()
+                            maxCycle_text.text = builder.getText().toString()
+                        }
+                    }else{
+                        realm.beginTransaction()
+                        data.maxCycle = builder.getText()
+                        realm.commitTransaction()
+                        builder.dismiss()
+                        maxCycle_text.text = builder.getText().toString()
+                    }
+                }
+
+            })
+            builder.setNegativeButton(View.OnClickListener {
+
+                builder.dismiss()
+
+            })
+        }
+
+    }
+
+
+    private fun saveData(){
+
+        val subjectData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
+            .equalTo("id",WeekView.ID)
+            .findAll()
+        val data = subjectData[0]!!
+        val linkageID = realm.where<SubjectData>(SubjectData::class.java).equalTo("linkageID",data.linkageID).findAll()
+        if (data.linkageID != 0){
+            for (i in linkageID.indices){
+                realm.beginTransaction()
+
+                linkageID[i]!!.subjectColor = subject_detail_color_picker.colorCode
+                linkageID[i]!!.title = subject_title.text.toString()
+                linkageID[i]!!.content = subject_memo.text.toString()
+
+                linkageID[i]!!.studentName = studentName_text.text.toString()
+                linkageID[i]!!.studentBirth = studentBirth_text.text.toString()
+                linkageID[i]!!.studentPhoneNumber = studentPhone_text.text.toString()
+                linkageID[i]!!.lessonCost = lessonCost_text.text.toString()
+                linkageID[i]!!.lessonOnOff = subject_detail_lesson_mode_switch.isChecked
+                linkageID[i]!!.notification = Notification.notificationFlag
+                //linkageID[i]!!.currentCycle = currentCycle_text.text.toString().toInt()
+                //linkageID[i]!!.maxCycle = maxCycle_text.text.toString().toInt()
+                linkageID[i]!!.calculation = cycle_switch.isChecked
+
+                realm.commitTransaction()
+
+                subject_detail_notification.deleteAlarm(linkageID[i]!!.id)
+                subject_detail_notification.setAlarm(linkageID[i]!!.startHour,linkageID[i]!!.startMinute.toInt(),linkageID[i]!!.dayFlag,linkageID[i]!!.id)
+            }
+        }else{
+            realm.beginTransaction()
+            data.dayFlag = subject_detail_day_picker.dayFlag
+            data.startHour = subject_detail_time_picker.startHour()
+            data.startMinute = subject_detail_time_picker.startMinute()
+            data.endHour = subject_detail_time_picker.endHour()
+            data.endMinute = subject_detail_time_picker.endMinute()
+            data.subjectColor = subject_detail_color_picker.colorCode
+            data.title = subject_title.text.toString()
+            data.content = subject_memo.text.toString()
+
+            data.studentName = studentName_text.text.toString()
+            data.studentBirth = studentBirth_text.text.toString()
+            data.studentPhoneNumber = studentPhone_text.text.toString()
+            data.lessonCost = lessonCost_text.text.toString()
+            data.lessonOnOff = subject_detail_lesson_mode_switch.isChecked
+            data.notification = Notification.notificationFlag
+            //data.currentCycle = currentCycle_text.text.toString().toInt()
+            //data.maxCycle = maxCycle_text.text.toString().toInt()
+            data.calculation = cycle_switch.isChecked
+            realm.commitTransaction()
+
+            subject_detail_notification.deleteAlarm(data.id)
+            subject_detail_notification.setAlarm(data.startHour,data.startMinute.toInt(),data.dayFlag,data.id)
+
+        }
     }
 
     private fun themeChange(colorCode:Int){
@@ -332,8 +552,8 @@ class SubjectDetail : AppCompatActivity() {
         studentBirth_text.addTextChangedListener(textWatcher)
         studentPhone_text.addTextChangedListener(textWatcher)
         lessonCost_text.addTextChangedListener(textWatcher)
-        currentCycle_text.addTextChangedListener(textWatcher)
-        maxCycle_text.addTextChangedListener(textWatcher)
+        //currentCycle_text.addTextChangedListener(textWatcher)
+        //maxCycle_text.addTextChangedListener(textWatcher)
 
         themeChange(data.subjectColor)
 
@@ -344,6 +564,8 @@ class SubjectDetail : AppCompatActivity() {
             subject_detail_lesson_mode_switch.isChecked = false
             lesson_bar.visibility = View.GONE
         }
+        cycle_switch.isChecked = subjectData[0]!!.calculation
+
         subject_detail_save_btn.visibility = View.INVISIBLE
         subject_detail_notification.setText(data.notification)
         Notification.notificationFlag = data.notification

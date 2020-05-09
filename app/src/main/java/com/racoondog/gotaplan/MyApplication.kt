@@ -57,6 +57,7 @@ class MyApplication: Application() {
                             ?.addField("currentCycle",Int::class.java) // 바뀐 데이터 베이스 필드
                             ?.addField("maxCycle",Int::class.java) // 바뀐 데이터 베이스 필드
                             ?.addField("linkageID",Int::class.java) // 바뀐 데이터 베이스 필드
+                            ?.addField("calculation",Int::class.java) // 바뀐 데이터 베이스 필드
                         schema["SubjectData"]!!.transform { obj -> obj.setString("lessonCost", "")}
 
                         oldVer++

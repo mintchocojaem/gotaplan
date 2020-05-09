@@ -39,6 +39,7 @@ open class SubjectData: RealmObject(){
     var currentCycle : Int = 0
     var maxCycle : Int = 0
     var linkageID: Int = 0
+    var calculation: Boolean = false
 
 }
 

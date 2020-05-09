@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import io.realm.Realm
 import io.realm.RealmResults
+import java.util.*
 import kotlin.system.exitProcess
 
 class LessonCalculateDialog:AppCompatActivity() {
@@ -31,7 +32,7 @@ class LessonCalculateDialog:AppCompatActivity() {
         when (intent.action) {
             "apply" -> {
                 val builder = AlertDialog.Builder(this, R.style.MyDialogTheme)
-                    .setTitle("수업비용 정산")
+                    .setTitle(resources.getString(R.string.lesson_calculate))
                     .setCancelable(false)
                     .setPositiveButton(resources.getString(R.string.dialog_apply)) { _, _ ->
                         if (data.linkageID != 0) {
@@ -45,26 +46,41 @@ class LessonCalculateDialog:AppCompatActivity() {
                             data.currentCycle = 0
                             realm.commitTransaction()
                         }
-                        Toast.makeText(applicationContext, "수업비용이 정산되었습니다!", Toast.LENGTH_SHORT)
+                        Toast.makeText(applicationContext, resources.getString(R.string.lesson_calculated), Toast.LENGTH_SHORT)
                             .show()
+                        val intent = Intent("refresh")
+                        this.sendBroadcast(intent)
                         finish()
                     }
                     .setNegativeButton(resources.getString(R.string.dialog_cancel)) { _, _ ->
                         finish()
                     }
                 if (data.lessonCost.toString() == "") {
-                    val lessonCost = "정보 없음"
+                    val lessonCost = resources.getString(R.string.lesson_unknown)
 
-                    builder.setMessage(
-                        "이번 달의 수업비용을 정산하시겠습니까?\n(이번 달 총 ${data.maxCycle}회 중 ${data.currentCycle}회 수업하셨습니다)\n\n" +
-                                "비용: $lessonCost"
-                    )
+
+                    val n: String = Locale.getDefault().displayLanguage
+                    if (n.compareTo("한국어") == 0){
+                        builder.setMessage(
+                            "이번 달의 수업비용을 정산하시겠습니까?\n(이번 달 총 ${data.maxCycle}회 중 ${data.currentCycle}회 수업하셨습니다)\n\n" + "비용: $lessonCost")
+                    }
+                    else {
+                        builder.setMessage("Are you willing to calculate this month's tuition?\n(You have taken ${data.currentCycle} of the ${data.maxCycle} Lessons this month)\n\n" +
+                                "Cost: $lessonCost")
+                    }
                 } else {
 
-                    builder.setMessage(
-                        "이번 달의 수업비용을 정산하시겠습니까?\n(이번 달 총 ${data.maxCycle}회 중 ${data.currentCycle}회 수업하셨습니다)\n\n" +
-                                "비용: ${data.lessonCost.toInt()}"
-                    )
+                    val n: String = Locale.getDefault().displayLanguage
+                    if (n.compareTo("한국어") == 0){
+                        builder.setMessage(
+                            "이번 달의 수업비용을 정산하시겠습니까?\n(이번 달 총 ${data.maxCycle}회 중 ${data.currentCycle}회 수업하셨습니다)\n\n" +
+                                    "비용: ${data.lessonCost.toInt()}"
+                        )
+                    }
+                    else {
+                        builder.setMessage("Are you willing to calculate this month's tuition?\n(You have taken ${data.currentCycle} of the ${data.maxCycle} Lessons this month)\n\n" +
+                                "Cost: ${data.lessonCost.toInt()}")
+                    }
                 }
                 builder.show()
 

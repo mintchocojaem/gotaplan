@@ -140,11 +140,11 @@ class CreateSubject :AppCompatActivity() {
 
             if (compoundButton.isChecked){
 
-                Toast.makeText(this, "${resources.getString(R.string.lesson)}: On", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "${resources.getString(R.string.lesson)} On", Toast.LENGTH_SHORT).show()
 
             } else{
 
-                Toast.makeText(this, "${resources.getString(R.string.lesson)}: Off", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "${resources.getString(R.string.lesson)} Off", Toast.LENGTH_SHORT).show()
 
             }
         }
@@ -273,6 +273,7 @@ class CreateSubject :AppCompatActivity() {
                     this.notification = Notification.notificationFlag
                     this.linkageID = linkageID?:0
                 }
+                subjectInfo.calculation = Notification.notificationFlag != -1
                 realm.commitTransaction()
 
                 // 현재 지정된 시간으로 알람 시간 설정

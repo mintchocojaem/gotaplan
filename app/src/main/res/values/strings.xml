@@ -112,4 +112,43 @@
     <string name="before_30m">30 Minutes ago</string>
     <string name="before_1h">1 Hour ago</string>
     <string name="before_12h">12 Hours ago</string>
+    <string name="calculation_cycle">Cycle</string>
+    <string name="calculate">Calculate</string>
+    <string name="lesson_calculate_min">Cannot calculate because the value of the Cycle is zero.</string>
+    <string name="lesson_calculate_max">The value of the (current)Cycle cannot be greater than the (month)Cycle value.</string>
+    <string name="lesson_calculate">Lesson cost calculation</string>
+    <string name="lesson_calculated">Lesson cost has been calculated!</string>
+    <string name="lesson_unknown">Unknown</string>
+    <string name="schedule_notify">Schedule Notification</string>
+    <string name="lesson_notify">Lesson Notification</string>
+    <string name="lesson_closed">Closed</string>
+    <string name="lesson_proceed">Proceed</string>
+    <string name="lesson_cycle_max">Unable to calculate due to exceeding the Cycle.\n(Please pay manually and use it.)</string>
+    <string name="cycle_switch_auto">Do you want to use the automatic calculation?</string>
+    <string name="cycle_switch_auto_help">What is automatic calculation?</string>
+    <string name="guide_timetable_title">Guide(Timetable)</string>
+    <string name="guide_lesson_title">Guide(Lesson Mode)</string>
+    <string name="guide_auto_help_title">Function Guide</string>
+    <string name="cycle_dialog_title_current">The current number classes as of this month</string>
+    <string name="cycle_dialog_title_month">The total number of classes this month</string>
+    <string name="cycle_dialog_max">The current number of classes cannot be greater than the total number of classes.</string>
+    <string name="cycle_dialog_min">Total number of classes cannot be less than the current number.</string>
+    <string name="cycle_dialog_no_notification">The automatic calculation is not available without notification.</string>
+    <string name="subject_detail_cycle_no_notification">The automatic calculation is not available without notification. Do you want to turn off automatic calculation?</string>
+
+    <string name="guide_lesson_first_title">1. What is a Lesson Mode?</string>
+    <string name="guide_lesson_first_content">Lesson Mode, which is the biggest advantage\n of this app, provides special services for\n teachers to manage classes more conveniently.\n\nLesson Mode can be enabled on the \"Add\n Schedule\" and \"Schedule Information\" screens\n as shown in the following photos.</string>
+    <string name="guide_lesson_second_title">2. Activate Lesson Mode</string>
+    <string name="guide_lesson_second_content">When you enable Lesson Mode, the "Schedule Information" screen will be added with the\n screen shown below. After that, you just\n need to enter the information into the item\n\n*Caution: The \"Cycle\" function can be\n complicated and difficult, so be sure to\n look at the following examples and guides!</string>
+    <string name="guide_lesson_second_ex_title">2.5 Example of Lesson Mode</string>
+    <string name="guide_lesson_second_ex_content">The following is a example of Lesson Mode\n to help you understand. To give you a quick\n explanation of the \"Cycle\" here, in the \nexample below, \"Cycle: 0/4\" to 4 indicates \nhow many times a month you are teaching, \nand 0 indicates the number of times you \nhave taught so far today.</string>
+    <string name="guide_lesson_third_title">3. What is the Cycle?</string>
+    <string name="guide_lesson_third_content">The Cycle feature helps you manage \nthe number and cost of lessons easily. \n\nThe (calculation)Cycle method includes \n(automatic/manual), which can be adjusted through the notification function. \n\nPlease turn on the switch if you want \nautomatic calculation under the assumption \nthat you will use the calculation function. \nIf you want manual calculation, turn\n off the switch.</string>
+    <string name="guide_lesson_fourth_title">4. Calculation function\n(manual)</string>
+    <string name="guide_lesson_fourth_content">For those who want to use the calculation function manually (or if they are forced \nto make a calculation manually while using \nautomatic calculation), set the \"Cycle\" and \npress the \"Calculation Button\" below.</string>
+    <string name="guide_lesson_fifth_title">5. Calculation function\n(automatic)</string>
+    <string name="guide_lesson_fifth_content">The basic setup of automatic calculation \ndoes not differ from manual calculation. \n\nHowever, the automatic calculation works \nbased on the notification, so you have to \nturn on the notification to work. When the automatic calculation function is activated, \nthe notification will be received as shown \nin the picture below. If you press \"Closed\" at \nthis time, the (current)Cycle will not be increased. If you press \"Proceed\", (current)\nCycle will increase by one time, and when\n (current)Cycle is equal to (Month)Cycle, \nthe calculation message will be printed.</string>
+    <string name="guide_lesson_sixth_title">6. Caution for Calculation\n(automatic)</string>
+    <string name="guide_lesson_sixth_content">Depending on the Android version, you may\n not be able to see the \"Closed\" and \"Proceed\"\n buttons as follows, but press the button\n below to display them! </string>
+
 </resources>

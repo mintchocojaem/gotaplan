@@ -54,8 +54,8 @@ class AlarmReceiver : BroadcastReceiver() {
 
             builder.setSmallIcon(R.drawable.ic_skylight_notification) //mipmap 사용시 Oreo 이상에서 시스템 UI 에러남
 
-            val channelName = "매일 알람 채널"
-            val description = "매일 정해진 시간에 알람합니다."
+            val channelName = "Notification"
+            val description = "NotificationChannel"
             val importance = NotificationManager.IMPORTANCE_HIGH //소리와 알림메시지를 같이 보여줌
             val channel =
                 NotificationChannel("123", channelName, importance)
@@ -71,7 +71,7 @@ class AlarmReceiver : BroadcastReceiver() {
             .findAll()
         val data = subjectData[0]!!
 
-        if(data.lessonOnOff && data.maxCycle != 0 ){
+        if(data.lessonOnOff && data.calculation && data.maxCycle != 0){
 
             val applyIntent = Intent(context, LessonNotification::class.java).putExtra("id",id)
             applyIntent.action = "apply"
@@ -82,7 +82,7 @@ class AlarmReceiver : BroadcastReceiver() {
             val pi2 = PendingIntent.getBroadcast(context, id, cancelIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
             val contentView = RemoteViews(context.packageName,R.layout.lesson_notification)
-            contentView.setTextViewText(R.id.notification_title,"수업 알림")
+            contentView.setTextViewText(R.id.notification_title,context.resources.getString(R.string.lesson_notify))
             contentView.setTextViewText(R.id.notification_content,data.title)
 
             contentView.setOnClickPendingIntent(R.id.lesson_notification_apply,pi1)
@@ -108,7 +108,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
                 //.setDefaults(NotificationCompat.DEFAULT_ALL)
                 .setWhen(System.currentTimeMillis())
-                .setContentTitle("일정 알림")
+                .setContentTitle(context.resources.getString(R.string.schedule_notify))
                 .setContentText(data.title)
                 //.setOngoing(true)
                 //.setContentInfo("INFO")

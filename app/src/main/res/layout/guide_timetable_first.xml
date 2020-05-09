@@ -50,5 +50,5 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:background="@drawable/round_bg_layout"
-            app:srcCompat="@drawable/app_intro_1" />
+            app:srcCompat="@drawable/guide_timetable_1" />
 </androidx.constraintlayout.widget.ConstraintLayout>

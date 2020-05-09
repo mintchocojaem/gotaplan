@@ -28,7 +28,7 @@ class LessonNotification : BroadcastReceiver() {
         val notificationManager:NotificationManager = context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         if(data.currentCycle >= data.maxCycle){
-            Toast.makeText(context,"정산 주기를 초과하여 정산할 수 없습니다.\n(수동으로 정산 후 이용해주세요)",Toast.LENGTH_SHORT).show()
+            Toast.makeText(context,context.resources.getString(R.string.lesson_cycle_max),Toast.LENGTH_SHORT).show()
         }else{
             when(intent?.action){
                 "apply"-> {

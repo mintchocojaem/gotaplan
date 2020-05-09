@@ -23,16 +23,15 @@
             <TextView
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:text="@string/edit_schedule_title_dialog_toolbar_title"
+                    android:text="Title"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
+                    android:textSize="16sp"
                     android:textColor="@color/defaultAccentColor"
                     android:gravity="center_vertical"
                     android:layout_weight="1"
-                    android:id="@+id/editScheduleTitle_setting"
+                    android:id="@+id/cycle_dialog_title"
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp">
 
@@ -40,9 +39,9 @@
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    app:layout_constraintTop_toBottomOf="@id/editScheduleTitle_setting"
-                    app:layout_constraintBottom_toTopOf="@id/scheduleTitle_choose_bar"
-                    android:id="@+id/scheduleTitle_layout"
+                    app:layout_constraintTop_toBottomOf="@id/cycle_dialog_title"
+                    app:layout_constraintBottom_toTopOf="@id/cycle_dialog_choose_bar"
+                    android:id="@+id/cycle_dialog_layout"
                     android:orientation="vertical"
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
@@ -52,15 +51,17 @@
                 <EditText
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:hint="@string/schedule_toolbar_title"
+                        android:hint="content"
                         android:singleLine="true"
                         android:gravity="center_vertical"
                         android:textSize="16sp"
                         android:textColor="@color/defaultAccentColor"
                         android:layout_weight="1"
                         android:maxLength="50"
-                        android:id="@+id/scheduleTitle"
+                        android:id="@+id/cycle_dialog_content"
                         android:background="@null"
+                        android:inputType="number"
+                        android:selectAllOnFocus="true"
                         >
 
                 </EditText>
@@ -74,15 +75,15 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    android:id="@+id/scheduleTitle_choose_bar"
+                    android:id="@+id/cycle_dialog_choose_bar"
                     app:layout_constraintVertical_bias="1">
 
                 <Button
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        android:id="@+id/scheduleTitle_dialog_cancel"
-                        app:layout_constraintRight_toLeftOf="@id/scheduleTitle_dialog_apply"
+                        android:id="@+id/cycle_dialog_cancel"
+                        app:layout_constraintRight_toLeftOf="@id/cycle_dialog_apply"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:background="@null"
@@ -95,11 +96,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintLeft_toRightOf="@id/scheduleTitle_dialog_cancel"
+                        app:layout_constraintLeft_toRightOf="@id/cycle_dialog_cancel"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:background="@null"
-                        android:id="@+id/scheduleTitle_dialog_apply"
+                        android:id="@+id/cycle_dialog_apply"
                         android:textColor="@color/defaultAccentColor"
                         android:text="@string/dialog_apply">
 
