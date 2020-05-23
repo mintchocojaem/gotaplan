@@ -59,48 +59,79 @@ class SubjectDetail : AppCompatActivity() {
                 .equalTo("dayFlag",subject_detail_day_picker.dayFlag)
                 .notEqualTo("id",WeekView.ID)
                 .findAll()
-            val nestedTime =  subject_detail_time_picker.nestedTime(pickerData)
-            if(!nestedTime) {
 
-                if(Notification.notificationFlag ==-1){
-                    if(cycle_switch.isChecked){
-                        val builder = AlertDialog.Builder(this,R.style.MyDialogTheme)
-                            .setTitle(resources.getString(R.string.guide_auto_help_title))
-                            .setMessage(resources.getString(R.string.subject_detail_cycle_no_notification))
-                            .setPositiveButton(resources.getString(R.string.dialog_apply)) { _, _ ->
-                                saveData()
+            if(subject_title.text.toString() == ""){
+                Toast.makeText(this,resources.getString(R.string.create_subject_toast_enter_title),Toast.LENGTH_SHORT).show()
+            }
+            else{
+
+                val nestedTime =  subject_detail_time_picker.nestedTime(pickerData)
+                if(!nestedTime) {
+
+                    if(Notification.notificationFlag ==-1){
+                        if(lesson_bar.visibility != View.VISIBLE && cycle_switch.isChecked){
+
+                            saveData()
+
+                            if (data.linkageID != 0){
+
                                 val linkageID = realm.where<SubjectData>(SubjectData::class.java).equalTo("linkageID",data.linkageID).findAll()
-
-                                if (data.linkageID != 0){
-                                    for (i in linkageID.indices){
-                                        realm.beginTransaction()
-                                        linkageID[i]!!.calculation = false
-                                        realm.commitTransaction()
-                                    }
-                                }else{
+                                for (i in linkageID.indices){
                                     realm.beginTransaction()
-                                    data.calculation = false
+                                    linkageID[i]!!.calculation = false
                                     realm.commitTransaction()
                                 }
-                                setResult(Activity.RESULT_OK)
-                                finish()
+                            }else{
+                                realm.beginTransaction()
+                                data.calculation = false
+                                realm.commitTransaction()
                             }
+                            setResult(Activity.RESULT_OK)
+                            finish()
+                        }
+                        else if(lesson_bar.visibility == View.VISIBLE && cycle_switch.isChecked){
 
-                            .setNegativeButton(resources.getString(R.string.dialog_cancel)) { _, _ ->
+                            val builder = AlertDialog.Builder(this,R.style.MyDialogTheme)
+                                .setTitle(resources.getString(R.string.guide_auto_help_title))
+                                .setMessage(resources.getString(R.string.subject_detail_cycle_no_notification))
+                                .setPositiveButton(resources.getString(R.string.dialog_apply)) { _, _ ->
+                                    saveData()
+                                    val linkageID = realm.where<SubjectData>(SubjectData::class.java).equalTo("linkageID",data.linkageID).findAll()
 
-                            }
-                            .setCancelable(false)
-                            .show()
-                    }
-                    else{
+                                    if (data.linkageID != 0){
+                                        for (i in linkageID.indices){
+                                            realm.beginTransaction()
+                                            linkageID[i]!!.calculation = false
+                                            realm.commitTransaction()
+                                        }
+                                    }else{
+                                        realm.beginTransaction()
+                                        data.calculation = false
+                                        realm.commitTransaction()
+                                    }
+                                    setResult(Activity.RESULT_OK)
+                                    finish()
+                                }
+
+                                .setNegativeButton(resources.getString(R.string.dialog_cancel)) { _, _ ->
+
+                                }
+                                .setCancelable(false)
+                                .show()
+
+                        }
+                        else{
+                            saveData()
+                            setResult(Activity.RESULT_OK)
+                            finish()
+                        }
+
+                    }else {
                         saveData()
                         setResult(Activity.RESULT_OK)
                         finish()
                     }
-                }else {
-                    saveData()
-                    setResult(Activity.RESULT_OK)
-                    finish()
+
                 }
 
             }

@@ -87,6 +87,21 @@ class TimePicker:ConstraintLayout {
 
     fun schedulePicker(viewGroup: ViewGroup){
 
+        start_AMPM.setSaveFromParentEnabled(false)
+        start_AMPM.setSaveEnabled(false)
+        start_hour.setSaveFromParentEnabled(false)
+        start_hour.setSaveEnabled(false)
+        start_minute.setSaveFromParentEnabled(false)
+        start_minute.setSaveEnabled(false)
+
+        end_AMPM.setSaveFromParentEnabled(false)
+        end_AMPM.setSaveEnabled(false)
+        end_hour.setSaveFromParentEnabled(false)
+        end_hour.setSaveEnabled(false)
+        end_minute.setSaveFromParentEnabled(false)
+        end_minute.setSaveEnabled(false)
+
+
         start_minute.visibility = View.GONE
         end_minute.visibility = View.GONE
 
@@ -261,6 +276,20 @@ class TimePicker:ConstraintLayout {
     fun subjectPicker(intentStartHour:Int,intentEndHour:Int,viewGroup: ViewGroup){
 
         val initEndHour = intentEndHour -1
+
+        start_AMPM.setSaveFromParentEnabled(false)
+        start_AMPM.setSaveEnabled(false)
+        start_hour.setSaveFromParentEnabled(false)
+        start_hour.setSaveEnabled(false)
+        start_minute.setSaveFromParentEnabled(false)
+        start_minute.setSaveEnabled(false)
+
+        end_AMPM.setSaveFromParentEnabled(false)
+        end_AMPM.setSaveEnabled(false)
+        end_hour.setSaveFromParentEnabled(false)
+        end_hour.setSaveEnabled(false)
+        end_minute.setSaveFromParentEnabled(false)
+        end_minute.setSaveEnabled(false)
 
         start_minute.visibility = View.VISIBLE
         end_minute.visibility = View.VISIBLE

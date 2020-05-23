@@ -28,6 +28,7 @@ class CreateSubject :AppCompatActivity() {
         super.onCreate(savedInstanceState)
         super.setContentView(R.layout.create_subject)
 
+
         val colorList = resources.getIntArray(R.array.subject_color)
         val scheduleData = realm.where(ScheduleData::class.java).findFirst()!!
         val scheduleStartHour = intent?.getIntExtra("start_time",scheduleData.scheduleStartHour)?:scheduleData.scheduleStartHour
