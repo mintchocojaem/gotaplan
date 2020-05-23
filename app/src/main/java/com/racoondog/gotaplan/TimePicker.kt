@@ -87,6 +87,7 @@ class TimePicker:ConstraintLayout {
 
     fun schedulePicker(viewGroup: ViewGroup){
 
+        
         start_AMPM.setSaveFromParentEnabled(false)
         start_AMPM.setSaveEnabled(false)
         start_hour.setSaveFromParentEnabled(false)
