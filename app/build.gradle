@@ -16,8 +16,8 @@ android {
         applicationId "com.racoondog.gotaplan"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 19
-        versionName "1.0.8"
+        versionCode 21
+        versionName "1.0.10"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

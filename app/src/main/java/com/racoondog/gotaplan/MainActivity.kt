@@ -67,11 +67,9 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
 
         loadData()//데이터 불러오기
 
-        showHelpView()// 앱 가이드 보여줌
-
         initLinkageID() // v.1.0.7 이하 버전은 linkageID 생성
 
-        if (!storage.purchasedRemoveAds()) {
+        if (!storage.purchasedRemoveAds() && !storage.showHelpView()) {
             MobileAds.initialize(this, getString(R.string.ad_mob_app_id))
             mInterstitialAd = InterstitialAd(this)
             mInterstitialAd.adUnitId = getString(R.string.front_ad_unit_id)
@@ -84,6 +82,8 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
                 }
             }
         }
+
+        showHelpView()// 앱 가이드 보여줌
 
         weekView_layout.setOnClickListener {
             val scheduleData = realm.where(ScheduleData::class.java).findFirst()
@@ -192,6 +192,7 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
     private fun showHelpView(){
         if(storage.showHelpView()){
             val introIntent = Intent(this, IntroActivity::class.java)
+            introIntent.action = "TimetableGuide"
             startActivity(introIntent)
             storage.setHelpView(false)
         }
