@@ -18,10 +18,10 @@ import java.util.*
 
 class Notification:ConstraintLayout {
 
-    constructor(context: Context?) : super(context!!){initView()}
-    constructor(context: Context?, attrs: AttributeSet?) : super(context!!, attrs){initView()}
+    constructor(context: Context?) : super(context){initView()}
+    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs){initView()}
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(
-        context!!,
+        context,
         attrs,
         defStyleAttr
     ){initView()}
