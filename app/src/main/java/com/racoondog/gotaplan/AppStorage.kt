@@ -35,4 +35,5 @@ class AppStorage(context: Context) {
     fun initLinkageID(): Boolean {
         return pref.getBoolean(linkageID,true)
     }
+
 }

@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -23,10 +22,6 @@ import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
 import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.tasks.Task
-import com.google.firebase.FirebaseApp
-import com.google.firebase.iid.FirebaseInstanceId
-import com.google.firebase.iid.InstanceIdResult
 import io.realm.Realm
 import io.realm.RealmResults
 import kotlinx.android.synthetic.main.activity_main.*
@@ -77,7 +72,7 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
             mInterstitialAd.adListener = object: AdListener() { //전면 광고의 상태를 확인하는 리스너 등록
                 override fun onAdLoaded() {
                     super.onAdLoaded()
-                    mInterstitialAd.show()
+                    //mInterstitialAd.show()
 
                 }
             }
@@ -333,6 +328,7 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
                 startActivity(directFeedbackIntent)
                 return true
             }
+
             else -> return super.onOptionsItemSelected(item)
         }
     }
@@ -441,7 +437,6 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
         }
 
     }
-
 
 }
 

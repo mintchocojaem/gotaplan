@@ -10,9 +10,9 @@ import android.view.WindowManager
 import android.widget.Toast
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.edit_schedule_title_dialog.*
+import kotlinx.android.synthetic.main.schedule_title_dialog.*
 
-class EditScheduleTitleDialog:Dialog {
+class ScheduleTitleDialog:Dialog {
 
     private val realm = Realm.getDefaultInstance()
     lateinit var cnxt:ScheduleDialog
@@ -32,7 +32,7 @@ class EditScheduleTitleDialog:Dialog {
         layoutParams.dimAmount = 0.8f
         window!!.attributes = layoutParams
         window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        setContentView(R.layout.edit_schedule_title_dialog)
+        setContentView(R.layout.schedule_title_dialog)
 
         val scheduleData = realm.where(ScheduleData::class.java).findFirst()!!
 

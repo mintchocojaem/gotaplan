@@ -12,7 +12,6 @@
 
 
     </item>
-
     <item android:top="0.5dp" android:bottom="0.5dp">
 
         <shape android:shape="rectangle">
@@ -24,8 +23,23 @@
 
 
     </item>
+    <item>
+
+        <shape android:shape="line">
+
+            <stroke
+                    android:color="#979797"
+                    android:width="0.5dp"
+                    android:dashWidth="5dp"
+                    android:dashGap="5dp"
+                    />
+
+
+
+        </shape>
+
+    </item>
+
 
 
 </layer-list>
-
-

@@ -69,6 +69,7 @@ class WeekView : ConstraintLayout{
 
     fun drawSchedule(day_flag: Int, start_time: Int, end_time: Int) {
 
+        val data = realm.where(ScheduleData::class.java).findFirst()!!
         val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val disPlay = wm.defaultDisplay
         val size = Point()
@@ -213,7 +214,11 @@ class WeekView : ConstraintLayout{
                 val timeText = TextView(cnxt) // 각 시간표 일정이 들어가는 공백 부분
                 val tag = "day$j$i"
                 timeText.tag = tag
-                timeText.setBackgroundResource(R.drawable.cell_shape)
+                if(data.scheduleInterval){
+                    timeText.setBackgroundResource(R.drawable.cell_half_shape)
+                }else{
+                    timeText.setBackgroundResource(R.drawable.cell_shape)
+                }
                 timeText.setOnLongClickListener {
                     val subjectIntent = Intent(cnxt, CreateSubject::class.java)
                     subjectIntent.flags = (Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
@@ -581,7 +586,7 @@ class WeekView : ConstraintLayout{
     fun deleteSubject(id:Int){
         findViewWithTag<ConstraintLayout>("canvas").removeView(findViewById(id))
     }
-    fun refresh(view: WeekView){
+    fun refresh(view: WeekView = cnxt.weekView){
 
         val scheduleData = realm.where(ScheduleData::class.java).findFirst()
 

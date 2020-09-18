@@ -1,8 +1,6 @@
 package com.racoondog.gotaplan
 
 import android.Manifest
-import android.app.AlertDialog
-import android.app.AlertDialog.Builder
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
@@ -18,10 +16,8 @@ import android.os.Environment
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import io.realm.Realm
-import io.realm.RealmResults
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.schedule_dialog.*
 import kotlinx.android.synthetic.main.weekview.*
@@ -29,8 +25,6 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
-import java.util.*
-import kotlin.system.exitProcess
 
 
 class ScheduleDialog:Dialog {
@@ -58,7 +52,7 @@ class ScheduleDialog:Dialog {
         setContentView(R.layout.schedule_dialog)
 
         editScheduleTitle.setOnClickListener {
-            val dialog = EditScheduleTitleDialog(context)
+            val dialog = ScheduleTitleDialog(context)
             dialog.cnxt = this
             dialog.show()
             dismiss()
@@ -66,6 +60,13 @@ class ScheduleDialog:Dialog {
 
         editScheduleTime.setOnClickListener {
             val dialog = ScheduleTimeDialog(context)
+            dialog.cnxt = this
+            dialog.show()
+            dismiss()
+        }
+
+        intervalSchedule.setOnClickListener {
+            val dialog = ScheduleIntervalDialog(context)
             dialog.cnxt = this
             dialog.show()
             dismiss()

@@ -83,6 +83,21 @@
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:text="시간표 간격 변경"
+                        android:textSize="14sp"
+                        android:textColor="@color/defaultAccentColor"
+                        android:gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:id="@+id/intervalSchedule"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        >
+
+                </TextView>
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:text="@string/schedule_dialog_share_schedule"
                         android:gravity="center_vertical"
                         android:textSize="14sp"

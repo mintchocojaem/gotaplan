@@ -9,6 +9,7 @@ open class ScheduleData: RealmObject() {
     var scheduleDayFlag:Int = 0
     var scheduleStartHour:Int = 0
     var scheduleEndHour:Int = 0
+    var scheduleInterval: Boolean = false
     
 }
 
