@@ -14,7 +14,7 @@
     <string name="direct_feedback_toolbar_title">다이렉트 피드백</string>
     <string name="direct_feedback_title">제목 (최대 20자)</string>
     <string name="direct_feedback_content">개발, 수정 및 문의 사항이 있으시면 적어주세요. (최대 200자)</string>
-    <string name="direct_feedback_g_mail">피드백 내용은 G-mail 앱을 통해 전송됩니다.</string>
+    <string name="direct_feedback_gmail">피드백 내용은 G-mail 앱을 통해 전송됩니다.</string>
     <string name="help_toolbar_title">도움말 보기</string>
     <string name="subject_detail_toolbar_title">일정 정보</string>
     <string name="subject_detail_title">제목</string>
@@ -151,5 +151,5 @@
     <string name="guide_lesson_fifth_content">자동 정산의 기본적인 설정법은 수동 정산과\n 차이가 없습니다. 다만 자동 정산은 알림을 기반으로 작동하므로, 알림을 켜주셔야지만 작동합니다.\n자동 정산기능이 활성화되면 다음과 같은\n 알림이 도착합니다.이때 \"휴강\"을 누르시면 정산\n 주기가 계산되지 않으며,\n \"진행\"을 누르시면 현재 수업 횟수가 1회씩 늘어나 \n한 달 수업 횟수와 같아질 때 \"정산 메시지\"를\n 출력하는 방식으로 작동합니다.</string>
     <string name="guide_lesson_sixth_title">6. 자동정산 유의사항</string>
     <string name="guide_lesson_sixth_content">안드로이드 버전에 따라 시간이 지나면 다음과 같이 \"휴강\"과 \"진행\" 버튼이 안보이는 경우가 있는데,\n 이때 아래의 버튼을 눌러주시면 표시됩니다! </string>
-
+    <string name="direct_feedback_gmail_add">* 아래의 정보는 개발자에게 꼭 필요하오니 지우지 말고 보내주세요!</string>
 </resources>

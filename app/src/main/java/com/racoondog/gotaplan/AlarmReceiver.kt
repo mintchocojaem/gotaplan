@@ -28,8 +28,7 @@ class AlarmReceiver : BroadcastReceiver() {
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val notificationIntent = Intent(context, MainActivity::class.java)
         val id = intent.getIntExtra("id",0)
-        notificationIntent.flags = (Intent.FLAG_ACTIVITY_CLEAR_TOP
-                or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        notificationIntent.flags = (Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
 
         val pendingI = PendingIntent.getActivity(context, id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
@@ -62,7 +61,7 @@ class AlarmReceiver : BroadcastReceiver() {
             channel.lockscreenVisibility = NotificationCompat.VISIBILITY_PUBLIC
             channel.description = description
             channel.setSound(soundUri,audioAttributes)
-            notificationManager?.createNotificationChannel(channel)
+            notificationManager.createNotificationChannel(channel)
 
         } else builder.setSmallIcon(R.mipmap.ic_launcher) // Oreo 이하에서 mipmap 사용하지 않으면 Couldn't create icon: StatusBarIcon 에러남
 
@@ -144,12 +143,8 @@ class AlarmReceiver : BroadcastReceiver() {
         val alarmManager =
             context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val alarmIntent = Intent(context, AlarmReceiver::class.java)
-        val pendingIntent = PendingIntent.getBroadcast(context, id, alarmIntent, 0)
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
-            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,nextNotifyTime.timeInMillis,pendingIntent)
-        }else{
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP,nextNotifyTime.timeInMillis,pendingIntent)
-        }
+        val pendingIntent = PendingIntent.getBroadcast(context, id, alarmIntent, PendingIntent.FLAG_NO_CREATE)
+        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,nextNotifyTime.timeInMillis,pendingIntent)
         //  Preference에 설정한 값 저장
         val editor =
             context.getSharedPreferences("alarm", MODE_PRIVATE)

@@ -2,6 +2,7 @@ package com.racoondog.gotaplan
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -34,7 +35,13 @@ class DirectFeedback:AppCompatActivity() {
                     {
                         email.putExtra(Intent.EXTRA_EMAIL, address)
                         email.putExtra(Intent.EXTRA_SUBJECT, title)
-                        email.putExtra(Intent.EXTRA_TEXT, content)
+                        email.putExtra(Intent.EXTRA_TEXT, content+"""
+                            
+                            
+                            ${resources.getString(R.string.direct_feedback_gmail_add)}
+                            Model: ${Build.MODEL.toString()}
+                            Version: ${Build.VERSION.RELEASE.toString()}
+                        """.trimIndent())
                         email.setPackage(info.activityInfo.packageName)
                         try
                         {
@@ -48,6 +55,10 @@ class DirectFeedback:AppCompatActivity() {
                 }
             }
         }
+
+        feedback_model.setText("Model: ${Build.MODEL.toString()}")
+        feedback_version.setText("Version: ${Build.VERSION.RELEASE.toString()}")
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

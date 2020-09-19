@@ -122,12 +122,41 @@
     <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/direct_feedback_g_mail"
+            android:text="Model: "
             android:gravity="center"
             app:layout_constraintTop_toBottomOf="@id/Feedback_content"
             android:paddingEnd="20dp"
             android:paddingStart="20dp"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintBottom_toTopOf="@id/feedback_version"
+            android:id="@+id/feedback_model"
+            >
+
+    </TextView>
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Version: "
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/feedback_model"
+            android:paddingEnd="20dp"
+            android:paddingStart="20dp"
+            app:layout_constraintBottom_toTopOf="@id/feedback_gmail"
+            android:id="@+id/feedback_version"
+            >
+
+    </TextView>
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/direct_feedback_gmail"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/feedback_version"
+            android:paddingEnd="20dp"
+            android:paddingStart="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/feedback_gmail"
+            >
 
     </TextView>
 

@@ -13,7 +13,7 @@
     <string name="direct_feedback_toolbar_title">Direct Feedback</string>
     <string name="direct_feedback_title">Title (up to 20 characters)</string>
     <string name="direct_feedback_content">If you have any development, modifications, or questions, please write them down. (Up to 200 characters)</string>
-    <string name="direct_feedback_g_mail">Feedback is sent via the G-mail app.</string>
+    <string name="direct_feedback_gmail">Feedback is sent via the G-mail app.</string>
     <string name="help_toolbar_title">Show Guide</string>
     <string name="subject_detail_toolbar_title">Schedule Information</string>
     <string name="subject_detail_title">Title</string>
@@ -150,5 +150,6 @@
     <string name="guide_lesson_fifth_content">The basic setup of automatic calculation \ndoes not differ from manual calculation. \n\nHowever, the automatic calculation works \nbased on the notification, so you have to \nturn on the notification to work. When the \nautomatic calculation function is activated, \nthe notification will be received as shown \nin the picture below. If you press \"Closed\" at \nthis time, the (current)Cycle will not be \nincreased. If you press \"Proceed\", (current)\nCycle will increase by one time, and when\n (current)Cycle is equal to (Month)Cycle, \nthe calculation message will be printed.</string>
     <string name="guide_lesson_sixth_title">6. Caution for Calculation\n(automatic)</string>
     <string name="guide_lesson_sixth_content">Depending on the Android version, you may\n not be able to see the \"Closed\" and \"Proceed\"\n buttons as follows, but press the button\n below to display them! </string>
+    <string name="direct_feedback_gmail_add">* Please don\'t erase the following information is absolutely necessary for developers and send it!</string>
 
 </resources>
