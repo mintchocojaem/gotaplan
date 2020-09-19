@@ -38,8 +38,8 @@ class CreateSubject :AppCompatActivity() {
 
         val dayFlag = mutableListOf(false,false,false,false,false,false,false)
 
-        Notification.notificationFlag = 10
-        create_subject_notification.setText(10)
+        Notification.notificationFlag = -1
+        create_subject_notification.setText(-1)
 
         when(subjectDayFlag){
             1->{
