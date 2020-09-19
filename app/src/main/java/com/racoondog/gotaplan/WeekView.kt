@@ -111,10 +111,13 @@ class WeekView : ConstraintLayout{
                 timeFlag = 1
             } else if (timeFlag == 1) {
                 period.add("${i - 12}")
-            } else {
+            }
+            else {
                 period.add("$i")
             }
         }
+
+
 
         val layout = TableLayout(cnxt)  //전체 TableRow 를 담기위한 TableLayout
 

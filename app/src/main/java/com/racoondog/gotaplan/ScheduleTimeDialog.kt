@@ -59,19 +59,15 @@ class ScheduleTimeDialog: Dialog {
 
         schedule_time_dialog_start_time.setText(scheduleData.scheduleStartHour.toString())
         schedule_time_dialog_end_time.setText(scheduleData.scheduleEndHour.toString())
-        schedule_time_dialog_start_time.hint = scheduleData.scheduleStartHour.toString()
         schedule_time_dialog_end_time.hint = scheduleData.scheduleEndHour.toString()
+        schedule_time_dialog_start_time.hint = scheduleData.scheduleStartHour.toString()
 
         schedule_time_dialog_apply.setOnClickListener {
 
             if (!(schedule_time_dialog_start_time.text.toString() == "" || schedule_time_dialog_end_time.text.toString() == "")) {
                 when {
-                    schedule_time_dialog_start_time.text.toString().toInt() < 6 ->
-                        Toast.makeText(context,R.string.schedule_time_dialog_start_min,Toast.LENGTH_SHORT).show()
                     schedule_time_dialog_start_time.text.toString().toInt() > 24 ->
                         Toast.makeText(context,R.string.schedule_time_dialog_start_max,Toast.LENGTH_SHORT).show()
-                    schedule_time_dialog_end_time.text.toString().toInt() < 6 ->
-                        Toast.makeText(context, R.string.schedule_time_dialog_end_min, Toast.LENGTH_SHORT).show()
                     schedule_time_dialog_end_time.text.toString().toInt() > 24 ->
                         Toast.makeText(context, R.string.schedule_time_dialog_end_max, Toast.LENGTH_SHORT).show()
                     schedule_time_dialog_start_time.text.toString().toInt() > schedule_time_dialog_end_time.text.toString().toInt() ->

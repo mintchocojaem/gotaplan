@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">계획이 다 있구나</string>
     <string name="schedule_toolbar_title">계획이 다 있구나</string>
-    <string name="schedule_add_title">당신의 시간표를 추가해 주세요.</string>
+    <string name="schedule_add_title">시간표를 추가해 주세요.</string>
     <string name="create_schedule_toolbar_title">시간표 만들기</string>
     <string name="create_schedule_title">시간표 제목을 입력하세요.</string>
     <string name="create_schedule_last_day">마지막 요일</string>
@@ -82,9 +82,9 @@
     <string name="schedule_time_dialog_title">시간 변경</string>
     <string name="schedule_time_dialog_start_time">시작 시각</string>
     <string name="schedule_time_dialog_end_time">종료 시각</string>
-    <string name="schedule_time_dialog_start_min">시작 시각이 6시보다 작을 수 없습니다.</string>
+    <string name="schedule_time_dialog_start_min">시작 시각이 06시보다 작을 수 없습니다.</string>
     <string name="schedule_time_dialog_start_max">시작 시각이 24시보다 클 수 없습니다.</string>
-    <string name="schedule_time_dialog_end_min">종료 시각이 6시보다 작을 수 없습니다.</string>
+    <string name="schedule_time_dialog_end_min">종료 시각이 06시보다 작을 수 없습니다.</string>
     <string name="schedule_time_dialog_end_max">종료 시각이 24시보다 클 수 없습니다.</string>
     <string name="schedule_time_dialog_subject_exist_time">해당 시간에 일정이 존재합니다.</string>
     <string name="schedule_time_dialog_subject_exist_day">해당 요일에 일정이 존재합니다.</string>

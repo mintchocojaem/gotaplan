@@ -143,13 +143,14 @@ class TimePicker:ConstraintLayout {
 
         start_hour.apply {
 
-            minValue = 6
+            minValue = 0
             maxValue = 18
             value = 8
 
             for (i in minValue .. maxValue) {
                 when{
                     i > 12-> displayValue.add("${i-12} ")
+                    i == 0 -> displayValue.add("0")
                     else -> displayValue.add("$i ")
                 }
             }
