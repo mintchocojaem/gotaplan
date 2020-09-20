@@ -3,14 +3,14 @@
         package="com.racoondog.gotaplan">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.android.vending.BILLING" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
-            android:name="com.racoondog.gotaplan.MyApplication"
+            android:name=".MyApplication"
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
@@ -18,7 +18,22 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
 
-        <receiver android:name=".DeviceBootReceiver"
+
+        <receiver android:name=".NewAppWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                    android:name="android.appwidget.provider"
+                    android:resource="@xml/new_app_widget_info" />
+        </receiver>
+        <service android:name=".MyRemoteViewsService"
+                android:enabled="true"
+                android:exported="true"
+                android:permission="android.permission.BIND_REMOTEVIEWS"/>
+        <receiver
+                android:name=".DeviceBootReceiver"
                 android:enabled="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -28,54 +43,47 @@
 
         <meta-data
                 android:name="com.google.android.gms.ads.APPLICATION_ID"
-                android:value="@string/ad_mob_app_id"/>
+                android:value="@string/ad_mob_app_id" />
 
         <provider
                 android:name="androidx.core.content.FileProvider"
                 android:authorities="com.racoondog.gotaplan.fileprovider"
-                android:grantUriPermissions="true"
-                android:exported="false">
+                android:exported="false"
+                android:grantUriPermissions="true">
             <meta-data
                     android:name="android.support.FILE_PROVIDER_PATHS"
                     android:resource="@xml/temp" />
-
         </provider>
 
-        <receiver android:name=".LessonNotification"/>
+        <receiver android:name=".LessonNotification" />
 
         <activity
                 android:name=".LessonCalculateDialog"
-                android:label="@string/app_name"
-                android:theme="@style/MyDialogTheme"
-                android:taskAffinity=""
                 android:excludeFromRecents="true"
-                >
-        </activity>
-
-        <activity android:name="com.racoondog.gotaplan.IntroActivity" />
-
-
-        <activity android:name="com.racoondog.gotaplan.DirectFeedback"
-            android:screenOrientation="fullSensor" />
-
-        <activity android:name="com.racoondog.gotaplan.CreateSchedule"
+                android:label="@string/app_name"
+                android:taskAffinity=""
+                android:theme="@style/MyDialogTheme" />
+        <activity android:name=".IntroActivity" />
+        <activity
+                android:name=".DirectFeedback"
                 android:screenOrientation="fullSensor" />
-
-        <activity android:name="com.racoondog.gotaplan.CreateSubject"
-
-                android:screenOrientation="fullSensor"/>
-
-        <activity android:name="com.racoondog.gotaplan.SubjectDetail"
-                android:screenOrientation="fullSensor"/>
-
-        <activity android:name="com.racoondog.gotaplan.MainActivity"
-
+        <activity
+                android:name=".CreateSchedule"
+                android:screenOrientation="fullSensor" />
+        <activity
+                android:name=".CreateSubject"
+                android:screenOrientation="fullSensor" />
+        <activity
+                android:name=".SubjectDetail"
+                android:screenOrientation="fullSensor" />
+        <activity
+                android:name=".MainActivity"
                 android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
     </application>
 
