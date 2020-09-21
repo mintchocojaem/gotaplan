@@ -1,13 +1,5 @@
 package com.racoondog.gotaplan
 
-class WidgetItem(private var _id: Int, var content: String) {
-
-    fun get_id(): Int {
-        return _id
-    }
-
-    fun set_id(_id: Int) {
-        this._id = _id
-    }
+class WidgetItem(var id: Int, var title: String, var startHour:Int, var startMinute:String, var endHour:Int, var endMinute:String) {
 
 }

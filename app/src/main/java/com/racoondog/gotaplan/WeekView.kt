@@ -2,6 +2,8 @@ package com.racoondog.gotaplan
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.appwidget.AppWidgetManager
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
@@ -10,10 +12,7 @@ import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
 import android.view.*
-import android.widget.TableLayout
-import android.widget.TableRow
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
@@ -551,11 +550,14 @@ class WeekView : ConstraintLayout{
                     Notification(context).deleteAlarm(data.id)
                     Notification(context).setAlarm(data.startHour,data.startMinute.toInt(),data.dayFlag,data.id)
                     Notification.notificationFlag = -1
+
+
                 }
 
                 .setNegativeButton(resources.getString(R.string.dialog_cancel)) { _, _ ->
                     refresh(cnxt.weekView)
                 }
+                .setCancelable(false)
 
                 .show()
             builder.window!!.attributes.apply {
@@ -616,6 +618,8 @@ class WeekView : ConstraintLayout{
             }
 
         }
+
+        updateWidget()
 
     }
     fun createID(Min:Int, Max:Int):Int{
@@ -690,6 +694,35 @@ class WeekView : ConstraintLayout{
         return checkTime.contains(element = false) // checkTime = true -> 시간표 겹침
 
     }
+    private fun updateWidget() {
+        val cal = Calendar.getInstance()
+        var date = 0
+        val dayFlag = cal.get(Calendar.DAY_OF_WEEK)
+        when(dayFlag){
+            1 -> date = 7
+            2 -> date = 1
+            3 -> date = 2
+            4 -> date = 3
+            5 -> date = 4
+            6 -> date = 5
+            7 -> date = 6
+        }
+        val realm = Realm.getDefaultInstance()
+        val data: RealmResults<SubjectData> = realm.where(SubjectData::class.java)
+            .equalTo("dayFlag",date)
+            .findAll()
+            .sort("startHour",Sort.ASCENDING)
+        val sortedDate = data.sort("endHour",Sort.ASCENDING)
+        //Toast.makeText(context,"$date",Toast.LENGTH_LONG).show()
+        AppStorage(cnxt).setWidgetDateList(sortedDate)
 
-
+        val appWidgetManager = AppWidgetManager.getInstance(context)
+        val appWidgetIds = appWidgetManager.getAppWidgetIds(
+            ComponentName(
+                context,
+                NewAppWidget::class.java
+            )
+        )
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_listview)
+    }
 }

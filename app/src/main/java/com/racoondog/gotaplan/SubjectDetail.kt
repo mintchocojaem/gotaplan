@@ -3,6 +3,7 @@ package com.racoondog.gotaplan
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.appwidget.AppWidgetManager
 import android.content.*
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -43,7 +44,7 @@ class SubjectDetail : AppCompatActivity() {
 
         val scheduleData = realm.where(ScheduleData::class.java).findFirst()!!
         val subjectData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
-            .equalTo("id",WeekView.ID)
+            .equalTo("id", WeekView.ID)
             .findAll()
         val data = subjectData[0]!!
 
@@ -56,12 +57,16 @@ class SubjectDetail : AppCompatActivity() {
         subject_detail_save_btn.setOnClickListener {
 
             val pickerData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
-                .equalTo("dayFlag",subject_detail_day_picker.dayFlag)
-                .notEqualTo("id",WeekView.ID)
+                .equalTo("dayFlag", subject_detail_day_picker.dayFlag)
+                .notEqualTo("id", WeekView.ID)
                 .findAll()
 
             if(subject_title.text.toString() == ""){
-                Toast.makeText(this,resources.getString(R.string.create_subject_toast_enter_title),Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    resources.getString(R.string.create_subject_toast_enter_title),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
             else{
 
@@ -75,7 +80,10 @@ class SubjectDetail : AppCompatActivity() {
 
                             if (data.linkageID != 0){
 
-                                val linkageID = realm.where<SubjectData>(SubjectData::class.java).equalTo("linkageID",data.linkageID).findAll()
+                                val linkageID = realm.where<SubjectData>(SubjectData::class.java).equalTo(
+                                    "linkageID",
+                                    data.linkageID
+                                ).findAll()
                                 for (i in linkageID.indices){
                                     realm.beginTransaction()
                                     linkageID[i]!!.calculation = false
@@ -91,12 +99,15 @@ class SubjectDetail : AppCompatActivity() {
                         }
                         else if(lesson_bar.visibility == View.VISIBLE && cycle_switch.isChecked){
 
-                            val builder = AlertDialog.Builder(this,R.style.MyDialogTheme)
+                            val builder = AlertDialog.Builder(this, R.style.MyDialogTheme)
                                 .setTitle(resources.getString(R.string.guide_auto_help_title))
                                 .setMessage(resources.getString(R.string.subject_detail_cycle_no_notification))
                                 .setPositiveButton(resources.getString(R.string.dialog_apply)) { _, _ ->
                                     saveData()
-                                    val linkageID = realm.where<SubjectData>(SubjectData::class.java).equalTo("linkageID",data.linkageID).findAll()
+                                    val linkageID = realm.where<SubjectData>(SubjectData::class.java).equalTo(
+                                        "linkageID",
+                                        data.linkageID
+                                    ).findAll()
 
                                     if (data.linkageID != 0){
                                         for (i in linkageID.indices){
@@ -140,17 +151,22 @@ class SubjectDetail : AppCompatActivity() {
 
         subject_detail_delete_btn.setOnClickListener {
 
-            val builder = AlertDialog.Builder(this,R.style.MyDialogTheme)
+            val builder = AlertDialog.Builder(this, R.style.MyDialogTheme)
                 .setTitle(resources.getString(R.string.delete))
                 .setMessage(resources.getString(R.string.delete_subject))
                 .setPositiveButton(resources.getString(R.string.dialog_apply)) { _, _ ->
 
-                    val linkageID = realm.where<SubjectData>(SubjectData::class.java).equalTo("linkageID",data.linkageID).findAll()
+                    val linkageID = realm.where<SubjectData>(SubjectData::class.java).equalTo(
+                        "linkageID",
+                        data.linkageID
+                    ).findAll()
                     if(data.linkageID != 0){
                         for (i in linkageID.indices){
 
                             subject_detail_notification.deleteAlarm(linkageID[0]!!.id)
-                            ((MainActivity.mContext) as MainActivity).weekView.deleteSubject(linkageID[0]!!.id)
+                            ((MainActivity.mContext) as MainActivity).weekView.deleteSubject(
+                                linkageID[0]!!.id
+                            )
 
                             realm.beginTransaction()
                             linkageID[0]!!.deleteFromRealm()
@@ -165,8 +181,12 @@ class SubjectDetail : AppCompatActivity() {
                         realm.commitTransaction()
                     }
 
-                    Toast.makeText(this,resources.getString(R.string.subject_deleted), Toast.LENGTH_SHORT).show()
-                    setResult(Activity.RESULT_OK,intent)
+                    Toast.makeText(
+                        this,
+                        resources.getString(R.string.subject_deleted),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    setResult(Activity.RESULT_OK, intent)
                     finish()
 
                 }
@@ -181,14 +201,24 @@ class SubjectDetail : AppCompatActivity() {
                 height = WindowManager.LayoutParams.WRAP_CONTENT}
 
             builder.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            builder.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(this,R.color.colorCancel))
-            builder.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(this,R.color.defaultAccentColor))
+            builder.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.colorCancel
+                )
+            )
+            builder.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.defaultAccentColor
+                )
+            )
 
         }
 
         subject_detail_color_picker.initColor(data.subjectColor)
         subject_detail_color_picker.setOnClickListener {
-            subject_detail_color_picker.colorPick(this,subject_detail_toolbar)
+            subject_detail_color_picker.colorPick(this, subject_detail_toolbar)
         }
         subject_detail_color_picker.setOnCustomEventListener(object :
             ColorPicker.OnCustomEventListener {
@@ -197,23 +227,34 @@ class SubjectDetail : AppCompatActivity() {
             }
         })
 
-        subject_detail_day_picker.dayPick(scheduleData.scheduleDayFlag,data.dayFlag)
-        subject_detail_day_picker.setOnCustomEventListener(object : DayPicker.OnCustomEventListener {
+        subject_detail_day_picker.dayPick(scheduleData.scheduleDayFlag, data.dayFlag)
+        subject_detail_day_picker.setOnCustomEventListener(object :
+            DayPicker.OnCustomEventListener {
             override fun onEvent() {
                 subject_detail_save_btn.visibility = View.VISIBLE
             }
         })
 
-        subject_detail_time_picker.setCustomEventListener(object : TimePicker.OnCustomEventListener {
+        subject_detail_time_picker.setCustomEventListener(object :
+            TimePicker.OnCustomEventListener {
             override fun onEvent() {
                 subject_detail_save_btn.visibility = View.VISIBLE
             }
         })
 
-        subject_detail_time_picker.subjectPicker(scheduleData.scheduleStartHour,scheduleData.scheduleEndHour,subject_detail_main)
-        subject_detail_time_picker.displayTime(data.startHour,data.startMinute.toInt(),data.endHour,data.endMinute.toInt())
+        subject_detail_time_picker.subjectPicker(
+            scheduleData.scheduleStartHour,
+            scheduleData.scheduleEndHour,
+            subject_detail_main
+        )
+        subject_detail_time_picker.displayTime(
+            data.startHour,
+            data.startMinute.toInt(),
+            data.endHour,
+            data.endMinute.toInt()
+        )
 
-        subject_detail_lesson_mode_switch.setOnCheckedChangeListener{compoundButton,_ ->
+        subject_detail_lesson_mode_switch.setOnCheckedChangeListener{ compoundButton, _ ->
 
             subject_detail_save_btn.visibility = View.VISIBLE
 
@@ -222,24 +263,39 @@ class SubjectDetail : AppCompatActivity() {
                 changeBounds.duration = 300
                 TransitionManager.beginDelayedTransition(subject_detail_main, changeBounds)
                 lesson_bar.visibility = View.VISIBLE
-                Toast.makeText(this, "${resources.getString(R.string.lesson)} On", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    "${resources.getString(R.string.lesson)} On",
+                    Toast.LENGTH_SHORT
+                ).show()
 
             } else{
                 val changeBounds: Transition = ChangeBounds()
                 changeBounds.duration = 300
                 TransitionManager.beginDelayedTransition(subject_detail_main, changeBounds)
                 lesson_bar.visibility = View.GONE
-                Toast.makeText(this, "${resources.getString(R.string.lesson)} Off", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    "${resources.getString(R.string.lesson)} Off",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
-        cycle_switch.setOnCheckedChangeListener{compoundButton,_ ->
+        cycle_switch.setOnCheckedChangeListener{ compoundButton, _ ->
 
             if (compoundButton.isChecked){
 
                 if(Notification.notificationFlag == -1){
-                    Toast.makeText(this,resources.getString(R.string.cycle_dialog_no_notification),Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this,
+                        resources.getString(R.string.cycle_dialog_no_notification),
+                        Toast.LENGTH_SHORT
+                    ).show()
                     compoundButton.isChecked = false
-                    val linkageID = realm.where<SubjectData>(SubjectData::class.java).equalTo("linkageID",data.linkageID).findAll()
+                    val linkageID = realm.where<SubjectData>(SubjectData::class.java).equalTo(
+                        "linkageID",
+                        data.linkageID
+                    ).findAll()
 
                     if (data.linkageID != 0){
                         for (i in linkageID.indices){
@@ -254,31 +310,40 @@ class SubjectDetail : AppCompatActivity() {
                     }
 
                 }else{
-                    val dialog = CalculationDialog(this, object : CalculationDialog.ICustomDialogEventListener {
-                        override fun customDialogEvent(flag: Int) {
-                            // Do something with the value here, e.g. set a variable in the calling activity
-                            val linkageID = realm.where<SubjectData>(SubjectData::class.java).equalTo("linkageID",data.linkageID).findAll()
+                    val dialog = CalculationDialog(
+                        this,
+                        object : CalculationDialog.ICustomDialogEventListener {
+                            override fun customDialogEvent(flag: Int) {
+                                // Do something with the value here, e.g. set a variable in the calling activity
+                                val linkageID =
+                                    realm.where<SubjectData>(SubjectData::class.java).equalTo(
+                                        "linkageID",
+                                        data.linkageID
+                                    ).findAll()
 
-                            if (data.linkageID != 0){
-                                for (i in linkageID.indices){
-                                    compoundButton.isChecked = flag ==1
+                                if (data.linkageID != 0) {
+                                    for (i in linkageID.indices) {
+                                        compoundButton.isChecked = flag == 1
+                                        realm.beginTransaction()
+                                        linkageID[i]!!.calculation = compoundButton.isChecked
+                                        realm.commitTransaction()
+                                    }
+                                } else {
+                                    compoundButton.isChecked = flag == 1
                                     realm.beginTransaction()
-                                    linkageID[i]!!.calculation = compoundButton.isChecked
+                                    data.calculation = compoundButton.isChecked
                                     realm.commitTransaction()
                                 }
-                            }else{
-                                compoundButton.isChecked = flag ==1
-                                realm.beginTransaction()
-                                data.calculation = compoundButton.isChecked
-                                realm.commitTransaction()
                             }
-                        }
-                    })
+                        })
                     dialog.show()
                 }
 
             }else {
-                val linkageID = realm.where<SubjectData>(SubjectData::class.java).equalTo("linkageID",data.linkageID).findAll()
+                val linkageID = realm.where<SubjectData>(SubjectData::class.java).equalTo(
+                    "linkageID",
+                    data.linkageID
+                ).findAll()
 
                 if (data.linkageID != 0){
                     for (i in linkageID.indices){
@@ -301,7 +366,8 @@ class SubjectDetail : AppCompatActivity() {
         subject_detail_notification.setOnClickListener {
             subject_detail_notification.showDialog(this)
         }
-        subject_detail_notification.setOnCustomEventListener(object : Notification.OnCustomEventListener {
+        subject_detail_notification.setOnCustomEventListener(object :
+            Notification.OnCustomEventListener {
             override fun onEvent() {
                 subject_detail_save_btn.visibility = View.VISIBLE
             }
@@ -309,12 +375,23 @@ class SubjectDetail : AppCompatActivity() {
 
         lesson_calculate.setOnClickListener {
 
-            val linkageID = realm.where<SubjectData>(SubjectData::class.java).equalTo("linkageID",data.linkageID).findAll()
+            val linkageID = realm.where<SubjectData>(SubjectData::class.java).equalTo(
+                "linkageID",
+                data.linkageID
+            ).findAll()
 
             if(data.maxCycle == 0 || data.currentCycle == 0){
-                Toast.makeText(this,resources.getString(R.string.lesson_calculate_min),Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    resources.getString(R.string.lesson_calculate_min),
+                    Toast.LENGTH_SHORT
+                ).show()
             }else if(data.maxCycle < data.currentCycle){
-                Toast.makeText(this,resources.getString(R.string.lesson_calculate_max),Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    resources.getString(R.string.lesson_calculate_max),
+                    Toast.LENGTH_SHORT
+                ).show()
 
             }else{
                 val builder = AlertDialog.Builder(this, R.style.MyDialogTheme)
@@ -332,7 +409,11 @@ class SubjectDetail : AppCompatActivity() {
                             realm.commitTransaction()
                         }
                         currentCycle_text.setText("0")
-                        Toast.makeText(this,resources.getString(R.string.lesson_calculated),Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this,
+                            resources.getString(R.string.lesson_calculated),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                     .setNegativeButton(resources.getString(R.string.dialog_cancel)) { _, _ ->
 
@@ -344,12 +425,16 @@ class SubjectDetail : AppCompatActivity() {
 
                     val n: String = Locale.getDefault().displayLanguage
                     if (n.compareTo("한국어") == 0){
-                        builder.setMessage("이번 달의 수업비용을 정산하시겠습니까?\n(이번 달 총 ${maxCycle}회 중 ${currentCycle}회 수업하셨습니다)\n\n" +
-                                "비용: $lessonCost")
+                        builder.setMessage(
+                            "이번 달의 수업비용을 정산하시겠습니까?\n(이번 달 총 ${maxCycle}회 중 ${currentCycle}회 수업하셨습니다)\n\n" +
+                                    "비용: $lessonCost"
+                        )
                     }
                     else {
-                        builder.setMessage("Are you willing to calculate this month's tuition?\n(You have taken ${currentCycle} of the ${maxCycle} Lessons this month)\n\n" +
-                                "Cost: $lessonCost")
+                        builder.setMessage(
+                            "Are you willing to calculate this month's tuition?\n(You have taken ${currentCycle} of the ${maxCycle} Lessons this month)\n\n" +
+                                    "Cost: $lessonCost"
+                        )
                     }
 
                 }
@@ -362,24 +447,32 @@ class SubjectDetail : AppCompatActivity() {
                     val n: String = Locale.getDefault().displayLanguage
                     if (n.compareTo("한국어") == 0){
                         if(rest == 0f){
-                            builder.setMessage("이번 달의 수업비용을 정산하시겠습니까?\n(이번 달 총 ${maxCycle}회 중 ${currentCycle}회 수업하셨습니다)\n\n" +
-                                    "비용: ${lessonCost} - (${(lessonCost/maxCycle)} * ${maxCycle - currentCycle})" +
-                                    "\n= ${lessonCost - ((lessonCost/maxCycle)*(maxCycle - currentCycle))}")
+                            builder.setMessage(
+                                "이번 달의 수업비용을 정산하시겠습니까?\n(이번 달 총 ${maxCycle}회 중 ${currentCycle}회 수업하셨습니다)\n\n" +
+                                        "비용: ${lessonCost} - (${(lessonCost / maxCycle)} * ${maxCycle - currentCycle})" +
+                                        "\n= ${lessonCost - ((lessonCost / maxCycle) * (maxCycle - currentCycle))}"
+                            )
                         }else{
-                            builder.setMessage("이번 달의 수업비용을 정산하시겠습니까?\n(이번 달 총 ${maxCycle}회 중 ${currentCycle}회 수업하셨습니다)\n\n" +
-                                    "비용: ${lessonCost} - (${(lessonCost.toFloat()/maxCycle)} * ${maxCycle - currentCycle})" +
-                                    "\n= ${lessonCost - ((lessonCost/maxCycle + rest)*(maxCycle - currentCycle))}")
+                            builder.setMessage(
+                                "이번 달의 수업비용을 정산하시겠습니까?\n(이번 달 총 ${maxCycle}회 중 ${currentCycle}회 수업하셨습니다)\n\n" +
+                                        "비용: ${lessonCost} - (${(lessonCost.toFloat() / maxCycle)} * ${maxCycle - currentCycle})" +
+                                        "\n= ${lessonCost - ((lessonCost / maxCycle + rest) * (maxCycle - currentCycle))}"
+                            )
                         }
                     }
                     else {
                         if(rest == 0f){
-                            builder.setMessage("Are you willing to calculate this month's tuition?\n(You have taken ${currentCycle} of the ${maxCycle} Lessons this month)\n\n" +
-                                    "Cost: ${lessonCost} - (${(lessonCost/maxCycle)} * ${maxCycle - currentCycle})" +
-                                    "\n= ${lessonCost - ((lessonCost/maxCycle)*(maxCycle - currentCycle))}")
+                            builder.setMessage(
+                                "Are you willing to calculate this month's tuition?\n(You have taken ${currentCycle} of the ${maxCycle} Lessons this month)\n\n" +
+                                        "Cost: ${lessonCost} - (${(lessonCost / maxCycle)} * ${maxCycle - currentCycle})" +
+                                        "\n= ${lessonCost - ((lessonCost / maxCycle) * (maxCycle - currentCycle))}"
+                            )
                         }else{
-                            builder.setMessage("Are you willing to calculate this month's tuition?\n(You have taken ${currentCycle} of the ${maxCycle} Lessons this month)\n\n" +
-                                    "Cost: ${lessonCost} - (${(lessonCost/maxCycle)} * ${maxCycle - currentCycle})" +
-                                    "\n= ${lessonCost - ((lessonCost/maxCycle + rest)*(maxCycle - currentCycle))}")
+                            builder.setMessage(
+                                "Are you willing to calculate this month's tuition?\n(You have taken ${currentCycle} of the ${maxCycle} Lessons this month)\n\n" +
+                                        "Cost: ${lessonCost} - (${(lessonCost / maxCycle)} * ${maxCycle - currentCycle})" +
+                                        "\n= ${lessonCost - ((lessonCost / maxCycle + rest) * (maxCycle - currentCycle))}"
+                            )
 
                         }
 
@@ -401,11 +494,17 @@ class SubjectDetail : AppCompatActivity() {
             builder.setContent("${data.currentCycle}")
             builder.setPositiveButton(View.OnClickListener {
 
-                if(builder.getText() > maxCycle_text.text.toString().toInt()){
-                    Toast.makeText(this,resources.getString(R.string.cycle_dialog_max),Toast.LENGTH_LONG).show()
-                }
-                else{
-                    val linkageID = realm.where<SubjectData>(SubjectData::class.java).equalTo("linkageID",data.linkageID).findAll()
+                if (builder.getText() > maxCycle_text.text.toString().toInt()) {
+                    Toast.makeText(
+                        this,
+                        resources.getString(R.string.cycle_dialog_max),
+                        Toast.LENGTH_LONG
+                    ).show()
+                } else {
+                    val linkageID = realm.where<SubjectData>(SubjectData::class.java).equalTo(
+                        "linkageID",
+                        data.linkageID
+                    ).findAll()
                     if (data.linkageID != 0) {
                         for (i in linkageID.indices) {
                             realm.beginTransaction()
@@ -414,7 +513,7 @@ class SubjectDetail : AppCompatActivity() {
                             builder.dismiss()
                             currentCycle_text.text = builder.getText().toString()
                         }
-                    }else{
+                    } else {
                         realm.beginTransaction()
                         data.currentCycle = builder.getText()
                         realm.commitTransaction()
@@ -422,7 +521,7 @@ class SubjectDetail : AppCompatActivity() {
                         currentCycle_text.text = builder.getText().toString()
                     }
                 }
-                
+
                 window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
 
             })
@@ -442,10 +541,17 @@ class SubjectDetail : AppCompatActivity() {
             builder.setHint("${data.maxCycle}")
             builder.setContent("${data.maxCycle}")
             builder.setPositiveButton(View.OnClickListener {
-                if(currentCycle_text.text.toString().toInt() > builder.getText()){
-                    Toast.makeText(this,resources.getString(R.string.cycle_dialog_min),Toast.LENGTH_LONG).show()
-                }else{
-                    val linkageID = realm.where<SubjectData>(SubjectData::class.java).equalTo("linkageID",data.linkageID).findAll()
+                if (currentCycle_text.text.toString().toInt() > builder.getText()) {
+                    Toast.makeText(
+                        this,
+                        resources.getString(R.string.cycle_dialog_min),
+                        Toast.LENGTH_LONG
+                    ).show()
+                } else {
+                    val linkageID = realm.where<SubjectData>(SubjectData::class.java).equalTo(
+                        "linkageID",
+                        data.linkageID
+                    ).findAll()
                     if (data.linkageID != 0) {
                         for (i in linkageID.indices) {
                             realm.beginTransaction()
@@ -454,7 +560,7 @@ class SubjectDetail : AppCompatActivity() {
                             builder.dismiss()
                             maxCycle_text.text = builder.getText().toString()
                         }
-                    }else{
+                    } else {
                         realm.beginTransaction()
                         data.maxCycle = builder.getText()
                         realm.commitTransaction()
@@ -477,10 +583,13 @@ class SubjectDetail : AppCompatActivity() {
     private fun saveData(){
 
         val subjectData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
-            .equalTo("id",WeekView.ID)
+            .equalTo("id", WeekView.ID)
             .findAll()
         val data = subjectData[0]!!
-        val linkageID = realm.where<SubjectData>(SubjectData::class.java).equalTo("linkageID",data.linkageID).findAll()
+        val linkageID = realm.where<SubjectData>(SubjectData::class.java).equalTo(
+            "linkageID",
+            data.linkageID
+        ).findAll()
         if (data.linkageID != 0){
             for (i in linkageID.indices){
                 realm.beginTransaction()
@@ -502,7 +611,12 @@ class SubjectDetail : AppCompatActivity() {
                 realm.commitTransaction()
 
                 subject_detail_notification.deleteAlarm(linkageID[i]!!.id)
-                subject_detail_notification.setAlarm(linkageID[i]!!.startHour,linkageID[i]!!.startMinute.toInt(),linkageID[i]!!.dayFlag,linkageID[i]!!.id)
+                subject_detail_notification.setAlarm(
+                    linkageID[i]!!.startHour,
+                    linkageID[i]!!.startMinute.toInt(),
+                    linkageID[i]!!.dayFlag,
+                    linkageID[i]!!.id
+                )
             }
         }else{
             realm.beginTransaction()
@@ -527,12 +641,17 @@ class SubjectDetail : AppCompatActivity() {
             realm.commitTransaction()
 
             subject_detail_notification.deleteAlarm(data.id)
-            subject_detail_notification.setAlarm(data.startHour,data.startMinute.toInt(),data.dayFlag,data.id)
+            subject_detail_notification.setAlarm(
+                data.startHour,
+                data.startMinute.toInt(),
+                data.dayFlag,
+                data.id
+            )
 
         }
     }
 
-    private fun themeChange(colorCode:Int){
+    private fun themeChange(colorCode: Int){
         window.statusBarColor = colorCode
         subject_detail_toolbar.setBackgroundColor(colorCode)
     }
@@ -541,7 +660,7 @@ class SubjectDetail : AppCompatActivity() {
     private  fun init(){
 
         val subjectData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
-            .equalTo("id",WeekView.ID)
+            .equalTo("id", WeekView.ID)
             .findAll()
         val data = subjectData[0]!!
 

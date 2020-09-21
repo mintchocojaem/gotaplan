@@ -3,6 +3,8 @@ package com.racoondog.gotaplan
 import android.app.Activity
 import android.app.AlertDialog.BUTTON_POSITIVE
 import android.app.AlertDialog.Builder
+import android.appwidget.AppWidgetManager
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -10,6 +12,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.RemoteViews
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -44,7 +47,7 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
     private var intentStartTime: Int = 0
     private var intentEndTime: Int = 0
     private var intentFlag: Int = 0
-    private val bp by lazy { BillingProcessor(this,getString(R.string.in_app_license_key), this) }
+    private val bp by lazy { BillingProcessor(this, getString(R.string.in_app_license_key), this) }
     private val storage:AppStorage by lazy { AppStorage(this) }
 
     private lateinit var mInterstitialAd: InterstitialAd
@@ -97,6 +100,8 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
             startActivityForResult(subjectIntent, 102)
         }
 
+
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -106,6 +111,7 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
             super.onActivityResult(requestCode, resultCode, data)
             //MainActivity 로 들어오는 onActivityResult 부분 -> Intent 후 값 반환
             if (resultCode == Activity.RESULT_OK) {
+
                 when (requestCode) {
                     100 -> {
 
@@ -145,19 +151,22 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
 
                         weekView_layout.addView(weekView)
                         main_text.visibility = View.INVISIBLE
+
                     }
                     101 -> {
 
                     }
                     102 -> {
                         weekView.refresh(weekView)
+
                     }
                     103 -> {
                         weekView.refresh(weekView)
+
                     }
-                    105 ->{
-                        val statusBarColor = data!!.getIntExtra("statusBarColor",0)
-                        val mainButtonBarColor = data.getIntExtra("mainButtonColor",0)
+                    105 -> {
+                        val statusBarColor = data!!.getIntExtra("statusBarColor", 0)
+                        val mainButtonBarColor = data.getIntExtra("mainButtonColor", 0)
 
                         val themeData = realm.where(ThemeData::class.java).findFirst()!!
                         realm.beginTransaction()
@@ -175,6 +184,8 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
 
                     103 -> {
                         weekView.deleteSubject(WeekView.ID)
+
+
                     }
 
                 }
@@ -288,18 +299,27 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
             }
             R.id.scheduleSetting -> {
                 if (scheduleData == null) {
-                    Toast.makeText(this,resources.getString(R.string.add_schedule_first),Toast.LENGTH_SHORT).show()
-                }else{
+                    Toast.makeText(
+                        this,
+                        resources.getString(R.string.add_schedule_first),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
                     val dialog = ScheduleDialog(this)
                     dialog.cnxt = this
                     dialog.show()
+
                 }
                 return true
             }
-            R.id.subjectSetting ->{
+            R.id.subjectSetting -> {
                 if (scheduleData == null) {
-                    Toast.makeText(this,resources.getString(R.string.add_schedule_first),Toast.LENGTH_SHORT).show()
-                }else{
+                    Toast.makeText(
+                        this,
+                        resources.getString(R.string.add_schedule_first),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
                     val dialog = SubjectDialog(this)
                     dialog.cnxt = this
                     dialog.show()
@@ -310,7 +330,8 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
 
                 if (storage.purchasedRemoveAds()) {
                     // TODO: 이미 구매하셨습니다. 메세지 띄우기!
-                    Toast.makeText(this,getString(R.string.already_purchased),Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.already_purchased), Toast.LENGTH_SHORT)
+                        .show()
                 } else {
                     bp.purchase(this, getString(R.string.in_app_no_ads_sku))
                 }
@@ -340,7 +361,7 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
 
     }
 
-    fun checkPermissions(permission: String,result: ()->Unit){
+    fun checkPermissions(permission: String, result: () -> Unit){
 
         //거절되었거나 아직 수락하지 않은 권한(퍼미션)을 저장할 문자열 배열 리스트
         //필요한 퍼미션들을 하나씩 끄집어내서 현재 권한을 받았는지 체크
@@ -359,34 +380,43 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
         if(permission in rejectedPermissionList){
             //권한 요청
             val array = arrayOfNulls<String>(rejectedPermissionList.size)
-            ActivityCompat.requestPermissions(this, rejectedPermissionList.toArray(array),100)
+            ActivityCompat.requestPermissions(this, rejectedPermissionList.toArray(array), 100)
         }
 
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         when (requestCode) {
-            100->{
-                if(grantResults.isNotEmpty()) {
-                    for((i, permission) in permissions.withIndex()) {
-                        if(grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+            100 -> {
+                if (grantResults.isNotEmpty()) {
+                    for ((i, permission) in permissions.withIndex()) {
+                        if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
 
                             //권한 획득 실패
 
                             val dialog = Builder(this).apply {
                                 val n: String = Locale.getDefault().displayLanguage
-                                if (n.compareTo("한국어") == 0){
+                                if (n.compareTo("한국어") == 0) {
                                     this.setMessage("다음 기능을 사용하기 위해서는 $permission 권한이 필요합니다. 계속 하시겠습니까?")
-                                }
-                                else {
+                                } else {
                                     this.setMessage("$permission permission is required to use the following features: Would you like to go on?")
                                 }
                             }
                                 .setCancelable(false)
                                 .setPositiveButton(resources.getString(R.string.dialog_apply)) { _, _ ->
-                                    ActivityCompat.requestPermissions(this, permissions,100) }
+                                    ActivityCompat.requestPermissions(this, permissions, 100)
+                                }
                                 .show()
-                            dialog.getButton(BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(applicationContext,R.color.defaultAccentColor))
+                            dialog.getButton(BUTTON_POSITIVE).setTextColor(
+                                ContextCompat.getColor(
+                                    applicationContext,
+                                    R.color.defaultAccentColor
+                                )
+                            )
 
                         }
                     }
