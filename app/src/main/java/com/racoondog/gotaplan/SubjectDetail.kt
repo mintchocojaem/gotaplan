@@ -597,7 +597,10 @@ class SubjectDetail : AppCompatActivity() {
                 linkageID[i]!!.subjectColor = subject_detail_color_picker.colorCode
                 linkageID[i]!!.title = subject_title.text.toString()
                 linkageID[i]!!.content = subject_memo.text.toString()
-
+                data.startHour = subject_detail_time_picker.startHour()
+                data.startMinute = subject_detail_time_picker.startMinute()
+                data.endHour = subject_detail_time_picker.endHour()
+                data.endMinute = subject_detail_time_picker.endMinute()
                 linkageID[i]!!.studentName = studentName_text.text.toString()
                 linkageID[i]!!.studentBirth = studentBirth_text.text.toString()
                 linkageID[i]!!.studentPhoneNumber = studentPhone_text.text.toString()
