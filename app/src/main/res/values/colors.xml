@@ -16,25 +16,32 @@
     <color name="clear">#00000000</color>
     <color name="darkColor">#494949</color>
     <color name="whiteColor">#ffffff</color>
-    <color name="purpleColor">#BEAED4</color>
+    <color name="plumColor">#BEAED4</color>
     <color name="orangeColor">#FFC686</color>
     <color name="skyColor">#ADE7F7</color>
     <color name="pinkColor">#FFDDDD</color>
     <color name="mauveColor">#DDDDFF</color>
-    <color name="roseColor">#edacb1</color>
+    <color name="lipColor">#edacb1</color>
     <color name="yellowColor">#FFDE66</color>
     <color name="greenColor">#8ce08b</color>
     <color name="mintColor">#9feed5</color>
     <color name="ivoryColor">#ece6cc</color>
+    <color name="purpleColor">#C7A1FC</color>
+    <color name="roseColor">#F09789</color>
+    <color name="blueColor">#82BDFF</color>
+    <color name="forsythiaColor">#FFEDA4</color>
+    <color name="grassColor">#BEF277</color>
+    <color name="brownColor">#E0B06D</color>
+
 
     <integer-array name="schedule_color">
         <item>@color/whiteColor</item>
-        <item>@color/purpleColor</item>
+        <item>@color/plumColor</item>
         <item>@color/orangeColor</item>
         <item>@color/skyColor</item>
         <item>@color/pinkColor</item>
         <item>@color/mauveColor</item>
-        <item>@color/roseColor</item>
+        <item>@color/lipColor</item>
         <item>@color/yellowColor</item>
         <item>@color/greenColor</item>
         <item>@color/mintColor</item>
@@ -42,15 +49,21 @@
 
     <integer-array name="subject_color">
         <item>@color/ivoryColor</item>
-        <item>@color/purpleColor</item>
+        <item>@color/plumColor</item>
         <item>@color/orangeColor</item>
         <item>@color/skyColor</item>
         <item>@color/pinkColor</item>
         <item>@color/mauveColor</item>
-        <item>@color/roseColor</item>
+        <item>@color/lipColor</item>
         <item>@color/yellowColor</item>
         <item>@color/greenColor</item>
         <item>@color/mintColor</item>
+        <item>@color/purpleColor</item>
+        <item>@color/roseColor</item>
+        <item>@color/blueColor</item>
+        <item>@color/forsythiaColor</item>
+        <item>@color/grassColor</item>
+        <item>@color/brownColor</item>
     </integer-array>
     
 </resources>

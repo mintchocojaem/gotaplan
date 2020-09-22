@@ -68,10 +68,10 @@ class ColorPickerDialog(context: Context, private var onCustomDialogEventListene
                 ConstraintLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             ).apply {
-                rightMargin = 16
-                leftMargin = 16
-                topMargin = 16
-                bottomMargin = 16
+                rightMargin = 24
+                leftMargin = 24
+                topMargin = 24
+                bottomMargin = 24
             }
             colorButton.apply {
                 setBackgroundResource(R.drawable.color_picker_btn)
