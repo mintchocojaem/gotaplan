@@ -23,7 +23,7 @@
             <TextView
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:text="시간표 간격 변경"
+                    android:text="@string/schedule_interval_dialog_title"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -59,13 +59,13 @@
                        <RadioButton
                                android:layout_width="wrap_content"
                                android:layout_height="wrap_content"
-                               android:text="1시간"
+                               android:text="@string/schedule_interval_dialog_1h"
                                android:id="@+id/interval_1h"/>
 
                        <RadioButton
                                android:layout_width="wrap_content"
                                android:layout_height="50dp"
-                               android:text="30분"
+                               android:text="@string/schedule_interval_dialog_30m"
                                android:id="@+id/interval_30m"/>
 
 

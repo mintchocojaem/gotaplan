@@ -32,12 +32,15 @@
     <string name="dialog_cancel">Cancel</string>
     <string name="dialog_apply">Apply</string>
     <string name="schedule_dialog_toolbar_title">Timetable Settings</string>
-    <string name="schedule_dialog_edit_schedule_title">Change the title of a timetable</string>
-    <string name="schedule_dialog_share_schedule">Share a timetable</string>
-    <string name="schedule_dialog_save_schedule">Save a timetable</string>
-    <string name="schedule_dialog_init_schedule">Initialize a timetable</string>
+    <string name="schedule_dialog_edit_schedule_title">Change the title</string>
+    <string name="schedule_dialog_interval_schedule">Change the Interval</string>
+    <string name="schedule_dialog_share_schedule">Share</string>
+    <string name="schedule_dialog_save_schedule">Save</string>
+    <string name="schedule_dialog_init_schedule">Initialize</string>
     <string name="subject_dialog_toolbar_title">Schedule Settings</string>
-    <string name="subject_dialog_init_subject">Initialize schedules</string>
+    <string name="subject_dialog_init_subject">Initialize</string>
+    <string name="schedule_dialog_edit_time">Change the time</string>
+    <string name="schedule_time_dialog_title">Change the time</string>
     <string name="am">Am</string>
     <string name="pm">Pm</string>
     <string name="start">Start</string>
@@ -77,8 +80,6 @@
     <string name="front_ad_unit_id">ca-app-pub-4742391180869310/6497915737</string>
     <string name="front_ad_test">ca-app-pub-3940256099942544/1033173712</string>
     <string name="already_purchased">"You've already purchased it."</string>
-    <string name="schedule_dialog_edit_time">Change the time of a timetable</string>
-    <string name="schedule_time_dialog_title">Change the time</string>
     <string name="schedule_time_dialog_start_time">Start time</string>
     <string name="schedule_time_dialog_end_time">End time</string>
     <string name="schedule_time_dialog_start_min">Start time cannot be less than 06.</string>
@@ -126,8 +127,8 @@
     <string name="lesson_cycle_max">Unable to calculate due to exceeding the Cycle.\n(Please pay manually and use it.)</string>
     <string name="cycle_switch_auto">Do you want to use the automatic calculation?</string>
     <string name="cycle_switch_auto_help">What is automatic calculation?</string>
-    <string name="guide_timetable_title">Guide(Timetable)</string>
-    <string name="guide_lesson_title">Guide(Lesson Mode)</string>
+    <string name="guide_timetable_title">Timetable</string>
+    <string name="guide_lesson_title">Lesson Mode</string>
     <string name="guide_auto_help_title">Function Guide</string>
     <string name="cycle_dialog_title_current">The current number of classes this month</string>
     <string name="cycle_dialog_title_month">The total number of classes this month</string>
@@ -151,6 +152,9 @@
     <string name="guide_lesson_sixth_title">6. Caution for Calculation\n(automatic)</string>
     <string name="guide_lesson_sixth_content">Depending on the Android version, you may\n not be able to see the \"Closed\" and \"Proceed\"\n buttons as follows, but press the button\n below to display them! </string>
     <string name="direct_feedback_gmail_add">* Please don\'t erase the following information is absolutely necessary for developers and send it!</string>
+    <string name="schedule_interval_dialog_title">Change the interval</string>
+    <string name="schedule_interval_dialog_1h">1 Hour</string>
+    <string name="schedule_interval_dialog_30m">30 Minute</string>
 
 
 </resources>

@@ -33,12 +33,15 @@
     <string name="dialog_cancel">취소</string>
     <string name="dialog_apply">확인</string>
     <string name="schedule_dialog_toolbar_title">시간표 설정</string>
-    <string name="schedule_dialog_edit_schedule_title">시간표 제목 변경</string>
-    <string name="schedule_dialog_share_schedule">시간표 공유</string>
-    <string name="schedule_dialog_save_schedule">시간표 저장</string>
-    <string name="schedule_dialog_init_schedule">시간표 초기화</string>
+    <string name="schedule_dialog_edit_schedule_title">제목 변경</string>
+    <string name="schedule_dialog_share_schedule">공유</string>
+    <string name="schedule_dialog_save_schedule">저장</string>
+    <string name="schedule_dialog_init_schedule">초기화</string>
+    <string name="schedule_dialog_interval_schedule">간격 변경</string>
     <string name="subject_dialog_toolbar_title">일정 설정</string>
-    <string name="subject_dialog_init_subject">일정 초기화</string>
+    <string name="subject_dialog_init_subject">초기화</string>
+    <string name="schedule_dialog_edit_time">시간 변경</string>
+    <string name="schedule_time_dialog_title">시간 변경</string>
     <string name="am">오전</string>
     <string name="pm">오후</string>
     <string name="start">시작</string>
@@ -78,8 +81,6 @@
     <string name="front_ad_unit_id">ca-app-pub-4742391180869310/6497915737</string>
     <string name="front_ad_test">ca-app-pub-3940256099942544/1033173712</string>
     <string name="already_purchased">"이미 구매하셨습니다."</string>
-    <string name="schedule_dialog_edit_time">시간표 시간 변경</string>
-    <string name="schedule_time_dialog_title">시간 변경</string>
     <string name="schedule_time_dialog_start_time">시작 시각</string>
     <string name="schedule_time_dialog_end_time">종료 시각</string>
     <string name="schedule_time_dialog_start_min">시작 시각이 06시보다 작을 수 없습니다.</string>
@@ -127,8 +128,8 @@
     <string name="lesson_cycle_max">정산 주기를 초과하여 정산할 수 없습니다.\n(수동으로 정산 후 이용해주세요)</string>
     <string name="cycle_switch_auto">자동정산 기능을 사용하시겠습니까?</string>
     <string name="cycle_switch_auto_help">자동정산이란?</string>
-    <string name="guide_timetable_title">도움말(시간표)</string>
-    <string name="guide_lesson_title">도움말(수업 기능)</string>
+    <string name="guide_timetable_title">시간표</string>
+    <string name="guide_lesson_title">수업 기능</string>
     <string name="guide_auto_help_title">기능 안내</string>
     <string name="cycle_dialog_title_current">이번 달 현재 수업 횟수</string>
     <string name="cycle_dialog_title_month">이번 달 총 수업 횟수</string>
@@ -152,4 +153,7 @@
     <string name="guide_lesson_sixth_title">6. 자동정산 유의사항</string>
     <string name="guide_lesson_sixth_content">안드로이드 버전에 따라 시간이 지나면 다음과 같이 \"휴강\"과 \"진행\" 버튼이 안보이는 경우가 있는데,\n 이때 아래의 버튼을 눌러주시면 표시됩니다! </string>
     <string name="direct_feedback_gmail_add">* 아래의 정보는 개발자에게 꼭 필요하오니 지우지 말고 보내주세요!</string>
+    <string name="schedule_interval_dialog_title">간격 변경</string>
+    <string name="schedule_interval_dialog_1h">1시간</string>
+    <string name="schedule_interval_dialog_30m">30분</string>
 </resources>
