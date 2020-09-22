@@ -32,13 +32,13 @@
     <string name="edit_schedule_title_dialog_toolbar_title">제목 변경</string>
     <string name="dialog_cancel">취소</string>
     <string name="dialog_apply">확인</string>
-    <string name="schedule_dialog_toolbar_title">시간표 설정</string>
+    <string name="schedule_dialog_toolbar_title">시간표 기능</string>
     <string name="schedule_dialog_edit_schedule_title">제목 변경</string>
     <string name="schedule_dialog_share_schedule">공유</string>
     <string name="schedule_dialog_save_schedule">저장</string>
     <string name="schedule_dialog_init_schedule">초기화</string>
     <string name="schedule_dialog_interval_schedule">간격 변경</string>
-    <string name="subject_dialog_toolbar_title">일정 설정</string>
+    <string name="subject_dialog_toolbar_title">일정 기능</string>
     <string name="subject_dialog_init_subject">초기화</string>
     <string name="schedule_dialog_edit_time">시간 변경</string>
     <string name="schedule_time_dialog_title">시간 변경</string>

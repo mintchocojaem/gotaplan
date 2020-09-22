@@ -31,13 +31,13 @@
     <string name="edit_schedule_title_dialog_toolbar_title">Change the title</string>
     <string name="dialog_cancel">Cancel</string>
     <string name="dialog_apply">Apply</string>
-    <string name="schedule_dialog_toolbar_title">Timetable Settings</string>
+    <string name="schedule_dialog_toolbar_title">Timetable Functions</string>
     <string name="schedule_dialog_edit_schedule_title">Change the title</string>
     <string name="schedule_dialog_interval_schedule">Change the Interval</string>
     <string name="schedule_dialog_share_schedule">Share</string>
     <string name="schedule_dialog_save_schedule">Save</string>
     <string name="schedule_dialog_init_schedule">Initialize</string>
-    <string name="subject_dialog_toolbar_title">Schedule Settings</string>
+    <string name="subject_dialog_toolbar_title">Schedule Functions</string>
     <string name="subject_dialog_init_subject">Initialize</string>
     <string name="schedule_dialog_edit_time">Change the time</string>
     <string name="schedule_time_dialog_title">Change the time</string>
