@@ -5,8 +5,8 @@
         android:minResizeWidth="160dp"
         android:minResizeHeight="100dp"
         android:updatePeriodMillis="1000"
-        android:resizeMode="horizontal|vertical"
-        android:previewImage="@drawable/app_widget_preview"
-        android:initialLayout="@layout/new_app_widget"
+        android:resizeMode="vertical"
+        android:previewImage="@drawable/schedule_widget_preview"
+        android:initialLayout="@layout/small_schedule_widget"
         android:widgetCategory="home_screen"
-        android:initialKeyguardLayout="@layout/new_app_widget" />
+        android:initialKeyguardLayout="@layout/small_schedule_widget" />

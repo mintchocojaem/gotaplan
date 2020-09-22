@@ -10,7 +10,7 @@
         >
 
     <TextView
-            android:id="@+id/widget_title_text"
+            android:id="@+id/small_schedule_widget_collection_title"
             android:layout_width="60dp"
             android:layout_height="match_parent"
             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -24,7 +24,7 @@
             />
 
     <TextView
-            android:id="@+id/widget_date_text"
+            android:id="@+id/small_schedule_widget_collection_date"
             android:layout_width="80dp"
             android:layout_height="match_parent"
             android:textAppearance="?android:attr/textAppearanceLarge"

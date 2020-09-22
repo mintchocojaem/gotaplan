@@ -18,20 +18,39 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
 
-
-        <receiver android:name=".NewAppWidget" android:label="small">
+        <receiver android:name=".LargeScheduleWidget" android:label="Large">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
             <meta-data
                     android:name="android.appwidget.provider"
-                    android:resource="@xml/new_app_widget_info" />
+                    android:resource="@xml/large_schedule_widget_info" />
         </receiver>
-        <service android:name=".MyRemoteViewsService"
+
+        <receiver
+                android:name=".SmallScheduleWidget"
+                android:label="Small">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                    android:name="android.appwidget.provider"
+                    android:resource="@xml/small_schedule_widget_info" />
+        </receiver>
+
+        <service
+                android:name=".SmallScheduleWidgetRemoteViewsService"
                 android:enabled="true"
                 android:exported="true"
-                android:permission="android.permission.BIND_REMOTEVIEWS"/>
+                android:permission="android.permission.BIND_REMOTEVIEWS" />
+        <service
+                android:name=".LargeScheduleWidgetRemoteViewsService"
+                android:enabled="true"
+                android:exported="true"
+                android:permission="android.permission.BIND_REMOTEVIEWS" />
+
         <receiver
                 android:name=".DeviceBootReceiver"
                 android:enabled="false">

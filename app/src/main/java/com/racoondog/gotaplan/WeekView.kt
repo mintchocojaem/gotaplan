@@ -717,12 +717,20 @@ class WeekView : ConstraintLayout{
         AppStorage(cnxt).setWidgetDateList(sortedDate)
 
         val appWidgetManager = AppWidgetManager.getInstance(context)
-        val appWidgetIds = appWidgetManager.getAppWidgetIds(
+        val smallAppWidgetIds = appWidgetManager.getAppWidgetIds(
             ComponentName(
                 context,
-                NewAppWidget::class.java
+                SmallScheduleWidget::class.java
             )
         )
-        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_listview)
+        appWidgetManager.notifyAppWidgetViewDataChanged(smallAppWidgetIds, R.id.small_schedule_widget_listview)
+
+        val largeAppWidgetIds = appWidgetManager.getAppWidgetIds(
+            ComponentName(
+                context,
+                LargeScheduleWidget::class.java
+            )
+        )
+        appWidgetManager.notifyAppWidgetViewDataChanged(largeAppWidgetIds, R.id.large_schedule_widget_listview)
     }
 }

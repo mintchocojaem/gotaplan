@@ -9,16 +9,16 @@ import com.google.gson.GsonBuilder
 import io.realm.Realm
 
 
-class MyRemoteViewsService : RemoteViewsService() {
+class LargeScheduleWidgetRemoteViewsService : RemoteViewsService() {
     //필수 오버라이드 함수 : RemoteViewsFactory를 반환한다.
 
 
     override fun onGetViewFactory(intent: Intent): RemoteViewsFactory {
 
-        return MyRemoteViewsFactory(this.applicationContext)
+        return LargeScheduleWidgetRemoteViewsFactory(this.applicationContext)
     }
 
-    class MyRemoteViewsFactory(context: Context?) : RemoteViewsService.RemoteViewsFactory {
+    class LargeScheduleWidgetRemoteViewsFactory(context: Context?) : RemoteViewsService.RemoteViewsFactory {
         //context 설정하기
         var context: Context? = null
         var arrayList : MutableList<WidgetItem?>? = null
@@ -33,15 +33,10 @@ class MyRemoteViewsService : RemoteViewsService() {
              */
             val data = context!!.getSharedPreferences("app_storage", MODE_PRIVATE)
                 .getString("data", "")
-            var makeGson = GsonBuilder().create()
-            var listType : TypeToken<MutableList<WidgetItem?>> = object : TypeToken<MutableList<WidgetItem?>>() {}
+            val makeGson = GsonBuilder().create()
+            val listType : TypeToken<MutableList<WidgetItem?>> = object : TypeToken<MutableList<WidgetItem?>>() {}
             arrayList = makeGson.fromJson(data,listType.type)
 
-
-
-            //arrayList!!.add(WidgetItem(3, "$subjectData"))
-            //arrayList!!.add(WidgetItem(4, "1"))
-            //arrayList!!.add(WidgetItem(5, "2"))
 
 
         }
@@ -75,14 +70,12 @@ class MyRemoteViewsService : RemoteViewsService() {
         //각 항목을 구현하기 위해 호출, 매개변수 값을 참조하여 각 항목을 구성하기위한 로직이 담긴다.
         // 항목 선택 이벤트 발생 시 인텐트에 담겨야 할 항목 데이터를 추가해주어야 하는 함수
         override fun getViewAt(position: Int): RemoteViews {
-            val listviewWidget = RemoteViews(
-                context?.getPackageName(),
-                R.layout.widget_item_collection
-            )
-            listviewWidget.setTextViewText(R.id.widget_title_text, arrayList!![position]?.title)
-            listviewWidget.setTextViewText(R.id.widget_date_text, arrayList!![position]?.startHour.toString() +":"+
+            val listviewWidget = RemoteViews(context?.packageName, R.layout.large_schedule_widget_item_collection)
+            listviewWidget.setTextViewText(R.id.large_schedule_widget_collection_title, arrayList!![position]?.title)
+            listviewWidget.setTextViewText(R.id.large_schedule_widget_collection_date, arrayList!![position]?.startHour.toString() +":"+
                     arrayList!![position]?.startMinute.toString()+" ~ "+ arrayList!![position]?.endHour.toString()+":"+
                     arrayList!![position]?.endMinute.toString())
+
             // 항목 선택 이벤트 발생 시 인텐트에 담겨야 할 항목 데이터를 추가해주는 코드
             val dataIntent = Intent()
             //dataIntent.putExtra("item_id", arrayList!![position].get_id())

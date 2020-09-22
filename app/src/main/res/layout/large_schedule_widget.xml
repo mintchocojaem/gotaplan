@@ -1,0 +1,45 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/widget_margin"
+        android:background="@drawable/round_bg_layout"
+        android:backgroundTint="#494949">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:textColor="#ffffff"
+                android:textSize="20sp"
+                android:text="Date"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:id="@+id/large_schedule_widget_title"
+                android:fontFamily="@font/yd_child_fund_korea"
+                >
+
+        </TextView>
+
+
+
+        <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/large_schedule_widget_listview"
+                android:background="@drawable/round_bg_layout"
+                android:backgroundTint="#494949"
+                android:divider="#ffffff"
+                android:dividerHeight="1dp"
+                >
+
+        </ListView>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

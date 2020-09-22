@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:orientation="horizontal"
+        android:padding="@dimen/widget_margin"
+        android:background="#494949"
+        android:gravity="center"
+        >
+
+    <TextView
+            android:id="@+id/large_schedule_widget_collection_title"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:gravity="center|left"
+            android:minHeight="?android:attr/listPreferredItemHeight"
+            android:textColor="#ffffff"
+            android:textSize="16sp"
+            android:text="test"
+            android:fontFamily="@font/yd_child_fund_korea"
+            android:maxLines="2"
+            />
+
+    <TextView
+            android:id="@+id/large_schedule_widget_collection_date"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:minHeight="?android:attr/listPreferredItemHeight"
+            android:textColor="#ffffff"
+            android:textSize="16sp"
+            android:gravity="center|right"
+            android:text="2020.09.20"
+            android:fontFamily="@font/yd_child_fund_korea"
+            />
+
+</LinearLayout>

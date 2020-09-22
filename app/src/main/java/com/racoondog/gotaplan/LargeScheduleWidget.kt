@@ -5,8 +5,6 @@ import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
-import android.util.Log
 import android.widget.RemoteViews
 import io.realm.Realm
 import io.realm.RealmResults
@@ -15,7 +13,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class NewAppWidget : AppWidgetProvider() {
+class LargeScheduleWidget : AppWidgetProvider() {
 
     override fun onUpdate(
         context: Context,
@@ -39,10 +37,22 @@ class NewAppWidget : AppWidgetProvider() {
             SimpleDateFormat("yyyy.MM.dd EE", Locale.getDefault()).format(currentTime)
         }
         updateWidget(context)
-        val serviceIntent = Intent(context, MyRemoteViewsService::class.java)
-        val widget = RemoteViews(context.packageName, R.layout.new_app_widget)
-        widget.setRemoteAdapter(R.id.widget_listview, serviceIntent)
-        widget.setTextViewText(R.id.widget_title, date)
+        val serviceIntent = Intent(context, LargeScheduleWidgetRemoteViewsService::class.java)
+        val widget = RemoteViews(context.packageName, R.layout.large_schedule_widget)
+        widget.setRemoteAdapter(R.id.large_schedule_widget_listview, serviceIntent)
+        widget.setTextViewText(R.id.large_schedule_widget_title, date)
+
+        // 나중에 오늘은 일정이 없네요! 할때 활용하면 될듯
+        /*
+        val data = context!!.getSharedPreferences("app_storage", RemoteViewsService.MODE_PRIVATE)
+            .getString("data", "")
+        val makeGson = GsonBuilder().create()
+        val listType : TypeToken<MutableList<WidgetItem?>> = object : TypeToken<MutableList<WidgetItem?>>() {}
+        val count:MutableList<WidgetItem> = makeGson.fromJson(data,listType.type)
+        if (count.size == 0) widget.setTextViewText(R.id.widget_title,"gg")
+        else widget.setTextViewText(R.id.widget_title,"ok")
+
+         */
 
         appWidgetManager.updateAppWidget(appWidgetIds, widget)
         super.onUpdate(context, appWidgetManager, appWidgetIds)
@@ -51,12 +61,12 @@ class NewAppWidget : AppWidgetProvider() {
 
 }
 
-internal fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int) {
+private fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int) {
 
     //여기부분 다 사용할 일 없어져서 주석처리함!
     // Construct the RemoteViews object
 
-    val views = RemoteViews(context.packageName, R.layout.new_app_widget)
+    val views = RemoteViews(context.packageName, R.layout.large_schedule_widget)
 
     /*
     val intent = Intent(context, MainActivity::class.java)
@@ -65,8 +75,6 @@ internal fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManage
 
      */
 
-
-    // Instruct the widget manager to update the widget
     appWidgetManager.updateAppWidget(appWidgetId, views)
 
 }
@@ -96,8 +104,8 @@ private fun updateWidget(context: Context){
     val appWidgetIds = appWidgetManager.getAppWidgetIds(
         ComponentName(
             context,
-            NewAppWidget::class.java
+            LargeScheduleWidget::class.java
         )
     )
-    appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_listview)
+    appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.large_schedule_widget_listview)
 }
