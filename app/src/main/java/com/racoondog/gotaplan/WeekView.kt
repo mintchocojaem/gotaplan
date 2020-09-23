@@ -694,7 +694,7 @@ class WeekView : ConstraintLayout{
         return checkTime.contains(element = false) // checkTime = true -> 시간표 겹침
 
     }
-    private fun updateWidget() {
+    fun updateWidget() {
         val cal = Calendar.getInstance()
         var date = 0
         val dayFlag = cal.get(Calendar.DAY_OF_WEEK)

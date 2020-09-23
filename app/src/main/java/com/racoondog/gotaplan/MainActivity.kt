@@ -65,8 +65,6 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
 
         loadData()//데이터 불러오기
 
-        initLinkageID() // v.1.0.7 이하 버전은 linkageID 생성
-
         if (!storage.purchasedRemoveAds() && !storage.showHelpView()) {
             MobileAds.initialize(this, getString(R.string.ad_mob_app_id))
             mInterstitialAd = InterstitialAd(this)
@@ -204,38 +202,6 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
         }
     }
 
-    private fun initLinkageID(){
-
-        if(storage.initLinkageID()){
-
-            val subjectData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
-                .findAll()
-            for (i in subjectData.indices){
-
-                if(subjectData[i]?.linkageID == 0){
-
-                    for (j in  i+1 until subjectData.size){
-
-                        if(subjectData[i]?.title == subjectData[j]?.title){
-
-                            val id = weekView.createLinkageID(1, 128)//다음으로 만들어질 weekView 의 id 값을 결정하는 변수
-
-                            realm.beginTransaction()
-                            subjectData[i]?.linkageID = id
-                            subjectData[j]?.linkageID = id
-                            realm.commitTransaction()
-
-                        }
-
-                    }
-
-                }
-
-            }
-            storage.setLinkageID(false)
-        }
-
-    }
 
     private fun loadData() {
 
@@ -277,8 +243,9 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
                     data.subjectColor
                 )
             }
-
+            weekView.updateWidget()
         }
+
 
     }
 

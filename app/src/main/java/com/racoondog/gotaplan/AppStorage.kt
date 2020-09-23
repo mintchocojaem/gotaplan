@@ -12,8 +12,6 @@ class AppStorage(context: Context) {
     private val pref: SharedPreferences = context.getSharedPreferences("app_storage", Context.MODE_PRIVATE)
     private val removeAds = "remove_ads"
     private val helpView = ""
-    private val linkageID = "linkageID"
-    private val titleList = mutableListOf<String>()
 
     fun purchasedRemoveAds(): Boolean {
         return pref.getBoolean(removeAds, false)
@@ -57,13 +55,6 @@ class AppStorage(context: Context) {
     fun showHelpView(): Boolean {
         return pref.getBoolean(helpView,true)
     }
-    fun setLinkageID(flag: Boolean) {
-        val editor = pref.edit()
-        editor.putBoolean(linkageID, flag)
-        editor.apply()
-    }
-    fun initLinkageID(): Boolean {
-        return pref.getBoolean(linkageID,true)
-    }
+
 
 }
