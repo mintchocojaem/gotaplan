@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:background="#494949">
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+
+        <ImageButton
+                android:id="@+id/btn_cancel"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:backgroundTint="@color/whiteColor"
+                android:background="@drawable/ic_keyboard_backspace_black_24dp" />
+
+
+        <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:background="#ffffff"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            >
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="시간표 목록"
+                android:fontFamily="@font/yd_child_fund_korea"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:textColor="#ffffff"
+                >
+
+        </TextView>
+
+        <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:background="#ffffff"/>
+
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/side_menu_list"
+            >
+
+
+
+
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+</LinearLayout>
+
+

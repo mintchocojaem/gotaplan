@@ -98,6 +98,12 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
             startActivityForResult(subjectIntent, 102)
         }
 
+        side_menu_btn.setOnClickListener {
+            // 나중에 시간표 여러개 생성될때 side_menu_btn visible 시키고 고쳐쓰면됨
+            val sideMenu = SideMenu(this)
+            sideMenu.addSideView(main,fl_silde,view_sildebar)
+            sideMenu.showMenu(main,fl_silde,view_sildebar)
+        }
 
 
     }
