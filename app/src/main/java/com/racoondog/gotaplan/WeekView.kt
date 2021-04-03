@@ -148,6 +148,7 @@ class WeekView : ConstraintLayout{
                 TableRow.LayoutParams.WRAP_CONTENT
             ).apply {
                 width = cellWidth
+
             }
             dayRow.addView(dayText)
 
