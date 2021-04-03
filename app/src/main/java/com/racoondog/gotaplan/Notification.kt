@@ -12,6 +12,8 @@ import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat.getSystemService
+import io.realm.Realm
+import io.realm.RealmResults
 import kotlinx.android.synthetic.main.notification.view.*
 import java.util.*
 
@@ -105,12 +107,22 @@ class Notification:ConstraintLayout {
             val editor = context.getSharedPreferences("alarm", Context.MODE_PRIVATE).edit()
             editor.putLong("$id", calendar.timeInMillis)
             editor.apply()
-
-
+            val realm = Realm.getDefaultInstance()
+            val subjectData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
+                .equalTo("id",id)
+                .findAll()
+            val data = subjectData[0]
             val pm = context.packageManager
             val receiver = ComponentName(context, DeviceBootReceiver::class.java)
             val alarmIntent = Intent(context, AlarmReceiver::class.java)
             alarmIntent.putExtra("id",id)
+            alarmIntent.putExtra("dayFlag",dayFlag)
+            alarmIntent.putExtra("startHour",data?.startHour)
+            alarmIntent.putExtra("startMinute",data?.startMinute)
+            alarmIntent.putExtra("notification", notificationFlag)
+            alarmIntent.putExtra("title", data?.title)
+
+
             val pendingIntent = PendingIntent.getBroadcast(context, id, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT)
             val alarmManager =
                 context.getSystemService(Context.ALARM_SERVICE) as AlarmManager

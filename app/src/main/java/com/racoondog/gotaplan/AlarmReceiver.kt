@@ -13,6 +13,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.PowerManager
 import android.renderscript.RenderScript
+import android.util.Log
 import android.widget.RemoteViews
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
@@ -23,11 +24,17 @@ import java.util.*
 
 class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        val realm = Realm.getDefaultInstance()
+        //val realm = Realm.getDefaultInstance()
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val notificationIntent = Intent(context, MainActivity::class.java)
         val id = intent.getIntExtra("id",0)
+        val dayFlag = intent.getIntExtra("dayFlag",0)
+        val startHour = intent.getIntExtra("startHour",0)
+        val startMinute = intent.getStringExtra("startMinute")
+        val notification = intent.getIntExtra("notification",0)
+        val title = intent.getStringExtra("title")
+
         notificationIntent.flags = (Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
 
         val pendingI = PendingIntent.getActivity(context, id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
@@ -65,6 +72,8 @@ class AlarmReceiver : BroadcastReceiver() {
 
         } else builder.setSmallIcon(R.mipmap.ic_launcher) // Oreo 이하에서 mipmap 사용하지 않으면 Couldn't create icon: StatusBarIcon 에러남
 
+
+        /* 레슨모드 알람 부분
         val subjectData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
             .equalTo("id",id)
             .findAll()
@@ -117,13 +126,25 @@ class AlarmReceiver : BroadcastReceiver() {
 
         }
 
+         */
+        builder.setAutoCancel(true)
+
+            //.setDefaults(NotificationCompat.DEFAULT_ALL)
+            .setWhen(System.currentTimeMillis())
+            .setContentTitle(context.resources.getString(R.string.schedule_notify))
+            .setContentText(title)
+            //.setOngoing(true)
+            //.setContentInfo("INFO")
+            .setContentIntent(pendingI)
+            .setSound(soundUri)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
 
         // 노티피케이션 동작시킴
         notificationManager.notify(id, builder.build())
 
         val nextNotifyTime = Calendar.getInstance()
         var date = 0
-        when(data.dayFlag){
+        when(dayFlag){
             1 -> date = 2
             2 -> date = 3
             3 -> date = 4
@@ -134,11 +155,11 @@ class AlarmReceiver : BroadcastReceiver() {
         }
         // 내일 같은 시간으로 알람시간 결정
         nextNotifyTime.timeInMillis = System.currentTimeMillis()
-        nextNotifyTime[Calendar.HOUR_OF_DAY] = data.startHour
-        nextNotifyTime[Calendar.MINUTE] = data.startMinute.toInt() - data.notification
+        nextNotifyTime[Calendar.HOUR_OF_DAY] = startHour
+        nextNotifyTime[Calendar.MINUTE] = startMinute.toInt() - notification
         nextNotifyTime[Calendar.SECOND] = 0
         nextNotifyTime[Calendar.DAY_OF_WEEK] = date
-        nextNotifyTime.add(Calendar.DATE, 7)
+        nextNotifyTime.add(Calendar.DATE,7)
 
         val alarmManager =
             context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
@@ -151,8 +172,6 @@ class AlarmReceiver : BroadcastReceiver() {
                 .edit()
         editor.putLong("$id", nextNotifyTime.timeInMillis)
         editor.apply()
-
-
 
 
     }
