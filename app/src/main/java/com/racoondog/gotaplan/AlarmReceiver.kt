@@ -17,6 +17,8 @@ import android.util.Log
 import android.widget.RemoteViews
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
+import com.google.firebase.crashlytics.internal.common.CrashlyticsCore
+import com.google.firebase.crashlytics.internal.model.CrashlyticsReport
 import io.realm.Realm
 import io.realm.RealmResults
 import java.util.*
@@ -172,7 +174,6 @@ class AlarmReceiver : BroadcastReceiver() {
                 .edit()
         editor.putLong("$id", nextNotifyTime.timeInMillis)
         editor.apply()
-
 
     }
 }

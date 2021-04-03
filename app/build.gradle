@@ -16,8 +16,8 @@ android {
         applicationId "com.racoondog.gotaplan"
         minSdkVersion 24
         targetSdkVersion 29
-        versionCode 22
-        versionName "1.1.10"
+        versionCode 3
+        versionName "1.1.11"
         testInstrumentationRunner "androidx.widget_preview.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -57,6 +57,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-inappmessaging-display:19.1.5'
     implementation 'com.google.firebase:firebase-core:18.0.2'
     implementation 'com.github.AppIntro:AppIntro:5.1.0'
+    implementation "com.android.billingclient:billing:3.0.3"
 
 }
 

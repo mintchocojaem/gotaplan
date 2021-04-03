@@ -73,7 +73,7 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
             mInterstitialAd.adListener = object: AdListener() { //전면 광고의 상태를 확인하는 리스너 등록
                 override fun onAdLoaded() {
                     super.onAdLoaded()
-                    //mInterstitialAd.show()
+                    mInterstitialAd.show()
 
                 }
             }
