@@ -11,6 +11,7 @@ import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
+import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -491,11 +492,10 @@ class WeekView : ConstraintLayout{
             true
 
         }
-
-
         colorImage.addView(titleText)
         subject.addView(colorImage)
         findViewWithTag<ConstraintLayout>("canvas").addView(subject)
+
     }
 
     private fun applyTime(subjectID: Int,subjectDayFlag:Int,startHour:Int,startMinute:Int,endHour:Int,endMinute:Int){
