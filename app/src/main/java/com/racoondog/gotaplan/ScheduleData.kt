@@ -28,14 +28,14 @@ open class SubjectData: RealmObject(){
 
     var notification: Int = -1
 
-    var title: String =""
-    var content: String =""
+    lateinit var title: String
+    lateinit var content: String
 
     var subjectColor = 0
 
-    var studentName : String =""
-    var studentBirth : String =""
-    var studentPhoneNumber : String =""
+    lateinit var studentName : String
+    lateinit var studentBirth : String
+    lateinit var studentPhoneNumber : String
     var lessonCost : String = ""
     var currentCycle : Int = 0
     var maxCycle : Int = 0

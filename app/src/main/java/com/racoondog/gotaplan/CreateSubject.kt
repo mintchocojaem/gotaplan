@@ -279,7 +279,8 @@ class CreateSubject :AppCompatActivity() {
 
                 // 현재 지정된 시간으로 알람 시간 설정
 
-               create_subject_notification.setAlarm(id)
+               create_subject_notification.setAlarm(id,dayFlag,start_hour.value,startText_minute.text.toString(),
+                   Notification.notificationFlag,title_text.text.toString())
 
 
             }

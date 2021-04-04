@@ -616,7 +616,8 @@ class SubjectDetail : AppCompatActivity() {
                 subject_detail_notification.deleteAlarm(linkageID[i]!!.id)
                 subject_detail_notification.setAlarm(
 
-                    linkageID[i]!!.id
+                    linkageID[i]!!.id,linkageID[i]!!.dayFlag,linkageID[i]!!.startHour,
+                    linkageID[i]!!.startMinute,linkageID[i]!!.notification,linkageID[i]!!.title
                 )
             }
         }else{
@@ -643,8 +644,7 @@ class SubjectDetail : AppCompatActivity() {
 
             subject_detail_notification.deleteAlarm(data.id)
             subject_detail_notification.setAlarm(
-                data.id
-            )
+                data.id,data.dayFlag,data.startHour,data.startMinute,data.notification,data.title)
 
         }
     }

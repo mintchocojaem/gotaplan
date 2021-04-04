@@ -74,12 +74,15 @@ class Notification:ConstraintLayout {
         notify_status.setText(text)
     }
 
-    fun setAlarm(id:Int) {
-        val realm = Realm.getDefaultInstance()
+    fun setAlarm(id:Int,dayFlag:Int,startHour:Int,startMinute:String,notification:Int,title:String) {
+
+        /*val realm = Realm.getDefaultInstance()
         val subjectData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
             .equalTo("id",id)
             .findAll()
         val data = subjectData[0]
+
+         */
 
         if(notificationFlag == -1){
             deleteAlarm(id)
@@ -87,7 +90,7 @@ class Notification:ConstraintLayout {
             // 현재 지정된 시간으로 알람 시간 설정
             val calendar = Calendar.getInstance()
             var date = 0
-            when(data?.dayFlag){
+            when(dayFlag){
                 1 -> date = 2
                 2 -> date = 3
                 3 -> date = 4
@@ -97,16 +100,13 @@ class Notification:ConstraintLayout {
                 7 -> date = 1
             }
             calendar.timeInMillis = System.currentTimeMillis()
-            if (data != null) {
-                calendar[Calendar.HOUR_OF_DAY] = data.startHour
-                calendar[Calendar.MINUTE] = data.startMinute.toInt() - notificationFlag
-                calendar[Calendar.SECOND] = 0
-                calendar[Calendar.DAY_OF_WEEK] = date
-                // 이미 지난 시간을 지정했다면 다음날 같은 시간으로 설정
-                if (calendar.before(Calendar.getInstance())) {
-                    calendar.add(Calendar.DATE, 7)
-                }
-
+            calendar[Calendar.HOUR_OF_DAY] = startHour
+            calendar[Calendar.MINUTE] = startMinute.toInt() - notificationFlag
+            calendar[Calendar.SECOND] = 0
+            calendar[Calendar.DAY_OF_WEEK] = date
+            // 이미 지난 시간을 지정했다면 다음날 같은 시간으로 설정
+            if (calendar.before(Calendar.getInstance())) {
+                calendar.add(Calendar.DATE, 7)
             }
 
             //  Preference에 설정한 값 저장
@@ -120,11 +120,11 @@ class Notification:ConstraintLayout {
             val receiver = ComponentName(context, DeviceBootReceiver::class.java)
             val alarmIntent = Intent(context, AlarmReceiver::class.java)
             alarmIntent.putExtra("id",id)
-            alarmIntent.putExtra("dayFlag",data?.dayFlag)
-            alarmIntent.putExtra("startHour",data?.startHour)
-            alarmIntent.putExtra("startMinute",data?.startMinute)
-            alarmIntent.putExtra("notification", data?.notification)
-            alarmIntent.putExtra("title", data?.title)
+            alarmIntent.putExtra("dayFlag",dayFlag)
+            alarmIntent.putExtra("startHour",startHour)
+            alarmIntent.putExtra("startMinute",startMinute)
+            alarmIntent.putExtra("notification", notification)
+            alarmIntent.putExtra("title", title)
 
 
             val pendingIntent = PendingIntent.getBroadcast(context, id, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT)

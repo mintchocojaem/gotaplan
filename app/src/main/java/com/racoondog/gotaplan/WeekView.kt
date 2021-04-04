@@ -549,7 +549,7 @@ class WeekView : ConstraintLayout{
 
                     Notification.notificationFlag = data.notification
                     Notification(context).deleteAlarm(data.id)
-                    Notification(context).setAlarm(data.id)
+                    Notification(context).setAlarm(data.id,data.dayFlag,data.startHour,data.startMinute,data.notification,data.title)
                     Notification.notificationFlag = -1
 
 
