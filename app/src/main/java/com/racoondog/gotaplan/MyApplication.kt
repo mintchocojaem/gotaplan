@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import io.realm.Realm
 import io.realm.RealmConfiguration
+import io.realm.annotations.Required
 import java.lang.Exception
 
 class MyApplication: Application() {
@@ -15,7 +16,7 @@ class MyApplication: Application() {
         try {
 
             val config = RealmConfiguration.Builder()
-                .schemaVersion(3)// 초기 버전 0 (앱 업데이트 출시마다 버전 1 씩 올려야 함)
+                .schemaVersion(4)// 초기 버전 0 (앱 업데이트 출시마다 버전 1 씩 올려야 함)
                 //.deleteRealmIfMigrationNeeded() // 개발 중에는 활성화 (데이터 베이스 필드가 변하면 앱 깔릴 때 데이터 베이스가 초기화 됨)
 
                 .migration { realm, oldVersion, newVersion -> //앱 출시 부터 활성화 (데이터 베이스 정보를 유지하며 업데이트)
@@ -70,7 +71,18 @@ class MyApplication: Application() {
 
                     }
 
+                    if (oldVer == 3L)
+                    {
+                        schema.get("SubjectData")
+                            ?.setNullable("studentName",false) // 바뀐 데이터 베이스 필드
+                        schema["SubjectData"]!!.transform { obj -> obj.setString("studentName", "")}
+                            ?.setNullable("studentBirth",false) // 바뀐 데이터 베이스 필드
+                        schema["SubjectData"]!!.transform { obj -> obj.setString("studentBirth", "")}
+                            ?.setNullable("studentPhoneNumber",false) // 바뀐 데이터 베이스 필드
+                        schema["SubjectData"]!!.transform { obj -> obj.setString("studentPhoneNumber", "")}
+                        oldVer++ // 다음 업데이트를 이어서 적용( 사용자가 2,3단 업데이트 가능 ) / 없으면 여러 업데이트 한번에 적용 불가
 
+                    }
 
 
                 }

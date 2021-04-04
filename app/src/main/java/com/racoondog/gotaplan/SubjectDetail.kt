@@ -615,9 +615,7 @@ class SubjectDetail : AppCompatActivity() {
 
                 subject_detail_notification.deleteAlarm(linkageID[i]!!.id)
                 subject_detail_notification.setAlarm(
-                    linkageID[i]!!.startHour,
-                    linkageID[i]!!.startMinute.toInt(),
-                    linkageID[i]!!.dayFlag,
+
                     linkageID[i]!!.id
                 )
             }
@@ -645,9 +643,6 @@ class SubjectDetail : AppCompatActivity() {
 
             subject_detail_notification.deleteAlarm(data.id)
             subject_detail_notification.setAlarm(
-                data.startHour,
-                data.startMinute.toInt(),
-                data.dayFlag,
                 data.id
             )
 

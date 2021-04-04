@@ -8,6 +8,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.firebase.crashlytics'
 // Add this line
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'realm-android'
+
 
 android {
     compileSdkVersion 29

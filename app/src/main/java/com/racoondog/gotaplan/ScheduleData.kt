@@ -2,6 +2,7 @@ package com.racoondog.gotaplan
 
 import android.graphics.Color
 import io.realm.RealmObject
+import io.realm.annotations.Required
 
 open class ScheduleData: RealmObject() {
 
@@ -14,7 +15,6 @@ open class ScheduleData: RealmObject() {
 }
 
 open class SubjectData: RealmObject(){
-
     var id = 0
     var lessonOnOff : Boolean = false
 
@@ -33,9 +33,9 @@ open class SubjectData: RealmObject(){
 
     var subjectColor = 0
 
-    lateinit var studentName : String
-    lateinit var studentBirth : String
-    lateinit var studentPhoneNumber : String
+    var studentName : String =""
+    var studentBirth : String =""
+    var studentPhoneNumber : String =""
     var lessonCost : String = ""
     var currentCycle : Int = 0
     var maxCycle : Int = 0

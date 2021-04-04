@@ -23,7 +23,7 @@ class SmallScheduleWidgetRemoteViewsService : RemoteViewsService() {
         var context: Context? = null
         var arrayList : MutableList<WidgetItem?>? = null
 
-        //DB를 대신하여 arrayList에 데이터를 추가하는 함수ㅋㅋ
+        //DB를 대신하여 arrayList에 데이터를 추가하는 함수
         fun setData() {
 
             val realm = Realm.getDefaultInstance()
