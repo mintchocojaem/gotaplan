@@ -28,8 +28,8 @@ open class SubjectData: RealmObject(){
 
     var notification: Int = -1
 
-    lateinit var title: String
-    lateinit var content: String
+    var title: String =""
+    var content: String =""
 
     var subjectColor = 0
 

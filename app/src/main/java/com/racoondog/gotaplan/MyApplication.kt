@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import io.realm.Realm
 import io.realm.RealmConfiguration
+import io.realm.RealmResults
 import io.realm.annotations.Required
 import java.lang.Exception
 
@@ -72,14 +73,22 @@ class MyApplication: Application() {
                     }
 
                     if (oldVer == 3L)
-                    {
+                    {    val realm = Realm.getDefaultInstance()
+                        val scheduleData = realm.where(ScheduleData::class.java).findFirst()!!
+                        val subjectData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
+                            .equalTo("id", WeekView.ID)
+                            .findAll()
+                        val data = subjectData[0]
                         schema.get("SubjectData")
-                            ?.setNullable("studentName",false) // 바뀐 데이터 베이스 필드
-                        schema["SubjectData"]!!.transform { obj -> obj.setString("studentName", "")}
-                            ?.setNullable("studentBirth",false) // 바뀐 데이터 베이스 필드
-                        schema["SubjectData"]!!.transform { obj -> obj.setString("studentBirth", "")}
-                            ?.setNullable("studentPhoneNumber",false) // 바뀐 데이터 베이스 필드
-                        schema["SubjectData"]!!.transform { obj -> obj.setString("studentPhoneNumber", "")}
+                            //?.setNullable("studentName",false) // 바뀐 데이터 베이스 필드
+                        schema["SubjectData"]!!.transform { obj -> obj.setString("studentName", data?.studentName?:"")}
+                            //?.setNullable("studentBirth",false) // 바뀐 데이터 베이스 필드
+                        schema["SubjectData"]!!.transform { obj -> obj.setString("studentBirth", data?.studentBirth?:"")}
+                            //?.setNullable("studentPhoneNumber",false) // 바뀐 데이터 베이스 필드
+                        schema["SubjectData"]!!.transform { obj -> obj.setString("studentPhoneNumber", data?.studentPhoneNumber?:"")}
+                        schema["SubjectData"]!!.transform { obj -> obj.setString("title", data?.title)}
+                        //?.setNullable("studentPhoneNumber",false) // 바뀐 데이터 베이스 필드
+                        schema["SubjectData"]!!.transform { obj -> obj.setString("content", data?.content)}
                         oldVer++ // 다음 업데이트를 이어서 적용( 사용자가 2,3단 업데이트 가능 ) / 없으면 여러 업데이트 한번에 적용 불가
 
                     }
@@ -92,7 +101,7 @@ class MyApplication: Application() {
 
             Realm.getDefaultInstance()
         }catch (e:Exception){
-            Realm.deleteRealm(Realm.getDefaultConfiguration())
+            //Realm.deleteRealm(Realm.getDefaultConfiguration())
         }
 
     }
