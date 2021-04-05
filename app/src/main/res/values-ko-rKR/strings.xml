@@ -65,7 +65,8 @@
     <string name="create_subject_toast_enter_title">제목을 입력해주세요.</string>
     <string name="cannot_find_g_mail_app">G-mail 앱을 찾는데 실패했습니다.</string>
     <string name="edit_schedule_title_applied">시간표 제목이 변경되었습니다.</string>
-    <string name="save_timetable_gallery">시간표가 갤러리에 저장되었습니다.</string>
+    <string name="save_timetable_gallery">이미지 저장에 성공했습니다.</string>
+    <string name="none_save_timetable_gallery">이미지 저장에 실패했습니다.</string>
     <string name="initialization">초기화</string>
     <string name="schedule_initialized">시간표가 초기화되었습니다.</string>
     <string name="subject_initialized">일정이 초기화되었습니다.</string>

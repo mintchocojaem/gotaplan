@@ -64,7 +64,9 @@
     <string name="create_subject_toast_enter_title">Please enter a title.</string>
     <string name="cannot_find_g_mail_app">Failed to find G-mail app.</string>
     <string name="edit_schedule_title_applied">The timetable title has been changed.</string>
-    <string name="save_timetable_gallery">The timetable has been saved to the gallery.</string>
+    <string name="save_timetable_gallery">Image save succeeded.</string>
+    <string name="none_save_timetable_gallery">Failed to save image.</string>
+
     <string name="initialization">Initialization</string>
     <string name="schedule_initialized">Timetable initialized.</string>
     <string name="subject_initialized">Schedules have been initialized.</string>

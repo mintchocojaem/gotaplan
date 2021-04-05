@@ -13,6 +13,7 @@ import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
@@ -25,6 +26,7 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
+import java.lang.Exception
 
 
 class ScheduleDialog:Dialog {
@@ -73,14 +75,50 @@ class ScheduleDialog:Dialog {
         }
 
         saveSchedule.setOnClickListener{
+            cnxt.checkPermissions(Manifest.permission.READ_EXTERNAL_STORAGE) {
+                cnxt.checkPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE) {
+                    val bitmap1 = getBitmapFromView(
+                        cnxt.scheduleView,
+                        cnxt.scheduleView.height,
+                        cnxt.scheduleView.width
+                    )
+                    val bitmap2 =
+                        getBitmapFromView(cnxt.dayLine, cnxt.dayLine.height, cnxt.dayLine.width)
+                    val bitmap3 = getBitmapFromView(
+                        cnxt.main_toolbar,
+                        cnxt.main_toolbar.height,
+                        cnxt.main_toolbar.width
+                    )
+                    val bitmap = combineImages(bitmap1, bitmap2, bitmap3)
 
-            cnxt.checkPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE){
-                val bitmap1 = getBitmapFromView(cnxt.scheduleView, cnxt.scheduleView.height, cnxt.scheduleView.width)
-                val bitmap2 = getBitmapFromView(cnxt.dayLine, cnxt.dayLine.height, cnxt.dayLine.width)
-                val bitmap3 = getBitmapFromView(cnxt.main_toolbar, cnxt.main_toolbar.height, cnxt.main_toolbar.width)
-                val bitmap = combineImages(bitmap1, bitmap2, bitmap3)
-                saveBitmap(bitmap)
-                dismiss()}
+                    try {
+                        /*val strPath = File(Environment.DIRECTORY_PICTURES)
+                    if(!strPath.exists()){
+                        strPath.mkdirs() // don't forget to make the directory
+                    }
+                    val stream = FileOutputStream("$strPath/${System.currentTimeMillis()}.png") // overwrites this image every time
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+                    stream.close()
+
+                     */
+                        val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+                        if(!path.exists()) path.mkdirs() // don't forget to make the directory
+                        val stream =
+                            FileOutputStream("$path/${System.currentTimeMillis()}.png") // overwrites this image every time
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+                        stream.close()
+                        Toast.makeText(cnxt, cnxt.applicationContext.resources.getString(R.string.save_timetable_gallery), Toast.LENGTH_LONG).show()
+                        context.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(path)))
+
+                    } catch (e: Exception) {
+                        Log.e("error", e.toString())
+                        Toast.makeText(cnxt, cnxt.applicationContext.resources.getString(R.string.none_save_timetable_gallery), Toast.LENGTH_LONG).show()
+
+                    }
+
+                    dismiss()
+                }
+            }
 
         }
 
@@ -100,9 +138,11 @@ class ScheduleDialog:Dialog {
                     val stream = FileOutputStream("$cachePath/image.png") // overwrites this image every time
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
                     stream.close()
+
                 }
                 catch (e: IOException) {
                     e.printStackTrace()
+
                 }
 
                 val imagePath = File(context.cacheDir, "images")
@@ -147,34 +187,5 @@ class ScheduleDialog:Dialog {
         return bitmap
     }
 
-    private fun saveBitmap(bitmap:Bitmap) { // 버튼 onClick 리스너
-        // WRITE_EXTERNAL_STORAGE 외부 공간 사용 권한 허용
-
-        val fos: FileOutputStream // FileOutputStream 이용 파일 쓰기 한다
-        val strFolderPath = Environment.getExternalStorageDirectory().absolutePath + "/Public"
-        val folder = File(strFolderPath)
-        if (!folder.exists())
-        { // 해당 폴더 없으면 만들어라
-            folder.mkdirs()
-        }
-        val strFilePath = strFolderPath + "/" + System.currentTimeMillis() + ".png"
-        val fileCacheItem = File(strFilePath)
-        try
-        {
-            fos = FileOutputStream(fileCacheItem)
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)
-            fos.flush()
-            fos.close()
-        }
-        catch (e: FileNotFoundException) {
-            e.printStackTrace()
-        }
-        finally
-        {
-            Toast.makeText(context,cnxt.applicationContext.resources.getString(R.string.save_timetable_gallery) , Toast.LENGTH_SHORT).show()
-            context.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(File(strFilePath))))
-        }
-
-    }
 
 }

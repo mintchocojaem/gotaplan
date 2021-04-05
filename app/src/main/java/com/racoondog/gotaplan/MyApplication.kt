@@ -81,7 +81,7 @@ class MyApplication: Application() {
 
             Realm.getDefaultInstance()
         }catch (e:Exception){
-            Realm.deleteRealm(Realm.getDefaultConfiguration())
+            //Realm.deleteRealm(Realm.getDefaultConfiguration())
         }
 
     }
