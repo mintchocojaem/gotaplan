@@ -36,13 +36,13 @@ class AlarmReceiver : BroadcastReceiver() {
         val subjectData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
             .equalTo("id",id)
             .findAll()
-        val data = subjectData[0]
+        val data = subjectData[0]!!
 
-        val dayFlag = intent.getIntExtra("dayFlag",data?.dayFlag?:0)
-        val startHour = intent.getIntExtra("startHour",data?.startHour?:0)
-        val startMinute = intent.getStringExtra("startMinute")?:data?.startMinute?:"00"
-        val notification = intent.getIntExtra("notification",data?.notification?:0)
-        val title = intent.getStringExtra("title")?:data?.title?:"None"
+        val dayFlag = intent.getIntExtra("dayFlag",data.dayFlag)
+        val startHour = intent.getIntExtra("startHour",data.startHour)
+        val startMinute = intent.getStringExtra("startMinute")?:data.startMinute
+        val notification = intent.getIntExtra("notification",data.notification)
+        val title = intent.getStringExtra("title")?:data.title
 
         notificationIntent.flags = (Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
 
