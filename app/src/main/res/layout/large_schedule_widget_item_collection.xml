@@ -34,7 +34,6 @@
             android:text="2020.09.20"
             android:fontFamily="@font/yd_child_fund_korea"
             android:maxLines="2"
-
             />
 
 </LinearLayout>

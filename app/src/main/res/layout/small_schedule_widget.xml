@@ -1,5 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
+        android:layout_width="160dp"
         android:layout_height="match_parent"
         android:background="@drawable/round_bg_layout"
         android:backgroundTint="#494949">
@@ -29,15 +29,14 @@
 
 
     <ListView
-            android:layout_width="match_parent"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:id="@+id/small_schedule_widget_listview"
             android:background="@drawable/round_bg_layout"
             android:backgroundTint="#494949"
             android:divider="#ffffff"
             android:dividerHeight="1dp"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
+            android:layout_gravity="center"
             >
 
     </ListView>
