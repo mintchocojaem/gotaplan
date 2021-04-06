@@ -22,27 +22,7 @@ class IntroActivity : AppIntro() {
                 addSlide(AppIntroCustomLayoutSlide.newInstance(R.layout.guide_timetable_third))
                 addSlide(AppIntroCustomLayoutSlide.newInstance(R.layout.guide_end))
             }
-            "LessonModeGuide"->{
 
-                addSlide(AppIntroCustomLayoutSlide.newInstance(R.layout.guide_beginning))
-                addSlide(AppIntroCustomLayoutSlide.newInstance(R.layout.guide_lesson_first))
-                addSlide(AppIntroCustomLayoutSlide.newInstance(R.layout.guide_lesson_second))
-                addSlide(AppIntroCustomLayoutSlide.newInstance(R.layout.guide_lesson_second_ex))
-                addSlide(AppIntroCustomLayoutSlide.newInstance(R.layout.guide_lesson_third))
-                addSlide(AppIntroCustomLayoutSlide.newInstance(R.layout.guide_lesson_fourth))
-                addSlide(AppIntroCustomLayoutSlide.newInstance(R.layout.guide_lesson_fifth))
-                addSlide(AppIntroCustomLayoutSlide.newInstance(R.layout.guide_lesson_sixth))
-                addSlide(AppIntroCustomLayoutSlide.newInstance(R.layout.guide_end))
-
-            }
-            "CalculationGuide"->{
-                addSlide(AppIntroCustomLayoutSlide.newInstance(R.layout.guide_beginning))
-                addSlide(AppIntroCustomLayoutSlide.newInstance(R.layout.guide_lesson_third))
-                addSlide(AppIntroCustomLayoutSlide.newInstance(R.layout.guide_lesson_fourth))
-                addSlide(AppIntroCustomLayoutSlide.newInstance(R.layout.guide_lesson_fifth))
-                addSlide(AppIntroCustomLayoutSlide.newInstance(R.layout.guide_lesson_sixth))
-                addSlide(AppIntroCustomLayoutSlide.newInstance(R.layout.guide_end))
-            }
         }
 
     }

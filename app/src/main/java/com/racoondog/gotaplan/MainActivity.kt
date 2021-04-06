@@ -312,9 +312,9 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
             }
 
             R.id.help -> {
-                val dialog = GuideDialog(this)
-                dialog.cnxt = this
-                dialog.show()
+                val introIntent = Intent(this, IntroActivity::class.java)
+                introIntent.action = "TimetableGuide"
+                startActivity(introIntent)
                 return true
             }
             R.id.directFeedback -> {

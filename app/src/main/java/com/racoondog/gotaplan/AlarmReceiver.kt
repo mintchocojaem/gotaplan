@@ -82,60 +82,6 @@ class AlarmReceiver : BroadcastReceiver() {
         } else builder.setSmallIcon(R.mipmap.ic_launcher) // Oreo 이하에서 mipmap 사용하지 않으면 Couldn't create icon: StatusBarIcon 에러남
 
 
-        /* 레슨모드 알람 부분
-        val subjectData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
-            .equalTo("id",id)
-            .findAll()
-        val data = subjectData[0]!!
-
-        if(data.lessonOnOff && data.calculation && data.maxCycle != 0){
-
-            val applyIntent = Intent(context, LessonNotification::class.java).putExtra("id",id)
-            applyIntent.action = "apply"
-            val pi1 = PendingIntent.getBroadcast(context, id, applyIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-
-            val cancelIntent = Intent(context, LessonNotification::class.java).putExtra("id",id)
-            cancelIntent.action = "cancel"
-            val pi2 = PendingIntent.getBroadcast(context, id, cancelIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-
-            val contentView = RemoteViews(context.packageName,R.layout.lesson_notification)
-            contentView.setTextViewText(R.id.notification_title,context.resources.getString(R.string.lesson_notify))
-            contentView.setTextViewText(R.id.notification_content,data.title)
-
-            contentView.setOnClickPendingIntent(R.id.lesson_notification_apply,pi1)
-            contentView.setOnClickPendingIntent(R.id.lesson_notification_cancel,pi2)
-
-            builder.setAutoCancel(false)
-
-                //.setDefaults(NotificationCompat.DEFAULT_ALL)
-                .setWhen(System.currentTimeMillis())
-                .setStyle(NotificationCompat.DecoratedCustomViewStyle())
-                .setOngoing(true)
-                .setCustomContentView(contentView)
-                //.setContentInfo("INFO")
-                .setContentIntent(pendingI)
-                .setSound(soundUri)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-
-
-
-        } else{
-
-            builder.setAutoCancel(true)
-
-                //.setDefaults(NotificationCompat.DEFAULT_ALL)
-                .setWhen(System.currentTimeMillis())
-                .setContentTitle(context.resources.getString(R.string.schedule_notify))
-                .setContentText(data.title)
-                //.setOngoing(true)
-                //.setContentInfo("INFO")
-                .setContentIntent(pendingI)
-                .setSound(soundUri)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-
-        }
-
-         */
         builder.setAutoCancel(true)
 
             //.setDefaults(NotificationCompat.DEFAULT_ALL)

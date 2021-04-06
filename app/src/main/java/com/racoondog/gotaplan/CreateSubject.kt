@@ -137,27 +137,8 @@ class CreateSubject :AppCompatActivity() {
             }
         }
 
-        lesson_mode.setOnCheckedChangeListener{compoundButton,_ ->
-
-            if (compoundButton.isChecked){
-
-                Toast.makeText(this, "${resources.getString(R.string.lesson)} On", Toast.LENGTH_SHORT).show()
-
-            } else{
-
-                Toast.makeText(this, "${resources.getString(R.string.lesson)} Off", Toast.LENGTH_SHORT).show()
-
-            }
-        }
-
         create_subject_color_picker.setOnClickListener {
             create_subject_color_picker.colorPick(this,createSubject_toolbar)
-        }
-
-        lesson_help.setOnClickListener {
-            val introIntent = Intent(this, IntroActivity::class.java)
-            introIntent.action = "LessonModeGuide"
-            this.startActivity(introIntent)
         }
 
         subjectQuit_Button.setOnClickListener {
@@ -269,12 +250,10 @@ class CreateSubject :AppCompatActivity() {
                     this.endMinute = endText_minute.text.toString()
                     this.title = title_text.text.toString()
                     this.content = create_subject_memo.text?.toString()?:""
-                    this.lessonOnOff = lesson_mode.isChecked
                     this.subjectColor = create_subject_color_picker.colorCode
                     this.notification = Notification.notificationFlag
                     this.linkageID = linkageID?:0
                 }
-                subjectInfo.calculation = Notification.notificationFlag != -1
                 realm.commitTransaction()
 
                 // 현재 지정된 시간으로 알람 시간 설정
