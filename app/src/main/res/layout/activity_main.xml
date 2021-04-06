@@ -50,7 +50,6 @@
             android:background="@color/whiteColor"
             android:id="@+id/side_menu_btn"
             android:src="@drawable/ic_baseline_menu_24"
-            android:visibility="gone"
             >
 
     </ImageButton>

@@ -16,7 +16,6 @@ open class ScheduleData: RealmObject() {
 
 open class SubjectData: RealmObject(){
     var id = 0
-    //var lessonOnOff : Boolean = false
 
     var dayFlag = 0
     var startHour = 0
@@ -33,14 +32,8 @@ open class SubjectData: RealmObject(){
 
     var subjectColor = 0
 
-    //lateinit var studentName : String
-    //lateinit var studentBirth : String
-    //lateinit var studentPhoneNumber : String
-    //var lessonCost : String = ""
-    //var currentCycle : Int = 0
-    //var maxCycle : Int = 0
+
     var linkageID: Int = 0
-    //var calculation: Boolean = false
 
 }
 
