@@ -3,24 +3,21 @@ package com.racoondog.gotaplan
 import android.app.Activity
 import android.app.AlertDialog.BUTTON_POSITIVE
 import android.app.AlertDialog.Builder
-import android.appwidget.AppWidgetManager
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.RemoteViews
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.anjlab.android.iab.v3.BillingProcessor
-import com.anjlab.android.iab.v3.Constants
-import com.anjlab.android.iab.v3.TransactionDetails
+import com.android.billingclient.api.*
+import com.android.billingclient.api.SkuDetailsResponseListener
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
@@ -32,7 +29,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
+class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
 
     //Developer: Void
 
@@ -47,10 +44,12 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
     private var intentStartTime: Int = 0
     private var intentEndTime: Int = 0
     private var intentFlag: Int = 0
-    private val bp by lazy { BillingProcessor(this, getString(R.string.in_app_license_key), this) }
     private val storage:AppStorage by lazy { AppStorage(this) }
-
     private lateinit var mInterstitialAd: InterstitialAd
+
+    private var billingClient: BillingClient? = null
+    private var skuDetail:SkuDetails? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -60,9 +59,6 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
         setSupportActionBar(main_toolbar)  //Actionbar 부분
         supportActionBar?.setDisplayUseLogoEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-
-        bp.initialize()
-
         loadData()//데이터 불러오기
 
         if (!storage.purchasedRemoveAds() && !storage.showHelpView()) {
@@ -77,6 +73,33 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
 
                 }
             }
+
+
+            // Set up the billing client
+            billingClient = BillingClient.newBuilder(this).enablePendingPurchases().setListener(this).build()
+            billingClient!!.startConnection(object : BillingClientStateListener {
+                override fun onBillingSetupFinished(billingResult: BillingResult) {
+                    if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                        Log.e("Tag", "구글 결제 서버에 접속을 성공했습니다.")
+                        queryOneTimeProducts()
+                    } else {
+                        Toast.makeText(
+                            this@MainActivity, "구글 결제 서버 접속에 실패하였습니다.\n" +
+                                    "오류코드: ${billingResult.responseCode}", Toast.LENGTH_LONG
+                        ).show()
+                        // case 구글 플레이스토어 계정 정보 인식 안될 때
+
+                    }
+                }
+
+                override fun onBillingServiceDisconnected() {
+                    Toast.makeText(
+                        this@MainActivity, "구글 결제 서버와 접속이 끊어졌습니다.\n" +
+                                "오류코드", Toast.LENGTH_LONG
+                    ).show()
+                }
+            })
+
         }
 
         showHelpView()// 앱 가이드 보여줌
@@ -101,16 +124,13 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
         side_menu_btn.setOnClickListener {
             // 나중에 시간표 여러개 생성될때 side_menu_btn visible 시키고 고쳐쓰면됨
             val sideMenu = SideMenu(this)
-            sideMenu.addSideView(main,fl_silde,view_sildebar)
-            sideMenu.showMenu(main,fl_silde,view_sildebar)
+            sideMenu.addSideView(main, fl_silde, view_sildebar)
+            sideMenu.showMenu(main, fl_silde, view_sildebar)
         }
-
 
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-
-        if(!bp.handleActivityResult(requestCode, resultCode, data)) {
 
             super.onActivityResult(requestCode, resultCode, data)
             //MainActivity 로 들어오는 onActivityResult 부분 -> Intent 후 값 반환
@@ -195,7 +215,7 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
                 }
 
             }
-        }
+
 
     }
 
@@ -300,14 +320,7 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
                 return true
             }
             R.id.purchasePro -> {
-
-                if (storage.purchasedRemoveAds()) {
-                    // TODO: 이미 구매하셨습니다. 메세지 띄우기!
-                    Toast.makeText(this, getString(R.string.already_purchased), Toast.LENGTH_SHORT)
-                        .show()
-                } else {
-                    bp.purchase(this, getString(R.string.in_app_no_ads_sku))
-                }
+                purchase(skuDetail)
                 return true
             }
 
@@ -328,7 +341,6 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
     }
 
     override fun onDestroy() {
-        bp.release()
         super.onDestroy()
         realm.close()
 
@@ -399,46 +411,82 @@ class MainActivity: AppCompatActivity(),BillingProcessor.IBillingHandler {
         }
     }
 
-    override fun onBillingInitialized() {
+    private fun purchase(skuDetails: SkuDetails?){
 
-        // * 처음에 초기화됬을때.
-        storage.setPurchasedRemoveAds(bp.isPurchased(getString(R.string.in_app_no_ads_sku)))
+        skuDetails?.let {
+            val billingFlowParams = BillingFlowParams.newBuilder()
+                .setSkuDetails(it)
+                .build()
+            billingClient?.launchBillingFlow(this, billingFlowParams)?.responseCode
+        }?:Toast.makeText(this, "상품 정보를 불러올 수 없습니다.", Toast.LENGTH_LONG).show()
     }
 
-    override fun onPurchaseHistoryRestored() {
 
-        // * 구매 정보가 복원되었을때 호출
-        // bp.loadOwnedPurchasesFromGoogle() 하면 호출 가능
-        storage.setPurchasedRemoveAds(bp.isPurchased(getString(R.string.in_app_no_ads_sku)))
 
-    }
+    private fun queryOneTimeProducts(){
+        val skuListToQuery = ArrayList<String>()
+        skuListToQuery.add("no_ads")
+        val params = SkuDetailsParams.newBuilder()
+        params
+            .setSkusList(skuListToQuery)
+            .setType(BillingClient.SkuType.INAPP)
 
-    override fun onProductPurchased(productId: String, details: TransactionDetails?) {
+        billingClient!!.querySkuDetailsAsync(params.build(),
+            SkuDetailsResponseListener { p0, skuDetailsList -> // 상품 정보를 가지고 오지 못한 경우
+                if (p0.responseCode != BillingClient.BillingResponseCode.OK) {
+                    Toast.makeText(this, "상품 정보를 불러오던 중 오류가 발생했습니다.\n" +
+                                "오류코드: + ${p0.responseCode}", Toast.LENGTH_LONG).show()
+                    return@SkuDetailsResponseListener
+                }
+                if (skuDetailsList == null) {
+                    Toast.makeText(this, "상품 정보가 존재하지 않습니다.", Toast.LENGTH_LONG).show()
+                    return@SkuDetailsResponseListener
+                }
+                //응답 받은 데이터들의 숫자를 출력
+                Log.e("Tag", "응답 받은 데이터 숫자: " + skuDetailsList.size)
 
-        // * 구매 완료시 호출
-        // productId: 구매한 sku (ex) no_ads)
-        // details: 결제 관련 정보
+                //받아온 상품 정보를 차례로 호출
+                for (skuDetails in skuDetailsList) {
+                    Log.e("Tag", skuDetailsList.toString())
+                    skuDetail = skuDetails
+                }
+            })
 
-        if (productId == getString(R.string.in_app_no_ads_sku)) {
-            // TODO: 구매 해 주셔서 감사합니다! 메세지 보내기
-            storage.setPurchasedRemoveAds(bp.isPurchased(getString(R.string.in_app_no_ads_sku)))
+        }
 
-            // * 광고 제거는 1번 구매하면 영구적으로 사용하는 것이므로 consume 하지 않지만,
-            // 만약 게임 아이템 100개를 주는 것이라면 아래 메소드를 실행시켜 다음번에도 구매할 수 있도록 소비처리를 해줘야한다.
-            // bp.consumePurchase(Config.Sku)
+    override fun onPurchasesUpdated(p0: BillingResult, p1: MutableList<Purchase>?) {
+
+        if (p0.responseCode == BillingClient.BillingResponseCode.OK && p1 != null) {
+            for (purchase in p1) {
+                Toast.makeText(this, "결제 성공", Toast.LENGTH_LONG).show()
+                handleNonConsumablePurchase(purchase)
+            }
+        } else if (p0.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
+            Toast.makeText(this, "사용자에 의해 결제취소", Toast.LENGTH_LONG).show()
+            // Handle an error caused by a user cancelling the purchase flow.
+        } else {
+            Toast.makeText(this, "결제가 취소 되었습니다. 종료코드: " + p0.responseCode, Toast.LENGTH_LONG).show()
+            // Handle any other error codes.
         }
 
     }
 
-    override fun onBillingError(errorCode: Int, error: Throwable?) {
+    private fun handleNonConsumablePurchase(purchase: Purchase) {
+        Log.v("TAG_INAPP", "handlePurchase : $purchase")
+        if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
+            if (!purchase.isAcknowledged) {
+                val acknowledgePurchaseParams = AcknowledgePurchaseParams.newBuilder()
+                    .setPurchaseToken(purchase.purchaseToken).build()
+                billingClient?.acknowledgePurchase(acknowledgePurchaseParams) { billingResult ->
+                    val billingResponseCode = billingResult.responseCode
+                    val billingDebugMessage = billingResult.debugMessage
 
-        // * 구매 오류시 호출
-        // errorCode == Constants.BILLING_RESPONSE_RESULT_USER_CANCELED 일때는
-        // 사용자가 단순히 구매 창을 닫은것임으로 이것 제외하고 핸들링하기.
-         if (errorCode != Constants.BILLING_RESPONSE_RESULT_USER_CANCELED) {
-            Toast.makeText(this, R.string.unknown_error, Toast.LENGTH_SHORT).show()
+                    Log.v("TAG_INAPP", "response code: $billingResponseCode")
+                    Log.v("TAG_INAPP", "debugMessage : $billingDebugMessage")
+
+                }
+            }
         }
-
     }
 
 }

@@ -30,19 +30,13 @@ class AlarmReceiver : BroadcastReceiver() {
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val notificationIntent = Intent(context, MainActivity::class.java)
+
         val id = intent.getIntExtra("id",0)
-
-        val realm = Realm.getDefaultInstance()
-        val subjectData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
-            .equalTo("id",id)
-            .findAll()
-        val data = subjectData[0]!!
-
-        val dayFlag = intent.getIntExtra("dayFlag",data.dayFlag)
-        val startHour = intent.getIntExtra("startHour",data.startHour)
-        val startMinute = intent.getStringExtra("startMinute")?:data.startMinute
-        val notification = intent.getIntExtra("notification",data.notification)
-        val title = intent.getStringExtra("title")?:data.title
+        val dayFlag = intent.getIntExtra("dayFlag",0)
+        val startHour = intent.getIntExtra("startHour",0)
+        val startMinute = intent.getStringExtra("startMinute")?:"00"
+        val notification = intent.getIntExtra("notification",0)
+        val title = intent.getStringExtra("title")?:"title"
 
         notificationIntent.flags = (Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
 

@@ -18,8 +18,8 @@ android {
         applicationId "com.racoondog.gotaplan"
         minSdkVersion 24
         targetSdkVersion 29
-        versionCode 25
-        versionName "1.1.13"
+        versionCode 29
+        versionName "1.1.14"
         testInstrumentationRunner "androidx.widget_preview.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -44,7 +44,8 @@ android {
 }
 
 dependencies {
-
+    def billing_version = "3.0.0"
+    implementation "com.android.billingclient:billing-ktx:$billing_version"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.2.0'
@@ -54,7 +55,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-perf:19.1.1'
     testImplementation 'junit:junit:4.13.2'
     implementation 'com.google.android.material:material:1.2.0'
-    implementation 'com.anjlab.android.iab.v3:library:1.1.0'
     implementation 'com.google.firebase:firebase-ads:19.8.0'
     implementation 'com.google.firebase:firebase-inappmessaging-display:19.1.5'
     implementation 'com.google.firebase:firebase-core:18.0.2'

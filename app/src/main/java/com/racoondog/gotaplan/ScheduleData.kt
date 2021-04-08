@@ -16,23 +16,15 @@ open class ScheduleData: RealmObject() {
 
 open class SubjectData: RealmObject(){
     var id = 0
-
     var dayFlag = 0
     var startHour = 0
-
     var startMinute = ""
-
     var endHour = 0
     var endMinute = ""
-
     var notification: Int = -1
-
     lateinit var title: String
     lateinit var content: String
-
     var subjectColor = 0
-
-
     var linkageID: Int = 0
 
 }

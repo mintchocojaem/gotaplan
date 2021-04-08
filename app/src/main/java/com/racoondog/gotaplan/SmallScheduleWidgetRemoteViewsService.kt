@@ -26,11 +26,6 @@ class SmallScheduleWidgetRemoteViewsService : RemoteViewsService() {
         //DB를 대신하여 arrayList에 데이터를 추가하는 함수
         fun setData() {
 
-            val realm = Realm.getDefaultInstance()
-            /*var subjectData: RealmResults<SubjectData> =
-                realm.where<SubjectData>(SubjectData::class.java).findAll()
-
-             */
             val data = context!!.getSharedPreferences("app_storage", MODE_PRIVATE)
                 .getString("data", "")
             val makeGson = GsonBuilder().create()
