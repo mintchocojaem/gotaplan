@@ -31,9 +31,9 @@ class CreateSubject :AppCompatActivity() {
 
         val colorList = resources.getIntArray(R.array.subject_color)
         val scheduleData = realm.where(ScheduleData::class.java).findFirst()!!
-        val scheduleStartHour = intent?.getIntExtra("start_time",scheduleData.scheduleStartHour)?:scheduleData.scheduleStartHour
-        val scheduleEndHour = intent?.getIntExtra("end_time",scheduleData.scheduleEndHour)?:scheduleData.scheduleEndHour
-        val scheduleDayFlag = scheduleData.scheduleDayFlag
+        val scheduleStartHour = intent?.getIntExtra("start_time",scheduleData.startHour)?:scheduleData.startHour
+        val scheduleEndHour = intent?.getIntExtra("end_time",scheduleData.endHour)?:scheduleData.endHour
+        val scheduleDayFlag = scheduleData.dayFlag
         val subjectDayFlag = intent.getIntExtra("day_flag",0)
 
         val dayFlag = mutableListOf(false,false,false,false,false,false,false)
@@ -233,6 +233,8 @@ class CreateSubject :AppCompatActivity() {
             realm.where<SubjectData>(SubjectData::class.java)
                 .equalTo("dayFlag", dayFlag)
                 .findAll()
+        val scheduleData = realm.where(ScheduleData::class.java).equalTo("id", MainActivity.scheduleID)
+            .findAll()[0]!!
 
             if(!subject_time_picker.nestedTime(subjectData)){
 
@@ -254,6 +256,7 @@ class CreateSubject :AppCompatActivity() {
                     this.notification = Notification.notificationFlag
                     this.linkageID = linkageID?:0
                 }
+                scheduleData.subjectData.add(subjectInfo)
                 realm.commitTransaction()
 
                 // 현재 지정된 시간으로 알람 시간 설정

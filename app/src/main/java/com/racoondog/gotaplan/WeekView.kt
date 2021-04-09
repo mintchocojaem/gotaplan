@@ -218,7 +218,7 @@ class WeekView : ConstraintLayout{
                 val timeText = TextView(cnxt) // 각 시간표 일정이 들어가는 공백 부분
                 val tag = "day$j$i"
                 timeText.tag = tag
-                if(data.scheduleInterval){
+                if(data.interval){
                     timeText.setBackgroundResource(R.drawable.cell_half_shape)
                 }else{
                     timeText.setBackgroundResource(R.drawable.cell_shape)
@@ -381,7 +381,7 @@ class WeekView : ConstraintLayout{
 
             var subjectDayFlag = subjectData[0]!!.dayFlag
 
-            val scheduleStartHour = scheduleData.scheduleStartHour
+            val scheduleStartHour = scheduleData.startHour
             var subjectStartHour = subjectData[0]!!.startHour
             var subjectStartMinute = 0
             var subjectEndHour: Int
@@ -416,7 +416,7 @@ class WeekView : ConstraintLayout{
                         if (v.y <= 0) v.y = 0f else if (v.y + v.height > parentHeight) v.y =
                             (parentHeight - v.height).toFloat()
 
-                        for (i in 0 until scheduleData.scheduleDayFlag) {
+                        for (i in 0 until scheduleData.dayFlag) {
                             if (v.x + (cellWidth / 2) > (cellWidth * i) && v.x + (cellWidth / 2) <= (cellWidth * (i + 1))) {
                                 v.x = (cellWidth * i).toFloat()
                                 subjectDayFlag = i + 1
@@ -447,7 +447,7 @@ class WeekView : ConstraintLayout{
                         if (v.x < 0) v.x = 0f else if (v.x + v.width > parentWidth) v.x = (parentWidth - v.width).toFloat()
                         if (v.y < 0) v.y = 0f else if (v.y + v.height > parentHeight) v.y = (parentHeight - v.height).toFloat()
 
-                        for(i in 0 until (scheduleData.scheduleEndHour - scheduleData.scheduleStartHour)*2) {
+                        for(i in 0 until (scheduleData.endHour - scheduleData.startHour)*2) {
 
                             if (v.y >= (cellHeight * i)/2 && v.y < (cellHeight * (i + 1))/2) {
 
@@ -458,7 +458,7 @@ class WeekView : ConstraintLayout{
                             }
                         }
 
-                        subjectEndHour = (v.y+v.height).roundToInt()/cellHeight + scheduleData.scheduleStartHour
+                        subjectEndHour = (v.y+v.height).roundToInt()/cellHeight + scheduleData.startHour
                         subjectEndMinute =  subjectData[0]!!.endMinute.toInt() + (subjectStartMinute - oldStartMinute.toInt()) + (v.y).roundToInt()/cellHeight*60
                         for(i in 1 .. subjectEndMinute/60){
                             subjectEndMinute -= 60
@@ -599,7 +599,7 @@ class WeekView : ConstraintLayout{
         if (scheduleData != null) {
 
             view.findViewById<ConstraintLayout>(R.id.scheduleView).removeAllViews()
-            view.drawSchedule(scheduleData.scheduleDayFlag,scheduleData.scheduleStartHour,scheduleData.scheduleEndHour)
+            view.drawSchedule(scheduleData.dayFlag,scheduleData.startHour,scheduleData.endHour)
 
             view.findViewWithTag<ConstraintLayout>("canvas").removeAllViews()
 
@@ -612,7 +612,7 @@ class WeekView : ConstraintLayout{
                     data.endHour,
                     data.endMinute.toInt(),
                     data.dayFlag,
-                    scheduleData.scheduleStartHour,
+                    scheduleData.startHour,
                     data.id,
                     data.subjectColor
                 )

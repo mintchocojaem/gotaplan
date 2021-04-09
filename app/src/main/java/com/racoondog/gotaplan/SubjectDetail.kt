@@ -161,7 +161,7 @@ class SubjectDetail : AppCompatActivity() {
             }
         })
 
-        subject_detail_day_picker.dayPick(scheduleData.scheduleDayFlag, data.dayFlag)
+        subject_detail_day_picker.dayPick(scheduleData.dayFlag, data.dayFlag)
         subject_detail_day_picker.setOnCustomEventListener(object :
             DayPicker.OnCustomEventListener {
             override fun onEvent() {
@@ -177,8 +177,8 @@ class SubjectDetail : AppCompatActivity() {
         })
 
         subject_detail_time_picker.subjectPicker(
-            scheduleData.scheduleStartHour,
-            scheduleData.scheduleEndHour,
+            scheduleData.startHour,
+            scheduleData.endHour,
             subject_detail_main
         )
         subject_detail_time_picker.displayTime(

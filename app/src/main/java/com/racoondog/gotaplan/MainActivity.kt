@@ -37,6 +37,7 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
 
     companion object{
         var mContext:Context? = null
+        var scheduleID: Int = 0 // 메인화면에 보여지는 시간표의 id
 
     }
     val weekView by lazy { WeekView(this) }
@@ -80,13 +81,12 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
             billingClient!!.startConnection(object : BillingClientStateListener {
                 override fun onBillingSetupFinished(billingResult: BillingResult) {
                     if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                        Log.e("Tag", "구글 결제 서버에 접속을 성공했습니다.")
+                        Log.e("Tag", "구글 결제 서버 접속에 성공했습니다.")
                         queryOneTimeProducts()
                     } else {
-                        Toast.makeText(
-                            this@MainActivity, "구글 결제 서버 접속에 실패하였습니다.\n" +
-                                    "오류코드: ${billingResult.responseCode}", Toast.LENGTH_LONG
-                        ).show()
+
+                        Log.e("Tag", "구글 결제 서버 접속에 실패하였습니다.\n" + "오류코드: ${billingResult.responseCode}")
+
                         // case 구글 플레이스토어 계정 정보 인식 안될 때
 
                     }
@@ -157,10 +157,10 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
                         val dataBase: ScheduleData = realm.createObject(ScheduleData::class.java)
 
                         dataBase.apply {
-                            this.scheduleDayFlag = scheduleDayFlag
-                            this.scheduleStartHour = scheduleStartHour
-                            this.scheduleEndHour = scheduleEndHour
-                            this.scheduleTitle = toolbar_title.text.toString()
+                            this.dayFlag = scheduleDayFlag
+                            this.startHour = scheduleStartHour
+                            this.endHour = scheduleEndHour
+                            this.title = toolbar_title.text.toString()
                         }
                         realm.commitTransaction()
 
@@ -237,13 +237,13 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
             main_text.visibility = View.INVISIBLE
             schedule_add.visibility = View.INVISIBLE
             addSubjectButton.visibility = View.VISIBLE
-            if(scheduleData?.scheduleTitle != "") {
-                toolbar_title?.text = scheduleData?.scheduleTitle
+            if(scheduleData?.title != "") {
+                toolbar_title?.text = scheduleData?.title
             }
 
-            intentFlag = scheduleData.scheduleDayFlag
-            intentStartTime = scheduleData.scheduleStartHour
-            intentEndTime = scheduleData.scheduleEndHour
+            intentFlag = scheduleData.dayFlag
+            intentStartTime = scheduleData.startHour
+            intentEndTime = scheduleData.endHour
 
             weekView.layoutParams = ConstraintLayout.LayoutParams(
                 ConstraintLayout.LayoutParams.MATCH_PARENT,
@@ -264,7 +264,7 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
                     data.endHour,
                     data.endMinute.toInt(),
                     data.dayFlag,
-                    scheduleData.scheduleStartHour,
+                    scheduleData.startHour,
                     data.id,
                     data.subjectColor
                 )

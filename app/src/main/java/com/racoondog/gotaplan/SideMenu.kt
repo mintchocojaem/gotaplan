@@ -18,7 +18,7 @@ class SideMenu(context: Context?, attrs: AttributeSet?) :
 
     /** 메뉴버튼 클릭 이벤트 리스너  */
     var listener: EventListener? = null
-    fun setEventListener(l: EventListener?) {
+    private fun setEventListener(l: EventListener?) {
         listener = l
     }
     //private var mainLayout:ViewGroup? =null //사이드 나왔을때 클릭방지할 영역
@@ -58,7 +58,7 @@ class SideMenu(context: Context?, attrs: AttributeSet?) :
         // 리사이클러뷰에 SimpleTextAdapter 객체 지정.
         val adapter = SideMenuAdapter(list)
 
-        recyclerView.setAdapter(adapter)
+        recyclerView.adapter = adapter
     }
 
     override fun onClick(view: View) {

@@ -37,9 +37,9 @@ class ScheduleIntervalDialog:Dialog {
         setContentView(R.layout.schedule_interval_dialog)
 
         val data = realm.where(ScheduleData::class.java).findFirst()!!
-        var intervalFlag:Boolean = data.scheduleInterval
+        var intervalFlag:Boolean = data.interval
 
-        if (!data.scheduleInterval){
+        if (!data.interval){
             interval_1h.isChecked = true
         }else{
             interval_30m.isChecked = true
@@ -53,7 +53,7 @@ class ScheduleIntervalDialog:Dialog {
 
         scheduleInterval_dialog_apply.setOnClickListener {
             realm.beginTransaction()
-            data.scheduleInterval = intervalFlag
+            data.interval = intervalFlag
             realm.commitTransaction()
             cnxt.cnxt.weekView.refresh()
             dismiss()

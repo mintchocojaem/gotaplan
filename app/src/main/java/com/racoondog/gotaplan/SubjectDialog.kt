@@ -74,7 +74,7 @@ class SubjectDialog: Dialog {
                     realm.commitTransaction()
                 }
 
-                for(i in 1 .. scheduleData!!.scheduleDayFlag){
+                for(i in 1 .. scheduleData!!.dayFlag){
                     cnxt.weekView.findViewWithTag<ConstraintLayout>(i)?.removeAllViews()
                 }
                 cnxt.weekView.refresh(cnxt.weekView)

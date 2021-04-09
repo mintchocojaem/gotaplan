@@ -1,20 +1,25 @@
 package com.racoondog.gotaplan
 
 import android.graphics.Color
+import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.Required
 
 open class ScheduleData: RealmObject() {
 
-    var scheduleTitle:String = ""
-    var scheduleDayFlag:Int = 0
-    var scheduleStartHour:Int = 0
-    var scheduleEndHour:Int = 0
-    var scheduleInterval: Boolean = false
+    var id:Int = 0
+    var title:String = ""
+    var dayFlag:Int = 0
+    var startHour:Int = 0
+    var endHour:Int = 0
+    var interval: Boolean = false
+
+    var subjectData : RealmList<SubjectData> = RealmList()
     
 }
 
 open class SubjectData: RealmObject(){
+
     var id = 0
     var dayFlag = 0
     var startHour = 0

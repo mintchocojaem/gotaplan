@@ -36,18 +36,18 @@ class ScheduleTitleDialog:Dialog {
 
         val scheduleData = realm.where(ScheduleData::class.java).findFirst()!!
 
-        scheduleTitle.setText(scheduleData.scheduleTitle)
-        scheduleTitle.setHint(scheduleData.scheduleTitle)
+        scheduleTitle.setText(scheduleData.title)
+        scheduleTitle.setHint(scheduleData.title)
 
         scheduleTitle_dialog_apply.setOnClickListener {
             realm.beginTransaction()
-            if (scheduleTitle.text.toString() == "") scheduleData.scheduleTitle = scheduleTitle.hint.toString()
-            else scheduleData.scheduleTitle = scheduleTitle.text.toString()
+            if (scheduleTitle.text.toString() == "") scheduleData.title = scheduleTitle.hint.toString()
+            else scheduleData.title = scheduleTitle.text.toString()
             realm.commitTransaction()
             Toast.makeText(context,cnxt.context.resources.getString(R.string.edit_schedule_title_applied),Toast.LENGTH_SHORT).show()
             dismiss()
             cnxt.dismiss()
-            cnxt.cnxt.toolbar_title.text = scheduleData.scheduleTitle.toString()
+            cnxt.cnxt.toolbar_title.text = scheduleData.title.toString()
         }
         scheduleTitle_dialog_cancel.setOnClickListener{
             dismiss()

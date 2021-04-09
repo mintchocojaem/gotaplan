@@ -40,7 +40,7 @@ class ScheduleTimeDialog: Dialog {
         val scheduleData = realm.where(ScheduleData::class.java).findFirst()!!
         val subjectData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java).findAll()
 
-        var dayFlag = scheduleData.scheduleDayFlag
+        var dayFlag = scheduleData.dayFlag
 
         when(dayFlag){
             5->{
@@ -57,10 +57,10 @@ class ScheduleTimeDialog: Dialog {
             }
         }
 
-        schedule_time_dialog_start_time.setText(scheduleData.scheduleStartHour.toString())
-        schedule_time_dialog_end_time.setText(scheduleData.scheduleEndHour.toString())
-        schedule_time_dialog_end_time.hint = scheduleData.scheduleEndHour.toString()
-        schedule_time_dialog_start_time.hint = scheduleData.scheduleStartHour.toString()
+        schedule_time_dialog_start_time.setText(scheduleData.startHour.toString())
+        schedule_time_dialog_end_time.setText(scheduleData.endHour.toString())
+        schedule_time_dialog_end_time.hint = scheduleData.endHour.toString()
+        schedule_time_dialog_start_time.hint = scheduleData.startHour.toString()
 
         schedule_time_dialog_apply.setOnClickListener {
 
@@ -93,9 +93,9 @@ class ScheduleTimeDialog: Dialog {
                             }
                             if(dayFlag != 0){
                                 realm.beginTransaction()
-                                scheduleData.scheduleStartHour = schedule_time_dialog_start_time.text.toString().toInt()
-                                scheduleData.scheduleEndHour = schedule_time_dialog_end_time.text.toString().toInt()
-                                scheduleData.scheduleDayFlag = dayFlag
+                                scheduleData.startHour = schedule_time_dialog_start_time.text.toString().toInt()
+                                scheduleData.endHour = schedule_time_dialog_end_time.text.toString().toInt()
+                                scheduleData.dayFlag = dayFlag
                                 realm.commitTransaction()
                                 cnxt.cnxt.weekView.refresh(cnxt.cnxt.weekView)
                                 dismiss()
@@ -128,9 +128,9 @@ class ScheduleTimeDialog: Dialog {
                                                 if(dayFlag >= dayFlagData[0]!!.dayFlag){
 
                                                     realm.beginTransaction()
-                                                    scheduleData.scheduleStartHour = schedule_time_dialog_start_time.text.toString().toInt()
-                                                    scheduleData.scheduleEndHour = schedule_time_dialog_end_time.text.toString().toInt()
-                                                    scheduleData.scheduleDayFlag = dayFlag
+                                                    scheduleData.startHour = schedule_time_dialog_start_time.text.toString().toInt()
+                                                    scheduleData.endHour = schedule_time_dialog_end_time.text.toString().toInt()
+                                                    scheduleData.dayFlag = dayFlag
                                                     realm.commitTransaction()
                                                     cnxt.cnxt.weekView.refresh(cnxt.cnxt.weekView)
                                                     dismiss()
@@ -149,9 +149,9 @@ class ScheduleTimeDialog: Dialog {
                                                 if(dayFlag >= dayFlagData[0]!!.dayFlag){
 
                                                     realm.beginTransaction()
-                                                    scheduleData.scheduleStartHour = schedule_time_dialog_start_time.text.toString().toInt()
-                                                    scheduleData.scheduleEndHour = schedule_time_dialog_end_time.text.toString().toInt()
-                                                    scheduleData.scheduleDayFlag = dayFlag
+                                                    scheduleData.startHour = schedule_time_dialog_start_time.text.toString().toInt()
+                                                    scheduleData.endHour = schedule_time_dialog_end_time.text.toString().toInt()
+                                                    scheduleData.dayFlag = dayFlag
                                                     realm.commitTransaction()
                                                     cnxt.cnxt.weekView.refresh(cnxt.cnxt.weekView)
                                                     dismiss()
