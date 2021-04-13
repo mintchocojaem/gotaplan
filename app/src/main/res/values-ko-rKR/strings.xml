@@ -54,7 +54,6 @@
     <string name="saturday">토</string>
     <string name="sunday">일</string>
     <string name="change_time">시간 변경</string>
-    <string name="lesson">수업 기능</string>
     <string name="create_subject_toast_enter_title">제목을 입력해주세요.</string>
     <string name="cannot_find_g_mail_app">G-mail 앱을 찾는데 실패했습니다.</string>
     <string name="edit_schedule_title_applied">시간표 제목이 변경되었습니다.</string>
@@ -65,7 +64,9 @@
     <string name="subject_initialized">일정이 초기화되었습니다.</string>
     <string name="delete">삭제</string>
     <string name="delete_subject">해당 일정을 삭제하시겠습니까?</string>
+    <string name="delete_schedule">해당 시간표를 삭제하시겠습니까?</string>
     <string name="subject_deleted">일정이 삭제되었습니다.</string>
+    <string name="schedule_deleted">시간표가 삭제되었습니다.</string>
     <string name="add_schedule_first">시간표를 먼저 추가해 주세요.</string>
     <string name="purchase_pro">Pro 구매 (광고 제거)</string>
     <string name="in_app_license_key">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgrWCzBQWDarXDScY8iopv+Cdgw09RIwZRz8vJvt8x6WhEvHFszhFa9vFXAu2IrtwSQ/GmnhCZ3KsCDDitfnQDL2KXnH5r85YYWUYzsA7r0yaRGRxJ2y9fwvB8ecCL6j6G4YhQqoaIjwwi9ovfv4PAJT3et/OiSPRozfCaN+EZSxnNnf5WoqK4RgnCeChbllRTb8e8nCaFmONg9TRUB6MnzHPWq9HXDJKluHFPAgLSOEXJKvBCoI91IlaGCY5ZiPHZHXWhccH3/GSHpr5g9kVIhsJw1VjHAkK6+Y/n6jR45Ug6SKRQfRzzxORlVSYQUN/PbPGixv9PV3RSasCXXL/kwIDAQAB</string>
@@ -94,7 +95,7 @@
     <string name="guide_timetable_second_ex_title">2.5 시간표 예시</string>
     <string name="guide_timetable_second_ex_content">이해를 돕기 위해 예시를 준비했습니다.</string>
     <string name="guide_timetable_third_title">3. 시간표 완성!</string>
-    <string name="guide_timetable_third_content">여러분은 이제 기본적인 토대를 마련하셨습니다.\n\n 일정 추가를 하시려면 오른쪽 하단의 일정 추가버튼을, \n 부가기능을 사용하시려면 오른쪽 상단의 메뉴를 이용해주세요.</string>
+    <string name="guide_timetable_third_content">여러분은 이제 기본적인 토대를 마련하셨습니다.\n\n 시간표를 관리 하시려면 시간표 목록을,\n 일정 추가를 하시려면 일정 추가버튼을, \n 부가기능을 사용하시려면 메뉴를 이용해주세요.</string>
     <string name="guide_end_content">도움말을 이용해주셔서 감사합니다.</string>
     <string name="guide_end_content_add">(도움말은 추후 업데이트 사항에 따라\n 추가되거나 변경될 수 있습니다)</string>
     <string name="notification">일정 알림</string>
@@ -116,4 +117,6 @@
     <string name="schedule_interval_dialog_title">간격 변경</string>
     <string name="schedule_interval_dialog_1h">1시간</string>
     <string name="schedule_interval_dialog_30m">30분</string>
+    <string name="timetable_list">시간표 목록</string>
+
 </resources>

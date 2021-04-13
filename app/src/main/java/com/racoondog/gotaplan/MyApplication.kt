@@ -94,6 +94,7 @@ class MyApplication: Application() {
                             ?.removeField("maxCycle") // 바뀐 데이터 베이스 필드
                             ?.removeField("calculation") // 바뀐 데이터 베이스 필드
 
+
                         oldVer++ // 다음 업데이트를 이어서 적용( 사용자가 2,3단 업데이트 가능 ) / 없으면 여러 업데이트 한번에 적용 불가
 
                     }

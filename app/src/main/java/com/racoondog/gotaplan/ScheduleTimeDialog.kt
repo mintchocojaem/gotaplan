@@ -37,8 +37,8 @@ class ScheduleTimeDialog: Dialog {
         window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         setContentView(R.layout.schedule_time_dialog)
 
-        val scheduleData = realm.where(ScheduleData::class.java).findFirst()!!
-        val subjectData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java).findAll()
+        val scheduleData = realm.where(ScheduleData::class.java).equalTo("id",MainActivity.scheduleID).findFirst()!!
+        val subjectData = scheduleData.subjectData.where().findAll()
 
         var dayFlag = scheduleData.dayFlag
 

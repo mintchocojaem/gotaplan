@@ -34,6 +34,11 @@ open class SubjectData: RealmObject(){
 
 }
 
+
+
+
+
+
 open class ThemeData: RealmObject(){
     var statusBarColor = Color.parseColor("#ffffff")
     var mainButtonColor = Color.parseColor("#494949")

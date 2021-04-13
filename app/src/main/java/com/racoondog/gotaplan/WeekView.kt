@@ -69,7 +69,7 @@ class WeekView : ConstraintLayout{
 
     fun drawSchedule(day_flag: Int, start_time: Int, end_time: Int) {
 
-        val data = realm.where(ScheduleData::class.java).findFirst()!!
+        val data = realm.where(ScheduleData::class.java).equalTo("id",MainActivity.scheduleID).findFirst()!!
         val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val disPlay = wm.defaultDisplay
         val size = Point()
@@ -295,12 +295,11 @@ class WeekView : ConstraintLayout{
         val titleText = TextView(cnxt)
         val colorImage = ConstraintLayout(context)
 
-        val subjectData: RealmResults<SubjectData> =
-            realm.where<SubjectData>(SubjectData::class.java)
-                .equalTo("id", id)
-                .findAll()
+        val subjectData = realm.where<SubjectData>(SubjectData::class.java)
+            .equalTo("id", id)
+            .findAll()
 
-        val scheduleData = realm.where(ScheduleData::class.java).findFirst()!!
+        val scheduleData = realm.where(ScheduleData::class.java).equalTo("id",MainActivity.scheduleID).findFirst()!!
 
 
         titleText.apply {
@@ -501,8 +500,7 @@ class WeekView : ConstraintLayout{
 
     private fun applyTime(subjectID: Int,subjectDayFlag:Int,startHour:Int,startMinute:Int,endHour:Int,endMinute:Int){
 
-        val subjectData: RealmResults<SubjectData> =
-            realm.where<SubjectData>(SubjectData::class.java)
+        val subjectData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
                 .equalTo("id", subjectID)
                 .findAll()
 
@@ -594,7 +592,7 @@ class WeekView : ConstraintLayout{
     }
     fun refresh(view: WeekView = cnxt.weekView){
 
-        val scheduleData = realm.where(ScheduleData::class.java).findFirst()
+        val scheduleData = realm.where(ScheduleData::class.java).equalTo("id",MainActivity.scheduleID).findFirst()
 
         if (scheduleData != null) {
 
@@ -603,8 +601,7 @@ class WeekView : ConstraintLayout{
 
             view.findViewWithTag<ConstraintLayout>("canvas").removeAllViews()
 
-            val subjectData: RealmResults<SubjectData> =
-                realm.where<SubjectData>(SubjectData::class.java).findAll()
+            val subjectData = scheduleData.subjectData.where().findAll()
             for (data in subjectData) {
                 view.createSubject(
                     data.startHour,
@@ -623,7 +620,8 @@ class WeekView : ConstraintLayout{
         updateWidget()
 
     }
-    fun createID(Min:Int, Max:Int):Int{
+
+    fun createSubjectID(Min:Int, Max:Int):Int{
         var result = 0
         out@ for(ID in Min .. Max){
 
@@ -655,11 +653,11 @@ class WeekView : ConstraintLayout{
     }
     private fun checkTime(dayFlag:Int, startHour: Int, startMinute: Int, endHour: Int, endMinute: Int):Boolean{
 
-        val subjectData: RealmResults<SubjectData> =
-            realm.where<SubjectData>(SubjectData::class.java)
-                .equalTo("dayFlag", dayFlag)
-                .notEqualTo("id",ID)
-                .findAll()
+        val subjectData = realm.where(ScheduleData::class.java).equalTo("id",MainActivity.scheduleID).findFirst()!!
+            .subjectData.where()
+            .equalTo("dayFlag", dayFlag)
+            .notEqualTo("id",ID)
+            .findAll()
         val data = subjectData.sort("startHour",Sort.ASCENDING)
 
         val pickerTime = arrayListOf<Double>()
@@ -709,7 +707,8 @@ class WeekView : ConstraintLayout{
             7 -> date = 6
         }
         val realm = Realm.getDefaultInstance()
-        val data: RealmResults<SubjectData> = realm.where(SubjectData::class.java)
+        val data = realm.where(ScheduleData::class.java).equalTo("id",MainActivity.scheduleID).findFirst()!!
+            .subjectData.where()
             .equalTo("dayFlag",date)
             .findAll()
             .sort("startHour",Sort.ASCENDING)

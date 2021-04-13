@@ -51,10 +51,10 @@ class SubjectDialog: Dialog {
         val builder = AlertDialog.Builder(context,R.style.MyDialogTheme).apply {
             val n: String = Locale.getDefault().displayLanguage
             if (n.compareTo("한국어") == 0){
-                this.setMessage("일정을 초기화하시겠습니까? \n\n(모든 일정의 데이터가 삭제됩니다)")
+                this.setMessage("일정을 초기화하시겠습니까? \n\n(해당 시간표의 모든 일정 데이터가 삭제됩니다)")
             }
             else {
-                this.setMessage("Are you sure you want to initialize schedules? \n\n(Data for all schedules will be deleted)")
+                this.setMessage("Are you sure you want to initialize schedules? \n\n(All schedule data in that timetable will be deleted)")
             }
         }
 
@@ -62,21 +62,28 @@ class SubjectDialog: Dialog {
 
             .setPositiveButton(cnxt.applicationContext.resources.getString(R.string.dialog_apply)) { _, _ ->
 
-                val scheduleData = realm.where(ScheduleData::class.java).findFirst()
+                val scheduleData = realm.where(ScheduleData::class.java).equalTo("id",MainActivity.scheduleID).findFirst()!!
 
-                var subjectData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
-                    .findAll()
+                var subjectList = scheduleData.subjectData.where().findAll()
 
-                for(i in subjectData.indices){
-                    Notification(context).deleteAlarm(subjectData[0]!!.id)
-                    realm.beginTransaction()
-                    subjectData[0]?.deleteFromRealm()
-                    realm.commitTransaction()
+                for (i in subjectList.indices){
+                    val nestedData = realm.where<SubjectData>(SubjectData::class.java).equalTo("id",subjectList[0]?.id)
+                        .findFirst()
+                    if(nestedData != null){
+                        Notification(context).deleteAlarm(nestedData.id)
+                        realm.beginTransaction()
+                        nestedData.deleteFromRealm()
+                        realm.commitTransaction()
+
+                    }
+
                 }
 
-                for(i in 1 .. scheduleData!!.dayFlag){
+                /*for(i in 1 .. scheduleData!!.dayFlag){
                     cnxt.weekView.findViewWithTag<ConstraintLayout>(i)?.removeAllViews()
                 }
+
+                 */
                 cnxt.weekView.refresh(cnxt.weekView)
                 Toast.makeText(context,cnxt.applicationContext.getString(R.string.subject_initialized),Toast.LENGTH_SHORT).show()
 

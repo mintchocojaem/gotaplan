@@ -58,7 +58,7 @@
                         android:textSize="16sp"
                         android:textColor="@color/defaultAccentColor"
                         android:layout_weight="1"
-                        android:maxLength="50"
+                        android:maxLength="30"
                         android:id="@+id/scheduleTitle"
                         android:background="@null"
                         >

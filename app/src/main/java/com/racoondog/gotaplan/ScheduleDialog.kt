@@ -5,10 +5,7 @@ import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Matrix
+import android.graphics.*
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
@@ -89,7 +86,9 @@ class ScheduleDialog:Dialog {
                         cnxt.main_toolbar.height,
                         cnxt.main_toolbar.width
                     )
-                    val bitmap = combineImages(bitmap1, bitmap2, bitmap3)
+                    val bitmap4 = getBitmapFromView(cnxt.toolbar_title, cnxt.toolbar_title.height, cnxt.toolbar_title.width)
+
+                    val bitmap = combineImages(bitmap1, bitmap2, bitmap3,bitmap4)
 
                     try {
                         /*val strPath = File(Environment.DIRECTORY_PICTURES)
@@ -129,7 +128,8 @@ class ScheduleDialog:Dialog {
                 val bitmap1 = getBitmapFromView(cnxt.scheduleView, cnxt.scheduleView.height, cnxt.scheduleView.width)
                 val bitmap2 = getBitmapFromView(cnxt.dayLine, cnxt.dayLine.height, cnxt.dayLine.width)
                 val bitmap3 = getBitmapFromView(cnxt.main_toolbar, cnxt.main_toolbar.height, cnxt.main_toolbar.width)
-                val bitmap = combineImages(bitmap1, bitmap2, bitmap3)
+                val bitmap4 = getBitmapFromView(cnxt.toolbar_title, cnxt.toolbar_title.height, cnxt.toolbar_title.width)
+                val bitmap = combineImages(bitmap1, bitmap2, bitmap3,bitmap4)
 
                 try
                 {
@@ -176,13 +176,14 @@ class ScheduleDialog:Dialog {
         return bitmap
     }
 
-    private fun combineImages(first: Bitmap, second: Bitmap, third: Bitmap): Bitmap {
+    private fun combineImages(first: Bitmap, second: Bitmap, third: Bitmap,fourth:Bitmap): Bitmap {
 
         val bitmap = Bitmap.createBitmap(first.width, first.height+second.height+third.height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
         canvas.drawBitmap(third, Matrix(), null)
         canvas.drawBitmap(second,0.toFloat(), third.height.toFloat(), null)
         canvas.drawBitmap(first, 0.toFloat(), third.height.toFloat()+second.height.toFloat(), null)
+        canvas.drawBitmap(fourth,Matrix(), null)
 
         return bitmap
     }

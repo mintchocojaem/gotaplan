@@ -102,7 +102,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:background="@null"
                 android:textSize="18sp"
-                android:maxLength="50">
+                android:maxLength="30">
 
 
         </EditText>

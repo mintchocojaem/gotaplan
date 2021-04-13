@@ -11,17 +11,11 @@ class AppStorage(context: Context) {
 
     private val pref: SharedPreferences = context.getSharedPreferences("app_storage", Context.MODE_PRIVATE)
     private val removeAds = "remove_ads"
-    private val helpView = ""
+    private val helpView = true
+    private val initSchedule = true
+    private val defaultScheduleID : Int = 0
 
-    fun purchasedRemoveAds(): Boolean {
-        return pref.getBoolean(removeAds, false)
-    }
 
-    fun setPurchasedRemoveAds(flag: Boolean) {
-        val editor = pref.edit()
-        editor.putBoolean(removeAds, flag)
-        editor.apply()
-    }
     fun setWidgetDateList(realmResults: RealmResults<SubjectData>) {
 
         val editor = pref.edit()
@@ -49,12 +43,38 @@ class AppStorage(context: Context) {
 
     fun setHelpView(flag: Boolean) {
         val editor = pref.edit()
-        editor.putBoolean(helpView, flag)
+        editor.putBoolean("helpView", flag)
         editor.apply()
     }
     fun showHelpView(): Boolean {
-        return pref.getBoolean(helpView,true)
+        return pref.getBoolean("helpView",true)
     }
 
+    fun setPurchasedRemoveAds(flag: Boolean) {
+        val editor = pref.edit()
+        editor.putBoolean(removeAds, flag)
+        editor.apply()
+    }
 
+    fun setDefaultScheduleID(id:Int){
+        val editor = pref.edit()
+        editor.putInt("defaultScheduleID", id)
+        editor.apply()
+    }
+
+    fun purchasedRemoveAds(): Boolean {
+        return pref.getBoolean(removeAds, false)
+    }
+
+    fun defaultScheduleID(): Int {
+        return pref.getInt("defaultScheduleID", 0)
+    }
+    fun initScheduleID(): Boolean {
+        return pref.getBoolean("initSchedule", true)
+    }
+    fun setInitScheduleID(flag: Boolean) {
+        val editor = pref.edit()
+        editor.putBoolean("initSchedule", flag)
+        editor.apply()
+    }
 }

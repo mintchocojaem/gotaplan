@@ -34,7 +34,7 @@ class ScheduleTitleDialog:Dialog {
         window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         setContentView(R.layout.schedule_title_dialog)
 
-        val scheduleData = realm.where(ScheduleData::class.java).findFirst()!!
+        val scheduleData = realm.where(ScheduleData::class.java).equalTo("id",MainActivity.scheduleID).findFirst()!!
 
         scheduleTitle.setText(scheduleData.title)
         scheduleTitle.setHint(scheduleData.title)

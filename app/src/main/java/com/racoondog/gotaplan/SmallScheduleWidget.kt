@@ -92,7 +92,8 @@ private fun updateWidget(context: Context){
         7 -> date = 6
     }
     val realm = Realm.getDefaultInstance()
-    val data: RealmResults<SubjectData> = realm.where(SubjectData::class.java)
+    val data  = realm.where(ScheduleData::class.java).equalTo("id",MainActivity.scheduleID).findFirst()!!.subjectData
+        .where()
         .equalTo("dayFlag",date)
         .findAll()
         .sort("startHour", Sort.ASCENDING)

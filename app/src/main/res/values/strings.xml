@@ -53,7 +53,6 @@
     <string name="saturday">Sat</string>
     <string name="sunday">Sun</string>
     <string name="change_time">Change the time</string>
-    <string name="lesson">Lesson Mode</string>
     <string name="create_subject_toast_enter_title">Please enter a title.</string>
     <string name="cannot_find_g_mail_app">Failed to find G-mail app.</string>
     <string name="edit_schedule_title_applied">The timetable title has been changed.</string>
@@ -64,6 +63,8 @@
     <string name="subject_initialized">Schedules have been initialized.</string>
     <string name="delete">Delete</string>
     <string name="delete_subject">Are you sure you want to delete the schedule?</string>
+    <string name="delete_schedule">Are you sure you want to delete the timetable?</string>
+    <string name="schedule_deleted">The timetable has been deleted.</string>
     <string name="subject_deleted">The schedule has been deleted.</string>
     <string name="add_schedule_first">Please add the timetable first.</string>
     <string name="purchase_pro">Purchase Pro (no Ads)</string>
@@ -93,7 +94,7 @@
     <string name="guide_timetable_second_ex_title">2.5 Example of a timetable</string>
     <string name="guide_timetable_second_ex_content">Examples are prepared to\n help you understand.</string>
     <string name="guide_timetable_third_title">3. Time table complete!</string>
-    <string name="guide_timetable_third_content">You have now laid the foundation.\n\n Use the Add Schedule button at the bottom\n right to add a schedule or the menu at the\n top right to use the add-on function.</string>
+    <string name="guide_timetable_third_content">You have now laid the foundation.\n\n To manage a timetable, you can use the Timetable List.\n To add a schedule, click the Add Schedule Button.\n Please click the Menu to use the add-on function.</string>
     <string name="guide_end_content">Thank you for using the Guide.</string>
     <string name="guide_end_content_add">(Guide may be added or changed\n depending on future updates)</string>
     <string name="notification">Schedule Notification</string>
@@ -115,6 +116,7 @@
     <string name="schedule_interval_dialog_title">Change the interval</string>
     <string name="schedule_interval_dialog_1h">1 Hour</string>
     <string name="schedule_interval_dialog_30m">30 Minute</string>
+    <string name="timetable_list">Timetable List</string>
 
 
 </resources>

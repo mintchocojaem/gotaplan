@@ -2,9 +2,7 @@ package com.racoondog.gotaplan
 
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
@@ -13,7 +11,6 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import io.realm.Realm
-import io.realm.RealmResults
 import kotlinx.android.synthetic.main.create_subject.*
 import kotlinx.android.synthetic.main.time_picker.*
 import java.util.*
@@ -30,7 +27,7 @@ class CreateSubject :AppCompatActivity() {
 
 
         val colorList = resources.getIntArray(R.array.subject_color)
-        val scheduleData = realm.where(ScheduleData::class.java).findFirst()!!
+        val scheduleData = realm.where(ScheduleData::class.java).equalTo("id",MainActivity.scheduleID).findFirst()!!
         val scheduleStartHour = intent?.getIntExtra("start_time",scheduleData.startHour)?:scheduleData.startHour
         val scheduleEndHour = intent?.getIntExtra("end_time",scheduleData.endHour)?:scheduleData.endHour
         val scheduleDayFlag = scheduleData.dayFlag
@@ -95,10 +92,8 @@ class CreateSubject :AppCompatActivity() {
                     for (i in dayFlag.indices){
 
                         if(dayFlag[i]){
-                            val subjectData: RealmResults<SubjectData> =
-                                realm.where<SubjectData>(SubjectData::class.java)
-                                    .equalTo("dayFlag", i+1)
-                                    .findAll()
+                            val subjectData = realm.where(ScheduleData::class.java).equalTo("id",
+                                MainActivity.scheduleID).findFirst()!!.subjectData.where().equalTo("dayFlag", i+1).findAll()
 
                             if(!subject_time_picker.nestedTime(subjectData)){
                                 flag.add(true)
@@ -229,20 +224,18 @@ class CreateSubject :AppCompatActivity() {
 
     private fun createSubject(dayFlag: Int,linkageID:Int?){
 
-        val subjectData: RealmResults<SubjectData> =
-            realm.where<SubjectData>(SubjectData::class.java)
-                .equalTo("dayFlag", dayFlag)
-                .findAll()
-        val scheduleData = realm.where(ScheduleData::class.java).equalTo("id", MainActivity.scheduleID)
-            .findAll()[0]!!
+        val scheduleData = realm.where(ScheduleData::class.java).equalTo("id", MainActivity.scheduleID).findFirst()!!
+        val subjectData  = scheduleData.subjectData.where()
+            .equalTo("dayFlag", dayFlag)
+            .findAll()
 
             if(!subject_time_picker.nestedTime(subjectData)){
 
                 val context = MainActivity.mContext as MainActivity
-                val id = context.weekView.createID(0, 128)//다음으로 만들어질 weekView 의 id 값을 결정하는 변수
+                val id = context.weekView.createSubjectID(0, 128)//다음으로 만들어질 weekView 의 id 값을 결정하는 변수
 
                 realm.beginTransaction()
-                val subjectInfo: SubjectData = realm.createObject(SubjectData::class.java)
+                val subjectInfo = realm.createObject(SubjectData::class.java)
                 subjectInfo.apply {
                     this.id = id
                     this.dayFlag = dayFlag

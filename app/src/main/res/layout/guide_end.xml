@@ -17,7 +17,7 @@
             app:layout_constraintBottom_toTopOf="@id/content"
             android:text="@string/guide_beginning_title"
             android:textColor="@color/whiteColor"
-            android:textSize="24sp"
+            android:textSize="20sp"
             android:fontFamily="@font/font"
             android:id="@+id/title"
             android:layout_marginTop="60dp"

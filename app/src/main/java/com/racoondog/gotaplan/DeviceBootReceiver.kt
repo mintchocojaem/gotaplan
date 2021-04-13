@@ -21,8 +21,7 @@ class DeviceBootReceiver : BroadcastReceiver() {
         if (intent.action == "android.intent.action.BOOT_COMPLETED") {
 
 
-            val subjectData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
-                .findAll()
+            val subjectData = realm.where<SubjectData>(SubjectData::class.java).findAll()
             val data = subjectData.sort("id", Sort.ASCENDING)
             if(data != null){
 

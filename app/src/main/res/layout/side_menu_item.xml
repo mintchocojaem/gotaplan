@@ -1,24 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="48dp"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:padding="@dimen/widget_margin"
-        android:background="#494949"
-        android:gravity="center">
+        android:background="@color/darkColor"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        >
 
     <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="test1"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:text="title"
             android:id="@+id/side_menu_item_title"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/side_menu_item_delete"
             app:layout_constraintTop_toTopOf="parent"
             android:textColor="@color/whiteColor"
-            android:textSize="15sp"
+            android:textSize="14sp"
+            android:gravity="center|left"
+            android:maxLength="20"
+            android:maxLines="2"
             />
+
+    <ImageButton
+            android:id="@+id/side_menu_item_delete"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_icon_delete"
+            android:background="@null"
+            android:backgroundTint="@color/whiteColor"
+            app:layout_constraintLeft_toRightOf="@id/side_menu_item_title"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="8dp"
+            android:padding="16dp"
+            >
+
+    </ImageButton>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

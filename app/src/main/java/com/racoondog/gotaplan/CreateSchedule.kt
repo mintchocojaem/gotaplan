@@ -11,10 +11,13 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import io.realm.Realm
 import kotlinx.android.synthetic.main.create_schedule.*
 import kotlinx.android.synthetic.main.time_picker.*
 
 class CreateSchedule : AppCompatActivity(){
+
+    private val realm = Realm.getDefaultInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -26,6 +29,7 @@ class CreateSchedule : AppCompatActivity(){
         schedule_picker.schedulePicker(create_schedule_main)
 
         var dayFlag = 0
+        val id = createScheduleID(0,128)
 
         createSchedule_Button.setOnClickListener{
 
@@ -35,11 +39,15 @@ class CreateSchedule : AppCompatActivity(){
             {
                 if(dayFlag != 0) {
                     if (start_hour.value < end_hour.value) {
+
                         intent.putExtra("title", schedule_title_text.text.toString())
                         intent.putExtra("scheduleDayFlag", dayFlag)
                         intent.putExtra("scheduleStartHour",start_hour.value)
                         intent.putExtra("scheduleEndHour",end_hour.value)
+                        intent.putExtra("scheduleID",id)
+
                         intent.flags = (Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+
                         setResult(Activity.RESULT_OK, intent)
                         finish()
                     }
@@ -115,6 +123,29 @@ class CreateSchedule : AppCompatActivity(){
                 activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(activity.window.decorView.windowToken, 0)
         }
+    }
+
+    private fun createScheduleID(Min:Int, Max:Int):Int{
+        var result = 0
+        out@ for(ID in Min .. Max){
+
+            val data = realm.where(ScheduleData::class.java).equalTo("id",ID).findFirst()
+
+            if ( data == null ){
+                result = ID
+
+                break@out
+            }
+            else continue
+        }
+        return result
+    }
+
+    fun refreshSchedule(){
+        Toast.makeText(
+            this, "구글 결제 서버와 접속이 끊어졌습니다.\n" +
+                    "오류코드", Toast.LENGTH_LONG
+        ).show()
     }
 
 }

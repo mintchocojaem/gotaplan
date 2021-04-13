@@ -42,10 +42,13 @@ class SubjectDetail : AppCompatActivity() {
         mContext = this
         registerReceiver(mMessageReceiver, IntentFilter("refresh"))
 
-        val scheduleData = realm.where(ScheduleData::class.java).findFirst()!!
-        val subjectData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
+        val scheduleData = realm.where(ScheduleData::class.java) .equalTo("id", MainActivity.scheduleID).findFirst()!!
+
+        val subjectData = realm.where<SubjectData>(SubjectData::class.java)
             .equalTo("id", WeekView.ID)
             .findAll()
+
+
         val data = subjectData[0]!!
 
         init()
@@ -56,7 +59,9 @@ class SubjectDetail : AppCompatActivity() {
 
         subject_detail_save_btn.setOnClickListener {
 
-            val pickerData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
+            val pickerData = realm.where(ScheduleData::class.java).equalTo("id",
+                MainActivity.scheduleID).equalTo("id",MainActivity.scheduleID).findFirst()!!.subjectData
+                .where()
                 .equalTo("dayFlag", subject_detail_day_picker.dayFlag)
                 .notEqualTo("id", WeekView.ID)
                 .findAll()
@@ -90,10 +95,11 @@ class SubjectDetail : AppCompatActivity() {
                 .setMessage(resources.getString(R.string.delete_subject))
                 .setPositiveButton(resources.getString(R.string.dialog_apply)) { _, _ ->
 
+
                     val linkageID = realm.where<SubjectData>(SubjectData::class.java).equalTo(
-                        "linkageID",
-                        data.linkageID
-                    ).findAll()
+                        "linkageID", data.linkageID).findAll()
+
+
                     if(data.linkageID != 0){
                         for (i in linkageID.indices){
 
@@ -127,8 +133,7 @@ class SubjectDetail : AppCompatActivity() {
 
                 .setNegativeButton(resources.getString(R.string.dialog_cancel)) { _, _ ->
 
-                }
-                .show()
+                }.show()
 
             builder.window!!.attributes.apply {
                 width = WindowManager.LayoutParams.WRAP_CONTENT
@@ -149,6 +154,16 @@ class SubjectDetail : AppCompatActivity() {
             )
 
         }
+
+        subject_detail_notification.setOnClickListener {
+            subject_detail_notification.showDialog(this)
+        }
+        subject_detail_notification.setOnCustomEventListener(object :
+            Notification.OnCustomEventListener {
+            override fun onEvent() {
+                subject_detail_save_btn.visibility = View.VISIBLE
+            }
+        })
 
         subject_detail_color_picker.initColor(data.subjectColor)
         subject_detail_color_picker.setOnClickListener {
@@ -254,7 +269,7 @@ class SubjectDetail : AppCompatActivity() {
 
     private  fun init(){
 
-        val subjectData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
+        val subjectData = realm.where<SubjectData>(SubjectData::class.java)
             .equalTo("id", WeekView.ID)
             .findAll()
         val data = subjectData[0]!!

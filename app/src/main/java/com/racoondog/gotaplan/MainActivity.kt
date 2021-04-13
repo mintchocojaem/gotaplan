@@ -38,7 +38,6 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
     companion object{
         var mContext:Context? = null
         var scheduleID: Int = 0 // 메인화면에 보여지는 시간표의 id
-
     }
     val weekView by lazy { WeekView(this) }
 
@@ -60,6 +59,8 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
         setSupportActionBar(main_toolbar)  //Actionbar 부분
         supportActionBar?.setDisplayUseLogoEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
+
+        initSchedule()
         loadData()//데이터 불러오기
 
         if (!storage.purchasedRemoveAds() && !storage.showHelpView()) {
@@ -70,7 +71,7 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
             mInterstitialAd.adListener = object: AdListener() { //전면 광고의 상태를 확인하는 리스너 등록
                 override fun onAdLoaded() {
                     super.onAdLoaded()
-                    mInterstitialAd.show()
+                    //mInterstitialAd.show()
 
                 }
             }
@@ -93,10 +94,17 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
                 }
 
                 override fun onBillingServiceDisconnected() {
-                    Toast.makeText(
-                        this@MainActivity, "구글 결제 서버와 접속이 끊어졌습니다.\n" +
-                                "오류코드", Toast.LENGTH_LONG
-                    ).show()
+
+                    val n: String = Locale.getDefault().displayLanguage
+                    if (n.compareTo("한국어") == 0){
+                        Toast.makeText(
+                            this@MainActivity, "구글 결제 서버와 접속이 끊어졌습니다.",Toast.LENGTH_LONG).show()
+                    }
+                    else {
+                        Toast.makeText(
+                            this@MainActivity, "The connection to the Google payment server has been lost.",
+                            Toast.LENGTH_LONG).show()
+                    }
                 }
             })
 
@@ -124,6 +132,7 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
         side_menu_btn.setOnClickListener {
             // 나중에 시간표 여러개 생성될때 side_menu_btn visible 시키고 고쳐쓰면됨
             val sideMenu = SideMenu(this)
+            sideMenu.cnxt = this
             sideMenu.addSideView(main, fl_silde, view_sildebar)
             sideMenu.showMenu(main, fl_silde, view_sildebar)
         }
@@ -139,8 +148,8 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
                 when (requestCode) {
                     100 -> {
 
-
-                        val scheduleDayFlag = data!!.getIntExtra("scheduleDayFlag", 0)
+                        val scheduleID = data!!.getIntExtra("scheduleID", 0)
+                        val scheduleDayFlag = data.getIntExtra("scheduleDayFlag", 0)
                         val scheduleStartHour = data.getIntExtra("scheduleStartHour", 0)
                         val scheduleEndHour = data.getIntExtra("scheduleEndHour", 0)
 
@@ -148,15 +157,16 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
                         addSubjectButton.visibility = View.VISIBLE
 
                         toolbar_title.text = data.getStringExtra("title")
-
+                        MainActivity.scheduleID = scheduleID
                         intentStartTime = scheduleStartHour
                         intentEndTime = scheduleEndHour
                         intentFlag = scheduleDayFlag
 
                         realm.beginTransaction()
-                        val dataBase: ScheduleData = realm.createObject(ScheduleData::class.java)
+                        val scheduleData: ScheduleData = realm.createObject(ScheduleData::class.java)
 
-                        dataBase.apply {
+                        scheduleData.apply {
+                            this.id = scheduleID
                             this.dayFlag = scheduleDayFlag
                             this.startHour = scheduleStartHour
                             this.endHour = scheduleEndHour
@@ -172,8 +182,9 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
                         }
 
                         weekView.drawSchedule(scheduleDayFlag, scheduleStartHour, scheduleEndHour)
-
+                        weekView_layout.removeView(weekView)
                         weekView_layout.addView(weekView)
+
                         main_text.visibility = View.INVISIBLE
 
                     }
@@ -215,62 +226,6 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
                 }
 
             }
-
-
-    }
-
-    private fun showHelpView(){
-        if(storage.showHelpView()){
-            val introIntent = Intent(this, IntroActivity::class.java)
-            introIntent.action = "TimetableGuide"
-            startActivity(introIntent)
-            storage.setHelpView(false)
-        }
-    }
-
-
-    private fun loadData() {
-
-        val scheduleData = realm.where(ScheduleData::class.java).findFirst()
-        if (scheduleData != null) {
-
-            main_text.visibility = View.INVISIBLE
-            schedule_add.visibility = View.INVISIBLE
-            addSubjectButton.visibility = View.VISIBLE
-            if(scheduleData?.title != "") {
-                toolbar_title?.text = scheduleData?.title
-            }
-
-            intentFlag = scheduleData.dayFlag
-            intentStartTime = scheduleData.startHour
-            intentEndTime = scheduleData.endHour
-
-            weekView.layoutParams = ConstraintLayout.LayoutParams(
-                ConstraintLayout.LayoutParams.MATCH_PARENT,
-                ConstraintLayout.LayoutParams.MATCH_PARENT
-            ).apply {
-
-            }
-            weekView.drawSchedule(intentFlag, intentStartTime, intentEndTime)
-            weekView_layout.addView(weekView)
-
-
-            val subjectData: RealmResults<SubjectData> =
-                realm.where<SubjectData>(SubjectData::class.java).findAll()
-            for (data in subjectData) {
-                weekView.createSubject(
-                    data.startHour,
-                    data.startMinute.toInt(),
-                    data.endHour,
-                    data.endMinute.toInt(),
-                    data.dayFlag,
-                    scheduleData.startHour,
-                    data.id,
-                    data.subjectColor
-                )
-            }
-            weekView.updateWidget()
-        }
 
 
     }
@@ -413,17 +368,29 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
 
     private fun purchase(skuDetails: SkuDetails?){
 
+        val n: String = Locale.getDefault().displayLanguage
+
         skuDetails?.let {
             val billingFlowParams = BillingFlowParams.newBuilder()
                 .setSkuDetails(it)
                 .build()
             billingClient?.launchBillingFlow(this, billingFlowParams)?.responseCode
-        }?:Toast.makeText(this, "상품 정보를 불러올 수 없습니다.", Toast.LENGTH_LONG).show()
+        }?: if (n.compareTo("한국어") == 0){
+            Toast.makeText(
+                this@MainActivity, "상품 정보를 불러올 수 없습니다.",Toast.LENGTH_LONG).show()
+        } else {
+            Toast.makeText(
+                this@MainActivity, "Unable to retrieve product information.",
+                Toast.LENGTH_LONG).show()
+        }
     }
 
 
 
     private fun queryOneTimeProducts(){
+
+        val n: String = Locale.getDefault().displayLanguage
+
         val skuListToQuery = ArrayList<String>()
         skuListToQuery.add("no_ads")
         val params = SkuDetailsParams.newBuilder()
@@ -434,12 +401,25 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
         billingClient!!.querySkuDetailsAsync(params.build(),
             SkuDetailsResponseListener { p0, skuDetailsList -> // 상품 정보를 가지고 오지 못한 경우
                 if (p0.responseCode != BillingClient.BillingResponseCode.OK) {
-                    Toast.makeText(this, "상품 정보를 불러오던 중 오류가 발생했습니다.\n" +
+
+                    if (n.compareTo("한국어") == 0){
+                        Toast.makeText(this, "상품 정보를 불러오던 중 오류가 발생했습니다.\n" +
                                 "오류코드: + ${p0.responseCode}", Toast.LENGTH_LONG).show()
+                    } else {
+                        Toast.makeText(this, "An error occurred while loading product information.\n" +
+                                "Error code: + ${p0.responseCode}", Toast.LENGTH_LONG).show()
+                    }
+
                     return@SkuDetailsResponseListener
                 }
                 if (skuDetailsList == null) {
-                    Toast.makeText(this, "상품 정보가 존재하지 않습니다.", Toast.LENGTH_LONG).show()
+
+                    if (n.compareTo("한국어") == 0){
+                        Toast.makeText(this, "상품 정보가 존재하지 않습니다.", Toast.LENGTH_LONG).show()
+                    } else {
+                        Toast.makeText(this, "Product information does not exist.", Toast.LENGTH_LONG).show()
+                    }
+
                     return@SkuDetailsResponseListener
                 }
                 //응답 받은 데이터들의 숫자를 출력
@@ -456,16 +436,36 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
 
     override fun onPurchasesUpdated(p0: BillingResult, p1: MutableList<Purchase>?) {
 
+        val n: String = Locale.getDefault().displayLanguage
+
         if (p0.responseCode == BillingClient.BillingResponseCode.OK && p1 != null) {
             for (purchase in p1) {
-                Toast.makeText(this, "결제 성공", Toast.LENGTH_LONG).show()
+
+                if (n.compareTo("한국어") == 0){
+                    Toast.makeText(this, "구매해 주셔서 감사합니다.", Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(this, "Thank you for your purchase.", Toast.LENGTH_LONG).show()
+                }
+
                 handleNonConsumablePurchase(purchase)
             }
         } else if (p0.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
-            Toast.makeText(this, "사용자에 의해 결제취소", Toast.LENGTH_LONG).show()
+
+            if (n.compareTo("한국어") == 0){
+                Toast.makeText(this, "사용자에 의해 결제가 취소되었습니다.", Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(this, "Payment has been cancelled by the user.", Toast.LENGTH_LONG).show()
+            }
+
             // Handle an error caused by a user cancelling the purchase flow.
         } else {
-            Toast.makeText(this, "결제가 취소 되었습니다. 종료코드: " + p0.responseCode, Toast.LENGTH_LONG).show()
+
+            if (n.compareTo("한국어") == 0){
+                Toast.makeText(this, "결제가 취소 되었습니다. 종료코드: " + p0.responseCode, Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(this, "The payment has been canceled. End code: ", Toast.LENGTH_LONG).show()
+            }
+
             // Handle any other error codes.
         }
 
@@ -488,6 +488,82 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
             }
         }
     }
+
+    private fun showHelpView(){
+        if(storage.showHelpView()){
+            val introIntent = Intent(this, IntroActivity::class.java)
+            introIntent.action = "TimetableGuide"
+            startActivity(introIntent)
+            storage.setHelpView(false)
+        }
+    }
+
+    fun initSchedule(){
+
+        scheduleID = realm.where(ScheduleData::class.java).findFirst()?.id ?: 0
+
+        // scheduleData의 id개념이 도입되어 이번 업데이트에서 한 번만 행해지는 함수 (주석 아랫 부분은 다음 업데이트에서 삭제하면 됨)
+        if (storage.initScheduleID()){
+
+            val scheduleData = realm.where(ScheduleData::class.java).equalTo("id", scheduleID).findFirst()
+
+            if(scheduleData != null){
+
+                val subjectData: RealmResults<SubjectData> =
+                    realm.where<SubjectData>(SubjectData::class.java).findAll()
+
+
+                if (scheduleData.subjectData.isEmpty()){
+                    realm.beginTransaction()
+                    for (i in subjectData.indices)
+                        scheduleData.subjectData.add(subjectData[i])
+                    realm.commitTransaction()
+                }
+                storage.setInitScheduleID(false)
+            }
+
+        }
+
+
+    }
+
+
+    fun loadData() {
+
+        val scheduleData = realm.where(ScheduleData::class.java).equalTo("id", scheduleID).findFirst()
+
+        if (scheduleData != null) {
+
+
+            main_text.visibility = View.INVISIBLE
+            schedule_add.visibility = View.INVISIBLE
+            addSubjectButton.visibility = View.VISIBLE
+            if(scheduleData?.title != "") {
+                toolbar_title?.text = scheduleData?.title
+            }
+
+            intentFlag = scheduleData.dayFlag
+            intentStartTime = scheduleData.startHour
+            intentEndTime = scheduleData.endHour
+
+            weekView.layoutParams = ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.MATCH_PARENT,
+                ConstraintLayout.LayoutParams.MATCH_PARENT
+            ).apply {
+
+            }
+            weekView.drawSchedule(intentFlag, intentStartTime, intentEndTime)
+            weekView_layout.removeView(weekView)
+            weekView_layout.addView(weekView)
+
+            weekView.updateWidget()
+            weekView.refresh(weekView)
+        }
+
+
+    }
+
+
 
 }
 
