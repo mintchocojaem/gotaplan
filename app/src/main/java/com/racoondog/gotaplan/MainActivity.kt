@@ -98,7 +98,6 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
         }
 
         showHelpView()// 앱 가이드 보여줌
-        getPurchaseHistory()
 
 
         weekView_layout.setOnClickListener {
@@ -503,30 +502,6 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
 
     }
 
-    private fun getPurchaseHistory() {
-
-        billingClient!!.startConnection(object : BillingClientStateListener {
-            override fun onBillingSetupFinished(p0: BillingResult) {
-
-                billingClient!!.queryPurchaseHistoryAsync(BillingClient.SkuType.INAPP) { billingResult, purchaseHistoryRecordList ->
-                    if(billingResult.responseCode == BillingClient.BillingResponseCode.OK){
-                        if(purchaseHistoryRecordList != null && purchaseHistoryRecordList.size>0){
-                            AppStorage(this@MainActivity).setPurchasedRemoveAds(true)
-                        }else{
-                            AppStorage(this@MainActivity).setPurchasedRemoveAds(false)
-                        }
-                    }
-                }
-
-            }
-
-            override fun onBillingServiceDisconnected() {
-
-            }
-
-
-        })
-    }
 
     private fun showHelpView(){
         if(storage.showHelpView()){

@@ -39,21 +39,10 @@ class LargeScheduleWidget : AppWidgetProvider() {
         val widget = RemoteViews(context.packageName, R.layout.large_schedule_widget)
         widget.setRemoteAdapter(R.id.large_schedule_widget_listview, serviceIntent)
         widget.setTextViewText(R.id.large_schedule_widget_date, date)
-        widget.setTextViewText(R.id.large_schedule_widget_title, AppStorage(context).getWidgetScheduleList()!![0]!!.title)
+        widget.setTextViewText(R.id.large_schedule_widget_title, AppStorage(context).getWidgetScheduleList()!![0]?.title?:"title")
 
 
         updateAppWidget(context, appWidgetManager,appWidgetIds)
-
-        /*
-        val title = context!!.getSharedPreferences("app_storage", RemoteViewsService.MODE_PRIVATE)
-            .getString("schedule", "")
-        val makeGson = GsonBuilder().create()
-        val listType : TypeToken<MutableList<SubjectItem?>> = object : TypeToken<MutableList<SubjectItem?>>() {}
-        arrayList = makeGson.fromJson(title,listType.type)
-        widget.setTextViewText(R.id.large_schedule_widget_title, arrayList!![0]?.title)
-
-         */
-
 
 
         // 나중에 오늘은 일정이 없네요! 할때 활용하면 될듯
@@ -110,7 +99,7 @@ class LargeScheduleWidget : AppWidgetProvider() {
 
 
         val appWidgetIds = appWidgetManager.getAppWidgetIds(ComponentName(context, LargeScheduleWidget::class.java))
-        views.setTextViewText(R.id.large_schedule_widget_title, AppStorage(context).getWidgetScheduleList()!![0]!!.title)
+        views.setTextViewText(R.id.large_schedule_widget_title, AppStorage(context).getWidgetScheduleList()!![0]?.title?:"title")
         /*
         val intent = Intent(context, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)

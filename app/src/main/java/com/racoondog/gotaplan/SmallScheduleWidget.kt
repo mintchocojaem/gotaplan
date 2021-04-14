@@ -37,7 +37,7 @@ class SmallScheduleWidget : AppWidgetProvider() {
         val widget = RemoteViews(context.packageName, R.layout.small_schedule_widget)
         widget.setRemoteAdapter(R.id.small_schedule_widget_listview, serviceIntent)
         widget.setTextViewText(R.id.small_schedule_widget_date, date)
-        widget.setTextViewText(R.id.small_schedule_widget_title, AppStorage(context).getWidgetScheduleList()!![0]!!.title)
+        widget.setTextViewText(R.id.small_schedule_widget_title, AppStorage(context).getWidgetScheduleList()!![0]?.title?:"title")
 
 
         updateAppWidget(context, appWidgetManager, appWidgetIds)
@@ -108,7 +108,7 @@ private fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManager
 
 
     val appWidgetIds = appWidgetManager.getAppWidgetIds(ComponentName(context, SmallScheduleWidget::class.java))
-    views.setTextViewText(R.id.small_schedule_widget_title, AppStorage(context).getWidgetScheduleList()!![0]!!.title)
+    views.setTextViewText(R.id.small_schedule_widget_title, AppStorage(context).getWidgetScheduleList()!![0]?.title?:"title")
 
     appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.small_schedule_widget_listview)
     appWidgetManager.updateAppWidget(appWidgetId, views)
