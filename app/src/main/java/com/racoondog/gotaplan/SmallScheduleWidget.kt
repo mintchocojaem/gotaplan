@@ -113,4 +113,5 @@ private fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManager
     appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.small_schedule_widget_listview)
     appWidgetManager.updateAppWidget(appWidgetId, views)
 
+
 }
