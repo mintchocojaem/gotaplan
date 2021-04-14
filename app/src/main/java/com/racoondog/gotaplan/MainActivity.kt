@@ -60,46 +60,45 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
         initSchedule()
         loadData()//데이터 불러오기
 
+        billingClient = BillingClient.newBuilder(this).enablePendingPurchases().setListener(this).build()
+        billingClient!!.startConnection(object : BillingClientStateListener {
+            override fun onBillingSetupFinished(billingResult: BillingResult) {
+                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                    Log.e("Tag", "구글 결제 서버 접속에 성공했습니다.")
+                    queryOneTimeProducts()
+                } else {
+
+                    Log.e("Tag", "구글 결제 서버 접속에 실패하였습니다.\n" + "오류코드: ${billingResult.responseCode}")
+
+                    // case 구글 플레이스토어 계정 정보 인식 안될 때
+
+                }
+            }
+
+            override fun onBillingServiceDisconnected() {
+
+                val n: String = Locale.getDefault().displayLanguage
+                if (n.compareTo("한국어") == 0){
+                    Toast.makeText(
+                        this@MainActivity, "구글 결제 서버와 접속이 끊어졌습니다.",Toast.LENGTH_LONG).show()
+                }
+                else {
+                    Toast.makeText(
+                        this@MainActivity, "The connection to the Google payment server has been lost.",
+                        Toast.LENGTH_LONG).show()
+                }
+            }
+        })
+
         if (!storage.purchasedRemoveAds() && !storage.showHelpView()) {
 
             showAds()
-
-            // Set up the billing client
-            billingClient = BillingClient.newBuilder(this).enablePendingPurchases().setListener(this).build()
-            billingClient!!.startConnection(object : BillingClientStateListener {
-                override fun onBillingSetupFinished(billingResult: BillingResult) {
-                    if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                        Log.e("Tag", "구글 결제 서버 접속에 성공했습니다.")
-                        queryOneTimeProducts()
-                    } else {
-
-                        Log.e("Tag", "구글 결제 서버 접속에 실패하였습니다.\n" + "오류코드: ${billingResult.responseCode}")
-
-                        // case 구글 플레이스토어 계정 정보 인식 안될 때
-
-                    }
-                }
-
-                override fun onBillingServiceDisconnected() {
-
-                    val n: String = Locale.getDefault().displayLanguage
-                    if (n.compareTo("한국어") == 0){
-                        Toast.makeText(
-                            this@MainActivity, "구글 결제 서버와 접속이 끊어졌습니다.",Toast.LENGTH_LONG).show()
-                    }
-                    else {
-                        Toast.makeText(
-                            this@MainActivity, "The connection to the Google payment server has been lost.",
-                            Toast.LENGTH_LONG).show()
-                    }
-                }
-            })
-
 
         }
 
         showHelpView()// 앱 가이드 보여줌
         getPurchaseHistory()
+
 
         weekView_layout.setOnClickListener {
             val scheduleData = realm.where(ScheduleData::class.java).findFirst()
