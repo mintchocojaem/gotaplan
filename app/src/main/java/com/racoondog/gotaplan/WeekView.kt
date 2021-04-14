@@ -2,6 +2,7 @@ package com.racoondog.gotaplan
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Context
@@ -11,15 +12,18 @@ import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
-import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import com.google.common.reflect.TypeToken
+import com.google.gson.GsonBuilder
 import io.realm.Realm
 import io.realm.RealmResults
 import io.realm.Sort
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.schedule_title_dialog.*
 import kotlinx.android.synthetic.main.weekview.view.*
 import java.util.*
 import kotlin.math.roundToInt
@@ -69,7 +73,7 @@ class WeekView : ConstraintLayout{
 
     fun drawSchedule(day_flag: Int, start_time: Int, end_time: Int) {
 
-        val data = realm.where(ScheduleData::class.java).equalTo("id",MainActivity.scheduleID).findFirst()!!
+        val data = realm.where(ScheduleData::class.java).equalTo("id", MainActivity.scheduleID).findFirst()!!
         val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val disPlay = wm.defaultDisplay
         val size = Point()
@@ -83,9 +87,17 @@ class WeekView : ConstraintLayout{
         cellHeight = (w-(w/7))/5
 
         val day = mutableListOf<String>()
-        val dayList = listOf(resources.getString(R.string.monday),resources.getString(R.string.tuesday),
-            resources.getString(R.string.wednesday),resources.getString(R.string.thursday),
-            resources.getString(R.string.friday),resources.getString(R.string.saturday),resources.getString(R.string.sunday))
+        val dayList = listOf(
+            resources.getString(R.string.monday),
+            resources.getString(R.string.tuesday),
+            resources.getString(R.string.wednesday),
+            resources.getString(R.string.thursday),
+            resources.getString(R.string.friday),
+            resources.getString(R.string.saturday),
+            resources.getString(
+                R.string.sunday
+            )
+        )
         // 마지막 요일의 선택에 따라 배열이 추가됨
 
         val period =
@@ -131,7 +143,7 @@ class WeekView : ConstraintLayout{
             TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT
         )
         dayLine.setBackgroundResource(R.color.whiteColor)// 가이드 라인 색
-        dayLine.setPadding((w-(cellWidth*day_flag)),0,0,0)
+        dayLine.setPadding((w - (cellWidth * day_flag)), 0, 0, 0)
 
         for (i in 0 until  day.size) {
 
@@ -142,7 +154,7 @@ class WeekView : ConstraintLayout{
             dayText.setBackgroundResource(R.color.whiteColor) //day_bar color
             dayText.text = day[i]
             dayText.textSize = 14f
-            dayText.setTextColor(ContextCompat.getColor(context,R.color.darkColor))//day_bar text color
+            dayText.setTextColor(ContextCompat.getColor(context, R.color.darkColor))//day_bar text color
             dayText.layoutParams = TableRow.LayoutParams(
                 TableRow.LayoutParams.WRAP_CONTENT,
                 TableRow.LayoutParams.WRAP_CONTENT
@@ -192,7 +204,7 @@ class WeekView : ConstraintLayout{
             initPeriod.tag = "iP$i"
             initPeriod.text = period[i]
             initPeriod.textSize = 12f
-            initPeriod.setTextColor(ContextCompat.getColor(context,R.color.darkColor))
+            initPeriod.setTextColor(ContextCompat.getColor(context, R.color.darkColor))
 
             /*
             val initTime = TextView(this) // 이 부분은 원래 시간이 부분이었으나 기확자의 지시에 따라 initPeriod 가 시간으로 대체됨 ex-> 오전 8:00시 9:00시
@@ -226,7 +238,7 @@ class WeekView : ConstraintLayout{
                 timeText.setOnLongClickListener {
                     val subjectIntent = Intent(cnxt, CreateSubject::class.java)
                     subjectIntent.flags = (Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                    subjectIntent.putExtra("start_time", start_time+i)
+                    subjectIntent.putExtra("start_time", start_time + i)
                     subjectIntent.putExtra("end_time", end_time)
                     subjectIntent.putExtra("day_flag", j)
                     cnxt.startActivityForResult(subjectIntent, 102)
@@ -249,7 +261,7 @@ class WeekView : ConstraintLayout{
         //시간표위 레이아웃을 그리는 함수
 
         val canvas = ConstraintLayout(context)
-        canvas.layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.MATCH_CONSTRAINT).apply{
+        canvas.layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_CONSTRAINT).apply{
             width = w - (w-(cellWidth*day_flag))
             topToTop = LayoutParams.PARENT_ID
             bottomToBottom = LayoutParams.PARENT_ID
@@ -285,7 +297,16 @@ class WeekView : ConstraintLayout{
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    fun createSubject(StartHour:Int, StartMinute:Int, EndHour:Int, EndMinute:Int, DayFlag:Int, intentStartTime:Int, id:Int, colorCode:Int) {
+    fun createSubject(
+        StartHour: Int,
+        StartMinute: Int,
+        EndHour: Int,
+        EndMinute: Int,
+        DayFlag: Int,
+        intentStartTime: Int,
+        id: Int,
+        colorCode: Int
+    ) {
 
         val subjectWidth = cellWidth
         val subjectHeight = (EndHour - StartHour) * cellHeight + (EndMinute - StartMinute) * cellHeight / 60
@@ -299,7 +320,10 @@ class WeekView : ConstraintLayout{
             .equalTo("id", id)
             .findAll()
 
-        val scheduleData = realm.where(ScheduleData::class.java).equalTo("id",MainActivity.scheduleID).findFirst()!!
+        val scheduleData = realm.where(ScheduleData::class.java).equalTo(
+            "id",
+            MainActivity.scheduleID
+        ).findFirst()!!
 
 
         titleText.apply {
@@ -307,7 +331,7 @@ class WeekView : ConstraintLayout{
             tag = "title$id"
             textSize = 14f
             maxLines = 1
-            typeface = ResourcesCompat.getFont(context,R.font.yd_child_fund_korea)
+            typeface = ResourcesCompat.getFont(context, R.font.yd_child_fund_korea)
 
         }
         var mCount = EndMinute - StartMinute
@@ -335,13 +359,16 @@ class WeekView : ConstraintLayout{
 
         }
 
-        colorImage.layoutParams = LayoutParams(LayoutParams.MATCH_CONSTRAINT, LayoutParams.MATCH_CONSTRAINT).apply {
+        colorImage.layoutParams = LayoutParams(
+            LayoutParams.MATCH_CONSTRAINT,
+            LayoutParams.MATCH_CONSTRAINT
+        ).apply {
             topToTop = LayoutParams.PARENT_ID
             bottomToBottom = LayoutParams.PARENT_ID
             rightToRight = LayoutParams.PARENT_ID
             leftToLeft = LayoutParams.PARENT_ID
         }
-        colorImage.setPadding(4,5,4,5)
+        colorImage.setPadding(4, 5, 4, 5)
         colorImage.setBackgroundResource(R.drawable.round_subject_bg_layout)
         colorImage.backgroundTintList = ColorStateList.valueOf(colorCode)
 
@@ -407,8 +434,8 @@ class WeekView : ConstraintLayout{
                     }
                     MotionEvent.ACTION_MOVE -> { // 뷰 이동 중
 
-                        v.x = v.x + event.x - v.width /2
-                        v.y = v.y + event.y - v.height /2
+                        v.x = v.x + event.x - v.width / 2
+                        v.y = v.y + event.y - v.height / 2
 
                         if (v.x <= 0) v.x = 0f else if (v.x > parentWidth) v.x =
                             (parentWidth - v.width).toFloat()
@@ -424,16 +451,16 @@ class WeekView : ConstraintLayout{
 
                         val h = IntArray(2)
                         v.getLocationOnScreen(h)
-                        when(h[1]){
-                            in 0..(screenHeight/3) -> {
+                        when (h[1]) {
+                            in 0..(screenHeight / 3) -> {
 
-                                scrollView.scrollTo(0,scrollView.scrollY-20)
+                                scrollView.scrollTo(0, scrollView.scrollY - 20)
 
                             }
-                            in ((screenHeight/3)*2)..screenHeight -> {
+                            in ((screenHeight / 3) * 2)..screenHeight -> {
 
 
-                                scrollView.scrollTo(0,scrollView.scrollY+20)
+                                scrollView.scrollTo(0, scrollView.scrollY + 20)
 
                             }
                         }
@@ -443,34 +470,45 @@ class WeekView : ConstraintLayout{
                     }
                     MotionEvent.ACTION_UP -> { // 뷰에서 손을 뗌
 
-                        if (v.x < 0) v.x = 0f else if (v.x + v.width > parentWidth) v.x = (parentWidth - v.width).toFloat()
-                        if (v.y < 0) v.y = 0f else if (v.y + v.height > parentHeight) v.y = (parentHeight - v.height).toFloat()
+                        if (v.x < 0) v.x = 0f else if (v.x + v.width > parentWidth) v.x =
+                            (parentWidth - v.width).toFloat()
+                        if (v.y < 0) v.y = 0f else if (v.y + v.height > parentHeight) v.y =
+                            (parentHeight - v.height).toFloat()
 
-                        for(i in 0 until (scheduleData.endHour - scheduleData.startHour)*2) {
+                        for (i in 0 until (scheduleData.endHour - scheduleData.startHour) * 2) {
 
-                            if (v.y >= (cellHeight * i)/2 && v.y < (cellHeight * (i + 1))/2) {
+                            if (v.y >= (cellHeight * i) / 2 && v.y < (cellHeight * (i + 1)) / 2) {
 
-                                v.y = (cellHeight * i)/2.toFloat()
+                                v.y = (cellHeight * i) / 2.toFloat()
 
-                                subjectStartHour = scheduleStartHour + (i/2)
-                                subjectStartMinute = (i%2)*30
+                                subjectStartHour = scheduleStartHour + (i / 2)
+                                subjectStartMinute = (i % 2) * 30
                             }
                         }
 
-                        subjectEndHour = (v.y+v.height).roundToInt()/cellHeight + scheduleData.startHour
-                        subjectEndMinute =  subjectData[0]!!.endMinute.toInt() + (subjectStartMinute - oldStartMinute.toInt()) + (v.y).roundToInt()/cellHeight*60
-                        for(i in 1 .. subjectEndMinute/60){
+                        subjectEndHour =
+                            (v.y + v.height).roundToInt() / cellHeight + scheduleData.startHour
+                        subjectEndMinute =
+                            subjectData[0]!!.endMinute.toInt() + (subjectStartMinute - oldStartMinute.toInt()) + (v.y).roundToInt() / cellHeight * 60
+                        for (i in 1..subjectEndMinute / 60) {
                             subjectEndMinute -= 60
 
                         }
                         //if(subjectEndMinute == 0)subjectEndHour+=1
-                        if(subjectEndMinute < 0)subjectEndMinute += 60
+                        if (subjectEndMinute < 0) subjectEndMinute += 60
                         //Toast.makeText(context,"$subjectEndHour,$subjectEndMinute",Toast.LENGTH_SHORT).show()
                         //if(v.x == oldX && v.y == oldY) Toast.makeText(context,"변경된 시간이 같음",Toast.LENGTH_SHORT).show()
 
                         //Toast.makeText(context,"${v.y},$cellHeight",Toast.LENGTH_SHORT).show()
 
-                        applyTime(ID,subjectDayFlag,subjectStartHour,subjectStartMinute,subjectEndHour,subjectEndMinute)
+                        applyTime(
+                            ID,
+                            subjectDayFlag,
+                            subjectStartHour,
+                            subjectStartMinute,
+                            subjectEndHour,
+                            subjectEndMinute
+                        )
 
                         /*
                         for(i in 0 until (scheduleData.scheduleEndHour - scheduleData.scheduleStartHour)) {
@@ -498,7 +536,14 @@ class WeekView : ConstraintLayout{
 
     }
 
-    private fun applyTime(subjectID: Int,subjectDayFlag:Int,startHour:Int,startMinute:Int,endHour:Int,endMinute:Int){
+    private fun applyTime(
+        subjectID: Int,
+        subjectDayFlag: Int,
+        startHour: Int,
+        startMinute: Int,
+        endHour: Int,
+        endMinute: Int
+    ){
 
         val subjectData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
                 .equalTo("id", subjectID)
@@ -514,21 +559,33 @@ class WeekView : ConstraintLayout{
         if (endMinute == 0) newEndMinute ="00"
         if(newEndMinute.length <= 1) newEndMinute = "0$newEndMinute"
 
-        if (checkTime(subjectDayFlag,startHour,startMinute,endHour,endMinute)){
-            Toast.makeText(cnxt,resources.getString(R.string.subject_exist_already),Toast.LENGTH_SHORT).show()
+        if (checkTime(subjectDayFlag, startHour, startMinute, endHour, endMinute)){
+            Toast.makeText(
+                cnxt,
+                resources.getString(R.string.subject_exist_already),
+                Toast.LENGTH_SHORT
+            ).show()
             refresh(cnxt.weekView)
         }else {
 
-            val builder = AlertDialog.Builder(context,R.style.MyDialogTheme).apply {
+            val builder = AlertDialog.Builder(context, R.style.MyDialogTheme).apply {
 
                 val n: String = Locale.getDefault().displayLanguage
                 if (n.compareTo("한국어") == 0){
-                    this.setMessage("해당 일정의 시작시간을 \n${dayFlagToText(data.dayFlag)} ${data.startHour}:${data.startMinute}" +
-                            " -> ${dayFlagToText(subjectDayFlag)} $startHour:$newStartMinute 으로 바꾸시겠습니까?")
+                    this.setMessage(
+                        "해당 일정의 시작시간을 \n${dayFlagToText(data.dayFlag)} ${data.startHour}:${data.startMinute}" +
+                                " -> ${dayFlagToText(subjectDayFlag)} $startHour:$newStartMinute 으로 바꾸시겠습니까?"
+                    )
                 }
                 else {
-                    this.setMessage("Would you like to change the start time for the schedule from ${dayFlagToText(data.dayFlag)} ${data.startHour}:${data.startMinute}" +
-                            " to ${dayFlagToText(subjectDayFlag)} $startHour:$newStartMinute ?")
+                    this.setMessage(
+                        "Would you like to change the start time for the schedule from ${
+                            dayFlagToText(
+                                data.dayFlag
+                            )
+                        } ${data.startHour}:${data.startMinute}" +
+                                " to ${dayFlagToText(subjectDayFlag)} $startHour:$newStartMinute ?"
+                    )
                 }
             }
 
@@ -547,7 +604,14 @@ class WeekView : ConstraintLayout{
 
                     Notification.notificationFlag = data.notification
                     Notification(context).deleteAlarm(data.id)
-                    Notification(context).setAlarm(data.id,data.dayFlag,data.startHour,data.startMinute,data.notification,data.title)
+                    Notification(context).setAlarm(
+                        data.id,
+                        data.dayFlag,
+                        data.startHour,
+                        data.startMinute,
+                        data.notification,
+                        data.title
+                    )
                     Notification.notificationFlag = -1
 
 
@@ -563,15 +627,25 @@ class WeekView : ConstraintLayout{
                 width = LayoutParams.WRAP_CONTENT
                 height = LayoutParams.WRAP_CONTENT}
             builder.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            builder.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(cnxt.applicationContext,R.color.colorCancel))
-            builder.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(cnxt.applicationContext,R.color.defaultAccentColor))
+            builder.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(
+                ContextCompat.getColor(
+                    cnxt.applicationContext,
+                    R.color.colorCancel
+                )
+            )
+            builder.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(
+                ContextCompat.getColor(
+                    cnxt.applicationContext,
+                    R.color.defaultAccentColor
+                )
+            )
 
         }
 
 
     }
 
-    private fun dayFlagToText(dayFlag:Int):String{
+    private fun dayFlagToText(dayFlag: Int):String{
 
         var dayFlagText =""
 
@@ -580,24 +654,27 @@ class WeekView : ConstraintLayout{
             2 -> dayFlagText = resources.getString(R.string.tuesday)
             3 -> dayFlagText = resources.getString(R.string.wednesday)
             4 -> dayFlagText = resources.getString(R.string.thursday)
-            5 -> dayFlagText =resources.getString(R.string.friday)
+            5 -> dayFlagText = resources.getString(R.string.friday)
             6 -> dayFlagText = resources.getString(R.string.saturday)
             7 -> dayFlagText = resources.getString(R.string.sunday)
         }
         return dayFlagText
     }
 
-    fun deleteSubject(id:Int){
+    fun deleteSubject(id: Int){
         findViewWithTag<ConstraintLayout>("canvas").removeView(findViewById(id))
     }
     fun refresh(view: WeekView = cnxt.weekView){
 
-        val scheduleData = realm.where(ScheduleData::class.java).equalTo("id",MainActivity.scheduleID).findFirst()
+        val scheduleData = realm.where(ScheduleData::class.java).equalTo(
+            "id",
+            MainActivity.scheduleID
+        ).findFirst()
 
         if (scheduleData != null) {
 
             view.findViewById<ConstraintLayout>(R.id.scheduleView).removeAllViews()
-            view.drawSchedule(scheduleData.dayFlag,scheduleData.startHour,scheduleData.endHour)
+            view.drawSchedule(scheduleData.dayFlag, scheduleData.startHour, scheduleData.endHour)
 
             view.findViewWithTag<ConstraintLayout>("canvas").removeAllViews()
 
@@ -621,11 +698,11 @@ class WeekView : ConstraintLayout{
 
     }
 
-    fun createSubjectID(Min:Int, Max:Int):Int{
+    fun createSubjectID(Min: Int, Max: Int):Int{
         var result = 0
         out@ for(ID in Min .. Max){
 
-            val data = realm.where<SubjectData>(SubjectData::class.java).equalTo("id",ID).findFirst()
+            val data = realm.where<SubjectData>(SubjectData::class.java).equalTo("id", ID).findFirst()
 
             if ( data == null ){
                 result = ID
@@ -636,11 +713,11 @@ class WeekView : ConstraintLayout{
         }
         return result
     }
-    fun createLinkageID(Min:Int, Max:Int):Int{
+    fun createLinkageID(Min: Int, Max: Int):Int{
         var result = 0
         out@ for(ID in Min .. Max){
 
-            val data = realm.where<SubjectData>(SubjectData::class.java).equalTo("linkageID",ID).findFirst()
+            val data = realm.where<SubjectData>(SubjectData::class.java).equalTo("linkageID", ID).findFirst()
 
             if ( data == null ){
                 result = ID
@@ -651,14 +728,23 @@ class WeekView : ConstraintLayout{
         }
         return result
     }
-    private fun checkTime(dayFlag:Int, startHour: Int, startMinute: Int, endHour: Int, endMinute: Int):Boolean{
+    private fun checkTime(
+        dayFlag: Int,
+        startHour: Int,
+        startMinute: Int,
+        endHour: Int,
+        endMinute: Int
+    ):Boolean{
 
-        val subjectData = realm.where(ScheduleData::class.java).equalTo("id",MainActivity.scheduleID).findFirst()!!
+        val subjectData = realm.where(ScheduleData::class.java).equalTo(
+            "id",
+            MainActivity.scheduleID
+        ).findFirst()!!
             .subjectData.where()
             .equalTo("dayFlag", dayFlag)
-            .notEqualTo("id",ID)
+            .notEqualTo("id", ID)
             .findAll()
-        val data = subjectData.sort("startHour",Sort.ASCENDING)
+        val data = subjectData.sort("startHour", Sort.ASCENDING)
 
         val pickerTime = arrayListOf<Double>()
 
@@ -673,8 +759,8 @@ class WeekView : ConstraintLayout{
 
                 val subjectTime = arrayListOf<Double>()
 
-                subjectTime.add(data[i]!!.startHour.toDouble()+ (data[i]!!.startMinute.toDouble() / 100))
-                subjectTime.add(data[i]!!.endHour.toDouble()+ (data[i]!!.endMinute.toDouble() / 100))
+                subjectTime.add(data[i]!!.startHour.toDouble() + (data[i]!!.startMinute.toDouble() / 100))
+                subjectTime.add(data[i]!!.endHour.toDouble() + (data[i]!!.endMinute.toDouble() / 100))
 
                 val checkFlag = when{
 
@@ -707,14 +793,29 @@ class WeekView : ConstraintLayout{
             7 -> date = 6
         }
         val realm = Realm.getDefaultInstance()
-        val data = realm.where(ScheduleData::class.java).equalTo("id",MainActivity.scheduleID).findFirst()!!
-            .subjectData.where()
-            .equalTo("dayFlag",date)
+        /*val data = realm.where(ScheduleData::class.java).findFirst()!!.subjectData.where()
+            .equalTo("dayFlag", date)
             .findAll()
-            .sort("startHour",Sort.ASCENDING)
-        val sortedDate = data.sort("endHour",Sort.ASCENDING)
+
+         */
+        var subjectData = realm.where(ScheduleData::class.java).equalTo("id",AppStorage(context).getWidgetScheduleID())
+            .findFirst()?.subjectData?.where()
+            ?.equalTo("dayFlag", date)
+            ?.findAll()
+        if ( subjectData == null){
+            val initScheduleData = realm.where(ScheduleData::class.java).findFirst()!!
+            val initSubjectData = initScheduleData.subjectData.where()
+                .equalTo("dayFlag", date)
+                .findAll()!!
+            subjectData = initSubjectData
+            AppStorage(context).setWidgetScheduleID(initScheduleData.id)
+        }
+
+        val sortedDate = subjectData.sort("startHour", Sort.ASCENDING).sort("endHour", Sort.ASCENDING)
+
         //Toast.makeText(context,"$date",Toast.LENGTH_LONG).show()
-        AppStorage(cnxt).setWidgetDateList(sortedDate)
+        AppStorage(cnxt).setWidgetSubjectList(sortedDate)
+
 
         val appWidgetManager = AppWidgetManager.getInstance(context)
         val smallAppWidgetIds = appWidgetManager.getAppWidgetIds(
@@ -723,7 +824,10 @@ class WeekView : ConstraintLayout{
                 SmallScheduleWidget::class.java
             )
         )
-        appWidgetManager.notifyAppWidgetViewDataChanged(smallAppWidgetIds, R.id.small_schedule_widget_listview)
+        appWidgetManager.notifyAppWidgetViewDataChanged(
+            smallAppWidgetIds,
+            R.id.small_schedule_widget_listview
+        )
 
         val largeAppWidgetIds = appWidgetManager.getAppWidgetIds(
             ComponentName(
@@ -731,6 +835,56 @@ class WeekView : ConstraintLayout{
                 LargeScheduleWidget::class.java
             )
         )
-        appWidgetManager.notifyAppWidgetViewDataChanged(largeAppWidgetIds, R.id.large_schedule_widget_listview)
+
+        appWidgetManager.notifyAppWidgetViewDataChanged(
+            largeAppWidgetIds,
+            R.id.large_schedule_widget_listview
+        )
+
+        updateWidgetTitle()
+
+    }
+
+    private fun updateWidgetTitle(){
+
+        val data = realm.where(ScheduleData::class.java)
+            .equalTo("id",AppStorage(context).getWidgetScheduleID()).findFirst()
+            ?: realm.where(ScheduleData::class.java).findFirst()!!
+
+        AppStorage(context).setWidgetScheduleList(data)
+        val appWidgetManager = AppWidgetManager.getInstance(context)
+
+        val largeWidget = RemoteViews(context.packageName, R.layout.large_schedule_widget)
+        val smallWidget = RemoteViews(context.packageName, R.layout.small_schedule_widget)
+
+        val largeIntent = Intent(context, LargeScheduleWidget::class.java)
+        val smallIntent = Intent(context, SmallScheduleWidget::class.java)
+
+        largeIntent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+        smallIntent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+
+        //You need to specify the action for the intent. Right now that intent is doing nothing for there is no action to be broadcasted.
+        val largeAppWidgetIds = appWidgetManager.getAppWidgetIds(
+            ComponentName(
+                context,
+                LargeScheduleWidget::class.java
+            )
+        )
+        val smallAppWidgetIds = appWidgetManager.getAppWidgetIds(
+            ComponentName(
+                context,
+                SmallScheduleWidget::class.java
+            )
+        )
+        //You need to specify a proper flag for the intent. Or else the intent will become deleted.
+        cnxt.sendBroadcast(largeIntent)
+        cnxt.sendBroadcast(smallIntent)
+
+        largeWidget.setTextViewText(R.id.large_schedule_widget_title, data!!.title)
+        largeWidget.setTextViewText(R.id.small_schedule_widget_title,  data!!.title)
+
+        appWidgetManager.updateAppWidget(largeAppWidgetIds, largeWidget)
+        appWidgetManager.updateAppWidget(smallAppWidgetIds, smallWidget)
+
     }
 }

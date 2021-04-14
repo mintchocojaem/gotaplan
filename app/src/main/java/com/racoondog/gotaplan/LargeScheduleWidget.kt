@@ -6,8 +6,10 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
+import android.widget.RemoteViewsService
+import com.google.common.reflect.TypeToken
+import com.google.gson.GsonBuilder
 import io.realm.Realm
-import io.realm.RealmResults
 import io.realm.Sort
 import java.text.SimpleDateFormat
 import java.util.*
@@ -15,32 +17,44 @@ import java.util.*
 
 class LargeScheduleWidget : AppWidgetProvider() {
 
-    override fun onUpdate(
-        context: Context,
-        appWidgetManager: AppWidgetManager,
-        appWidgetIds: IntArray
-    ) {
+    val realm = Realm.getDefaultInstance()
+
+    override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
 
         // There may be multiple widgets active, so update all of them
-        for (appWidgetId in appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, appWidgetId)
-        }
+
         // RemoteViewsService 실행 등록시키는 함수
 
         val currentTime: Date = Calendar.getInstance().getTime()
         val n: String = Locale.getDefault().displayLanguage
 
         val date = if (n.compareTo("한국어") == 0){
-            SimpleDateFormat("yyyy년 MM월 dd일 EE요일", Locale.getDefault()).format(currentTime)
+            SimpleDateFormat("MM월 dd일 EE요일", Locale.getDefault()).format(currentTime)
 
         } else {
-            SimpleDateFormat("yyyy.MM.dd EE", Locale.getDefault()).format(currentTime)
+            SimpleDateFormat("MM.dd EE", Locale.getDefault()).format(currentTime)
         }
-        updateWidget(context)
+
         val serviceIntent = Intent(context, LargeScheduleWidgetRemoteViewsService::class.java)
         val widget = RemoteViews(context.packageName, R.layout.large_schedule_widget)
         widget.setRemoteAdapter(R.id.large_schedule_widget_listview, serviceIntent)
-        widget.setTextViewText(R.id.large_schedule_widget_title, date)
+        widget.setTextViewText(R.id.large_schedule_widget_date, date)
+        widget.setTextViewText(R.id.large_schedule_widget_title, AppStorage(context).getWidgetScheduleList()!![0]!!.title)
+
+
+        updateAppWidget(context, appWidgetManager,appWidgetIds)
+
+        /*
+        val title = context!!.getSharedPreferences("app_storage", RemoteViewsService.MODE_PRIVATE)
+            .getString("schedule", "")
+        val makeGson = GsonBuilder().create()
+        val listType : TypeToken<MutableList<SubjectItem?>> = object : TypeToken<MutableList<SubjectItem?>>() {}
+        arrayList = makeGson.fromJson(title,listType.type)
+        widget.setTextViewText(R.id.large_schedule_widget_title, arrayList!![0]?.title)
+
+         */
+
+
 
         // 나중에 오늘은 일정이 없네요! 할때 활용하면 될듯
         /*
@@ -59,55 +73,55 @@ class LargeScheduleWidget : AppWidgetProvider() {
 
     }
 
-}
+    private fun updateAppWidget(context: Context,  appWidgetManager: AppWidgetManager,appWidgetId: IntArray) {
 
-private fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int) {
+        //여기부분 다 사용할 일 없어져서 주석처리함!
+        // Construct the RemoteViews object
+        val views = RemoteViews(context.packageName, R.layout.large_schedule_widget)
 
-    //여기부분 다 사용할 일 없어져서 주석처리함!
-    // Construct the RemoteViews object
+        val cal = Calendar.getInstance()
+        var date = 0
+        val dayFlag = cal.get(Calendar.DAY_OF_WEEK)
+        when(dayFlag){
+            1 -> date = 7
+            2 -> date = 1
+            3 -> date = 2
+            4 -> date = 3
+            5 -> date = 4
+            6 -> date = 5
+            7 -> date = 6
+        }
+        var subjectData = realm.where(ScheduleData::class.java).equalTo("id",AppStorage(context).getWidgetScheduleID())
+            .findFirst()?.subjectData?.where()
+            ?.equalTo("dayFlag", date)
+            ?.findAll()
+        if ( subjectData == null){
+            val initScheduleData = realm.where(ScheduleData::class.java).findFirst()!!
+            val initSubjectData = initScheduleData.subjectData.where()
+                .equalTo("dayFlag", date)
+                .findAll()!!
+            subjectData = initSubjectData
+            AppStorage(context).setWidgetScheduleID(initScheduleData.id)
+        }
 
-    val views = RemoteViews(context.packageName, R.layout.large_schedule_widget)
+        val sortedDate = subjectData.sort("startHour", Sort.ASCENDING).sort("endHour", Sort.ASCENDING)
 
-    /*
-    val intent = Intent(context, MainActivity::class.java)
-    val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
-    views.setOnClickPendingIntent(R.id.widget_title, pendingIntent)
+        AppStorage(context).setWidgetSubjectList(sortedDate)
 
-     */
 
-    appWidgetManager.updateAppWidget(appWidgetId, views)
+        val appWidgetIds = appWidgetManager.getAppWidgetIds(ComponentName(context, LargeScheduleWidget::class.java))
+        views.setTextViewText(R.id.large_schedule_widget_title, AppStorage(context).getWidgetScheduleList()!![0]!!.title)
+        /*
+        val intent = Intent(context, MainActivity::class.java)
+        val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
+        views.setOnClickPendingIntent(R.id.widget_title, pendingIntent)
 
-}
-private fun updateWidget(context: Context){
-    val cal = Calendar.getInstance()
-    var date = 0
-    val dayFlag = cal.get(Calendar.DAY_OF_WEEK)
-    when(dayFlag){
-        1 -> date = 7
-        2 -> date = 1
-        3 -> date = 2
-        4 -> date = 3
-        5 -> date = 4
-        6 -> date = 5
-        7 -> date = 6
+         */
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.large_schedule_widget_listview)
+        appWidgetManager.updateAppWidget(appWidgetId, views)
+
     }
-    val realm = Realm.getDefaultInstance()
-    val data = realm.where(ScheduleData::class.java).equalTo("id",
-        MainActivity.scheduleID).findFirst()!!.subjectData
-        .where()
-        .equalTo("dayFlag",date)
-        .findAll()
-        .sort("startHour", Sort.ASCENDING)
-    val sortedDate = data.sort("endHour", Sort.ASCENDING)
-    //Toast.makeText(context,"$date",Toast.LENGTH_LONG).show()
-    AppStorage(context).setWidgetDateList(sortedDate)
 
-    val appWidgetManager = AppWidgetManager.getInstance(context)
-    val appWidgetIds = appWidgetManager.getAppWidgetIds(
-        ComponentName(
-            context,
-            LargeScheduleWidget::class.java
-        )
-    )
-    appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.large_schedule_widget_listview)
+
 }
+

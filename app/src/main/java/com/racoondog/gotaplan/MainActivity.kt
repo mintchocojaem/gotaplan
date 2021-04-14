@@ -290,6 +290,20 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
                 startActivity(directFeedbackIntent)
                 return true
             }
+            R.id.widgetSetting->{
+                 if (scheduleData == null) {
+                    Toast.makeText(
+                        this,
+                        resources.getString(R.string.add_schedule_first),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    val dialog = WidgetDialog(this)
+                    dialog.cnxt = this
+                    dialog.show()
+                }
+                return true
+            }
 
             else -> return super.onOptionsItemSelected(item)
         }
@@ -446,7 +460,7 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
                 } else {
                     Toast.makeText(this, "Thank you for your purchase.", Toast.LENGTH_LONG).show()
                 }
-
+                AppStorage(this).setPurchasedRemoveAds(true)
                 handleNonConsumablePurchase(purchase)
             }
         } else if (p0.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {

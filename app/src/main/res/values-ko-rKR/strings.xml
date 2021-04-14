@@ -35,6 +35,9 @@
     <string name="subject_dialog_init_subject">초기화</string>
     <string name="schedule_dialog_edit_time">시간 변경</string>
     <string name="schedule_time_dialog_title">시간 변경</string>
+    <string name="widget_dialog_toolbar_title">위젯 기능</string>
+    <string name="widget_dialog_init_widget">현재 시간표를 위젯으로 지정</string>
+    <string name="widget_dialog_init_success">시간표가 위젯으로 지정되었습니다.</string>
     <string name="am">오전</string>
     <string name="pm">오후</string>
     <string name="start">시작</string>

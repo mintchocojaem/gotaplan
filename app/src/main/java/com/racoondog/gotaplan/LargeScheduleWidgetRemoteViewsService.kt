@@ -21,21 +21,18 @@ class LargeScheduleWidgetRemoteViewsService : RemoteViewsService() {
     class LargeScheduleWidgetRemoteViewsFactory(context: Context?) : RemoteViewsService.RemoteViewsFactory {
         //context 설정하기
         var context: Context? = null
-        var arrayList : MutableList<WidgetItem?>? = null
+        var arrayList : MutableList<SubjectItem?>? = null
 
         //DB를 대신하여 arrayList에 데이터를 추가하는 함수ㅋㅋ
-        fun setData() {
+        private fun setData() {
 
             val realm = Realm.getDefaultInstance()
             /*var subjectData: RealmResults<SubjectData> =
                 realm.where<SubjectData>(SubjectData::class.java).findAll()
 
              */
-            val data = context!!.getSharedPreferences("app_storage", MODE_PRIVATE)
-                .getString("data", "")
-            val makeGson = GsonBuilder().create()
-            val listType : TypeToken<MutableList<WidgetItem?>> = object : TypeToken<MutableList<WidgetItem?>>() {}
-            arrayList = makeGson.fromJson(data,listType.type)
+
+            arrayList = AppStorage(context!!).getWidgetSubjectList()
 
 
 

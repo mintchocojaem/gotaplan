@@ -1,12 +1,17 @@
 package com.racoondog.gotaplan
 
 import android.app.Dialog
+import android.app.PendingIntent
+import android.appwidget.AppWidgetManager
+import android.content.ComponentName
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.WindowManager
+import android.widget.RemoteViews
 import android.widget.Toast
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_main.*
@@ -40,6 +45,7 @@ class ScheduleTitleDialog:Dialog {
         scheduleTitle.setHint(scheduleData.title)
 
         scheduleTitle_dialog_apply.setOnClickListener {
+
             realm.beginTransaction()
             if (scheduleTitle.text.toString() == "") scheduleData.title = scheduleTitle.hint.toString()
             else scheduleData.title = scheduleTitle.text.toString()
@@ -48,10 +54,14 @@ class ScheduleTitleDialog:Dialog {
             dismiss()
             cnxt.dismiss()
             cnxt.cnxt.toolbar_title.text = scheduleData.title.toString()
+            cnxt.cnxt.weekView.refresh(cnxt.cnxt.weekView)
+
         }
         scheduleTitle_dialog_cancel.setOnClickListener{
             dismiss()
         }
     }
+
+
 
 }

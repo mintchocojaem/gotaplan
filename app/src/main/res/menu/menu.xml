@@ -12,7 +12,11 @@
             app:showAsAction="never"
             android:title="@string/subject_dialog_toolbar_title">
     </item>
-
+    <item
+            android:id="@+id/widgetSetting"
+            app:showAsAction="never"
+            android:title="@string/widget_dialog_toolbar_title">
+    </item>
     <item
             android:id="@+id/directFeedback"
             app:showAsAction="never"

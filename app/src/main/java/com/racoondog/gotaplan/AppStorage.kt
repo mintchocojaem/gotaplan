@@ -2,7 +2,6 @@ package com.racoondog.gotaplan
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.widget.RemoteViewsService
 import com.google.common.reflect.TypeToken
 import com.google.gson.GsonBuilder
 import io.realm.RealmResults
@@ -13,32 +12,55 @@ class AppStorage(context: Context) {
     private val removeAds = "remove_ads"
     private val helpView = true
     private val initSchedule = true
-    private val defaultScheduleID : Int = 0
+    private val widgetScheduleID : Int = 0
 
 
-    fun setWidgetDateList(realmResults: RealmResults<SubjectData>) {
+    fun setWidgetSubjectList(realmResults: RealmResults<SubjectData>) {
 
         val editor = pref.edit()
-        val data = mutableListOf<WidgetItem?>()
+        val data = mutableListOf<SubjectItem?>()
         for (i in realmResults.indices){
-            data.add(WidgetItem(i,realmResults[i]!!.title,realmResults[i]!!.startHour,realmResults[i]!!.startMinute
+            data.add(SubjectItem(i,realmResults[i]!!.title,realmResults[i]!!.startHour,realmResults[i]!!.startMinute
                 ,realmResults[i]!!.endHour,realmResults[i]!!.endMinute))
         }
         var makeGson = GsonBuilder().create()
-        var listType : TypeToken<MutableList<WidgetItem?>> = object : TypeToken<MutableList<WidgetItem?>>() {}
+        var listType : TypeToken<MutableList<SubjectItem?>> = object : TypeToken<MutableList<SubjectItem?>>() {}
         var strContact = makeGson.toJson(data,listType.type)
-        editor.putString("data",strContact)
+        editor.putString("subject",strContact)
         editor.apply()
     }
-    fun getWidgetDateList() : MutableList<WidgetItem?>?{
-        val data = pref.getString("data", "")
+   fun getWidgetSubjectList() : MutableList<SubjectItem?>?{
+        val data = pref.getString("subject", "")
         var makeGson = GsonBuilder().create()
-        var listType : TypeToken<MutableList<WidgetItem?>> = object : TypeToken<MutableList<WidgetItem?>>() {}
-        var  arrayList : MutableList<WidgetItem?>? = null
+        var listType : TypeToken<MutableList<SubjectItem?>> = object : TypeToken<MutableList<SubjectItem?>>() {}
+        var  arrayList : MutableList<SubjectItem?>? = null
         arrayList = makeGson.fromJson(data,listType.type)
         return arrayList
     }
 
+    fun setWidgetScheduleList(realmResults: ScheduleData) {
+
+        val editor = pref.edit()
+        val data = mutableListOf<ScheduleItem?>()
+
+        data.add(ScheduleItem(0,realmResults!!.title))
+
+        var makeGson = GsonBuilder().create()
+        var listType : TypeToken<MutableList<ScheduleItem?>> = object : TypeToken<MutableList<ScheduleItem?>>() {}
+        var strContact = makeGson.toJson(data,listType.type)
+        editor.putString("schedule",strContact)
+        editor.apply()
+    }
+
+
+    fun getWidgetScheduleList() : MutableList<ScheduleItem?>?{
+        val data = pref.getString("schedule", "")
+        var makeGson = GsonBuilder().create()
+        var listType : TypeToken<MutableList<ScheduleItem?>> = object : TypeToken<MutableList<ScheduleItem?>>() {}
+        var  arrayList : MutableList<ScheduleItem?>? = null
+        arrayList = makeGson.fromJson(data,listType.type)
+        return arrayList
+    }
 
 
     fun setHelpView(flag: Boolean) {
@@ -56,9 +78,9 @@ class AppStorage(context: Context) {
         editor.apply()
     }
 
-    fun setDefaultScheduleID(id:Int){
+    fun setWidgetScheduleID(id:Int){
         val editor = pref.edit()
-        editor.putInt("defaultScheduleID", id)
+        editor.putInt("widgetScheduleID", id)
         editor.apply()
     }
 
@@ -66,8 +88,8 @@ class AppStorage(context: Context) {
         return pref.getBoolean(removeAds, false)
     }
 
-    fun defaultScheduleID(): Int {
-        return pref.getInt("defaultScheduleID", 0)
+    fun getWidgetScheduleID(): Int {
+        return pref.getInt("widgetScheduleID", 0)
     }
     fun initScheduleID(): Boolean {
         return pref.getBoolean("initSchedule", true)
