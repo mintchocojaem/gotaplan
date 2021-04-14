@@ -263,8 +263,23 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
                 return true
             }
             R.id.purchasePro -> {
-                purchase(skuDetail)
+
+                val n: String = Locale.getDefault().displayLanguage
+
+                if (AppStorage(this).purchasedRemoveAds()) {
+
+                    if (n.compareTo("한국어") == 0) {
+                        Toast.makeText(this, "이미 구매하신 상품입니다.", Toast.LENGTH_LONG).show()
+                    } else {
+                        Toast.makeText(this, "You've already purchased it.", Toast.LENGTH_LONG)
+                            .show()
+                    }
+                    
+                } else {
+                    purchase(skuDetail)
+                }
                 return true
+
             }
 
             R.id.help -> {
@@ -484,6 +499,7 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
     }
 
     private fun getPurchaseHistory() {
+
         billingClient!!.startConnection(object : BillingClientStateListener {
             override fun onBillingSetupFinished(p0: BillingResult) {
 
