@@ -77,7 +77,6 @@
     <string name="unknown_error">알수없는 오류가 발생했습니다.</string>
     <string name="ad_mob_app_id">ca-app-pub-4742391180869310~3307919269</string>
     <string name="front_ad_unit_id">ca-app-pub-4742391180869310/6497915737</string>
-    <string name="front_ad_test">ca-app-pub-3940256099942544/1033173712</string>
     <string name="already_purchased">"이미 구매하셨습니다."</string>
     <string name="schedule_time_dialog_start_time">시작 시각</string>
     <string name="schedule_time_dialog_end_time">종료 시각</string>

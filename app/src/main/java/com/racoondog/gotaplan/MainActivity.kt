@@ -18,10 +18,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.android.billingclient.api.*
 import com.android.billingclient.api.SkuDetailsResponseListener
-import com.google.android.gms.ads.AdListener
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.InterstitialAd
-import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.*
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import io.realm.Realm
 import io.realm.RealmResults
 import kotlinx.android.synthetic.main.activity_main.*
@@ -45,8 +44,6 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
     private var intentEndTime: Int = 0
     private var intentFlag: Int = 0
     private val storage:AppStorage by lazy { AppStorage(this) }
-    private lateinit var mInterstitialAd: InterstitialAd
-
     private var billingClient: BillingClient? = null
     private var skuDetail:SkuDetails? = null
 
@@ -62,20 +59,11 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
 
         initSchedule()
         loadData()//데이터 불러오기
+        getPurchaseHistory()
 
         if (!storage.purchasedRemoveAds() && !storage.showHelpView()) {
-            MobileAds.initialize(this, getString(R.string.ad_mob_app_id))
-            mInterstitialAd = InterstitialAd(this)
-            mInterstitialAd.adUnitId = getString(R.string.front_ad_unit_id)
-            mInterstitialAd.loadAd(AdRequest.Builder().build())
-            mInterstitialAd.adListener = object: AdListener() { //전면 광고의 상태를 확인하는 리스너 등록
-                override fun onAdLoaded() {
-                    super.onAdLoaded()
-                    //mInterstitialAd.show()
 
-                }
-            }
-
+            showAds()
 
             // Set up the billing client
             billingClient = BillingClient.newBuilder(this).enablePendingPurchases().setListener(this).build()
@@ -460,7 +448,7 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
                 } else {
                     Toast.makeText(this, "Thank you for your purchase.", Toast.LENGTH_LONG).show()
                 }
-                AppStorage(this).setPurchasedRemoveAds(true)
+                AppStorage(this@MainActivity).setPurchasedRemoveAds(true)
                 handleNonConsumablePurchase(purchase)
             }
         } else if (p0.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
@@ -486,21 +474,37 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
     }
 
     private fun handleNonConsumablePurchase(purchase: Purchase) {
-        Log.v("TAG_INAPP", "handlePurchase : $purchase")
-        if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
-            if (!purchase.isAcknowledged) {
-                val acknowledgePurchaseParams = AcknowledgePurchaseParams.newBuilder()
-                    .setPurchaseToken(purchase.purchaseToken).build()
-                billingClient?.acknowledgePurchase(acknowledgePurchaseParams) { billingResult ->
-                    val billingResponseCode = billingResult.responseCode
-                    val billingDebugMessage = billingResult.debugMessage
+        val consumeParams = ConsumeParams
+            .newBuilder()
+            .setPurchaseToken(purchase.purchaseToken)
+            .build()
 
-                    Log.v("TAG_INAPP", "response code: $billingResponseCode")
-                    Log.v("TAG_INAPP", "debugMessage : $billingDebugMessage")
+        billingClient!!.consumeAsync(consumeParams) { billingResult, purchaseToken -> }
 
+    }
+
+    fun getPurchaseHistory() {
+        billingClient!!.startConnection(object : BillingClientStateListener {
+            override fun onBillingSetupFinished(p0: BillingResult) {
+
+                billingClient!!.queryPurchaseHistoryAsync(BillingClient.SkuType.INAPP) { billingResult, purchaseHistoryRecordList ->
+                    if(billingResult.responseCode == BillingClient.BillingResponseCode.OK){
+                        if(purchaseHistoryRecordList != null && purchaseHistoryRecordList.size>0){
+                            AppStorage(this@MainActivity).setPurchasedRemoveAds(true)
+                        }else{
+                            AppStorage(this@MainActivity).setPurchasedRemoveAds(false)
+                        }
+                    }
                 }
+
             }
-        }
+
+            override fun onBillingServiceDisconnected() {
+
+            }
+
+
+        })
     }
 
     private fun showHelpView(){
@@ -577,7 +581,28 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
 
     }
 
+    private fun showAds(){
+        var mInterstitialAd: InterstitialAd? = null
 
+        var adRequest = AdRequest.Builder().build()
+
+        InterstitialAd.load(this,getString(R.string.front_ad_unit_id), adRequest, object : InterstitialAdLoadCallback() {
+            override fun onAdFailedToLoad(adError: LoadAdError) {
+                mInterstitialAd = null
+            }
+
+            override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                mInterstitialAd = interstitialAd
+                if (mInterstitialAd != null) {
+                    mInterstitialAd?.show(this@MainActivity)
+
+                } else {
+                    //Log.d("TAG", "The interstitial ad wasn't ready yet.")
+                }
+
+            }
+        })
+    }
 
 }
 

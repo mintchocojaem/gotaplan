@@ -19,46 +19,60 @@ import java.util.*
 class CreateSubject :AppCompatActivity() {
 
     private val realm = Realm.getDefaultInstance()
+    private val context = (MainActivity.mContext as? MainActivity?)
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         super.setContentView(R.layout.create_subject)
 
-
         val colorList = resources.getIntArray(R.array.subject_color)
-        val scheduleData = realm.where(ScheduleData::class.java).equalTo("id",MainActivity.scheduleID).findFirst()!!
-        val scheduleStartHour = intent?.getIntExtra("start_time",scheduleData.startHour)?:scheduleData.startHour
-        val scheduleEndHour = intent?.getIntExtra("end_time",scheduleData.endHour)?:scheduleData.endHour
+        val scheduleData = realm.where(ScheduleData::class.java).equalTo(
+            "id",
+            MainActivity.scheduleID
+        ).findFirst()!!
+        val scheduleStartHour = intent?.getIntExtra("start_time", scheduleData.startHour)?:scheduleData.startHour
+        val scheduleEndHour = intent?.getIntExtra("end_time", scheduleData.endHour)?:scheduleData.endHour
         val scheduleDayFlag = scheduleData.dayFlag
-        val subjectDayFlag = intent.getIntExtra("day_flag",0)
+        val subjectDayFlag = intent?.getIntExtra("day_flag", 0)
 
-        val dayFlag = mutableListOf(false,false,false,false,false,false,false)
+        val dayFlag = mutableListOf(false, false, false, false, false, false, false)
+
+        if (context == null){
+            setResult(Activity.RESULT_CANCELED, intent)
+            finish()
+        }
 
         Notification.notificationFlag = -1
         create_subject_notification.setText(-1)
 
         when(subjectDayFlag){
-            1->{
-                monday_button.isChecked=true
+            1 -> {
+                monday_button.isChecked = true
                 dayFlag[0] = true
             }
-            2->{tuesday_button.isChecked=true
+            2 -> {
+                tuesday_button.isChecked = true
                 dayFlag[1] = true
             }
-            3->{wednesday_button.isChecked=true
+            3 -> {
+                wednesday_button.isChecked = true
                 dayFlag[2] = true
             }
-            4->{thursday_button.isChecked=true
+            4 -> {
+                thursday_button.isChecked = true
                 dayFlag[3] = true
             }
-            5->{friday_button.isChecked=true
+            5 -> {
+                friday_button.isChecked = true
                 dayFlag[4] = true
             }
-            6->{saturday_button.isChecked=true
+            6 -> {
+                saturday_button.isChecked = true
                 dayFlag[5] = true
             }
-            7->{sunday_button.isChecked=true
+            7 -> {
+                sunday_button.isChecked = true
                 dayFlag[6] = true
             }
         }
@@ -71,7 +85,7 @@ class CreateSubject :AppCompatActivity() {
             }
         }
 
-        subject_time_picker.subjectPicker(scheduleStartHour,scheduleEndHour,scroll_view_main)
+        subject_time_picker.subjectPicker(scheduleStartHour, scheduleEndHour, scroll_view_main)
 
         randomSubjectColor(colorList)// subject color
 
@@ -86,14 +100,15 @@ class CreateSubject :AppCompatActivity() {
                     val flag = mutableListOf<Boolean>()
                     var linkageFlag = 0
 
-                    val context = MainActivity.mContext as MainActivity
-                    val id = context.weekView.createLinkageID(1, 128)//다음으로 만들어질 weekView 의 id 값을 결정하는 변수
+                    val id = context!!.weekView.createLinkageID(1, 128)//다음으로 만들어질 weekView 의 id 값을 결정하는 변수
 
                     for (i in dayFlag.indices){
 
                         if(dayFlag[i]){
-                            val subjectData = realm.where(ScheduleData::class.java).equalTo("id",
-                                MainActivity.scheduleID).findFirst()!!.subjectData.where().equalTo("dayFlag", i+1).findAll()
+                            val subjectData = realm.where(ScheduleData::class.java).equalTo(
+                                "id",
+                                MainActivity.scheduleID
+                            ).findFirst()!!.subjectData.where().equalTo("dayFlag", i + 1).findAll()
 
                             if(!subject_time_picker.nestedTime(subjectData)){
                                 flag.add(true)
@@ -103,15 +118,16 @@ class CreateSubject :AppCompatActivity() {
                         }
 
                     }
+
                     for (i in dayFlag.indices){
                         if(dayFlag[i]){
                             if(!flag.contains(false)){
 
                                 if(linkageFlag > 1) {
 
-                                    createSubject(i+1,id)
+                                    createSubject(i + 1, id)
                                 }
-                                else createSubject(i+1,null)
+                                else createSubject(i + 1, null)
                             }
                         }
                     }
@@ -125,19 +141,28 @@ class CreateSubject :AppCompatActivity() {
 
 
                 } else{
-                    Toast.makeText(this, resources.getString(R.string.choose_subject_day), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this,
+                        resources.getString(R.string.choose_subject_day),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }else {
-                Toast.makeText(this, resources.getString(R.string.create_subject_toast_enter_title), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    resources.getString(R.string.create_subject_toast_enter_title),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
+
         }
 
         create_subject_color_picker.setOnClickListener {
-            create_subject_color_picker.colorPick(this,createSubject_toolbar)
+            create_subject_color_picker.colorPick(this, createSubject_toolbar)
         }
 
         subjectQuit_Button.setOnClickListener {
-            setResult(Activity.RESULT_CANCELED,intent)
+            setResult(Activity.RESULT_CANCELED, intent)
             finish()
         }
 
@@ -222,9 +247,12 @@ class CreateSubject :AppCompatActivity() {
 
     }
 
-    private fun createSubject(dayFlag: Int,linkageID:Int?){
+    private fun createSubject(dayFlag: Int, linkageID: Int?){
 
-        val scheduleData = realm.where(ScheduleData::class.java).equalTo("id", MainActivity.scheduleID).findFirst()!!
+        val scheduleData = realm.where(ScheduleData::class.java).equalTo(
+            "id",
+            MainActivity.scheduleID
+        ).findFirst()!!
         val subjectData  = scheduleData.subjectData.where()
             .equalTo("dayFlag", dayFlag)
             .findAll()
@@ -254,8 +282,10 @@ class CreateSubject :AppCompatActivity() {
 
                 // 현재 지정된 시간으로 알람 시간 설정
 
-               create_subject_notification.setAlarm(id,dayFlag,start_hour.value,startText_minute.text.toString(),
-                   Notification.notificationFlag,title_text.text.toString())
+               create_subject_notification.setAlarm(
+                   id, dayFlag, start_hour.value, startText_minute.text.toString(),
+                   Notification.notificationFlag, title_text.text.toString()
+               )
 
 
             }
@@ -266,11 +296,15 @@ class CreateSubject :AppCompatActivity() {
     private fun randomSubjectColor(ColorList: IntArray){
 
         val random = Random()
-        val number = random.nextInt(ColorList.size -1)
+        val number = random.nextInt(ColorList.size - 1)
 
         create_subject_color_picker.colorCode = ColorList[number]
         create_subject_color_picker.initColor(create_subject_color_picker.colorCode)
-        create_subject_color_picker.changeTheme(this,createSubject_toolbar,create_subject_color_picker.colorCode)
+        create_subject_color_picker.changeTheme(
+            this,
+            createSubject_toolbar,
+            create_subject_color_picker.colorCode
+        )
 
     }
 
