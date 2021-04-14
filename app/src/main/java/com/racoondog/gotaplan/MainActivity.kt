@@ -59,7 +59,6 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
 
         initSchedule()
         loadData()//데이터 불러오기
-        getPurchaseHistory()
 
         if (!storage.purchasedRemoveAds() && !storage.showHelpView()) {
 
@@ -96,9 +95,11 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
                 }
             })
 
+
         }
 
         showHelpView()// 앱 가이드 보여줌
+        getPurchaseHistory()
 
         weekView_layout.setOnClickListener {
             val scheduleData = realm.where(ScheduleData::class.java).findFirst()
