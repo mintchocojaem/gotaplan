@@ -90,6 +90,7 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
             }
         })
 
+
         if (!storage.purchasedRemoveAds() && !storage.showHelpView()) {
 
             showAds()
@@ -455,6 +456,7 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
 
         val n: String = Locale.getDefault().displayLanguage
 
+
         if (p0.responseCode == BillingClient.BillingResponseCode.OK && p1 != null) {
             for (purchase in p1) {
 
@@ -475,7 +477,10 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
             }
 
             // Handle an error caused by a user cancelling the purchase flow.
-        } else {
+        } else if(p0.responseCode == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED){
+            AppStorage(this@MainActivity).setPurchasedRemoveAds(true)
+        }
+        else {
 
             if (n.compareTo("한국어") == 0){
                 Toast.makeText(this, "결제가 취소 되었습니다. 종료코드: " + p0.responseCode, Toast.LENGTH_LONG).show()
