@@ -484,7 +484,7 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
 
     }
 
-    fun getPurchaseHistory() {
+    private fun getPurchaseHistory() {
         billingClient!!.startConnection(object : BillingClientStateListener {
             override fun onBillingSetupFinished(p0: BillingResult) {
 
@@ -583,7 +583,7 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
     }
 
     private fun showAds(){
-        var mInterstitialAd: InterstitialAd? = null
+        var mInterstitialAd: InterstitialAd?
 
         var adRequest = AdRequest.Builder().build()
 
@@ -594,11 +594,10 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
 
             override fun onAdLoaded(interstitialAd: InterstitialAd) {
                 mInterstitialAd = interstitialAd
+
                 if (mInterstitialAd != null) {
                     mInterstitialAd?.show(this@MainActivity)
 
-                } else {
-                    //Log.d("TAG", "The interstitial ad wasn't ready yet.")
                 }
 
             }
