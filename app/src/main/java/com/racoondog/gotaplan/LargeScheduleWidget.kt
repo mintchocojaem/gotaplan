@@ -67,6 +67,7 @@ class LargeScheduleWidget : AppWidgetProvider() {
         //여기부분 다 사용할 일 없어져서 주석처리함!
         // Construct the RemoteViews object
         val views = RemoteViews(context.packageName, R.layout.large_schedule_widget)
+        val appWidgetIds = appWidgetManager.getAppWidgetIds(ComponentName(context, LargeScheduleWidget::class.java))
 
         val cal = Calendar.getInstance()
         var date = 0
@@ -88,18 +89,19 @@ class LargeScheduleWidget : AppWidgetProvider() {
             val initScheduleData = realm.where(ScheduleData::class.java).findFirst()!!
             val initSubjectData = initScheduleData.subjectData.where()
                 .equalTo("dayFlag", date)
-                .findAll()!!
-            subjectData = initSubjectData
-            AppStorage(context).setWidgetScheduleID(initScheduleData.id)
+                .findAll()
+            if (initSubjectData != null){
+                subjectData = initSubjectData
+                AppStorage(context).setWidgetScheduleID(initScheduleData.id)
+                val sortedDate = subjectData.sort("startHour", Sort.ASCENDING).sort("endHour", Sort.ASCENDING)
+
+                AppStorage(context).setWidgetSubjectList(sortedDate)
+
+                views.setTextViewText(R.id.large_schedule_widget_title, AppStorage(context).getWidgetScheduleList()!![0]?.title?:"title")
+            }
+
         }
 
-        val sortedDate = subjectData.sort("startHour", Sort.ASCENDING).sort("endHour", Sort.ASCENDING)
-
-        AppStorage(context).setWidgetSubjectList(sortedDate)
-
-
-        val appWidgetIds = appWidgetManager.getAppWidgetIds(ComponentName(context, LargeScheduleWidget::class.java))
-        views.setTextViewText(R.id.large_schedule_widget_title, AppStorage(context).getWidgetScheduleList()!![0]?.title?:"title")
         /*
         val intent = Intent(context, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)

@@ -68,6 +68,7 @@ private fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManager
     // Construct the RemoteViews object
 
     val views = RemoteViews(context.packageName, R.layout.small_schedule_widget)
+    val appWidgetIds = appWidgetManager.getAppWidgetIds(ComponentName(context, SmallScheduleWidget::class.java))
 
     /*
     val intent = Intent(context, MainActivity::class.java)
@@ -96,19 +97,19 @@ private fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManager
         val initScheduleData = realm.where(ScheduleData::class.java).findFirst()!!
         val initSubjectData = initScheduleData.subjectData.where()
             .equalTo("dayFlag", date)
-            .findAll()!!
-        subjectData = initSubjectData
-        AppStorage(context).setWidgetScheduleID(initScheduleData.id)
+            .findAll()
+        if(initSubjectData != null){
+            subjectData = initSubjectData
+            AppStorage(context).setWidgetScheduleID(initScheduleData.id)
+            val sortedDate = subjectData.sort("startHour", Sort.ASCENDING).sort("endHour", Sort.ASCENDING)
+            //Toast.makeText(context,"$date",Toast.LENGTH_LONG).show()
+            AppStorage(context).setWidgetSubjectList(sortedDate)
+
+            views.setTextViewText(R.id.small_schedule_widget_title, AppStorage(context).getWidgetScheduleList()!![0]?.title?:"title")
+        }
+
     }
 
-
-    val sortedDate = subjectData.sort("startHour", Sort.ASCENDING).sort("endHour", Sort.ASCENDING)
-    //Toast.makeText(context,"$date",Toast.LENGTH_LONG).show()
-    AppStorage(context).setWidgetSubjectList(sortedDate)
-
-
-    val appWidgetIds = appWidgetManager.getAppWidgetIds(ComponentName(context, SmallScheduleWidget::class.java))
-    views.setTextViewText(R.id.small_schedule_widget_title, AppStorage(context).getWidgetScheduleList()!![0]?.title?:"title")
 
     appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.small_schedule_widget_listview)
     appWidgetManager.updateAppWidget(appWidgetId, views)
