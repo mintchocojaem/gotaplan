@@ -666,10 +666,7 @@ class WeekView : ConstraintLayout{
     }
     fun refresh(view: WeekView = cnxt.weekView){
 
-        val scheduleData = realm.where(ScheduleData::class.java).equalTo(
-            "id",
-            MainActivity.scheduleID
-        ).findFirst()
+        val scheduleData = realm.where(ScheduleData::class.java).equalTo("id", MainActivity.scheduleID).findFirst()
 
         if (scheduleData != null) {
 
@@ -798,26 +795,27 @@ class WeekView : ConstraintLayout{
             .findAll()
 
          */
-        var subjectData = realm.where(ScheduleData::class.java).equalTo("id",AppStorage(context).getWidgetScheduleID())
-            .findFirst()?.subjectData?.where()
+        val initScheduleData = realm.where(ScheduleData::class.java).findFirst()!!
+        var subjectData = realm.where(ScheduleData::class.java)?.equalTo("id",AppStorage(context).getWidgetScheduleID())
+            ?.findFirst()?.subjectData?.where()
             ?.equalTo("dayFlag", date)
             ?.findAll()
         if ( subjectData == null){
-            val initScheduleData = realm.where(ScheduleData::class.java).findFirst()!!
             val initSubjectData = initScheduleData.subjectData.where()
-                .equalTo("dayFlag", date)
-                .findAll()
+                ?.equalTo("dayFlag", date)
+                ?.findAll()
             if (initSubjectData != null){
                 subjectData = initSubjectData
-                AppStorage(context).setWidgetScheduleID(initScheduleData.id)
-                val sortedDate = subjectData.sort("startHour", Sort.ASCENDING).sort("endHour", Sort.ASCENDING)
 
-                //Toast.makeText(context,"$date",Toast.LENGTH_LONG).show()
-                AppStorage(cnxt).setWidgetSubjectList(sortedDate)
             }
 
         }
-
+        if(subjectData != null){
+            AppStorage(context).setWidgetScheduleID(initScheduleData.id)
+            val sortedDate = subjectData.sort("startHour", Sort.ASCENDING).sort("endHour", Sort.ASCENDING)
+            //Toast.makeText(context,"$date",Toast.LENGTH_LONG).show()
+            AppStorage(cnxt).setWidgetSubjectList(sortedDate)
+        }
 
 
         val appWidgetManager = AppWidgetManager.getInstance(context)

@@ -81,25 +81,29 @@ class LargeScheduleWidget : AppWidgetProvider() {
             6 -> date = 5
             7 -> date = 6
         }
-        var subjectData = realm.where(ScheduleData::class.java).equalTo("id",AppStorage(context).getWidgetScheduleID())
-            .findFirst()?.subjectData?.where()
+        val initScheduleData = realm.where(ScheduleData::class.java).findFirst()!!
+
+        var subjectData = realm.where(ScheduleData::class.java)?.equalTo("id",AppStorage(context).getWidgetScheduleID())
+            ?.findFirst()?.subjectData?.where()
             ?.equalTo("dayFlag", date)
             ?.findAll()
         if ( subjectData == null){
-            val initScheduleData = realm.where(ScheduleData::class.java).findFirst()!!
             val initSubjectData = initScheduleData.subjectData.where()
-                .equalTo("dayFlag", date)
-                .findAll()
+                ?.equalTo("dayFlag", date)
+                ?.findAll()
             if (initSubjectData != null){
                 subjectData = initSubjectData
-                AppStorage(context).setWidgetScheduleID(initScheduleData.id)
-                val sortedDate = subjectData.sort("startHour", Sort.ASCENDING).sort("endHour", Sort.ASCENDING)
 
-                AppStorage(context).setWidgetSubjectList(sortedDate)
-
-                views.setTextViewText(R.id.large_schedule_widget_title, AppStorage(context).getWidgetScheduleList()!![0]?.title?:"title")
             }
 
+        }
+        if (subjectData != null){
+            AppStorage(context).setWidgetScheduleID(initScheduleData.id)
+            val sortedDate = subjectData.sort("startHour", Sort.ASCENDING).sort("endHour", Sort.ASCENDING)
+
+            AppStorage(context).setWidgetSubjectList(sortedDate)
+
+            views.setTextViewText(R.id.large_schedule_widget_title, AppStorage(context).getWidgetScheduleList()!![0]?.title?:"title")
         }
 
         /*

@@ -113,14 +113,17 @@ class AlarmReceiver : BroadcastReceiver() {
         val alarmManager =
             context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val alarmIntent = Intent(context, AlarmReceiver::class.java)
-        val pendingIntent = PendingIntent.getBroadcast(context, id, alarmIntent, PendingIntent.FLAG_NO_CREATE)
-        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,nextNotifyTime.timeInMillis,pendingIntent)
         //  Preference에 설정한 값 저장
         val editor =
             context.getSharedPreferences("alarm", MODE_PRIVATE)
                 .edit()
-        editor.putLong("$id", nextNotifyTime.timeInMillis)
-        editor.apply()
+        if (notification != -1){
+            editor.putLong("$id", nextNotifyTime.timeInMillis)
+            editor.apply()
+            val pendingIntent = PendingIntent.getBroadcast(context, id, alarmIntent, PendingIntent.FLAG_NO_CREATE)
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,nextNotifyTime.timeInMillis,pendingIntent)
+        }
+
 
     }
 }

@@ -3,6 +3,7 @@ package com.racoondog.gotaplan
 import android.app.Activity
 import android.app.AlertDialog.BUTTON_POSITIVE
 import android.app.AlertDialog.Builder
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -536,6 +537,26 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
                 storage.setInitScheduleID(false)
             }
 
+        }
+        if (storage.initNotification()){
+
+            val allSubjectData = realm.where(SubjectData::class.java).findAll()
+            if (allSubjectData != null){
+                for(i in allSubjectData.indices){
+
+                    val intent = Intent(this,AlarmReceiver::class.java)
+                    val sender = PendingIntent.getBroadcast(this,allSubjectData[i]!!.id,intent,
+                        PendingIntent.FLAG_NO_CREATE)
+                    if (sender != null) Notification(this).deleteAlarm(allSubjectData[i]!!.id)
+
+                    val data = getSharedPreferences("alarm", MODE_PRIVATE).getLong("${allSubjectData[i]!!.id}",0.toLong())
+                    if(data == 0.toLong()) Notification(this).deleteAlarm(allSubjectData[i]!!.id)
+                    realm.beginTransaction()
+                    allSubjectData[i]!!.notification = -1
+                    realm.commitTransaction()
+                }
+            }
+            storage.setInitNotification(false)
         }
 
 

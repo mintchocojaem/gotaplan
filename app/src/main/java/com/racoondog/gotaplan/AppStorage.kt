@@ -12,6 +12,7 @@ class AppStorage(context: Context) {
     private val removeAds = "remove_ads"
     private val helpView = true
     private val initSchedule = true
+    private val initNotification = true
     private val widgetScheduleID : Int = 0
 
 
@@ -62,7 +63,6 @@ class AppStorage(context: Context) {
         return arrayList
     }
 
-
     fun setHelpView(flag: Boolean) {
         val editor = pref.edit()
         editor.putBoolean("helpView", flag)
@@ -97,6 +97,14 @@ class AppStorage(context: Context) {
     fun setInitScheduleID(flag: Boolean) {
         val editor = pref.edit()
         editor.putBoolean("initSchedule", flag)
+        editor.apply()
+    }
+    fun initNotification(): Boolean {
+        return pref.getBoolean("initNotification", true)
+    }
+    fun setInitNotification(flag: Boolean) {
+        val editor = pref.edit()
+        editor.putBoolean("initNotification", flag)
         editor.apply()
     }
 }
