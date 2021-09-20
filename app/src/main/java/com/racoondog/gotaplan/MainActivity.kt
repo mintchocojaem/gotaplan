@@ -94,7 +94,7 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
 
         if (!storage.purchasedRemoveAds() && !storage.showHelpView()) {
 
-            //showAds()
+            showAds()
 
         }
 
