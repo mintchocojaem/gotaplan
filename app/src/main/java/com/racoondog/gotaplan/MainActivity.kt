@@ -94,7 +94,7 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
 
         if (!storage.purchasedRemoveAds() && !storage.showHelpView()) {
 
-            showAds()
+            //showAds()
 
         }
 
@@ -348,6 +348,7 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
         permissions: Array<String>,
         grantResults: IntArray
     ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             100 -> {
                 if (grantResults.isNotEmpty()) {

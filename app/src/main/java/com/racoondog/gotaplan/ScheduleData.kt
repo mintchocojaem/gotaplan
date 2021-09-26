@@ -27,8 +27,8 @@ open class SubjectData: RealmObject(){
     var endHour = 0
     var endMinute = ""
     var notification: Int = -1
-    lateinit var title: String
-    lateinit var content: String
+    @Required lateinit var title: String
+    @Required lateinit var content: String
     var subjectColor = 0
     var linkageID: Int = 0
 

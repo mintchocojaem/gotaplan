@@ -1,5 +1,6 @@
 package com.racoondog.gotaplan
 
+import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.PendingIntent
@@ -17,6 +18,8 @@ import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.ViewCompat.animate
+import androidx.customview.widget.ViewDragHelper
 import com.google.common.reflect.TypeToken
 import com.google.gson.GsonBuilder
 import io.realm.Realm
@@ -26,6 +29,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.schedule_title_dialog.*
 import kotlinx.android.synthetic.main.weekview.view.*
 import java.util.*
+import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 
 
@@ -250,7 +254,6 @@ class WeekView : ConstraintLayout{
                 ).apply {
                     width = cellWidth
                     height = cellHeight
-
                 }
                 timeRow.addView(timeText)
             }
@@ -261,18 +264,20 @@ class WeekView : ConstraintLayout{
         //시간표위 레이아웃을 그리는 함수
 
         val canvas = ConstraintLayout(context)
-        canvas.layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_CONSTRAINT).apply{
+        canvas.layoutParams = LayoutParams(LayoutParams.PARENT_ID, LayoutParams.PARENT_ID).apply{
             width = w - (w-(cellWidth*day_flag))
             topToTop = LayoutParams.PARENT_ID
             bottomToBottom = LayoutParams.PARENT_ID
             leftToLeft = LayoutParams.PARENT_ID
             rightToRight = LayoutParams.PARENT_ID
             horizontalBias = 1f
+
         }
         canvas.tag = "canvas"
-
         scheduleView.bringToFront()
         scheduleView.addView(canvas)
+
+
 
         /*
         val scheduleData = realm.where(ScheduleData::class.java).findFirst()!!
@@ -298,22 +303,14 @@ class WeekView : ConstraintLayout{
 
     @SuppressLint("ClickableViewAccessibility")
     fun createSubject(
-        StartHour: Int,
-        StartMinute: Int,
-        EndHour: Int,
-        EndMinute: Int,
-        DayFlag: Int,
-        intentStartTime: Int,
-        id: Int,
-        colorCode: Int
-    ) {
+        StartHour: Int, StartMinute: Int, EndHour: Int, EndMinute: Int, DayFlag: Int, intentStartTime: Int, id: Int, colorCode: Int) {
 
         val subjectWidth = cellWidth
         val subjectHeight = (EndHour - StartHour) * cellHeight + (EndMinute - StartMinute) * cellHeight / 60
         val subjectMargin =
             (StartHour - intentStartTime) * cellHeight + StartMinute * cellHeight / 60
-        val subject = ConstraintLayout(cnxt)
-        val titleText = TextView(cnxt)
+        val subject = ConstraintLayout(context)
+        val titleText = TextView(context)
         val colorImage = ConstraintLayout(context)
 
         val subjectData = realm.where<SubjectData>(SubjectData::class.java)
@@ -342,22 +339,6 @@ class WeekView : ConstraintLayout{
             titleText.maxLines++
         }
 
-        subject.layoutParams = LayoutParams(
-            LayoutParams.WRAP_CONTENT,
-            LayoutParams.WRAP_CONTENT
-        ).apply {
-            width = subjectWidth
-            height = subjectHeight
-            topToTop = LayoutParams.PARENT_ID
-            bottomToBottom = LayoutParams.PARENT_ID
-            rightToRight = LayoutParams.PARENT_ID
-            leftToLeft = LayoutParams.PARENT_ID
-            leftMargin = ((DayFlag - 1) * subjectWidth)
-            horizontalBias = 0f
-            verticalBias = 0f
-            topMargin = subjectMargin
-
-        }
 
         colorImage.layoutParams = LayoutParams(
             LayoutParams.MATCH_CONSTRAINT,
@@ -372,8 +353,6 @@ class WeekView : ConstraintLayout{
         colorImage.setBackgroundResource(R.drawable.round_subject_bg_layout)
         colorImage.backgroundTintList = ColorStateList.valueOf(colorCode)
 
-        subject.setPadding(1, 0, 1, 0)//5,5,5,5
-        subject.id = id
 
         subject.setOnClickListener {
             ID = id
@@ -392,7 +371,6 @@ class WeekView : ConstraintLayout{
             val dialog = SubjectDetailDialog(context)
             dialog.cnxt = this@WeekView
             dialog.show()
-
              */
 
             subject.bringToFront()
@@ -404,7 +382,6 @@ class WeekView : ConstraintLayout{
 
             }
              */
-
             var subjectDayFlag = subjectData[0]!!.dayFlag
 
             val scheduleStartHour = scheduleData.startHour
@@ -416,7 +393,6 @@ class WeekView : ConstraintLayout{
             val oldStartMinute = subjectData[0]!!.startMinute
 
             subject.setOnTouchListener { v, event ->
-
                 v.parent.requestDisallowInterceptTouchEvent(true)
                 when (event.action and MotionEvent.ACTION_MASK) {
                     MotionEvent.ACTION_UP -> v.parent.requestDisallowInterceptTouchEvent(false)
@@ -509,7 +485,6 @@ class WeekView : ConstraintLayout{
                             subjectEndHour,
                             subjectEndMinute
                         )
-
                         /*
                         for(i in 0 until (scheduleData.scheduleEndHour - scheduleData.scheduleStartHour)) {
 
@@ -518,21 +493,34 @@ class WeekView : ConstraintLayout{
                         }
 
                          */
-
                         //refresh(cnxt.weekView)//checkTime 임시기능?
                         subject.setOnTouchListener(null)
 
                     }
                 }
-
                 true
             }
             true
-
         }
         colorImage.addView(titleText)
         subject.addView(colorImage)
+
         findViewWithTag<ConstraintLayout>("canvas").addView(subject)
+
+        val subjectParams = (subject.layoutParams as LayoutParams).apply {
+            topToTop = LayoutParams.PARENT_ID
+            bottomToBottom = LayoutParams.PARENT_ID
+            leftToLeft = LayoutParams.PARENT_ID
+            rightToRight = LayoutParams.PARENT_ID
+            horizontalBias = 0f
+            verticalBias = 0f
+        }
+        subjectParams.setMargins(((DayFlag - 1) * subjectWidth),subjectMargin,0,0)
+        subjectParams.width = subjectWidth
+        subjectParams.height = subjectHeight
+
+        subject.setPadding(1, 0, 1, 0)//5,5,5,5
+        subject.layoutParams = subjectParams
 
     }
 
