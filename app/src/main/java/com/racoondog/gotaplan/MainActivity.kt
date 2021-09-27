@@ -58,6 +58,9 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
         supportActionBar?.setDisplayUseLogoEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
+        scheduleID = savedInstanceState?.getInt("scheduleID")
+            ?: (realm.where(ScheduleData::class.java).findFirst()?.id ?: 0)
+
         initSchedule()
         loadData()//데이터 불러오기
 
@@ -92,7 +95,7 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
         })
 
 
-        if (!storage.purchasedRemoveAds() && !storage.showHelpView()) {
+        if(!storage.purchasedRemoveAds() && !storage.showHelpView()) {
 
             //showAds()
 
@@ -127,6 +130,12 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
         }
 
     }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt("scheduleID", scheduleID)
+    }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
@@ -515,8 +524,6 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
     }
 
     fun initSchedule(){
-
-        scheduleID = realm.where(ScheduleData::class.java).findFirst()?.id ?: 0
 
         // scheduleData의 id개념이 도입되어 이번 업데이트에서 한 번만 행해지는 함수 (주석 아랫 부분은 다음 업데이트에서 삭제하면 됨)
         if (storage.initScheduleID()){

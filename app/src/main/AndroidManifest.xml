@@ -87,22 +87,25 @@
         </provider>
         <activity
                 android:name=".IntroActivity"
-                android:screenOrientation="fullSensor" />
+                android:screenOrientation="portrait" />
         <activity
                 android:name=".DirectFeedback"
-                android:screenOrientation="fullSensor" />
+                android:screenOrientation="portrait" />
         <activity
                 android:name=".CreateSchedule"
-                android:screenOrientation="fullSensor" />
+                android:screenOrientation="portrait"
+                />
         <activity
                 android:name=".CreateSubject"
-                android:screenOrientation="fullSensor" />
+                android:screenOrientation="portrait" />
         <activity
                 android:name=".SubjectDetail"
-                android:screenOrientation="fullSensor" />
+                android:screenOrientation="portrait"
+                />
         <activity
                 android:name=".MainActivity"
-                android:launchMode="singleTop">
+                android:launchMode="singleTop"
+                android:screenOrientation="fullSensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
