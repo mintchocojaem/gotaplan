@@ -2,6 +2,7 @@ package com.racoondog.gotaplan
 
 import android.app.AlarmManager
 import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -76,19 +77,18 @@ class Notification:ConstraintLayout {
 
     fun setAlarm(id:Int,dayFlag:Int,startHour:Int,startMinute:String,notification:Int,title:String) {
 
-        /*val realm = Realm.getDefaultInstance()
-        val subjectData: RealmResults<SubjectData> = realm.where<SubjectData>(SubjectData::class.java)
-            .equalTo("id",id)
-            .findAll()
-        val data = subjectData[0]
+        val alarmMgr = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val alarmIntent = Intent(context, AlarmReceiver::class.java)
+        alarmIntent.putExtra("id",id)
+        alarmIntent.putExtra("title",title)
+        val pendingIntent = PendingIntent.getBroadcast(context,id,alarmIntent,FLAG_UPDATE_CURRENT)
 
-         */
 
-        if(notificationFlag == -1){
-            deleteAlarm(id)
+        if(notification == -1){
+            alarmMgr.cancel(pendingIntent)
         }else{
             // 현재 지정된 시간으로 알람 시간 설정
-            val calendar = Calendar.getInstance()
+
             var date = 0
             when(dayFlag){
                 1 -> date = 2
@@ -99,50 +99,40 @@ class Notification:ConstraintLayout {
                 6 -> date = 7
                 7 -> date = 1
             }
-            calendar.timeInMillis = System.currentTimeMillis()
-            calendar[Calendar.HOUR_OF_DAY] = startHour
-            calendar[Calendar.MINUTE] = startMinute.toInt() - notificationFlag
-            calendar[Calendar.SECOND] = 0
-            calendar[Calendar.DAY_OF_WEEK] = date
-            // 이미 지난 시간을 지정했다면 다음날 같은 시간으로 설정
-            if (calendar.before(Calendar.getInstance())) {
-                calendar.add(Calendar.DATE, 7)
+            val calendar = Calendar.getInstance().apply {
+                timeInMillis = System.currentTimeMillis()
+                set(Calendar.HOUR_OF_DAY, startHour)
+                set(Calendar.MINUTE, startMinute.toInt() - notification)
+                set(Calendar.SECOND, 0)
+                set(Calendar.DAY_OF_WEEK, date)
             }
 
-            //  Preference에 설정한 값 저장
+            val weekInterval : Long = (7 * 24 * 60 * 60 * 1000).toLong()
 
-            val editor = context.getSharedPreferences("alarm", Context.MODE_PRIVATE).edit()
+            // setRepeating() lets you specify a precise custom interval--in this case,
+            // 20 minutes.
+            if (calendar.before(Calendar.getInstance())) {
+                // 이미 지난 시간을 지정했다면 다음날 같은 시간으로 설정
+
+                calendar.add(Calendar.DATE, 7)
+
+                alarmMgr.setRepeating(
+                    AlarmManager.RTC_WAKEUP,
+                    calendar.timeInMillis, weekInterval, pendingIntent)
+
+            }else{
+                alarmMgr.setRepeating(
+                    AlarmManager.RTC_WAKEUP,
+                    calendar.timeInMillis, weekInterval, pendingIntent)
+            }
+
+           val editor = context.getSharedPreferences("alarm", Context.MODE_PRIVATE).edit()
             editor.putLong("$id", calendar.timeInMillis)
             editor.apply()
 
 
             val pm = context.packageManager
             val receiver = ComponentName(context, DeviceBootReceiver::class.java)
-            val alarmIntent = Intent(context, AlarmReceiver::class.java)
-            alarmIntent.putExtra("id",id)
-            alarmIntent.putExtra("dayFlag",dayFlag)
-            alarmIntent.putExtra("startHour",startHour)
-            alarmIntent.putExtra("startMinute",startMinute)
-            alarmIntent.putExtra("notification", notification)
-            alarmIntent.putExtra("title", title)
-
-
-            val pendingIntent = PendingIntent.getBroadcast(context, id, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-            val alarmManager =
-                context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-
-            /*
-            Toast.makeText(
-                context.applicationContext,
-                resources.getString(R.string.notification_on),
-                Toast.LENGTH_SHORT
-            ).show()
-             */
-
-            // 사용자가 매일 알람을 허용했다면
-
-            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,calendar.timeInMillis,pendingIntent)
-            // 부팅 후 실행되는 리시버 사용가능하게 설정
             pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                 PackageManager.DONT_KILL_APP
             )
@@ -160,7 +150,7 @@ class Notification:ConstraintLayout {
             context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
         val pendingIntent = PendingIntent.getBroadcast(
-            context, id, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+            context, id, alarmIntent, FLAG_UPDATE_CURRENT)
         am.cancel(pendingIntent)
         editor.remove("$id")
         editor.apply()

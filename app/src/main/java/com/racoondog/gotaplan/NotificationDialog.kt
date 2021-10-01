@@ -13,7 +13,8 @@ import android.widget.TextView
 import kotlinx.android.synthetic.main.notification_dialog.*
 
 
-class NotificationDialog(context: Context, private var onCustomDialogEventListener: NotificationDialog.ICustomDialogEventListener) : Dialog(context){
+class NotificationDialog(context: Context, private var onCustomDialogEventListener: ICustomDialogEventListener)
+    : Dialog(context){
 
     interface ICustomDialogEventListener {
         fun customDialogEvent(flag:Int,text:String)

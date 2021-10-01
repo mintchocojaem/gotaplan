@@ -68,9 +68,14 @@
                 android:enabled="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.permission.WAKE_LOCK" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".AlarmReceiver" />
+
+        <receiver android:name=".AlarmReceiver"
+                android:process=":remote">
+
+        </receiver>
 
         <meta-data
                 android:name="com.google.android.gms.ads.APPLICATION_ID"

@@ -11,8 +11,7 @@ class AppStorage(context: Context) {
     private val pref: SharedPreferences = context.getSharedPreferences("app_storage", Context.MODE_PRIVATE)
     private val removeAds = "remove_ads"
     private val helpView = true
-    private val initSchedule = true
-    private val initNotification = true
+    private val looper = "true"
     private val widgetScheduleID : Int = 0
 
 
@@ -91,20 +90,23 @@ class AppStorage(context: Context) {
     fun getWidgetScheduleID(): Int {
         return pref.getInt("widgetScheduleID", 0)
     }
-    fun initScheduleID(): Boolean {
-        return pref.getBoolean("initSchedule", true)
+
+    fun getLooper(): String {
+        return when {
+            pref.getString("looper","false") == "false" -> {
+                "false"
+            }
+            pref.getString("looper","false") == "true" -> {
+                "true"
+            }
+            else -> {
+                "none"
+            }
+        }
     }
-    fun setInitScheduleID(flag: Boolean) {
+    fun setLooper(flag:String) {
         val editor = pref.edit()
-        editor.putBoolean("initSchedule", flag)
-        editor.apply()
-    }
-    fun initNotification(): Boolean {
-        return pref.getBoolean("initNotification", true)
-    }
-    fun setInitNotification(flag: Boolean) {
-        val editor = pref.edit()
-        editor.putBoolean("initNotification", flag)
+        editor.putString("looper", flag)
         editor.apply()
     }
 }

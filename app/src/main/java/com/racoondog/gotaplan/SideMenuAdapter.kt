@@ -46,11 +46,6 @@ class SideMenuAdapter internal constructor(list: ArrayList<String>?,idList: Arra
             }
             // 뷰 객체에 대한 참조. (hold strong reference)
             itemView.side_menu_item_delete.setOnClickListener {
-                val beforeScheduleID = MainActivity.scheduleID
-                var initFlag = false
-                if(MainActivity.scheduleID == idData?.get(adapterPosition)!!.toInt()){
-                    initFlag = true
-                }
 
                 val builder = AlertDialog.Builder(cnxt, R.style.MyDialogTheme)
                     .setTitle(cnxt.resources.getString(R.string.delete))
@@ -59,6 +54,12 @@ class SideMenuAdapter internal constructor(list: ArrayList<String>?,idList: Arra
 
                         MainActivity.scheduleID = idData?.get(adapterPosition)!!.toInt()
                         val scheduleData = realm.where(ScheduleData::class.java).equalTo("id",MainActivity.scheduleID).findFirst()
+
+                        val beforeScheduleID = MainActivity.scheduleID
+                        var initFlag = false
+                        if(MainActivity.scheduleID == idData?.get(adapterPosition)!!.toInt()){
+                            initFlag = true
+                        }
 
                         if (scheduleData != null){
                             var subjectList = scheduleData.subjectData.where().findAll()
@@ -80,18 +81,15 @@ class SideMenuAdapter internal constructor(list: ArrayList<String>?,idList: Arra
                             scheduleData.deleteFromRealm()
                             realm.commitTransaction()
 
-
-
                             Toast.makeText(cnxt.applicationContext,cnxt.applicationContext.getString(R.string.schedule_deleted)
                                 ,Toast.LENGTH_SHORT).show()
 
                             if (initFlag){
-                                cnxt.initSchedule()
-                            }else {
-                                MainActivity.scheduleID = beforeScheduleID
+                                MainActivity.scheduleID =
+                                    realm.where(ScheduleData::class.java).findFirst()!!.id
                             }
-
                             cnxt.loadData()
+
                         }
 
 

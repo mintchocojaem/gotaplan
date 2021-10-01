@@ -1,9 +1,12 @@
 package com.racoondog.gotaplan
 
 import android.app.Activity
+import android.app.AlarmManager
 import android.app.AlertDialog.BUTTON_POSITIVE
 import android.app.AlertDialog.Builder
+import android.app.NotificationManager
 import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -61,7 +64,7 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
         scheduleID = savedInstanceState?.getInt("scheduleID")
             ?: (realm.where(ScheduleData::class.java).findFirst()?.id ?: 0)
 
-        initSchedule()
+        initNotification()
         loadData()//데이터 불러오기
 
         billingClient = BillingClient.newBuilder(this).enablePendingPurchases().setListener(this).build()
@@ -523,50 +526,31 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
         }
     }
 
-    fun initSchedule(){
 
-        // scheduleData의 id개념이 도입되어 이번 업데이트에서 한 번만 행해지는 함수 (주석 아랫 부분은 다음 업데이트에서 삭제하면 됨)
-        if (storage.initScheduleID()){
-
-            val scheduleData = realm.where(ScheduleData::class.java).equalTo("id", scheduleID).findFirst()
-
-            if(scheduleData != null){
-
-                val subjectData: RealmResults<SubjectData> =
-                    realm.where<SubjectData>(SubjectData::class.java).findAll()
-
-
-                if (scheduleData.subjectData.isEmpty()){
-                    realm.beginTransaction()
-                    for (i in subjectData.indices)
-                        scheduleData.subjectData.add(subjectData[i])
-                    realm.commitTransaction()
-                }
-                storage.setInitScheduleID(false)
-            }
-
-        }
-        if (storage.initNotification()){
+    private fun initNotification(){
+            //notification 초기화
+        if (storage.getLooper() == "true"){
 
             val allSubjectData = realm.where(SubjectData::class.java).findAll()
             if (allSubjectData != null){
                 for(i in allSubjectData.indices){
 
-                    val intent = Intent(this,AlarmReceiver::class.java)
-                    val sender = PendingIntent.getBroadcast(this,allSubjectData[i]!!.id,intent,
-                        PendingIntent.FLAG_NO_CREATE)
-                    if (sender != null) Notification(this).deleteAlarm(allSubjectData[i]!!.id)
-
-                    val data = getSharedPreferences("alarm", MODE_PRIVATE).getLong("${allSubjectData[i]!!.id}",0.toLong())
-                    if(data == 0.toLong()) Notification(this).deleteAlarm(allSubjectData[i]!!.id)
                     realm.beginTransaction()
                     allSubjectData[i]!!.notification = -1
                     realm.commitTransaction()
+                    val alarmIntent = Intent(this, AlarmReceiver::class.java)
+                    val am =
+                        this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+                    val pendingIntent = PendingIntent.getBroadcast(
+                        this, allSubjectData[i]!!.id, alarmIntent, FLAG_UPDATE_CURRENT)
+                    am.cancel(pendingIntent)
                 }
             }
-            storage.setInitNotification(false)
-        }
 
+            this.deleteSharedPreferences("alarm")
+            storage.setLooper("false")
+        }
 
     }
 

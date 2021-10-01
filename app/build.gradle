@@ -59,6 +59,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-inappmessaging-display:20.1.0'
     implementation 'com.google.firebase:firebase-core:19.0.1'
     implementation 'com.github.AppIntro:AppIntro:5.1.0'
+    implementation "com.android.support:support-compat:28.0.0"
 
 }
 
