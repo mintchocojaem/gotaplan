@@ -55,7 +55,6 @@ class SideMenuAdapter internal constructor(list: ArrayList<String>?,idList: Arra
                         MainActivity.scheduleID = idData?.get(adapterPosition)!!.toInt()
                         val scheduleData = realm.where(ScheduleData::class.java).equalTo("id",MainActivity.scheduleID).findFirst()
 
-                        val beforeScheduleID = MainActivity.scheduleID
                         var initFlag = false
                         if(MainActivity.scheduleID == idData?.get(adapterPosition)!!.toInt()){
                             initFlag = true

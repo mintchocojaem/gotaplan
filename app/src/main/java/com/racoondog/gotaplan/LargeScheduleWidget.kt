@@ -98,7 +98,7 @@ class LargeScheduleWidget : AppWidgetProvider() {
 
         }
         if (subjectData != null){
-            AppStorage(context).setWidgetScheduleID(initScheduleData.id)
+            //AppStorage(context).setWidgetScheduleID(initScheduleData.id)
             val sortedDate = subjectData.sort("startHour", Sort.ASCENDING).sort("endHour", Sort.ASCENDING)
 
             AppStorage(context).setWidgetSubjectList(sortedDate)

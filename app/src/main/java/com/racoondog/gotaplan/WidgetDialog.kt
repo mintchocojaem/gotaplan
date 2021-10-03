@@ -61,10 +61,9 @@ class WidgetDialog: Dialog {
             .setTitle(cnxt.applicationContext.getString(R.string.widget_dialog_toolbar_title))
 
             .setPositiveButton(cnxt.applicationContext.resources.getString(R.string.dialog_apply)) { _, _ ->
-                val scheduleData = realm.where(ScheduleData::class.java).equalTo("id",MainActivity.scheduleID).findFirst()!!
-                AppStorage(context).setWidgetScheduleID(scheduleData.id)
-
-                cnxt.weekView.refresh(cnxt.weekView)
+                AppStorage(context).setWidgetScheduleID(MainActivity.scheduleID)
+                //Toast.makeText(context,AppStorage(context).getWidgetScheduleID().toString(),Toast.LENGTH_SHORT).show()
+                cnxt.weekView.updateWidget()
                 Toast.makeText(context,cnxt.applicationContext.getString(R.string.widget_dialog_init_success),Toast.LENGTH_SHORT).show()
 
             }

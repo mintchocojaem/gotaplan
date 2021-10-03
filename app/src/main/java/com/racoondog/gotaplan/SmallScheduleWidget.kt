@@ -24,7 +24,7 @@ class SmallScheduleWidget : AppWidgetProvider() {
 
         // RemoteViewsService 실행 등록시키는 함수
 
-        val currentTime: Date = Calendar.getInstance().getTime()
+        val currentTime: Date = Calendar.getInstance().time
         val n: String = Locale.getDefault().displayLanguage
 
         val date = if (n.compareTo("한국어") == 0){

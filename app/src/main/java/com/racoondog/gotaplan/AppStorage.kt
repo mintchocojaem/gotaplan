@@ -43,7 +43,7 @@ class AppStorage(context: Context) {
         val editor = pref.edit()
         val data = mutableListOf<ScheduleItem?>()
 
-        data.add(ScheduleItem(0,realmResults!!.title))
+        data.add(ScheduleItem(0,realmResults.title))
 
         var makeGson = GsonBuilder().create()
         var listType : TypeToken<MutableList<ScheduleItem?>> = object : TypeToken<MutableList<ScheduleItem?>>() {}

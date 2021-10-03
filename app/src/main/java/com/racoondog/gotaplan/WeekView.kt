@@ -783,6 +783,7 @@ class WeekView : ConstraintLayout{
             .findAll()
 
          */
+
         val initScheduleData = realm.where(ScheduleData::class.java).findFirst()!!
         var subjectData = realm.where(ScheduleData::class.java)?.equalTo("id",AppStorage(context).getWidgetScheduleID())
             ?.findFirst()?.subjectData?.where()
@@ -798,8 +799,10 @@ class WeekView : ConstraintLayout{
             }
 
         }
+
+
         if(subjectData != null){
-            AppStorage(context).setWidgetScheduleID(initScheduleData.id)
+            //AppStorage(context).setWidgetScheduleID(initScheduleData.id)
             val sortedDate = subjectData.sort("startHour", Sort.ASCENDING).sort("endHour", Sort.ASCENDING)
             //Toast.makeText(context,"$date",Toast.LENGTH_LONG).show()
             AppStorage(cnxt).setWidgetSubjectList(sortedDate)
@@ -870,7 +873,7 @@ class WeekView : ConstraintLayout{
         cnxt.sendBroadcast(smallIntent)
 
         largeWidget.setTextViewText(R.id.large_schedule_widget_title, data.title)
-        largeWidget.setTextViewText(R.id.small_schedule_widget_title,  data.title)
+        smallWidget.setTextViewText(R.id.small_schedule_widget_title,  data.title)
 
         appWidgetManager.updateAppWidget(largeAppWidgetIds, largeWidget)
         appWidgetManager.updateAppWidget(smallAppWidgetIds, smallWidget)

@@ -17,13 +17,13 @@ class SmallScheduleWidgetRemoteViewsService : RemoteViewsService() {
         return SmallScheduleWidgetRemoteViewsFactory(this.applicationContext)
     }
 
-    class SmallScheduleWidgetRemoteViewsFactory(context: Context?) : RemoteViewsService.RemoteViewsFactory {
+    class SmallScheduleWidgetRemoteViewsFactory(context: Context?) : RemoteViewsFactory {
         //context 설정하기
         var context: Context? = null
         var arrayList : MutableList<SubjectItem?>? = null
 
         //DB를 대신하여 arrayList에 데이터를 추가하는 함수
-        fun setData() {
+        private fun setData() {
 
             arrayList = AppStorage(context!!).getWidgetSubjectList()
 
