@@ -5,11 +5,14 @@ import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.view.View
 import android.widget.RemoteViews
+import android.widget.Toast
 import io.realm.Realm
 import io.realm.Sort
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.Calendar.DAY_OF_WEEK
 
 
 class SmallScheduleWidget : AppWidgetProvider() {
@@ -23,7 +26,6 @@ class SmallScheduleWidget : AppWidgetProvider() {
         // There may be multiple widgets active, so update all of them
 
         // RemoteViewsService 실행 등록시키는 함수
-
         val currentTime: Date = Calendar.getInstance().time
         val n: String = Locale.getDefault().displayLanguage
 
@@ -38,7 +40,6 @@ class SmallScheduleWidget : AppWidgetProvider() {
         widget.setRemoteAdapter(R.id.small_schedule_widget_listview, serviceIntent)
         widget.setTextViewText(R.id.small_schedule_widget_date, date)
         widget.setTextViewText(R.id.small_schedule_widget_title, AppStorage(context).getWidgetScheduleList()!![0]?.title?:"title")
-
 
         updateAppWidget(context, appWidgetManager, appWidgetIds)
 
@@ -64,9 +65,6 @@ class SmallScheduleWidget : AppWidgetProvider() {
 
 private fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: IntArray) {
 
-    //여기부분 다 사용할 일 없어져서 주석처리함!
-    // Construct the RemoteViews object
-
     val views = RemoteViews(context.packageName, R.layout.small_schedule_widget)
     val appWidgetIds = appWidgetManager.getAppWidgetIds(ComponentName(context, SmallScheduleWidget::class.java))
 
@@ -78,8 +76,7 @@ private fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManager
      */
     val cal = Calendar.getInstance()
     var date = 0
-    val dayFlag = cal.get(Calendar.DAY_OF_WEEK)
-    when(dayFlag){
+    when(cal.get(DAY_OF_WEEK)){
         1 -> date = 7
         2 -> date = 1
         3 -> date = 2
@@ -112,7 +109,8 @@ private fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManager
     }
 
 
-    appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.small_schedule_widget_listview)
+    appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds,
+        R.id.small_schedule_widget_listview)
     appWidgetManager.updateAppWidget(appWidgetId, views)
 
 

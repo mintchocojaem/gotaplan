@@ -8,12 +8,14 @@ import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
 import android.view.*
+import android.view.View.GONE
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -25,8 +27,10 @@ import com.google.gson.GsonBuilder
 import io.realm.Realm
 import io.realm.RealmResults
 import io.realm.Sort
+import io.realm.mongodb.App
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.schedule_title_dialog.*
+import kotlinx.android.synthetic.main.small_schedule_widget.view.*
 import kotlinx.android.synthetic.main.weekview.view.*
 import java.util.*
 import kotlin.math.absoluteValue
@@ -767,8 +771,7 @@ class WeekView : ConstraintLayout{
     fun updateWidget() {
         val cal = Calendar.getInstance()
         var date = 0
-        val dayFlag = cal.get(Calendar.DAY_OF_WEEK)
-        when(dayFlag){
+        when(cal.get(Calendar.DAY_OF_WEEK)){
             1 -> date = 7
             2 -> date = 1
             3 -> date = 2
@@ -795,11 +798,10 @@ class WeekView : ConstraintLayout{
                 ?.findAll()
             if (initSubjectData != null){
                 subjectData = initSubjectData
-
             }
 
-        }
 
+        }
 
         if(subjectData != null){
             //AppStorage(context).setWidgetScheduleID(initScheduleData.id)
@@ -809,7 +811,22 @@ class WeekView : ConstraintLayout{
         }
 
 
+
+        smallWidgetUpdate()
+        largeWidgetUpdate()
+
+    }
+
+    private fun smallWidgetUpdate(){
+
+        val data = realm.where(ScheduleData::class.java)
+            .equalTo("id",AppStorage(context).getWidgetScheduleID()).findFirst()
+            ?: realm.where(ScheduleData::class.java).findFirst()!!
+
+        AppStorage(context).setWidgetScheduleList(data)
+
         val appWidgetManager = AppWidgetManager.getInstance(context)
+
         val smallAppWidgetIds = appWidgetManager.getAppWidgetIds(
             ComponentName(
                 context,
@@ -820,6 +837,27 @@ class WeekView : ConstraintLayout{
             smallAppWidgetIds,
             R.id.small_schedule_widget_listview
         )
+
+        val smallWidget = RemoteViews(context.packageName, R.layout.small_schedule_widget)
+        val smallIntent = Intent(context, SmallScheduleWidget::class.java)
+        smallIntent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+
+        cnxt.sendBroadcast(smallIntent)
+
+        smallWidget.setTextViewText(R.id.small_schedule_widget_title,  data.title)
+        appWidgetManager.updateAppWidget(smallAppWidgetIds, smallWidget)
+
+
+    }
+
+    private fun largeWidgetUpdate(){
+        val data = realm.where(ScheduleData::class.java)
+            .equalTo("id",AppStorage(context).getWidgetScheduleID()).findFirst()
+            ?: realm.where(ScheduleData::class.java).findFirst()!!
+
+        AppStorage(context).setWidgetScheduleList(data)
+
+        val appWidgetManager = AppWidgetManager.getInstance(context)
 
         val largeAppWidgetIds = appWidgetManager.getAppWidgetIds(
             ComponentName(
@@ -832,51 +870,14 @@ class WeekView : ConstraintLayout{
             largeAppWidgetIds,
             R.id.large_schedule_widget_listview
         )
-
-        updateWidgetTitle()
-
-    }
-
-    private fun updateWidgetTitle(){
-
-        val data = realm.where(ScheduleData::class.java)
-            .equalTo("id",AppStorage(context).getWidgetScheduleID()).findFirst()
-            ?: realm.where(ScheduleData::class.java).findFirst()!!
-
-        AppStorage(context).setWidgetScheduleList(data)
-        val appWidgetManager = AppWidgetManager.getInstance(context)
-
         val largeWidget = RemoteViews(context.packageName, R.layout.large_schedule_widget)
-        val smallWidget = RemoteViews(context.packageName, R.layout.small_schedule_widget)
-
         val largeIntent = Intent(context, LargeScheduleWidget::class.java)
-        val smallIntent = Intent(context, SmallScheduleWidget::class.java)
-
         largeIntent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
-        smallIntent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
 
-        //You need to specify the action for the intent. Right now that intent is doing nothing for there is no action to be broadcasted.
-        val largeAppWidgetIds = appWidgetManager.getAppWidgetIds(
-            ComponentName(
-                context,
-                LargeScheduleWidget::class.java
-            )
-        )
-        val smallAppWidgetIds = appWidgetManager.getAppWidgetIds(
-            ComponentName(
-                context,
-                SmallScheduleWidget::class.java
-            )
-        )
-        //You need to specify a proper flag for the intent. Or else the intent will become deleted.
         cnxt.sendBroadcast(largeIntent)
-        cnxt.sendBroadcast(smallIntent)
-
         largeWidget.setTextViewText(R.id.large_schedule_widget_title, data.title)
-        smallWidget.setTextViewText(R.id.small_schedule_widget_title,  data.title)
-
         appWidgetManager.updateAppWidget(largeAppWidgetIds, largeWidget)
-        appWidgetManager.updateAppWidget(smallAppWidgetIds, smallWidget)
 
     }
+
 }

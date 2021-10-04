@@ -2,8 +2,12 @@ package com.racoondog.gotaplan
 
 import android.content.Context
 import android.content.Intent
+import android.opengl.Visibility
+import android.view.View
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
+import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.common.reflect.TypeToken
 import com.google.gson.GsonBuilder
 
@@ -32,7 +36,6 @@ class SmallScheduleWidgetRemoteViewsService : RemoteViewsService() {
         //이 모든게 필수 오버라이드 메소드
         //실행 최초로 호출되는 함수
         override fun onCreate() {
-
             setData()
         }
 
@@ -40,10 +43,7 @@ class SmallScheduleWidgetRemoteViewsService : RemoteViewsService() {
         //브로드캐스트 리시버에서 notifyAppWidgetViewDataChanged()가 호출 될 때 자동 호출
 
         override fun onDataSetChanged() {
-
-
             setData()
-
         }
 
         //마지막에 호출되는 함수
@@ -59,14 +59,14 @@ class SmallScheduleWidgetRemoteViewsService : RemoteViewsService() {
         // 항목 선택 이벤트 발생 시 인텐트에 담겨야 할 항목 데이터를 추가해주어야 하는 함수
         override fun getViewAt(position: Int): RemoteViews {
            val listviewWidget = RemoteViews(
-                context?.getPackageName(),
+                context?.packageName,
                 R.layout.small_schedule_widget_item_collection
             )
+
             listviewWidget.setTextViewText(R.id.small_schedule_widget_collection_title, arrayList!![position]?.title)
             listviewWidget.setTextViewText(R.id.small_schedule_widget_collection_date, arrayList!![position]?.startHour.toString() +":"+
                     arrayList!![position]?.startMinute.toString()+" ~ "+ arrayList!![position]?.endHour.toString()+":"+
                     arrayList!![position]?.endMinute.toString())
-
 
 
             // 항목 선택 이벤트 발생 시 인텐트에 담겨야 할 항목 데이터를 추가해주는 코드

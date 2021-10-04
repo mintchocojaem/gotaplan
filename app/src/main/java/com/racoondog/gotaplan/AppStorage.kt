@@ -32,13 +32,12 @@ class AppStorage(context: Context) {
         editor.putString("subject",strContact)
         editor.apply()
     }
-   fun getWidgetSubjectList() : MutableList<SubjectItem?>?{
+    fun getWidgetSubjectList(): MutableList<SubjectItem?>? {
         val data = pref.getString("subject", "")
         var makeGson = GsonBuilder().create()
-        var listType : TypeToken<MutableList<SubjectItem?>> = object : TypeToken<MutableList<SubjectItem?>>() {}
-        var  arrayList : MutableList<SubjectItem?>? = null
-        arrayList = makeGson.fromJson(data,listType.type)
-        return arrayList
+        var listType: TypeToken<MutableList<SubjectItem?>> =
+            object : TypeToken<MutableList<SubjectItem?>>() {}
+        return makeGson.fromJson(data, listType.type)
     }
 
     fun setWidgetScheduleList(realmResults: ScheduleData) {
@@ -56,13 +55,12 @@ class AppStorage(context: Context) {
     }
 
 
-    fun getWidgetScheduleList() : MutableList<ScheduleItem?>?{
+    fun getWidgetScheduleList(): MutableList<ScheduleItem?>? {
         val data = pref.getString("schedule", "")
         var makeGson = GsonBuilder().create()
-        var listType : TypeToken<MutableList<ScheduleItem?>> = object : TypeToken<MutableList<ScheduleItem?>>() {}
-        var  arrayList : MutableList<ScheduleItem?>? = null
-        arrayList = makeGson.fromJson(data,listType.type)
-        return arrayList
+        var listType: TypeToken<MutableList<ScheduleItem?>> =
+            object : TypeToken<MutableList<ScheduleItem?>>() {}
+        return makeGson.fromJson(data, listType.type)
     }
 
     fun setHelpView(flag: Boolean) {

@@ -67,7 +67,6 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
 
         initNotification()
         loadData()//데이터 불러오기
-
         billingClient = BillingClient.newBuilder(this).enablePendingPurchases().setListener(this).build()
         billingClient!!.startConnection(object : BillingClientStateListener {
             override fun onBillingSetupFinished(billingResult: BillingResult) {
@@ -101,7 +100,7 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
 
         if(!storage.purchasedRemoveAds() && !storage.showHelpView()) {
 
-            //showAds()
+            showAds()
 
         }
 
