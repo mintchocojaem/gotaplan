@@ -28,7 +28,6 @@ import java.lang.Exception
 
 class ScheduleDialog:Dialog {
 
-    private val realm = Realm.getDefaultInstance()
     lateinit var cnxt:MainActivity
 
     constructor(context: Context) : super(context)

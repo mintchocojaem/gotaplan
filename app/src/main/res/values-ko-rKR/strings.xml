@@ -77,6 +77,7 @@
     <string name="unknown_error">알수없는 오류가 발생했습니다.</string>
     <string name="ad_mob_app_id">ca-app-pub-4742391180869310~3307919269</string>
     <string name="front_ad_unit_id">ca-app-pub-4742391180869310/6497915737</string>
+    <string name="already_purchased">"이미 구매하신 항목입니다."</string>
     <string name="schedule_time_dialog_start_time">시작 시각</string>
     <string name="schedule_time_dialog_end_time">종료 시각</string>
     <string name="schedule_time_dialog_start_min">시작 시각이 06시보다 작을 수 없습니다.</string>
@@ -119,5 +120,8 @@
     <string name="schedule_interval_dialog_1h">1시간</string>
     <string name="schedule_interval_dialog_30m">30분</string>
     <string name="timetable_list">시간표 목록</string>
-
+    <string name="font_setting_dialog_title">폰트 설정</string>
+    <string name="font_setting_dialog_system_font">시스템 폰트</string>
+    <string name="font_setting_dialog_app_font">어플 폰트</string>
+    <string name="font_setting_dialog_apply">폰트가 적용되었습니다!</string>
 </resources>

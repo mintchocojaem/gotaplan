@@ -10,6 +10,7 @@ import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.fonts.Font
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -320,6 +321,11 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
                 }
                 return true
             }
+            R.id.fontSetting->{
+                val dialog = FontSettingDialog(this)
+                dialog.show()
+                return true
+            }
 
             else -> return super.onOptionsItemSelected(item)
         }
@@ -567,6 +573,7 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
             addSubjectButton.visibility = View.VISIBLE
             if(scheduleData?.title != "") {
                 toolbar_title?.text = scheduleData?.title
+                toolbar_title.typeface = AppStorage(this).applyFontStyle(this)
             }
 
             intentFlag = scheduleData.dayFlag

@@ -119,6 +119,9 @@
     <string name="schedule_interval_dialog_1h">1 Hour</string>
     <string name="schedule_interval_dialog_30m">30 Minute</string>
     <string name="timetable_list">Timetable List</string>
-
+    <string name="font_setting_dialog_title">Font Setting</string>
+    <string name="font_setting_dialog_system_font">System Font</string>
+    <string name="font_setting_dialog_app_font">App Font</string>
+    <string name="font_setting_dialog_apply">The font has been applied!</string>
 
 </resources>

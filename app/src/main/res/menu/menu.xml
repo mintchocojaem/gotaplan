@@ -15,7 +15,11 @@
     <item
             android:id="@+id/widgetSetting"
             app:showAsAction="never"
-            android:title="@string/widget_dialog_toolbar_title">
+            android:title="@string/widget_dialog_toolbar_title"/>
+    <item
+            android:id="@+id/fontSetting"
+            app:showAsAction="never"
+            android:title="@string/font_setting_dialog_title">
     </item>
     <item
             android:id="@+id/directFeedback"

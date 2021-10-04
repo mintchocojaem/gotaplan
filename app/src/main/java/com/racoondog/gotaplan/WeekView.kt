@@ -328,7 +328,7 @@ class WeekView : ConstraintLayout{
             tag = "title$id"
             textSize = 14f
             maxLines = 1
-            typeface = ResourcesCompat.getFont(context, R.font.yd_child_fund_korea)
+            typeface = AppStorage(context).applyFontStyle(context)
 
         }
         var mCount = EndMinute - StartMinute

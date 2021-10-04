@@ -2,6 +2,8 @@ package com.racoondog.gotaplan
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Typeface
+import androidx.core.content.res.ResourcesCompat
 import com.google.common.reflect.TypeToken
 import com.google.gson.GsonBuilder
 import io.realm.RealmResults
@@ -13,6 +15,7 @@ class AppStorage(context: Context) {
     private val helpView = true
     private val looper = "true"
     private val widgetScheduleID : Int = 0
+    private val fontStyle : Int = 0
 
 
     fun setWidgetSubjectList(realmResults: RealmResults<SubjectData>) {
@@ -108,5 +111,21 @@ class AppStorage(context: Context) {
         val editor = pref.edit()
         editor.putString("looper", flag)
         editor.apply()
+    }
+
+    fun setFontStyle(id:Int){
+        val editor = pref.edit()
+        editor.putInt("fontStyle", id)
+        editor.apply()
+    }
+    fun applyFontStyle(context: Context):Typeface{
+        var typeface = Typeface.DEFAULT
+       if(pref.getInt("fontStyle",0) == 1){
+            typeface = ResourcesCompat.getFont(context, R.font.yd_child_fund_korea)!!
+        }
+        return typeface
+    }
+    fun getFontStyle():Int{
+        return pref.getInt("fontStyle",0)
     }
 }
