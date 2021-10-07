@@ -554,7 +554,7 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
             }
 
             this.deleteSharedPreferences("alarm")
-            storage.setLooper("false")
+            storage.setLooper("none")
         }
 
     }

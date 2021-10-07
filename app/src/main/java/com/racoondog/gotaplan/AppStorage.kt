@@ -94,10 +94,10 @@ class AppStorage(context: Context) {
 
     fun getLooper(): String {
         return when {
-            pref.getString("looper","false") == "false" -> {
+            pref.getString("looper","true") == "false" -> {
                 "false"
             }
-            pref.getString("looper","false") == "true" -> {
+            pref.getString("looper","true") == "true" -> {
                 "true"
             }
             else -> {
