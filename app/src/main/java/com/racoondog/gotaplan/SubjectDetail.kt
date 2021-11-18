@@ -3,16 +3,12 @@ package com.racoondog.gotaplan
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.appwidget.AppWidgetManager
 import android.content.*
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.transition.ChangeBounds
-import android.transition.Transition
-import android.transition.TransitionManager
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
@@ -24,7 +20,6 @@ import androidx.core.content.ContextCompat
 import io.realm.Realm
 import io.realm.RealmResults
 import kotlinx.android.synthetic.main.subject_detail.*
-import java.util.*
 
 
 class SubjectDetail : AppCompatActivity() {
@@ -104,7 +99,7 @@ class SubjectDetail : AppCompatActivity() {
                         for (i in linkageID.indices){
 
                             subject_detail_notification.deleteAlarm(linkageID[0]!!.id)
-                            ((MainActivity.mContext) as MainActivity).weekView.deleteSubject(
+                            MainActivity.mWeekView.deleteSubject(
                                 linkageID[0]!!.id
                             )
 
@@ -115,7 +110,7 @@ class SubjectDetail : AppCompatActivity() {
 
                     }else{
                         subject_detail_notification.deleteAlarm(data.id)
-                        ((MainActivity.mContext) as MainActivity).weekView.deleteSubject(data.id)
+                        MainActivity.mWeekView.deleteSubject(data.id)
                         realm.beginTransaction()
                         data.deleteFromRealm()
                         realm.commitTransaction()

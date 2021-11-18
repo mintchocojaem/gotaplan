@@ -31,19 +31,22 @@ import io.realm.RealmResults
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 import kotlin.collections.ArrayList
+import android.content.DialogInterface
+
+
+
 
 
 class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
 
-    //Developer: Void
 
     private val realm = Realm.getDefaultInstance()
 
+
     companion object{
-        var mContext:Context? = null
+        lateinit var mWeekView: WeekView
         var scheduleID: Int = 0 // 메인화면에 보여지는 시간표의 id
     }
-    val weekView by lazy { WeekView(this) }
 
     private var intentStartTime: Int = 0
     private var intentEndTime: Int = 0
@@ -51,13 +54,15 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
     private val storage:AppStorage by lazy { AppStorage(this) }
     private var billingClient: BillingClient? = null
     private var skuDetail:SkuDetails? = null
+    private var showAd : Boolean  = false
+
+    val weekView by lazy { WeekView(this) }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
+        mWeekView = weekView
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        mContext = this
         setSupportActionBar(main_toolbar)  //Actionbar 부분
         supportActionBar?.setDisplayUseLogoEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
@@ -126,9 +131,8 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
 
         side_menu_btn.setOnClickListener {
             // 나중에 시간표 여러개 생성될때 side_menu_btn visible 시키고 고쳐쓰면됨
-            val sideMenu = SideMenu(this)
-            sideMenu.cnxt = this
-            sideMenu.addSideView(main, fl_silde, view_sildebar)
+            val sideMenu = SideMenu(this,applicationContext)
+            sideMenu.addSideView(this,main, fl_silde, view_sildebar)
             sideMenu.showMenu(main, fl_silde, view_sildebar)
         }
 
@@ -323,6 +327,9 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
             R.id.fontSetting->{
                 val dialog = FontSettingDialog(this)
                 dialog.show()
+                dialog.setOnDismissListener {
+                    loadData()
+                }
                 return true
             }
 
@@ -331,8 +338,8 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         realm.close()
+        super.onDestroy()
 
     }
 
@@ -599,19 +606,18 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
     private fun showAds(){
         var mInterstitialAd: InterstitialAd?
 
-        var adRequest = AdRequest.Builder().build()
-
+        val adRequest = AdRequest.Builder().build()
         InterstitialAd.load(this,getString(R.string.front_ad_unit_id), adRequest, object : InterstitialAdLoadCallback() {
             override fun onAdFailedToLoad(adError: LoadAdError) {
                 mInterstitialAd = null
+                showAd = true
             }
 
             override fun onAdLoaded(interstitialAd: InterstitialAd) {
                 mInterstitialAd = interstitialAd
-
-                if (mInterstitialAd != null) {
+                if (mInterstitialAd != null && !showAd) {
                     mInterstitialAd?.show(this@MainActivity)
-
+                    showAd = true
                 }
 
             }

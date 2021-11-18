@@ -19,7 +19,6 @@ import java.util.*
 class CreateSubject :AppCompatActivity() {
 
     private val realm = Realm.getDefaultInstance()
-    private val context = (MainActivity.mContext as? MainActivity?)
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -29,8 +28,7 @@ class CreateSubject :AppCompatActivity() {
         val colorList = resources.getIntArray(R.array.subject_color)
         val scheduleData = realm.where(ScheduleData::class.java).equalTo(
             "id",
-            MainActivity.scheduleID
-        ).findFirst()!!
+            MainActivity.scheduleID).findFirst()!!
         val scheduleStartHour = intent?.getIntExtra("start_time", scheduleData.startHour)?:scheduleData.startHour
         val scheduleEndHour = intent?.getIntExtra("end_time", scheduleData.endHour)?:scheduleData.endHour
         val scheduleDayFlag = scheduleData.dayFlag
@@ -38,10 +36,6 @@ class CreateSubject :AppCompatActivity() {
 
         val dayFlag = mutableListOf(false, false, false, false, false, false, false)
 
-        if (context == null){
-            setResult(Activity.RESULT_CANCELED, intent)
-            finish()
-        }
 
         Notification.notificationFlag = -1
         create_subject_notification.setText(-1)
@@ -100,7 +94,7 @@ class CreateSubject :AppCompatActivity() {
                     val flag = mutableListOf<Boolean>()
                     var linkageFlag = 0
 
-                    val id = context!!.weekView.createLinkageID(1, 128)//다음으로 만들어질 weekView 의 id 값을 결정하는 변수
+                    val id = MainActivity.mWeekView.createLinkageID(1, 128)//다음으로 만들어질 weekView 의 id 값을 결정하는 변수
 
                     for (i in dayFlag.indices){
 
@@ -259,8 +253,8 @@ class CreateSubject :AppCompatActivity() {
 
             if(!subject_time_picker.nestedTime(subjectData)){
 
-                val context = MainActivity.mContext as MainActivity
-                val id = context.weekView.createSubjectID(0, 128)//다음으로 만들어질 weekView 의 id 값을 결정하는 변수
+                //val context = MainActivity.mContext() as MainActivity
+                val id = MainActivity.mWeekView.createSubjectID(0, 128)//다음으로 만들어질 weekView 의 id 값을 결정하는 변수
 
                 realm.beginTransaction()
                 val subjectInfo = realm.createObject(SubjectData::class.java)

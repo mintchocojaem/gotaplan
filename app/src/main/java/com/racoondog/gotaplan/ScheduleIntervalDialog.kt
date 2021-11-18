@@ -7,12 +7,8 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.WindowManager
-import android.widget.Toast
-import com.racoondog.gotaplan.MainActivity.Companion.mContext
 import io.realm.Realm
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.schedule_interval_dialog.*
-import kotlinx.android.synthetic.main.schedule_title_dialog.*
 
 class ScheduleIntervalDialog:Dialog {
 

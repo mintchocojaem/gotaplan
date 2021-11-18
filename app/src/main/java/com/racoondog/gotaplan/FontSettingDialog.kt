@@ -1,6 +1,5 @@
 package com.racoondog.gotaplan
 
-import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
@@ -9,16 +8,12 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.WindowManager
 import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
-import io.realm.Realm
 import io.realm.RealmResults
 import kotlinx.android.synthetic.main.font_setting_dialog.*
 import kotlinx.android.synthetic.main.subject_dialog.*
 import java.util.*
 
 class FontSettingDialog: Dialog {
-    val cnxt = (MainActivity.mContext as MainActivity)
     constructor(context: Context) : super(context)
     constructor(context: Context, themeResId: Int) : super(context, themeResId)
     constructor(
@@ -42,14 +37,13 @@ class FontSettingDialog: Dialog {
         }
         font_setting_dialog_systemFont.setOnClickListener {
             AppStorage(context).setFontStyle(0)
-            cnxt.loadData()
             Toast.makeText(context,R.string.font_setting_dialog_apply,Toast.LENGTH_SHORT).show()
         }
         font_setting_dialog_appFont.setOnClickListener {
             AppStorage(context).setFontStyle(1)
-            cnxt.loadData()
             Toast.makeText(context,R.string.font_setting_dialog_apply,Toast.LENGTH_SHORT).show()
         }
+
 
     }
 

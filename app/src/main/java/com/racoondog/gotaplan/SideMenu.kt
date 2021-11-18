@@ -10,16 +10,13 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.RelativeLayout
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.Realm
-import kotlinx.android.synthetic.main.side_menu.view.*
 
-class SideMenu(context: Context?, attrs: AttributeSet?) :
+class SideMenu(activity: MainActivity,context: Context?, attrs: AttributeSet?) :
     RelativeLayout(context, attrs), View.OnClickListener {
     private val realm = Realm.getDefaultInstance()
-    lateinit var cnxt:MainActivity
 
     /** 메뉴버튼 클릭 이벤트 리스너  */
     var listener: EventListener? = null
@@ -38,11 +35,11 @@ class SideMenu(context: Context?, attrs: AttributeSet?) :
         fun createSubject()
     }
 
-    constructor(context: Context?) : this(context, null) {
-        init()
+    constructor(activity: MainActivity,context: Context?) : this(activity,context, null) {
+        init(activity)
     }
 
-    private fun init() {
+    fun init(activity: MainActivity) {
 
         LayoutInflater.from(context).inflate(R.layout.side_menu, this, true)
         findViewById<View>(R.id.btn_cancel).setOnClickListener(this)
@@ -68,7 +65,7 @@ class SideMenu(context: Context?, attrs: AttributeSet?) :
         // 리사이클러뷰에 SimpleTextAdapter 객체 지정.
 
         // 리사이클러뷰에 SimpleTextAdapter 객체 지정.
-        val adapter = SideMenuAdapter(list,idList)
+        val adapter = SideMenuAdapter(activity,list,idList)
         recyclerView.adapter = adapter
 
 
@@ -84,8 +81,8 @@ class SideMenu(context: Context?, attrs: AttributeSet?) :
         }
     }
 
-    fun addSideView(mainLayout: ViewGroup, viewLayout: ViewGroup, sideLayout: ViewGroup) {
-        val sidebar = SideMenu(MainActivity.mContext)
+    fun addSideView(activity: MainActivity,mainLayout: ViewGroup, viewLayout: ViewGroup, sideLayout: ViewGroup) {
+        val sidebar = SideMenu(activity,context)
         sideLayout?.addView(sidebar)
         viewLayout?.setOnClickListener(View.OnClickListener { })
         sidebar.setEventListener(object : SideMenu.EventListener {
@@ -98,7 +95,7 @@ class SideMenu(context: Context?, attrs: AttributeSet?) :
                 subjectIntent.flags =
                     (Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 closeMenu(mainLayout, viewLayout, sideLayout)
-                cnxt.startActivityForResult(subjectIntent, 100)
+                activity.startActivityForResult(subjectIntent, 100)
 
             }
         })
@@ -109,7 +106,7 @@ class SideMenu(context: Context?, attrs: AttributeSet?) :
 
     fun closeMenu(mainLayout: ViewGroup, viewLayout: ViewGroup, sideLayout: ViewGroup) {
         isMenuShow = false
-        val slide: Animation = AnimationUtils.loadAnimation(MainActivity.mContext, R.anim.sidebar_hidden)
+        val slide: Animation = AnimationUtils.loadAnimation(context, R.anim.sidebar_hidden)
         sideLayout?.startAnimation(slide)
         Handler().postDelayed(Runnable {
             viewLayout?.setVisibility(View.GONE)
