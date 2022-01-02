@@ -46,7 +46,7 @@
                     app:layout_constraintRight_toLeftOf="@id/toolbar_title"
                     app:layout_constraintTop_toTopOf="@id/toolbar_title"
                     app:layout_constraintBottom_toBottomOf="@id/toolbar_title"
-                    android:tint="@color/defaultAccentColor">
+                app:tint="@color/defaultAccentColor">
 
             </ImageButton>
 
@@ -61,10 +61,9 @@
                     app:layout_constraintBottom_toBottomOf="@id/toolbar_title"
                     app:layout_constraintHorizontal_bias="1"
                     android:src="@drawable/icon_check"
-                    android:tint="@color/defaultAccentColor"
-                    android:background="@null"
+                android:background="@null"
                     android:textColor="@color/defaultAccentColor"
-                    />
+                app:tint="@color/defaultAccentColor" />
 
 
 

@@ -52,7 +52,7 @@
                 android:paddingEnd="16dp"
                 android:paddingTop="16dp"
                 android:paddingBottom="16dp"
-                android:tint="@color/whiteColor"/>
+                app:tint="@color/whiteColor"/>
 
         <ImageButton
                 android:id="@+id/scheduleQuit_Button"
@@ -69,7 +69,7 @@
                 android:paddingEnd="16dp"
                 android:paddingTop="16dp"
                 android:paddingBottom="16dp"
-                android:tint="@color/whiteColor">
+                app:tint="@color/whiteColor">
 
         </ImageButton>
 
