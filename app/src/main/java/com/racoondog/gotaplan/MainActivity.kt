@@ -123,6 +123,7 @@ class MainActivity: AppCompatActivity(),PurchasesUpdatedListener{
 
         }
 
+
         addSubjectButton.setOnClickListener {
             val subjectIntent = Intent(this, CreateSubject::class.java)
             subjectIntent.flags = (Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
